@@ -1,23 +1,15 @@
 {
   "name": "imaginal-backend",
   "version": "1.0.0",
-  "description": "Backend för lundakarnevalen 2018",
+  "description": "Test. Backend för lundakarnevalen 2018",
   "main": "index.js",
-  "dependencies": {
-    "express": "^4.16.1",
-    "passport": "^0.4.0",
-    "sequelize": "^4.13.6"
-  },
-  "devDependencies": {
-    "standard": "^10.0.3"
-  },
   "scripts": {
-    "test": "standard"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Lundakarnevalen/imaginal-backend.git"
   },
+  "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
