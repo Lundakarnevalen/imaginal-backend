@@ -13,17 +13,10 @@ app.use(passport.session())
 
 /** LOGIN */
 
-app.post('/login',
-  passport.authenticate('local'),
-  login.login)
+app.post('/login/email', passport.authenticate('local'), login.login)
 
 /** REGISTER USER */
 app.post('/register', Register.registerUser)
-
-app.use(bodyParser.json())
-
-/** LOGIN */
-app.post('/login/email', login.login)
 
 /*******************/
 app.get('/', function (req, res) {
