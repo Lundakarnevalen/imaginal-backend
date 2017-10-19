@@ -8,29 +8,38 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
-
-```
-Give examples
-```
+* MySQL > 5.7
+* Node > 6
 
 ### Installing
 
-A step by step series of examples that tell you have to get a development env running
-
-Say what the step will be
-
+Install dependencies
 ```
-Give the example
+npm install
 ```
 
-And repeat
+Create database "karneval"
+```
+mysql..
+CREATE DATABASE karneval;
+```
+
+Init database tables
+```
+./node_modules/.bin/sequelize db:migrate
+```
+
+Config mysql parameters
 
 ```
-until finished
+export MYSQL_USER='user'
+export MYSQL_PASSWORD='passwd'
 ```
 
-End with an example of getting some data out of the system or using it for a little demo
+Run server
+```
+node app.js
+```
 
 ## Running the tests
 
