@@ -16,6 +16,10 @@ Give examples
 
 ### Installing
 
+Run npm install to install all the necessary packages.
+
+To create the database tables you need to run "./node_modules/.bin/sequelize db:migrate"
+
 A step by step series of examples that tell you have to get a development env running
 
 Say what the step will be
