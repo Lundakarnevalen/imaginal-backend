@@ -1,5 +1,6 @@
 const LocalStrategy = require('passport-local').Strategy
 const User = require('../models/users')
+const bcrypt = require('bcrypt')
 
 module.exports = function (passport) {
   passport.use(new LocalStrategy({
@@ -14,11 +15,13 @@ module.exports = function (passport) {
         if (user === null) {
           return done(null, false, { message: 'Incorrect username.' }) // We want to send back some info saying that login didn't work. Not sure where done takes us here
         }
-        // Hash and check with stored password, not plain text
-        if (user.password !== password) {
-          return done(null, false, { message: 'Incorrect password.' })
-        }
-        return done(null, user)
+        bcrypt.compare(password, user.password, function(err, res) {
+          if(res) { // Passwords match
+            return done(null, user) 
+          } else { // Passwords don't match
+            return done(null, false, { message: 'Incorrect password.' }) 
+          } 
+        });
       })
     }
   ))
