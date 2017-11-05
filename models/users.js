@@ -12,7 +12,7 @@ const User = dbc.define('User', {
   token: Sequelize.STRING
 })
 
-let findUser = function(email, callback) {
+let findUser = function (email, callback) {
   console.log(email)
   User.findOne({
     where: {email: email}

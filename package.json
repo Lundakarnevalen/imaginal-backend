@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "Test. Backend för lundakarnevalen 2018",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "standard --fix"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Lundakarnevalen/imaginal-backend.git"

@@ -1,7 +1,7 @@
 const sequelize = require('../config/database.js').dbc
 const users = require('../models/users')
 
-let registerUser = function(req, res) {
+let registerUser = function (req, res) {
   sequelize.sync()
     .then(() => users.User.create({
       email: req.body.email,
