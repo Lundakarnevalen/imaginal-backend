@@ -6,7 +6,7 @@ let login = function (req, res) {
     message: 'Successfully logged in',
     accessToken: req.user.token
   })
-})
+}
 
 module.exports = {
   login
