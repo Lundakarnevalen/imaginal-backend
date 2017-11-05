@@ -15,13 +15,16 @@ module.exports = function (passport) {
         if (user === null) {
           return done(null, false, { message: 'Incorrect username.' }) // We want to send back some info saying that login didn't work. Not sure where done takes us here
         }
-        bcrypt.compare(password, user.password, function(err, res) {
-          if(res) { // Passwords match
-            return done(null, user) 
+        bcrypt.compare(password, user.password, function (err, res) {
+          if (err) {
+            return done(err)
+          }
+          if (res) { // Passwords match
+            return done(null, user)
           } else { // Passwords don't match
-            return done(null, false, { message: 'Incorrect password.' }) 
-          } 
-        });
+            return done(null, false, { message: 'Incorrect password.' })
+          }
+        })
       })
     }
   ))
