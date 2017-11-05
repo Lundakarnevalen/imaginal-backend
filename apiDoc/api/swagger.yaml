@@ -1,12 +1,12 @@
 ---
 swagger: "2.0"
 info:
-  description: "Lundakarnevalen 2017s app and website API"
+  description: "Lundakarnevalen 2018s app and website API"
   version: "1.0.0"
   title: "imaginal-backend"
   contact:
-    name: "Oskar Damkjaer"
-    email: "oskar.damkjaer@gmail.com"
+    name: "Julian Kroné"
+    email: "julian.krone@lundakarnevalen.lu.se"
   license:
     name: "MIT"
     url: "https://tldrlegal.com/license/mit-license"
