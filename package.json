@@ -4,7 +4,7 @@
   "description": "Test. Backend för lundakarnevalen 2018",
   "main": "index.js",
   "scripts": {
-    "test": "standard --fix"
+    "test": "standard --fix && nyc mocha"
   },
   "repository": {
     "type": "git",
@@ -29,6 +29,11 @@
     "sequelize-cli": "^3.0.0"
   },
   "devDependencies": {
+    "mocha": "^4.0.1",
+    "nyc": "^11.3.0",
     "standard": "^10.0.3"
+  },
+  "standard": {
+    "globals": ["describe", "it"]
   }
 }
