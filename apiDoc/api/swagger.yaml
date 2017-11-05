@@ -1,0 +1,50 @@
+---
+swagger: "2.0"
+info:
+  description: "Lundakarnevalen 2017s app and website API"
+  version: "1.0.0"
+  title: "imaginal-backend"
+  contact:
+    name: "Oskar Damkjaer"
+    email: "oskar.damkjaer@gmail.com"
+  license:
+    name: "MIT"
+    url: "https://tldrlegal.com/license/mit-license"
+basePath: "/"
+paths:
+  /register:
+    post:
+      operationId: "registerPOST"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/user"
+      responses:
+        200:
+          description: "Potential access token and message"
+          schema:
+            $ref: "#/definitions/loginAttempt"
+      x-swagger-router-controller: "Default"
+definitions:
+  loginAttempt:
+    type: "object"
+    properties:
+      success:
+        type: "boolean"
+      message:
+        type: "string"
+      accessToken:
+        type: "string"
+  user:
+    type: "object"
+    properties:
+      email:
+        type: "string"
+      password:
+        type: "string"

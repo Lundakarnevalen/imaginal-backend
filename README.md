@@ -41,6 +41,13 @@ Run server
 node app.js
 ```
 
+## API documentation 
+How to run live api doc
+* Navigate to apiDoc folder
+* npm install
+* npm start
+* open http://localhost:3000/docs/ in a web browser 
+
 ## Running the tests
 
 No tests yet.
