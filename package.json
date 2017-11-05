@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "Test. Backend för lundakarnevalen 2018",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "standard --fix && nyc mocha"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Lundakarnevalen/imaginal-backend.git"
@@ -27,6 +29,11 @@
     "sequelize-cli": "^3.0.0"
   },
   "devDependencies": {
+    "mocha": "^4.0.1",
+    "nyc": "^11.3.0",
     "standard": "^10.0.3"
+  },
+  "standard": {
+    "globals": ["describe", "it"]
   }
 }

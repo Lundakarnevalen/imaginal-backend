@@ -1,12 +1,12 @@
-const LocalStrategy = require('passport-local').Strategy;
+const LocalStrategy = require('passport-local').Strategy
 const User = require('../models/users')
 
-module.exports = function(passport) {
+module.exports = function (passport) {
   passport.use(new LocalStrategy({
     usernameField: 'email',
     passwordField: 'password'
   },
-    function(username, password, done) {
+    function (username, password, done) {
       User.findUser(username, function (err, user) {
         if (err) {
           return done(err)
@@ -30,5 +30,4 @@ module.exports = function(passport) {
   passport.deserializeUser(function (user, done) {
     done(null, user)
   })
-
 }
