@@ -4,7 +4,8 @@
   "description": "Test. Backend för lundakarnevalen 2018",
   "main": "index.js",
   "scripts": {
-    "test": "standard --fix && nyc mocha"
+    "test": "standard --fix && nyc mocha",
+    "postman": "newman run ./test/Karneval.postman_collection.json"
   },
   "repository": {
     "type": "git",
@@ -31,6 +32,7 @@
   },
   "devDependencies": {
     "mocha": "^4.0.1",
+    "newman": "^3.8.3",
     "nyc": "^11.3.0",
     "standard": "^10.0.3"
   },

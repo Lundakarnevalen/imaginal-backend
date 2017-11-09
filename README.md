@@ -34,6 +34,7 @@ Config mysql parameters
 ```
 export MYSQL_USER='user'
 export MYSQL_PASSWORD='passwd'
+export TOKEN_SECRET='badsecret'
 ```
 
 Run server
@@ -44,6 +45,10 @@ node app.js
 ## Running the tests
 
 No tests yet.
+
+## Run API test
+npm run postman
+make sure server is running and you have env variables
 
 ## Conventions
 * [standard.js](https://github.com/standard/standard) - JavaScript Style used 
