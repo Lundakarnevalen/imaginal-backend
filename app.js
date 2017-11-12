@@ -3,6 +3,7 @@ const app = express()
 const bodyParser = require('body-parser')
 const login = require('./controllers/login')
 const Register = require('./controllers/register')
+const sequelize = require('./models')
 
 const passport = require('passport')
 require('./config/passport')(passport)

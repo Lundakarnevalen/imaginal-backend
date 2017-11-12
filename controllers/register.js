@@ -1,5 +1,6 @@
 const sequelize = require('../config/database.js').dbc
-const users = require('../models/users')
+const User = require('../models').User;
+const Role = require('../models').Role;
 const bcrypt = require('bcrypt')
 
 let registerUser = function (req, res) {
@@ -9,10 +10,16 @@ let registerUser = function (req, res) {
       throw err
     }
     sequelize.sync()
-    .then(() => users.User.create({
+    .then(() => User.create({
       email: req.body.email,
       password: hash,
       token: 'temporary token'
+    }))
+    .then(() => Role.create({
+      description: 'karnevalist1337'
+    }))
+    .then(() => User.hasMany(Role, {
+      through: 'user_articles' //funkar ej
     }))
     .then(user => {
       let resp = {}
