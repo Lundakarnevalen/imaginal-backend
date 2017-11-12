@@ -67,7 +67,7 @@
 					},
 					"response": [
 						{
-							"id": "e5541fea-3484-4906-9ddd-7ffe3f8c5362",
+							"id": "1a34a603-86fc-4a62-898b-75b0d6f93f67",
 							"name": "Email Login",
 							"originalRequest": {
 								"method": "POST",
@@ -144,6 +144,101 @@
 					]
 				},
 				{
+					"name": "Bad email login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Must yield unauthorized\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\":\"test@gmail.com\",\n  \"password\":\"wrongpassword\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/login/email",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"login",
+								"email"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Bad register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Statuscode show failure\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Successfield eq false on status 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(false);",
+									"});",
+									"",
+									"pm.test(\"Feedback on failure\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"parameters\");",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"eail\":\"test@gmail.com\",\n  \"password\":\"password\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"register"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
 					"name": "Register a user",
 					"event": [
 						{
@@ -193,7 +288,7 @@
 					},
 					"response": [
 						{
-							"id": "742928ba-4b20-4f8a-ad42-b4707e7953d6",
+							"id": "9fef718f-e392-4805-b202-d52f2704fc4b",
 							"name": "Register a user",
 							"originalRequest": {
 								"method": "POST",
@@ -313,7 +408,7 @@
 					},
 					"response": [
 						{
-							"id": "c0a45f4f-d772-4af3-85f8-0931976b687a",
+							"id": "41519ae4-55e1-49bd-87a3-8ac18f4084d2",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -379,52 +474,8 @@
 							"body": "Hello World!"
 						}
 					]
-				},
-				{
-					"name": "Bad email login",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"Must yield unauthorized\", function () {",
-									"    pm.response.to.have.status(401);",
-									"});"
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"email\":\"test@gmail.com\",\n  \"password\":\"wrongpassword\"\n}"
-						},
-						"url": {
-							"raw": "http://localhost:3000/login/email",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"login",
-								"email"
-							]
-						},
-						"description": ""
-					},
-					"response": []
 				}
 			]
 		}
 	]
 }
-
