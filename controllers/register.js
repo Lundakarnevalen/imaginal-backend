@@ -18,7 +18,7 @@ let registerUser = function (req, res) {
       let resp = {}
       resp.success = true
       resp.message = 'You are now registered'
-      resp.accessToken = user.accessToken
+      resp.token = user.token
       res.send(resp)
     })
   })

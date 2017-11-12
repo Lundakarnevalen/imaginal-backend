@@ -33,7 +33,6 @@ Config application parameters
 ```
 export MYSQL_USER='user'
 export MYSQL_PASSWORD='passwd'
-
 export TOKEN_SECRET='secret'
 ```
 
@@ -47,6 +46,10 @@ npm start
 ```
 npm test
 ```
+
+## Run API test
+npm run postman
+make sure server is running and you have env variables
 
 ## Conventions
 * [standard.js](https://github.com/standard/standard) - JavaScript Style used 
