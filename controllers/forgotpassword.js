@@ -43,7 +43,11 @@ let forgotPassword = function (req, res) {
           userid: user.id,
           token: token
         }))
-        .then(() => res.send(token))
+        .then(() => {
+          let resp = {}
+          resp.passwordToken = token
+          res.send(resp)
+        })
     })
   })
 }
@@ -64,7 +68,7 @@ let resetPassword = function (res, user, password, passwordToken) {
     users.setNewPassword(user, password)
     removeEntry(passwordToken)
     user.save().then(() => {
-      resp.sucess = true
+      resp.success = true
       resp.message = 'Password changed'
       res.send(resp)
     })
@@ -72,11 +76,16 @@ let resetPassword = function (res, user, password, passwordToken) {
 }
 
 let setNewPassword = function (req, res) {
+  let resp = {}
+  resp.success = false
+  if (req.body.password === null) {
+    resp.message = 'Must contain a password'
+    res.send(resp)
+    return
+  }
   checkIfExist(req.body.passwordToken)
     .then((reset) => {
       if (reset === null) {
-        let resp = {}
-        resp.success = false
         resp.message = 'Failed to set new password'
         res.send(resp)
         return

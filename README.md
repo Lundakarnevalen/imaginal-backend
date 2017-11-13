@@ -9,7 +9,7 @@ These instructions will get you a copy of the project up and running on your loc
 ### Prerequisites
 
 * MySQL > 5.7
-* Node > 6
+* Node > 8
 
 ### Installing
 
@@ -20,7 +20,7 @@ npm install
 
 Create database "karneval"
 ```
-mysql..
+mysql -u<user> -p<password>
 CREATE DATABASE karneval;
 ```
 
@@ -29,21 +29,27 @@ Init database tables
 ./node_modules/.bin/sequelize db:migrate
 ```
 
-Config mysql parameters
-
+Config application parameters
 ```
 export MYSQL_USER='user'
 export MYSQL_PASSWORD='passwd'
+export TOKEN_SECRET='secret'
 ```
 
 Run server
 ```
-node app.js
+npm start
 ```
 
 ## Running the tests
 
-No tests yet.
+```
+npm test
+```
+
+## Run API test
+npm run postman
+make sure server is running and you have env variables
 
 ## Conventions
 * [standard.js](https://github.com/standard/standard) - JavaScript Style used 

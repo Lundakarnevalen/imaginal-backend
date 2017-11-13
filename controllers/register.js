@@ -13,7 +13,7 @@ let registerUser = function (req, res) {
       users.setNewPassword(user, req.body.password)
       resp.success = true
       resp.message = 'You are now registered'
-      resp.accessToken = user.accessToken
+      resp.token = user.token
       res.send(resp)
     })
 }

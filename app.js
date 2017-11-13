@@ -12,8 +12,10 @@ app.use(bodyParser.json())
 app.use(passport.initialize())
 app.use(passport.session())
 
-/** LOGIN */
+/** REGISTER USER */
+app.post('/register', Register.registerUser)
 
+/** LOGIN */
 app.post('/login/email', passport.authenticate('local'), login.login)
 
 /** FORGOT PASSWORD */
@@ -24,8 +26,15 @@ app.post('/login/resetpassword', ForgotPassword.setNewPassword)
 /** REGISTER USER */
 app.post('/register', Register.registerUser)
 
+/** AUTHENTICATE TOKENS */
+app.all(/(\/)?api\/.*/,
+  passport.authenticate('bearer', { session: false }),
+  function (req, res, next) {
+    next()
+  })
+
 /*******************/
-app.get('/', function (req, res) {
+app.post('/api/hello', function (req, res) {
   res.send('Hello World!')
 })
 
