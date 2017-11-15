@@ -18,15 +18,18 @@ app.post('/register', Register.registerUser)
 
 // Validera innan vi ger till passport?
 app.post('/login/email', function (req, res, next) {
+  if (!req.body.email || !req.body.password) {
+    res.json({message: 'missing parameters'})
+  }
   passport.authenticate('local',
     function (err, user, info) {
       if (err) {
         return res.json({
-          message: 'Internal Server Error!'
+          message: info
         })
       } else if (!user) {
         return res.json({
-          message: 'No Such User!'
+          message: info
         })
       }
       req.logIn(user, function (err) {
@@ -36,7 +39,9 @@ app.post('/login/email', function (req, res, next) {
           })
         }
         return res.json({
-          message: 'Login Success!'
+          success: true,
+          message: 'Successfully logged in',
+          accessToken: req.user.token
         })
       })
     })(req, res, next)
