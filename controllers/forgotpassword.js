@@ -5,7 +5,12 @@ const users = require('../models/users')
 const forgotpass = require('../models/forgotpassword')
 const bcrypt = require('bcrypt')
 
-let generateToken = function (email, callback) {
+/**
+ * Generates a passwordToken
+ * @param email Email of the user
+ * @param callback The callback function. Should take 1 argument that will contain the token
+ */
+const generateToken = function (email, callback) {
   bcrypt.hash(email + Math.random(), 10, function (err, hash) {
     if (err) {
       throw err
@@ -21,15 +26,32 @@ let generateToken = function (email, callback) {
   })
 }
 
-let checkIfExist = function (token) {
+const checkIfExist = function (token) {
   return forgotpass.ForgotPassword.findOne({
     where: {token: token}
   })
 }
 
-let forgotPassword = function (req, res) {
-  console.log(req.body.email)
-  // 10 rounds used for salt, needs to be tested and optimized
+/**
+ * Update if exist, otherwise insert
+ * @param values The new values
+ * @param conditions The where clause
+ */
+const upSert = function (values, conditions) {
+  forgotpass.ForgotPassword.findOne({
+    where: conditions
+  }).then((passwordToken) => {
+    if (!passwordToken) {
+      sequelize.sync()
+        .then(() => forgotpass.ForgotPassword.create(values
+        ))
+    } else {
+      passwordToken.update(values)
+    }
+  })
+}
+
+const forgotPassword = function (req, res) {
   users.findUser(req.body.email, function (err, user) {
     if (err || user === null) {
       let resp = {}
@@ -38,44 +60,44 @@ let forgotPassword = function (req, res) {
       return
     }
     generateToken(req.body.email, function (token) {
-      sequelize.sync()
-        .then(() => forgotpass.ForgotPassword.create({
-          userid: user.id,
-          token: token
-        }))
-        .then(() => {
-          let resp = {}
-          resp.passwordToken = token
-          res.send(resp)
-        })
+      forgotpass.ForgotPassword.findOne({
+      })
+      upSert({email: user.email,
+        token: token}, {email: user.email})
+      res.send({
+        success: true,
+        message: 'Token sent',
+        passwordToken: token
+      })
     })
   })
 }
 
-let removeEntry = function (token) {
-  forgotpass.ForgotPassword.destroy({
+const removeEntry = function (token) {
+  return forgotpass.ForgotPassword.destroy({
     where: {token: token}
-  }).then(() => {})
+  })
 }
 
-let resetPassword = function (res, user, password, passwordToken) {
+const resetPassword = function (res, user, password, passwordToken) {
   let resp = {}
   if (user === null) {  // We should never get here
     resp.success = false
     resp.message = 'Failed to find user, please contact the site admin'
     res.send(resp)
   } else {
-    users.setNewPassword(user, password)
-    removeEntry(passwordToken)
-    user.save().then(() => {
-      resp.success = true
-      resp.message = 'Password changed'
-      res.send(resp)
+    removeEntry(passwordToken).then(() => {
+      users.setNewPassword(user, password)
+      user.save().then(() => {
+        resp.success = true
+        resp.message = 'Password changed'
+        res.send(resp)
+      })
     })
   }
 }
 
-let setNewPassword = function (req, res) {
+const setNewPassword = function (req, res) {
   let resp = {}
   resp.success = false
   if (req.body.password === null) {
@@ -91,9 +113,8 @@ let setNewPassword = function (req, res) {
         return
       }
       users.User.findOne({
-        where: {id: reset.userid}
-      })
-        .then((user) => resetPassword(res, user, req.body.password, req.body.passwordToken))
+        where: {email: reset.email}
+      }).then((user) => resetPassword(res, user, req.body.password, req.body.passwordToken))
     })
 }
 

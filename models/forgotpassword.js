@@ -7,7 +7,7 @@ const ForgotPassword = dbc.define('ForgotPassword', {
     primaryKey: true,
     type: Sequelize.INTEGER
   },
-  userid: Sequelize.INTEGER,
+  email: Sequelize.STRING,
   token: Sequelize.STRING
 })
 

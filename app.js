@@ -23,9 +23,6 @@ app.post('/login/forgotpassword', ForgotPassword.forgotPassword)
 
 app.post('/login/resetpassword', ForgotPassword.setNewPassword)
 
-/** REGISTER USER */
-app.post('/register', Register.registerUser)
-
 /** AUTHENTICATE TOKENS */
 app.all(/(\/)?api\/.*/,
   passport.authenticate('bearer', { session: false }),
