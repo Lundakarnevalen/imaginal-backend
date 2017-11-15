@@ -23,16 +23,18 @@ let registerUser = function (req, res) {
       success: false,
       message
     })
-
-    const user = {
-      email: req.body.email,
-      password: req.body.password
-    }
-    validateUser(user, success, fail)
   }
+
+  const user = {
+    email: req.body.email,
+    password: req.body.password
+  }
+  console.log('validating')
+  validateUser(user, success, fail)
 }
 
-let createUser = function(email, password, res) {
+let createUser = function (email, password, res) {
+  console.log('asdsadffsdsdf')
   sequelize.sync()
     .then(() => users.User.create({
       email: email,
