@@ -5,7 +5,7 @@ const users = require('../models/users')
 const forgotpass = require('../models/forgotpassword')
 const bcrypt = require('bcrypt')
 
-let generateToken = function (email, callback) {
+const generateToken = function (email, callback) {
   bcrypt.hash(email + Math.random(), 10, function (err, hash) {
     if (err) {
       throw err
@@ -21,20 +21,20 @@ let generateToken = function (email, callback) {
   })
 }
 
-let checkIfExist = function (token) {
+const checkIfExist = function (token) {
   return forgotpass.ForgotPassword.findOne({
     where: {token: token}
   })
 }
 
-let forgotPassword = function (req, res) {
+const forgotPassword = function (req, res) {
   console.log(req.body.email)
   // 10 rounds used for salt, needs to be tested and optimized
   users.findUser(req.body.email, function (err, user) {
     if (err || user === null) {
-      let resp = {}
-      resp.message = 'Failed to reset password'
-      res.send(resp)
+      res.json({
+        message: 'Failed to reset password'
+      })
       return
     }
     generateToken(req.body.email, function (token) {
@@ -44,50 +44,53 @@ let forgotPassword = function (req, res) {
           token: token
         }))
         .then(() => {
-          let resp = {}
-          resp.passwordToken = token
-          res.send(resp)
+          res.json({
+            passwordToken: token
+          })
         })
     })
   })
 }
 
-let removeEntry = function (token) {
+const removeEntry = function (token) {
   forgotpass.ForgotPassword.destroy({
     where: {token: token}
   }).then(() => {})
 }
 
-let resetPassword = function (res, user, password, passwordToken) {
-  let resp = {}
+const resetPassword = function (res, user, password, passwordToken) {
   if (user === null) {  // We should never get here
-    resp.success = false
-    resp.message = 'Failed to find user, please contact the site admin'
-    res.send(resp)
+    res.json({
+      success: false,
+      message: 'Failed to find user, please contact the site admin'
+    })
   } else {
     users.setNewPassword(user, password)
     removeEntry(passwordToken)
     user.save().then(() => {
-      resp.success = true
-      resp.message = 'Password changed'
-      res.send(resp)
+      res.json({
+        success: true,
+        message: 'Password changed'
+      })
     })
   }
 }
 
-let setNewPassword = function (req, res) {
-  let resp = {}
-  resp.success = false
+const setNewPassword = function (req, res) {
   if (req.body.password === null) {
-    resp.message = 'Must contain a password'
-    res.send(resp)
+    res.json({
+      success: false,
+      message: 'Must contain a password'
+    })
     return
   }
   checkIfExist(req.body.passwordToken)
     .then((reset) => {
       if (reset === null) {
-        resp.message = 'Failed to set new password'
-        res.send(resp)
+        res.json({
+          success: false,
+          message: 'Failed to set new password'
+        })
         return
       }
       users.User.findOne({
