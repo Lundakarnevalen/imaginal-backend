@@ -37,7 +37,7 @@ const checkIfExist = function (token) {
  * @param values The new values
  * @param conditions The where clause
  */
-const upSert = function (values, conditions) {
+const upsert = function (values, conditions) {
   forgotpass.ForgotPassword.findOne({
     where: conditions
   }).then((passwordToken) => {
@@ -54,21 +54,28 @@ const upSert = function (values, conditions) {
 const forgotPassword = function (req, res) {
   users.findUser(req.body.email, function (err, user) {
     if (err || user === null) {
-      let resp = {}
-      resp.message = 'Failed to reset password'
-      res.send(resp)
+      res.json({
+        success: false,
+        message: 'Failed to reset password'
+      })
       return
     }
     generateToken(req.body.email, function (token) {
       forgotpass.ForgotPassword.findOne({
       })
-      upSert({email: user.email,
+      upsert({email: user.email,
         token: token}, {email: user.email})
-      res.send({
-        success: true,
-        message: 'Token sent',
-        passwordToken: token
-      })
+      sequelize.sync()
+        .then(() => forgotpass.ForgotPassword.create({
+          userid: user.id,
+          token: token
+        }))
+        .then(() => {
+          res.json({
+            success: true,
+            passwordToken: token
+          })
+        })
     })
   })
 }
@@ -80,36 +87,41 @@ const removeEntry = function (token) {
 }
 
 const resetPassword = function (res, user, password, passwordToken) {
-  let resp = {}
   if (user === null) {  // We should never get here
-    resp.success = false
-    resp.message = 'Failed to find user, please contact the site admin'
-    res.send(resp)
+    res.json({
+      success: false,
+      message: 'Failed to find user, please contact the site admin'
+    })
   } else {
     removeEntry(passwordToken).then(() => {
       users.setNewPassword(user, password)
       user.save().then(() => {
-        resp.success = true
-        resp.message = 'Password changed'
-        res.send(resp)
+        res.json({
+          success: true,
+          message: 'Password changed'
+
+        })
       })
     })
   }
 }
 
+
 const setNewPassword = function (req, res) {
-  let resp = {}
-  resp.success = false
   if (req.body.password === null) {
-    resp.message = 'Must contain a password'
-    res.send(resp)
+    res.json({
+      success: false,
+      message: 'Must contain a password'
+    })
     return
   }
   checkIfExist(req.body.passwordToken)
     .then((reset) => {
       if (reset === null) {
-        resp.message = 'Failed to set new password'
-        res.send(resp)
+        res.json({
+          success: false,
+          message: 'Failed to set new password'
+        })
         return
       }
       users.User.findOne({
