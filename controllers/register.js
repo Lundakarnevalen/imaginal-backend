@@ -1,20 +1,35 @@
 const sequelize = require('../config/database.js').dbc
 const users = require('../models/users')
+const validateUser = require('../utils/validator').validateUser
 
 let registerUser = function (req, res) {
-  users.User.findOne({
-    where: {email: req.body.email}
-  }).then((user) => {
-    if (user !== null) {
-      let resp = {}
-      resp.success = false
-      resp.message = 'User already registered'
-      res.send(resp)
-    } else {
-      createUser(req.body.email, req.body.password, res)
+  const success = (msg) => {
+    users.User.findOne({
+      where: {email: req.body.email}
+    }).then((user) => {
+      if (user !== null) {
+        let resp = {}
+        resp.success = false
+        resp.message = 'User already registered'
+        res.send(resp)
+      } else {
+        createUser(req.body.email, req.body.password, res)
+      }
+    })
+  }
+
+  const fail = (message) => {
+    res.status(400).json({
+      success: false,
+      message
+    })
+
+    const user = {
+      email: req.body.email,
+      password: req.body.password
     }
-  })
-  // 10 rounds used for salt, needs to be tested and optimized
+    validateUser(user, success, fail)
+  }
 }
 
 let createUser = function(email, password, res) {
