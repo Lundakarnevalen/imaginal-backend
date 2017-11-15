@@ -1,6 +1,5 @@
 'use strict'
 const passport = require('passport')
-require('../config/passport')(passport)
 
 let login = function (req, res, next) {
   if (!req.body.email || !req.body.password) {
@@ -9,13 +8,9 @@ let login = function (req, res, next) {
   passport.authenticate('local',
     function (err, user, info) {
       if (err) {
-        return res.json({
-          message: info
-        })
+        return res.send(info)
       } else if (!user) {
-        return res.json({
-          message: info
-        })
+        return res.send(info)
       }
       req.logIn(user, function (err) {
         if (err) {

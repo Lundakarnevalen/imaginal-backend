@@ -3,9 +3,9 @@ const app = express()
 const bodyParser = require('body-parser')
 const login = require('./controllers/login')
 const Register = require('./controllers/register')
-
 const passport = require('passport')
 require('./config/passport')(passport)
+
 
 app.use(bodyParser.json())
 app.use(passport.initialize())
