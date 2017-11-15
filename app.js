@@ -6,7 +6,6 @@ const Register = require('./controllers/register')
 const passport = require('passport')
 require('./config/passport')(passport)
 
-
 app.use(bodyParser.json())
 app.use(passport.initialize())
 app.use(passport.session())
