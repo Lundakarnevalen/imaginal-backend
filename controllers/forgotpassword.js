@@ -7,7 +7,7 @@ const crypto = require('crypto')
 
 const checkIfExist = function (email, token) {
   return forgotpass.ForgotPassword.findOne({
-    where: {token: token}
+    where: {email: email, token: token}
   })
 }
 
@@ -60,9 +60,9 @@ const forgotPassword = function (req, res) {
   })
 }
 
-const removeEntry = function (token) {
+const removeEntry = function (email, token) {
   return forgotpass.ForgotPassword.destroy({
-    where: {token: token}
+    where: {email: email, token: token}
   })
 }
 
@@ -73,7 +73,7 @@ const resetPassword = function (res, user, password, passwordToken) {
       message: 'Failed to find user, please contact the site admin'
     })
   } else {
-    removeEntry(passwordToken).then(() => {
+    removeEntry(user.email, passwordToken).then(() => {
       users.setNewPassword(user, password)
       user.save().then(() => {
         res.json({
