@@ -69,7 +69,7 @@
 					},
 					"response": [
 						{
-							"id": "12834fea-1c32-4eba-9dfa-93f1ce9bbfa7",
+							"id": "dd15b7df-fa5e-4bc0-b5c7-010c3693be4b",
 							"name": "Register a user",
 							"originalRequest": {
 								"method": "POST",
@@ -201,7 +201,7 @@
 					},
 					"response": [
 						{
-							"id": "028d5d5e-198d-4e79-ba36-43103016a919",
+							"id": "c959e4ee-f655-4b5c-ad47-2d0d701a2620",
 							"name": "Email Login",
 							"originalRequest": {
 								"method": "POST",
@@ -515,7 +515,7 @@
 					},
 					"response": [
 						{
-							"id": "4058e951-fead-4f45-8fcf-5a28952911b0",
+							"id": "49f27967-7395-42ca-8534-5d14c2aa0531",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
