@@ -1,7 +1,7 @@
 'use strict'
 const passport = require('passport')
 
-const email = function (req, res, next) {
+const loginByEmail = function (req, res, next) {
   if (!req.body.email || !req.body.password) {
     res.status(422).json({message: 'Missing parameters'})
   }
@@ -15,6 +15,7 @@ const email = function (req, res, next) {
       req.logIn(user, function (err) {
         if (err) {
           return res.json({
+            success: false,
             message: 'Login failure!'
           })
         }
@@ -28,5 +29,5 @@ const email = function (req, res, next) {
 }
 
 module.exports = {
-  email
+  loginByEmail
 }
