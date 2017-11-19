@@ -9,7 +9,7 @@ These instructions will get you a copy of the project up and running on your loc
 ### Prerequisites
 
 * MySQL > 5.7
-* Node > 8
+* Node 8.9 LTS
 
 ### Installing
 
@@ -48,7 +48,9 @@ npm test
 ```
 
 ## Run API test
+```
 npm run postman
+```
 make sure server is running and you have env variables
 
 ## Conventions
