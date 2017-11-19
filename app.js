@@ -15,7 +15,32 @@ app.use(passport.session())
 app.post('/register', Register.registerUser)
 
 /** LOGIN */
-app.post('/login/email', passport.authenticate('local'), login.login)
+
+// Validera innan vi ger till passport?
+app.post('/login/email', function (req, res, next) {
+  passport.authenticate('local',
+    function (err, user, info) {
+      if (err) {
+        return res.json({
+          message: 'Internal Server Error!'
+        })
+      } else if (!user) {
+        return res.json({
+          message: 'No Such User!'
+        })
+      }
+      req.logIn(user, function (err) {
+        if (err) {
+          return res.json({
+            message: 'Login Failure!'
+          })
+        }
+        return res.json({
+          message: 'Login Success!'
+        })
+      })
+    })(req, res, next)
+})
 
 /** AUTHENTICATE TOKENS */
 app.all(/(\/)?api\/.*/,
