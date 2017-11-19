@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
 module.exports = function (passport) {
+  const tokenSecret = process.env.TOKEN_SECRET || 'secret'
   passport.use(new LocalStrategy({
     usernameField: 'email',
     passwordField: 'password'
@@ -15,20 +16,20 @@ module.exports = function (passport) {
           return done(err)
         }
         if (!user) {
-          return done(null, false, { message: 'Incorrect username.' })
+          return done(null, false, { message: 'Incorrect login credentials.' })
         }
         bcrypt.compare(password, user.password, function (err, res) {
           if (err) {
             return done(err)
           }
           if (res) {
-            let token = jwt.sign({email: username}, process.env.TOKEN_SECRET || 'secret')
+            let token = jwt.sign({email: username}, tokenSecret)
             user.token = token
             user.save().then(() => {
               return done(null, user)
             })
           } else {
-            return done(null, false, { message: 'Incorrect password.' })
+            return done(null, false, { message: 'Incorrect login credentials.' })
           }
         })
       })
@@ -37,7 +38,7 @@ module.exports = function (passport) {
 
   passport.use(new BearerStrategy(
     function (token, done) {
-      jwt.verify(token, process.env.TOKEN_SECRET || 'secret', { ignoreExpiration: true }, function (err, decoded) {
+      jwt.verify(token, tokenSecret, { ignoreExpiration: true }, function (err, decoded) {
         if (err) return done(null, false) // Invalid token
         User.User.findOne({where: { token: token }})
         .then(function (user) {
