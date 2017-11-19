@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize')
 const dbc = require('../config/database').dbc
+const bcrypt = require('bcrypt')
 
 const User = dbc.define('User', {
   id: {
@@ -13,7 +14,6 @@ const User = dbc.define('User', {
 })
 
 let findUser = function (email, callback) {
-  console.log(email)
   User.findOne({
     where: {email: email}
   })
@@ -22,7 +22,21 @@ let findUser = function (email, callback) {
     })
 }
 
+let setNewPassword = function (user, password) {
+  // 10 rounds used for salt, needs to be tested and optimized
+  bcrypt.hash(password, 10, function (err, hash) {
+    if (err) {
+      throw err
+    }
+    user.password = hash
+    dbc.sync()
+    user.save().then(() => {
+    })
+  })
+}
+
 module.exports = {
   User,
-  findUser
+  findUser,
+  setNewPassword
 }
