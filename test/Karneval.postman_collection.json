@@ -69,7 +69,7 @@
 					},
 					"response": [
 						{
-							"id": "f12dc0e6-7ae3-4dbb-9285-60561a281fd2",
+							"id": "12834fea-1c32-4eba-9dfa-93f1ce9bbfa7",
 							"name": "Register a user",
 							"originalRequest": {
 								"method": "POST",
@@ -201,7 +201,7 @@
 					},
 					"response": [
 						{
-							"id": "8260fe04-eca7-4aa6-9198-a0b2dd80db8d",
+							"id": "028d5d5e-198d-4e79-ba36-43103016a919",
 							"name": "Email Login",
 							"originalRequest": {
 								"method": "POST",
@@ -306,7 +306,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"email\":\"{{randomUsername}}\",\n  \"password\":\"password\"\n}"
+							"raw": "{\n  \"email\":\"test@gmail.com\",\n  \"password\":\"wrongpassword\"\n}"
 						},
 						"url": {
 							"raw": "http://localhost:3000/login/email",
@@ -515,7 +515,7 @@
 					},
 					"response": [
 						{
-							"id": "f6e5868b-0841-4187-b652-692493ed03c3",
+							"id": "4058e951-fead-4f45-8fcf-5a28952911b0",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
