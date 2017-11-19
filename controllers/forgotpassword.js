@@ -3,30 +3,10 @@
 const sequelize = require('../config/database.js').dbc
 const users = require('../models/users')
 const forgotpass = require('../models/forgotpassword')
-const bcrypt = require('bcrypt')
+const crypto = require('crypto')
 
-/**
- * Generates a passwordToken
- * @param email Email of the user
- * @param callback The callback function. Should take 1 argument that will contain the token
- */
-const generateToken = function (email, callback) {
-  bcrypt.hash(email + Math.random(), 10, function (err, hash) {
-    if (err) {
-      throw err
-    }
-    forgotpass.ForgotPassword.findOne({ // Checks if we already have a token which is the same as the generated one
-      where: {token: hash}
-    }).then((token) => {
-      if (token !== null) {
-        return generateToken(email, callback)
-      }
-    })
-    callback(hash.substr(7))
-  })
-}
 
-const checkIfExist = function (token) {
+const checkIfExist = function (email, token) {
   return forgotpass.ForgotPassword.findOne({
     where: {token: token}
   })
@@ -42,9 +22,8 @@ const upsert = function (values, conditions) {
     where: conditions
   }).then((passwordToken) => {
     if (!passwordToken) {
-      sequelize.sync()
-        .then(() => forgotpass.ForgotPassword.create(values
-        ))
+      forgotpass.ForgotPassword.create(values
+      )
     } else {
       passwordToken.update(values)
     }
@@ -60,9 +39,11 @@ const forgotPassword = function (req, res) {
       })
       return
     }
-    generateToken(req.body.email, function (token) {
-      forgotpass.ForgotPassword.findOne({
-      })
+    crypto.randomBytes(256, (err, buf) => {
+      if (err) {
+        throw err
+      }
+      const token = buf.toString('hex')
       upsert({email: user.email,
         token: token}, {email: user.email})
       sequelize.sync()
@@ -106,7 +87,6 @@ const resetPassword = function (res, user, password, passwordToken) {
   }
 }
 
-
 const setNewPassword = function (req, res) {
   if (req.body.password === null) {
     res.json({
@@ -115,7 +95,7 @@ const setNewPassword = function (req, res) {
     })
     return
   }
-  checkIfExist(req.body.passwordToken)
+  checkIfExist(req.body.email, req.body.passwordToken)
     .then((reset) => {
       if (reset === null) {
         res.json({
