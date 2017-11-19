@@ -14,7 +14,7 @@ app.use(passport.session())
 app.post('/register', Register.registerUser)
 
 /** LOGIN */
-app.post('/login/email', login.email)
+app.post('/login/email', login.loginByEmail)
 
 /** AUTHENTICATE TOKENS */
 app.all(/(\/)?api\/.*/,
