@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
 const login = require('./controllers/login')
-const register = require('./controllers/register')
+const Register = require('./controllers/register')
 const forgotPassword = require('./controllers/forgotpassword')
 const passport = require('passport')
 require('./config/passport')(passport)
@@ -12,15 +12,10 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 /** REGISTER USER */
-app.post('/register', register.registerUser)
+app.post('/register', Register.registerUser)
 
 /** LOGIN */
-app.post('/login/email', passport.authenticate('local'), login.login)
-
-/** FORGOT PASSWORD */
-app.post('/login/forgotpassword', forgotPassword.forgotPassword)
-
-app.post('/login/resetpassword', forgotPassword.setNewPassword)
+app.post('/login/email', login.loginByEmail)
 
 /** AUTHENTICATE TOKENS */
 app.all(/(\/)?api\/.*/,
