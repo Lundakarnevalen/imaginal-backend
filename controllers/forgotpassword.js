@@ -5,7 +5,6 @@ const users = require('../models/users')
 const forgotpass = require('../models/forgotpassword')
 const crypto = require('crypto')
 
-
 const checkIfExist = function (email, token) {
   return forgotpass.ForgotPassword.findOne({
     where: {token: token}
