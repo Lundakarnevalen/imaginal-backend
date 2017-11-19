@@ -14,8 +14,6 @@ app.use(passport.session())
 app.post('/register', Register.registerUser)
 
 /** LOGIN */
-
-// Validera innan vi ger till passport?
 app.post('/login/email', login.login)
 
 /** AUTHENTICATE TOKENS */

@@ -3,14 +3,14 @@ const passport = require('passport')
 
 let login = function (req, res, next) {
   if (!req.body.email || !req.body.password) {
-    res.json({message: 'Missing parameters'})
+    res.status(422).json({message: 'Missing parameters'})
   }
   passport.authenticate('local',
     function (err, user, info) {
       if (err) {
-        return res.send(info)
+        return res.status(500).send(info)
       } else if (!user) {
-        return res.send(info)
+        return res.status(401).send(info)
       }
       req.logIn(user, function (err) {
         if (err) {

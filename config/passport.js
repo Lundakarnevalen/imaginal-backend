@@ -37,7 +37,7 @@ module.exports = function (passport) {
 
   passport.use(new BearerStrategy(
     function (token, done) {
-      jwt.verify(token, process.env.TOKEN_SECRET, { ignoreExpiration: true }, function (err, decoded) {
+      jwt.verify(token, process.env.TOKEN_SECRET || 'secret', { ignoreExpiration: true }, function (err, decoded) {
         if (err) return done(null, false) // Invalid token
         User.User.findOne({where: { token: token }})
         .then(function (user) {
