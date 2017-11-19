@@ -3,7 +3,6 @@ const app = express()
 const bodyParser = require('body-parser')
 const login = require('./controllers/login')
 const Register = require('./controllers/register')
-
 const passport = require('passport')
 require('./config/passport')(passport)
 
@@ -15,7 +14,7 @@ app.use(passport.session())
 app.post('/register', Register.registerUser)
 
 /** LOGIN */
-app.post('/login/email', passport.authenticate('local'), login.login)
+app.post('/login/email', login.email)
 
 /** AUTHENTICATE TOKENS */
 app.all(/(\/)?api\/.*/,
