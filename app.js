@@ -41,7 +41,7 @@ app.all(/(\/)?api\/.*/, function(req, res, next){
 
     if (!user) {
       return res.json({
-        status: false,
+        success: false,
         message: 'Unauthorized'
       })
     }
@@ -59,7 +59,7 @@ app.all(/(\/)?api\/.*/, function(req, res, next){
 /*******************/
 app.post('/api/hello', function (req, res) {
   res.json({
-    status: true,
+    success: true,
     message: 'Hello World!'
   })
 })
