@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize')
-const dbc = require('../config/database').dbc
+const dbc = require('../config/database')
 
 const ForgotPassword = dbc.define('ForgotPassword', {
   id: {

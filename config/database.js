@@ -4,11 +4,7 @@ const pass = process.env.MYSQL_PASS || ''
 const database = 'karneval'
 const databaseURL = 'localhost'
 
-const dbc = new Sequelize(database, user, pass, {
+module.exports = new Sequelize(database, user, pass, {
   host: databaseURL,
   dialect: 'mysql'
 })
-
-module.exports = {
-  dbc
-}
