@@ -15,7 +15,7 @@ app.use(passport.session())
 app.post('/register', register.registerUser)
 
 /** LOGIN */
-app.post('/login/email', passport.authenticate('local'), login.login)
+app.post('/login/email', login.loginByEmail)
 
 /** FORGOT PASSWORD */
 app.post('/login/forgotpassword', forgotPassword.forgotPassword)
