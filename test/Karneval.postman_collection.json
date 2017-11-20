@@ -69,7 +69,7 @@
 					},
 					"response": [
 						{
-							"id": "414e052f-a6dc-435d-91cf-6ce3652c07c8",
+							"id": "c4ddceed-8315-4ed2-94df-95ddef94721d",
 							"name": "Register a user",
 							"originalRequest": {
 								"method": "POST",
@@ -203,7 +203,7 @@
 					},
 					"response": [
 						{
-							"id": "6dbc08b2-262f-4378-b820-d9d1b8e5403d",
+							"id": "c18bb19e-bebf-4872-98cf-597f40815ce5",
 							"name": "Register a user",
 							"originalRequest": {
 								"method": "POST",
@@ -335,7 +335,7 @@
 					},
 					"response": [
 						{
-							"id": "ff34c39a-87cf-47c1-8916-fd2627b074b6",
+							"id": "3dba6709-1059-418d-bd07-aeeb7cb34011",
 							"name": "Email Login",
 							"originalRequest": {
 								"method": "POST",
@@ -657,7 +657,7 @@
 					},
 					"response": [
 						{
-							"id": "11f73acc-0b78-4146-93c8-b86af0f5faa9",
+							"id": "152be51c-e9f5-47e4-ac40-2c3d13f8150c",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -739,7 +739,7 @@
 									"pm.test('Body has to contain an token', function() {",
 									"    pm.expect(pm.response.text()).to.include(\"passwordToken\")",
 									"    var jsonData = JSON.parse(pm.response.text())",
-									"    postman.setEnvironmentVariable('passwordToken', jsonData.passwordToken)",
+									"    pm.globals.set(\"passwordToken\", pm.response.json().passwordToken);",
 									"})"
 								]
 							}
@@ -904,7 +904,7 @@
 					},
 					"response": [
 						{
-							"id": "39d2978c-0d3b-42b5-8ecf-b3dc0aead95a",
+							"id": "84905793-3942-4804-a58c-4fc7a1c723b6",
 							"name": "Email Login",
 							"originalRequest": {
 								"method": "POST",
