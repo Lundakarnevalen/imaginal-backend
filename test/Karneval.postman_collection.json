@@ -69,7 +69,7 @@
 					},
 					"response": [
 						{
-							"id": "d1ac9a73-c189-4a68-961b-0526c3123c1a",
+							"id": "eb3b181e-cd30-4115-a6bd-ab29b875a361",
 							"name": "Register a user",
 							"originalRequest": {
 								"method": "POST",
@@ -145,6 +145,58 @@
 					]
 				},
 				{
+					"name": "Missing field register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Statuscode show failure\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Successfield eq false on status 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(false);",
+									"});",
+									"",
+									"pm.test(\"Feedback on failure\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"parameters\");",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"eail\":\"test@gmail.com\",\n  \"password\":\"password\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"register"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
 					"name": "Fail to reregister same user",
 					"event": [
 						{
@@ -194,7 +246,7 @@
 					},
 					"response": [
 						{
-							"id": "565fcde3-18d6-4614-9482-c1c78185de0f",
+							"id": "8fe5c7a1-49e6-4496-8a56-96446d497b4b",
 							"name": "Register a user",
 							"originalRequest": {
 								"method": "POST",
@@ -326,7 +378,7 @@
 					},
 					"response": [
 						{
-							"id": "14628aab-dee1-44c1-8550-407f5c3b361b",
+							"id": "4d809ae3-f177-46dd-b8fa-0f45d29eca5a",
 							"name": "Email Login",
 							"originalRequest": {
 								"method": "POST",
@@ -520,7 +572,7 @@
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/javascript"
+								"value": "application/json"
 							}
 						],
 						"body": {
@@ -537,58 +589,6 @@
 							"path": [
 								"login",
 								"email"
-							]
-						},
-						"description": ""
-					},
-					"response": []
-				},
-				{
-					"name": "Bad register",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"Statuscode show failure\", function () {",
-									"    pm.response.to.have.status(400);",
-									"});",
-									"",
-									"pm.test(\"Successfield eq false on status 400\", function () {",
-									"    pm.response.to.have.status(400);",
-									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.success).to.eql(false);",
-									"});",
-									"",
-									"pm.test(\"Feedback on failure\", function () {",
-									"    pm.expect(pm.response.text()).to.include(\"parameters\");",
-									"});"
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"eail\":\"test@gmail.com\",\n  \"password\":\"password\"\n}"
-						},
-						"url": {
-							"raw": "http://localhost:3000/register",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"register"
 							]
 						},
 						"description": ""
@@ -648,7 +648,7 @@
 					},
 					"response": [
 						{
-							"id": "6ff5465a-fd86-4081-853e-3dc92735f7c7",
+							"id": "252d9f78-5e3c-4733-8aa7-7a6d33202813",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -766,6 +766,19 @@
 				},
 				{
 					"name": "Password reset change password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								]
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -776,7 +789,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"email\": \"{{randomUsername}}\",\n\t\"passwordToken\": \"{{passwordToken}}\",\n\t\"password\": \"asdasd\"\n}"
+							"raw": "{\n\t\"email\": \"{{randomUsername}}\",\n\t\"passwordToken\": \"{{passwordToken}}\",\n\t\"password\": \"newPass\"\n}"
 						},
 						"url": {
 							"raw": "http://localhost:3000/login/resetpassword",
@@ -865,6 +878,17 @@
 									""
 								]
 							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.sendRequest(\"https://postman-echo.com/get\", function (err, response) {",
+									"    console.log(response.json());",
+									"});"
+								]
+							}
 						}
 					],
 					"request": {
@@ -877,7 +901,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"email\":\"{{randomUsername}}\",\n  \"password\":\"asdasd\"\n}"
+							"raw": "{\n  \"email\":\"{{randomUsername}}\",\n  \"password\":\"newPass\"\n}"
 						},
 						"url": {
 							"raw": "http://localhost:3000/login/email",
@@ -895,7 +919,7 @@
 					},
 					"response": [
 						{
-							"id": "2b7a0272-76c3-40c4-b9e8-69abca259cfd",
+							"id": "532e5d7e-0492-41a6-8bba-dd6e51b2d090",
 							"name": "Email Login",
 							"originalRequest": {
 								"method": "POST",

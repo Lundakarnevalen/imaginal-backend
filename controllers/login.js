@@ -12,7 +12,7 @@ const loginByEmail = function (req, res, next) {
       } else if (!user) {
         return res.status(401).json({
           success: false,
-          message: info
+          message: 'Incorrect login credentials.'
         })
       }
       req.logIn(user, function (err) {
