@@ -78,7 +78,6 @@ const resetPassword = function (res, user, password, passwordToken) {
         res.json({
           success: true,
           message: 'Password changed'
-
         })
       })
     })
