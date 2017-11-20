@@ -36,14 +36,12 @@ const createUser = function (email, password, res) {
   sequelize.sync()
     .then(() => users.User.create({
       email: email,
-      token: 'temporary token'
     }))
     .then(user => {
       users.setNewPassword(user, password)
       res.json({
         success: true,
         message: 'You are now registered',
-        token: user.token
       })
     })
 }
