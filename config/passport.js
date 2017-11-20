@@ -16,7 +16,7 @@ module.exports = function (passport) {
           return done(err)
         }
         if (!user) {
-          return done(null, false, { message: 'Incorrect username.' })
+          return done(null, false)
         }
         bcrypt.compare(password, user.password, function (err, res) {
           if (err) {
@@ -28,7 +28,7 @@ module.exports = function (passport) {
               return done(null, user)
             })
           } else {
-            return done(null, false, { message: 'Incorrect password.' })
+            return done(null, false)
           }
         })
       })
