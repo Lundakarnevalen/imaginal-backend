@@ -69,7 +69,7 @@
 					},
 					"response": [
 						{
-							"id": "c4ddceed-8315-4ed2-94df-95ddef94721d",
+							"id": "5905765d-ff0e-4596-9968-402298bc2049",
 							"name": "Register a user",
 							"originalRequest": {
 								"method": "POST",
@@ -203,7 +203,7 @@
 					},
 					"response": [
 						{
-							"id": "c18bb19e-bebf-4872-98cf-597f40815ce5",
+							"id": "7e36ba36-d16c-44fc-a71a-86e05fc7ed93",
 							"name": "Register a user",
 							"originalRequest": {
 								"method": "POST",
@@ -335,7 +335,7 @@
 					},
 					"response": [
 						{
-							"id": "3dba6709-1059-418d-bd07-aeeb7cb34011",
+							"id": "92330193-d491-42e9-9bb1-f0efee94f211",
 							"name": "Email Login",
 							"originalRequest": {
 								"method": "POST",
@@ -657,7 +657,7 @@
 					},
 					"response": [
 						{
-							"id": "152be51c-e9f5-47e4-ac40-2c3d13f8150c",
+							"id": "9dc90dee-15ea-4c77-9dcc-49b0e684b83a",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -886,7 +886,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"email\":\"test@gmail.com\",\n  \"password\":\"asdasd\"\n}"
+							"raw": "{\n  \"email\":\"{{randomUsername}}\",\n  \"password\":\"asdasd\"\n}"
 						},
 						"url": {
 							"raw": "http://localhost:3000/login/email",
@@ -904,7 +904,7 @@
 					},
 					"response": [
 						{
-							"id": "84905793-3942-4804-a58c-4fc7a1c723b6",
+							"id": "b414799f-6fa5-43b8-82ca-cc343482b309",
 							"name": "Email Login",
 							"originalRequest": {
 								"method": "POST",
