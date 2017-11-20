@@ -15,7 +15,7 @@ app.use(function(error, req, res, next) {
   if(error.name == 'SyntaxError') {
     res.status(400).json({
       status: false,
-      message: "Bad Request!"
+      message: 'Bad Request, invalid json'
     })
   }
   next()
