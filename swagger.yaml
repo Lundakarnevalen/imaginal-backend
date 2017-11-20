@@ -1,0 +1,132 @@
+---
+  swagger: "2.0"
+  info: 
+    version: "1.0.0"
+    title: "Imaginalkarneval backend"
+  consumes: 
+    - "application/json"
+  produces: 
+    - "application/json"
+  paths: 
+    /register: 
+      post:
+        description: "Register to the karneval"
+        parameters:
+          - in: "body"
+            name: "register"
+            description: "register"
+            schema:
+              type: "object"
+              required:
+                - "email"
+                - "password"
+              properties:
+                email:
+                  type: "string"
+                password:
+                  type: "string"
+        responses: 
+          "200":
+            description: "Message indicating success"
+            schema: 
+              type: "object"
+              properties:
+                success:
+                  type: "boolean"
+                  description: "Success values"
+                message:
+                  type: "string"
+                  description: "Success message"
+          "400":
+            description: "Message indicating failure"
+            schema: 
+              type: "object"
+              properties:
+                success:
+                  type: "boolean"
+                  description: "Failure values"
+                message:
+                  type: "string"
+                  description: "Failure message"
+    /login/email: 
+      post:
+        description: "Log in"
+        parameters:
+          - in: "body"
+            name: "register"
+            description: "register"
+            schema:
+              type: "object"
+              required:
+                - "email"
+                - "password"
+              properties:
+                email:
+                  type: "string"
+                password:
+                  type: "string"
+        responses: 
+          "200":
+            description: "Message indicating success"
+            schema: 
+              type: "object"
+              properties:
+                success:
+                  type: "boolean"
+                  description: "Success values"
+                message:
+                  type: "string"
+                  description: "Success message"
+                accessToken:
+                  type: "string"
+                  description: "Access token used for subsequent API calls"
+          "401":
+            description: "Failed to log in due to incorrect credentials"
+            schema: 
+              type: "object"
+              properties:
+                success:
+                  type: "boolean"
+                  description: "Failure values"
+                message:
+                  type: "string"
+                  description: "Failure message"
+          "422":
+            description: "Failed to log in due to missing credentials"
+            schema: 
+              type: "object"
+              properties:
+                success:
+                  type: "boolean"
+                  description: "Failure values"
+                message:
+                  type: "string"
+                  description: "Failure message"
+          "500":
+            description: "Failed to log in due to internal server error"
+            schema: 
+              type: "object"
+              properties:
+                success:
+                  type: "boolean"
+                  description: "Failure values"
+                message:
+                  type: "string"
+                  description: "Failure message"
+    /api/hello: 
+      post:
+        description: "Test route to try access token"
+        parameters:
+          - in: "header"
+            name: "Authorization"
+            type: "string"
+            required: true
+        responses: 
+          "200":
+            description: "Message indicating success"
+            schema: 
+              type: "string"
+          "401":
+            description: "Unauthorized"
+            schema: 
+              type: "string"

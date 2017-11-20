@@ -53,6 +53,12 @@ npm run postman
 ```
 make sure server is running and you have env variables
 
+## Generate API documentation
+```
+npm run apidoc
+open doc.html
+```
+
 ## Conventions
 * [standard.js](https://github.com/standard/standard) - JavaScript Style used 
 
