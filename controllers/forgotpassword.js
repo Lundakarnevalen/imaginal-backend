@@ -32,17 +32,16 @@ const upsert = function (values, conditions) {
 const forgotPassword = function (req, res) {
   users.findUser(req.body.email, function (err, user) {
     if (err || user === null) {
-      res.json({
+      return res.json({
         success: false,
         message: 'Failed to reset password'
       })
-      return
     }
-    crypto.randomBytes(256, (err, buf) => {
+    crypto.randomBytes(255, (err, buf) => {
       if (err) {
         throw err
       }
-      const token = buf.toString('hex')
+      const token = buf.toString('hex').substr(255)
       upsert({email: user.email,
         token: token}, {email: user.email})
       sequelize.sync()

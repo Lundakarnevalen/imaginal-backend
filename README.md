@@ -53,6 +53,13 @@ npm run postman
 ```
 make sure server is running and you have env variables
 
+## Help
+Password reset request gives error: Unhandled rejection SequelizeDatabaseError: ER_DATA_TOO_LONG: Data too long for column 'passcode' at row
+```
+SET @@global.sql_mode= '';
+```
+Write this in you db manager.
+
 ## Conventions
 * [standard.js](https://github.com/standard/standard) - JavaScript Style used 
 
