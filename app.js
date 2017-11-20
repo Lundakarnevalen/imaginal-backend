@@ -4,6 +4,7 @@ const bodyParser = require('body-parser')
 const login = require('./controllers/login')
 const register = require('./controllers/register')
 const forgotPassword = require('./controllers/forgotpassword')
+const section = require('./controllers/section')
 const passport = require('passport')
 require('./config/passport')(passport)
 
@@ -11,8 +12,8 @@ app.use(bodyParser.json())
 app.use(passport.initialize())
 app.use(passport.session())
 
-app.use(function(error, req, res, next) {
-  if(error.name == 'SyntaxError') {
+app.use(function (error, req, res, next) {
+  if (error.name === 'SyntaxError') {
     res.status(400).json({
       status: false,
       message: 'Bad Request, invalid json'
@@ -43,6 +44,10 @@ app.all(/(\/)?api\/.*/,
 app.post('/api/hello', function (req, res) {
   res.send('Hello World!')
 })
+
+app.post('/api/section', section.setSectionPriorities)
+
+app.get('/api/section', section.getSectionPriorities)
 
 app.listen(3000, function () {
   console.log('Listening on port 3000')
