@@ -46,7 +46,7 @@ const forgotPassword = function (req, res) {
         token: token}, {email: user.email})
       sequelize.sync()
         .then(() => forgotpass.ForgotPassword.create({
-          userid: user.id,
+          email: user.email,
           token: token
         }))
         .then(() => {
