@@ -69,7 +69,7 @@
 					},
 					"response": [
 						{
-							"id": "5905765d-ff0e-4596-9968-402298bc2049",
+							"id": "d1ac9a73-c189-4a68-961b-0526c3123c1a",
 							"name": "Register a user",
 							"originalRequest": {
 								"method": "POST",
@@ -165,15 +165,6 @@
 									""
 								]
 							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.globals.set(\"randomUsername\", Math.random().toString(36).substring(7));"
-								]
-							}
 						}
 					],
 					"request": {
@@ -203,7 +194,7 @@
 					},
 					"response": [
 						{
-							"id": "7e36ba36-d16c-44fc-a71a-86e05fc7ed93",
+							"id": "565fcde3-18d6-4614-9482-c1c78185de0f",
 							"name": "Register a user",
 							"originalRequest": {
 								"method": "POST",
@@ -335,7 +326,7 @@
 					},
 					"response": [
 						{
-							"id": "92330193-d491-42e9-9bb1-f0efee94f211",
+							"id": "14628aab-dee1-44c1-8550-407f5c3b361b",
 							"name": "Email Login",
 							"originalRequest": {
 								"method": "POST",
@@ -657,7 +648,7 @@
 					},
 					"response": [
 						{
-							"id": "9dc90dee-15ea-4c77-9dcc-49b0e684b83a",
+							"id": "6ff5465a-fd86-4081-853e-3dc92735f7c7",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -904,7 +895,7 @@
 					},
 					"response": [
 						{
-							"id": "b414799f-6fa5-43b8-82ca-cc343482b309",
+							"id": "2b7a0272-76c3-40c4-b9e8-69abca259cfd",
 							"name": "Email Login",
 							"originalRequest": {
 								"method": "POST",
