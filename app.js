@@ -33,15 +33,35 @@ app.post('/login/forgotpassword', forgotPassword.forgotPassword)
 app.post('/login/resetpassword', forgotPassword.setNewPassword)
 
 /** AUTHENTICATE TOKENS */
-app.all(/(\/)?api\/.*/,
-  passport.authenticate('bearer', { session: false }),
-  function (req, res, next) {
-    next()
-  })
+app.all(/(\/)?api\/.*/, function(req, res, next){
+  passport.authenticate('bearer', {session: false}, function(err, user, info) {
+    if (err) {
+      return next(err)
+    }
+
+    if (!user) {
+      return res.json({
+        status: false,
+        message: 'Unauthorized'
+      })
+    }
+
+    req.logIn(user, function(err) {
+      if (err) {
+        return next(err)
+      }
+      return next()
+    })
+
+  })(req, res, next)
+})
 
 /*******************/
 app.post('/api/hello', function (req, res) {
-  res.send('Hello World!')
+  res.json({
+    status: true,
+    message: 'Hello World!'
+  })
 })
 
 app.listen(3000, function () {
