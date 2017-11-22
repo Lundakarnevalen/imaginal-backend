@@ -1,12 +1,13 @@
 'use strict'
-const sectionPriorities = require('../models/sectionPriorities')
+const SectionPriorities = require('../models/sectionPriorities')
+const Sections = require('../models/section')
 
 const setSectionPriorities = function (req, res, next) {
   if (!req.body.sectionPriorities || !Array.isArray(req.body.sectionPriorities)) {
     res.status(422).json({success: false, message: 'Missing parameters'})
   }
 
-  sectionPriorities.setPrioritiesFor(req.user, req.body.sectionPriorities, function (err) {
+  SectionPriorities.setPrioritiesFor(req.user, req.body.sectionPriorities, function (err) {
     if (err) {
       res.status(500).json({
         success: false,
@@ -21,7 +22,7 @@ const setSectionPriorities = function (req, res, next) {
 }
 
 const getSectionPriorities = function (req, res, next) {
-  sectionPriorities.getPrioritiesFor(req.user, function (err, sectionPriorities) {
+  SectionPriorities.getPrioritiesFor(req.user, function (err, sectionPriorities) {
     if (err) {
       res.status(500).json({
         success: false,
@@ -35,7 +36,13 @@ const getSectionPriorities = function (req, res, next) {
   })
 }
 
+const createSection = function (req, res, next) {
+//TODO Assiciations, GET/SET/UPDATE sections, tester
+
+}
+
 module.exports = {
   setSectionPriorities,
-  getSectionPriorities
+  getSectionPriorities,
+  createSection
 }
