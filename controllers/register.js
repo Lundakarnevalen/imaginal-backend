@@ -1,14 +1,14 @@
 const sequelize = require('../config/database.js').dbc
-const User = require('../models').User;
-const Role = require('../models').Role;
-const UserRole = require('../models').UserRole;
+const User = require('../models').User
+const Role = require('../models').Role
+const UserRole = require('../models').UserRole
 const bcrypt = require('bcrypt')
 
 let registerUser = function (req, res) {
   // 10 rounds used for salt, needs to be tested and optimized
-  let finalUser;
-  let finalRole;
-  const roleDescription = 'Karnevalist';
+  let finalUser
+  let finalRole
+  const roleDescription = 'Karnevalist'
 
   bcrypt.hash(req.body.password, 10, function (err, hash) {
     if (err) {
@@ -21,13 +21,13 @@ let registerUser = function (req, res) {
       token: 'temporary token'
     }))
     .then(user => {
-      finalUser = user;
+      finalUser = user
     })
     .then(() => Role.create({
       description: roleDescription
     }))
     .then(role => {
-      finalRole = role;
+      finalRole = role
     })
     .then(() => UserRole.create({
       UserId: finalUser.id,
