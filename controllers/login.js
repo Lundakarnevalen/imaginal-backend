@@ -1,4 +1,5 @@
 'use strict'
+
 const passport = require('passport')
 
 const loginByEmail = function (req, res, next) {
