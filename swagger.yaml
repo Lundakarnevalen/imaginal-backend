@@ -123,10 +123,24 @@
             required: true
         responses: 
           "200":
-            description: "Message indicating success"
+            description: "Hello world"
             schema: 
-              type: "string"
+              type: "object"
+              properties:
+                success:
+                  type: "boolean"
+                  description: "Success values"
+                message:
+                  type: "string"
+                  description: "Success message"
           "401":
             description: "Unauthorized"
             schema: 
-              type: "string"
+              type: "object"
+              properties:
+                success:
+                  type: "boolean"
+                  description: "Failure values"
+                message:
+                  type: "string"
+                  description: "Failure message"
