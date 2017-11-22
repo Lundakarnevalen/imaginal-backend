@@ -1,19 +1,13 @@
 'use strict'
 
-const users = require('../models/users')
-
 let setUserInfo = function (req, res) {
-  users.User.findOne({
-    where: { email: req.body.email }
-  }).then((user) => {
-    user.name = req.body.name
-    user.address = req.body.address
-    user.personalNumber = req.body.personalNumber
-    user.save().then(() => {
-      res.json({
-        success: true,
-        message: 'User info updated'
-      })
+  req.user.name = req.body.name
+  req.user.address = req.body.address
+  req.user.personalNumber = req.body.personalNumber
+  req.user.save().then(() => {
+    res.json({
+      success: true,
+      message: 'User info updated'
     })
   })
 }
