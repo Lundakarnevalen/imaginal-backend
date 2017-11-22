@@ -27,11 +27,15 @@ const setPrioritiesFor = function (user, sectionPriority, done) {
     prio5: sectionPriority[4]
   }
   SectionPriority.findOne({where: {userID: user.id}}).then(function (sectionPriority) {
+    if (!user) {
+      done('No user found')
+    }
     if (!sectionPriority) {
       SectionPriority.create(values)
     } else {
-      SectionPriority.update(values)
+      sectionPriority.update(values)
     }
+    done()
   })
 }
 

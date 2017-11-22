@@ -6,7 +6,7 @@ const setSectionPriorities = function (req, res, next) {
     res.status(422).json({success: false, message: 'Missing parameters'})
   }
 
-  sectionPriorities.setPrioritiesFor(req.user, req.body.prio, function (err) {
+  sectionPriorities.setPrioritiesFor(req.user, req.body.sectionPriorities, function (err) {
     if (err) {
       res.status(500).json({
         success: false,
@@ -30,7 +30,7 @@ const getSectionPriorities = function (req, res, next) {
     }
     res.json({
       success: true,
-      message: sectionPriorities
+      sectionPriorities: [sectionPriorities.prio1, sectionPriorities.prio2, sectionPriorities.prio3, sectionPriorities.prio4, sectionPriorities.prio5]
     })
   })
 }
