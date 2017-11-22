@@ -35,13 +35,13 @@ const registerUser = function (req, res) {
 const createUser = function (email, password, res) {
   sequelize.sync()
     .then(() => users.User.create({
-      email: email,
+      email: email
     }))
     .then(user => {
       users.setNewPassword(user, password)
       res.json({
         success: true,
-        message: 'You are now registered',
+        message: 'You are now registered'
       })
     })
 }

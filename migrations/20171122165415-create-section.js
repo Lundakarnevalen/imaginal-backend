@@ -2,30 +2,14 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('SectionPriorities', {
+    return queryInterface.createTable('Sections', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      userID: {
-        type: Sequelize.INTEGER,
-        unique: true
-      },
-      prio1: {
-        type: Sequelize.STRING
-      },
-      prio2: {
-        type: Sequelize.STRING
-      },
-      prio3: {
-        type: Sequelize.STRING
-      },
-      prio4: {
-        type: Sequelize.STRING
-      },
-      prio5: {
+      name: {
         type: Sequelize.STRING
       },
       createdAt: {
@@ -39,6 +23,6 @@ module.exports = {
     })
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('SectionPriorities')
+    return queryInterface.dropTable('Sections')
   }
 }
