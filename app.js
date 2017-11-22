@@ -6,6 +6,7 @@ const register = require('./controllers/register')
 const forgotPassword = require('./controllers/forgotpassword')
 const passport = require('passport')
 require('./config/passport')(passport)
+const userinfo = require('./controllers/userinfo')
 
 app.use(bodyParser.json())
 app.use(passport.initialize())
@@ -55,6 +56,9 @@ app.all(/(\/)?api\/.*/, function(req, res, next){
 
   })(req, res, next)
 })
+
+/** UPDATE USER INFO */
+app.put('/api/user/setuserinfo', userinfo.setUserInfo)
 
 /*******************/
 app.post('/api/hello', function (req, res) {
