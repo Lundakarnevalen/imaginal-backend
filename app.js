@@ -67,3 +67,10 @@ app.post('/api/hello', function (req, res) {
 app.listen(3000, function () {
   console.log('Listening on port 3000')
 })
+
+app.all('*', function (req, res) {
+  res.status(404).json({
+    success: false,
+    message: 'File not found'
+  })
+})
