@@ -1,14 +1,13 @@
 {
 	"info": {
 		"name": "Karneval",
-		"_postman_id": "6c4606c1-1a87-8c32-d3a9-cb0921e3c2e4",
+		"_postman_id": "08bf49d6-02fe-2e56-e25f-baa090958f42",
 		"description": "# Introduction\nWhat does your API do?\n\n# Overview\nThings that the developers should know about\n\n# Authentication\nWhat is the preferred way of using the API?\n\n# Error Codes\nWhat errors and status codes can a user expect?\n\n# Rate limit\nIs there a limit to the number of requests an user can send?",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
 			"name": "userrelated",
-			"description": "",
 			"item": [
 				{
 					"name": "Register a user",
@@ -69,7 +68,7 @@
 					},
 					"response": [
 						{
-							"id": "eb3b181e-cd30-4115-a6bd-ab29b875a361",
+							"id": "a5afb5d3-b599-4723-976e-77560543b67e",
 							"name": "Register a user",
 							"originalRequest": {
 								"method": "POST",
@@ -191,8 +190,7 @@
 							"path": [
 								"register"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -204,12 +202,12 @@
 							"script": {
 								"type": "text/javascript",
 								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
 									"});",
 									"",
-									"pm.test(\"Successfield false on statuscode 200\", function () {",
-									"    pm.response.to.have.status(200);",
+									"pm.test(\"Successfield false on statuscode 400\", function () {",
+									"    pm.response.to.have.status(400);",
 									"    var jsonData = pm.response.json();",
 									"    pm.expect(jsonData.success).to.eql(false);",
 									"});",
@@ -246,7 +244,7 @@
 					},
 					"response": [
 						{
-							"id": "8fe5c7a1-49e6-4496-8a56-96446d497b4b",
+							"id": "e5b5c354-2b6c-4bc9-bba2-08d8f0ae7f89",
 							"name": "Register a user",
 							"originalRequest": {
 								"method": "POST",
@@ -378,7 +376,7 @@
 					},
 					"response": [
 						{
-							"id": "4d809ae3-f177-46dd-b8fa-0f45d29eca5a",
+							"id": "1f4b6d33-812e-4ff2-bbb8-f96e088bb5ae",
 							"name": "Email Login",
 							"originalRequest": {
 								"method": "POST",
@@ -496,8 +494,7 @@
 								"login",
 								"email"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -543,8 +540,7 @@
 								"login",
 								"email"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -557,7 +553,7 @@
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Must yield unauthorized\", function () {",
-									"    pm.response.to.have.status(422);",
+									"    pm.response.to.have.status(400);",
 									"});",
 									"",
 									"pm.test(\"Must have message\", function () {",
@@ -590,8 +586,7 @@
 								"login",
 								"email"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -643,17 +638,19 @@
 								"api",
 								"hello"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": [
 						{
-							"id": "252d9f78-5e3c-4733-8aa7-7a6d33202813",
+							"id": "860f746c-89cc-45b9-b35e-becf24a56e21",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
 								"header": [],
-								"body": {},
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
 								"url": {
 									"raw": "http://localhost:3000/api/hello",
 									"protocol": "http",
@@ -919,7 +916,140 @@
 					},
 					"response": [
 						{
-							"id": "532e5d7e-0492-41a6-8bba-dd6e51b2d090",
+							"id": "a0091b42-8b7c-46e1-9abc-af0b241bda81",
+							"name": "Email Login",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\":\"user\",\n  \"password\":\"password\"\n}"
+								},
+								"url": {
+									"raw": "http://localhost:3000/login/email",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"login",
+										"email"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"_postman_previewtype": "text",
+							"header": [
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"name": "Connection",
+									"description": "Options that are desired for the connection"
+								},
+								{
+									"key": "Content-Length",
+									"value": "193",
+									"name": "Content-Length",
+									"description": "The length of the response body in octets (8-bit bytes)"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8",
+									"name": "Content-Type",
+									"description": "The mime type of this content"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 09 Nov 2017 12:06:51 GMT",
+									"name": "Date",
+									"description": "The date and time that the message was sent"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"c1-0lqyrhRnwAK+F+XU+aYzPKYaT84\"",
+									"name": "ETag",
+									"description": "An identifier for a specific version of a resource, often a message digest"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "Express",
+									"name": "X-Powered-By",
+									"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+								}
+							],
+							"cookie": [],
+							"responseTime": 250,
+							"body": "{\"success\":true,\"message\":\"Successfully logged in\",\"accessToken\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIiLCJpYXQiOjE1MTAyMjkyMTF9.0Ht-w2nzThhNCqbQvAdQAkABlH93BwS92TPe9DHZAuE\"}"
+						}
+					]
+				},
+				{
+					"name": "Fail to access resource that doesnt exist",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									""
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.sendRequest(\"https://postman-echo.com/get\", function (err, response) {",
+									"    console.log(response.json());",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:3000/this/should/not/exist",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"this",
+								"should",
+								"not",
+								"exist"
+							]
+						},
+						"description": "Login with email"
+					},
+					"response": [
+						{
+							"id": "d7cb49a3-1e8d-4f4a-bea3-ff65243eb139",
 							"name": "Email Login",
 							"originalRequest": {
 								"method": "POST",
