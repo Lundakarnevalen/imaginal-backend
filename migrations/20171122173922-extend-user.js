@@ -15,7 +15,7 @@ module.exports = {
       type
     )
 
-    return await queryInterface.addColumn(
+    return queryInterface.addColumn(
       'Users',
       'personalNumber',
       type
@@ -25,6 +25,6 @@ module.exports = {
   down: async (queryInterface, Sequelize) => {
     await queryInterface.removeColumn('Users', 'name')
     await queryInterface.removeColumn('Users', 'address')
-    return await queryInterface.removeColumn('Users', 'personalNumber')
+    return queryInterface.removeColumn('Users', 'personalNumber')
   }
 }
