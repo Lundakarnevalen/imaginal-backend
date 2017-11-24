@@ -37,7 +37,6 @@ const createUser = function (email, password, res) {
     res.json({
       success: true,
       message: 'You are now registered',
-      token: user.token
     })
   })
 }
