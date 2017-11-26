@@ -12,6 +12,7 @@ const User = dbc.define('User', {
   password: Sequelize.STRING,
   token: Sequelize.STRING,
   name: Sequelize.STRING,
+  phoneNumber: Sequelize.STRING,
   address: Sequelize.STRING,
   postNumber: Sequelize.STRING,
   city: Sequelize.STRING,

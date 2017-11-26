@@ -27,6 +27,7 @@ const registerUser = function (req, res) {
 const createUser = function (email, password, res) {
   users.User.create({
     email: email,
+    phoneNumber: '',
     name: '',
     address: '',
     postNumber: '',

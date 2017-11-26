@@ -2,6 +2,7 @@
 
 let setUserInfo = function (req, res) {
   req.user.name = req.body.name
+  req.user.phoneNumber = req.body.phoneNumber
   req.user.address = req.body.address
   req.user.postNumber = req.body.postNumber
   req.user.city = req.body.city

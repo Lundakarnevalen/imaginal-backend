@@ -11,6 +11,12 @@ module.exports = {
 
     await queryInterface.addColumn(
       'Users',
+      'phoneNumber',
+      type
+    )
+
+    await queryInterface.addColumn(
+      'Users',
       'address',
       type
     )
