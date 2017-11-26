@@ -6,6 +6,7 @@ const register = require('./controllers/register')
 const forgotPassword = require('./controllers/forgotpassword')
 const passport = require('passport')
 require('./config/passport')(passport)
+const userinfo = require('./controllers/userinfo')
 
 app.use(bodyParser.json())
 app.use(passport.initialize())
@@ -33,8 +34,8 @@ app.post('/login/forgotpassword', forgotPassword.forgotPassword)
 app.post('/login/resetpassword', forgotPassword.setNewPassword)
 
 /** AUTHENTICATE TOKENS */
-app.all(/(\/)?api\/.*/, function(req, res, next){
-  passport.authenticate('bearer', {session: false}, function(err, user, info) {
+app.all(/(\/)?api\/.*/, function (req, res, next) {
+  passport.authenticate('bearer', {session: false}, function (err, user, info) {
     if (err) {
       return next(err)
     }
@@ -46,15 +47,17 @@ app.all(/(\/)?api\/.*/, function(req, res, next){
       })
     }
 
-    req.logIn(user, function(err) {
+    req.logIn(user, function (err) {
       if (err) {
         return next(err)
       }
       return next()
     })
-
   })(req, res, next)
 })
+
+/** UPDATE USER INFO */
+app.put('/api/user/setuserinfo', userinfo.setUserInfo)
 
 /*******************/
 app.post('/api/hello', function (req, res) {
