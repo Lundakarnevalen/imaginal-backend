@@ -13,6 +13,9 @@ const User = dbc.define('User', {
   token: Sequelize.STRING,
   name: Sequelize.STRING,
   address: Sequelize.STRING,
+  postNumber: Sequelize.STRING,
+  city: Sequelize.STRING,
+  careOf: Sequelize.STRING,
   personalNumber: Sequelize.STRING
 })
 

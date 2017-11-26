@@ -11,7 +11,7 @@ const registerUser = function (req, res) {
         if (user !== null) {
           return res.json({
             success: false,
-            message: 'User already exist'
+            message: 'User already exists'
           })
         }
         createUser(req.body.email, req.body.password, res)
@@ -27,16 +27,18 @@ const registerUser = function (req, res) {
 const createUser = function (email, password, res) {
   users.User.create({
     email: email,
-    token: 'temporary token',
     name: '',
     address: '',
+    postNumber: '',
+    city: '',
+    careOf: '',
     personalNumber: ''
   })
   .then(user => {
     users.setNewPassword(user, password)
     res.json({
       success: true,
-      message: 'You are now registered',
+      message: 'You are now registered'
     })
   })
 }
