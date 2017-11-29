@@ -9,7 +9,7 @@ const registerUser = function (req, res) {
     })
       .then((user) => {
         if (user !== null) {
-          return res.json({
+          return res.status(400).json({
             success: false,
             message: 'User already exists'
           })
