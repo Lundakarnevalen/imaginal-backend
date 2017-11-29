@@ -33,8 +33,8 @@ app.post('/login/forgotpassword', forgotPassword.forgotPassword)
 app.post('/login/resetpassword', forgotPassword.setNewPassword)
 
 /** AUTHENTICATE TOKENS */
-app.all(/(\/)?api\/.*/, function(req, res, next){
-  passport.authenticate('bearer', {session: false}, function(err, user, info) {
+app.all(/(\/)?api\/.*/, function (req, res, next) {
+  passport.authenticate('bearer', {session: false}, function (err, user, info) {
     if (err) {
       return next(err)
     }
@@ -46,13 +46,12 @@ app.all(/(\/)?api\/.*/, function(req, res, next){
       })
     }
 
-    req.logIn(user, function(err) {
+    req.logIn(user, function (err) {
       if (err) {
         return next(err)
       }
       return next()
     })
-
   })(req, res, next)
 })
 
