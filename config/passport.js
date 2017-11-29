@@ -1,6 +1,6 @@
 const LocalStrategy = require('passport-local').Strategy
 const BearerStrategy = require('passport-http-bearer').Strategy
-const User = require('../models/users')
+const User = require('../models/users').User
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
@@ -11,10 +11,10 @@ module.exports = function (passport) {
     passwordField: 'password'
   },
     function (username, password, done) {
-      User.findUser(username, function (err, user) {
-        if (err) {
-          return done(err)
-        }
+      User.findOne({
+        where: {email: username}
+      })
+      .then(function (user) {
         if (!user) {
           return done(null, false)
         }
@@ -38,9 +38,13 @@ module.exports = function (passport) {
   passport.use(new BearerStrategy(
     function (token, done) {
       jwt.verify(token, secretToken, { ignoreExpiration: true }, function (err, decoded) {
-        if (err) return done(null, false) // Invalid token
+        if (err) {
+          return done(null, false)
+        }
 
-        User.User.findOne({where: { token: token }})
+        User.findOne({
+          where: { token: token }
+        })
         .then(function (user) {
           if (!user) {
             return done(null, false)

@@ -1,7 +1,7 @@
 'use strict'
 
 const Sequelize = require('sequelize')
-const dbc = require('../config/database').dbc
+const dbc = require('../config/database')
 
 const SectionPriority = dbc.define('SectionPriority', {
   id: {
@@ -27,7 +27,7 @@ const setPrioritiesFor = function (user, sectionPriority, done) {
     prio5: sectionPriority[4]
   }
   SectionPriority.findOne({where: {userID: user.id}}).then(function (sectionPriority) {
-    const lastDate = new Date(2020, 0, 0, 0, 0, 0, 0) //new Date(year, month, day, hours, minutes, seconds, milliseconds)
+    const lastDate = new Date(2020, 0, 0, 0, 0, 0, 0) // new Date(year, month, day, hours, minutes, seconds, milliseconds)
     if (Date.now() > lastDate.getTime()) {
       done(null, false)
     }

@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize')
-const dbc = require('../config/database').dbc
+const dbc = require('../config/database')
 const bcrypt = require('bcrypt')
 
 const User = dbc.define('User', {
@@ -10,32 +10,27 @@ const User = dbc.define('User', {
   },
   email: Sequelize.STRING,
   password: Sequelize.STRING,
-  token: Sequelize.STRING
+  token: Sequelize.STRING,
+  name: Sequelize.STRING,
+  phoneNumber: Sequelize.STRING,
+  address: Sequelize.STRING,
+  postNumber: Sequelize.STRING,
+  city: Sequelize.STRING,
+  careOf: Sequelize.STRING,
+  personalNumber: Sequelize.STRING
 })
 
-let findUser = function (email, callback) {
-  User.findOne({
-    where: {email: email}
-  })
-    .then(function (user) {
-      callback(null, user)
-    })
-}
-
-let setNewPassword = function (user, password) {
+const setNewPassword = function (user, password) {
   bcrypt.hash(password, 10, function (err, hash) {
     if (err) {
       throw err
     }
     user.password = hash
-    dbc.sync()
-    user.save().then(() => {
-    })
+    user.save()
   })
 }
 
 module.exports = {
   User,
-  findUser,
   setNewPassword
 }

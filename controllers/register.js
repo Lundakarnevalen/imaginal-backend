@@ -1,49 +1,47 @@
-const sequelize = require('../config/database.js').dbc
+'use strict'
+
 const users = require('../models/users')
-const validateUser = require('../utils/validator').validateUser
 
 const registerUser = function (req, res) {
-  const success = (msg) => {
+  if (req.body.email && req.body.password) {
     users.User.findOne({
-      where: {email: req.body.email}
-    }).then((user) => {
-      if (user !== null) {
-        res.json({
-          success: false,
-          message: 'User already registered'
-        })
-      } else {
-        createUser(req.body.email, req.body.password, res)
-      }
+      where: { email: req.body.email }
     })
-  }
-
-  const fail = (message) => {
+      .then((user) => {
+        if (user !== null) {
+          return res.status(400).json({
+            success: false,
+            message: 'User already exists'
+          })
+        }
+        createUser(req.body.email, req.body.password, res)
+      })
+  } else {
     res.status(400).json({
       success: false,
-      message
+      message: 'Missing parameters'
     })
   }
-
-  const user = {
-    email: req.body.email,
-    password: req.body.password
-  }
-  validateUser(user, success, fail)
 }
 
 const createUser = function (email, password, res) {
-  sequelize.sync()
-    .then(() => users.User.create({
-      email: email
-    }))
-    .then(user => {
-      users.setNewPassword(user, password)
-      res.json({
-        success: true,
-        message: 'You are now registered'
-      })
+  users.User.create({
+    email: email,
+    phoneNumber: '',
+    name: '',
+    address: '',
+    postNumber: '',
+    city: '',
+    careOf: '',
+    personalNumber: ''
+  })
+  .then(user => {
+    users.setNewPassword(user, password)
+    res.json({
+      success: true,
+      message: 'You are now registered'
     })
+  })
 }
 
 module.exports = {

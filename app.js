@@ -7,6 +7,7 @@ const forgotPassword = require('./controllers/forgotpassword')
 const section = require('./controllers/section')
 const passport = require('passport')
 require('./config/passport')(passport)
+const userinfo = require('./controllers/userinfo')
 
 app.use(bodyParser.json())
 app.use(passport.initialize())
@@ -34,15 +35,44 @@ app.post('/login/forgotpassword', forgotPassword.forgotPassword)
 app.post('/login/resetpassword', forgotPassword.setNewPassword)
 
 /** AUTHENTICATE TOKENS */
-app.all(/(\/)?api\/.*/,
-  passport.authenticate('bearer', { session: false }),
-  function (req, res, next) {
-    next()
-  })
+app.all(/(\/)?api\/.*/, function (req, res, next) {
+  passport.authenticate('bearer', {session: false}, function (err, user, info) {
+    if (err) {
+      return next(err)
+    }
+
+    if (!user) {
+      return res.json({
+        success: false,
+        message: 'Unauthorized'
+      })
+    }
+
+    req.logIn(user, function (err) {
+      if (err) {
+        return next(err)
+      }
+      return next()
+    })
+  })(req, res, next)
+})
+
+/** UPDATE USER INFO */
+app.put('/api/user/setuserinfo', userinfo.setUserInfo)
 
 /*******************/
 app.post('/api/hello', function (req, res) {
-  res.send('Hello World!')
+  res.json({
+    success: true,
+    message: 'Hello World!'
+  })
+})
+
+app.all('*', function (req, res) {
+  res.status(404).json({
+    success: false,
+    message: 'File not found'
+  })
 })
 
 app.post('/api/section', section.setSectionPriorities)
