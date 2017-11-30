@@ -3,6 +3,7 @@ const app = express()
 const bodyParser = require('body-parser')
 const login = require('./controllers/login')
 const register = require('./controllers/register')
+const section = require('./controllers/section')
 const forgotPassword = require('./controllers/forgotpassword')
 const passport = require('passport')
 require('./config/passport')(passport)
@@ -73,6 +74,10 @@ app.all('*', function (req, res) {
     message: 'File not found'
   })
 })
+
+app.post('/api/section', section.setSectionPriorities)
+
+app.get('/api/section', section.getSectionPriorities)
 
 app.listen(3000, function () {
   console.log('Listening on port 3000')
