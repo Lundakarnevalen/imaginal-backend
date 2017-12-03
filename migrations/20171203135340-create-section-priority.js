@@ -8,9 +8,15 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      user_id: Sequelize.INTEGER,
-      section: Sequelize.STRING,
-      prio: Sequelize.INTEGER,
+      user_id: {
+        type: Sequelize.INTEGER
+      },
+      section: {
+        type: Sequelize.STRING
+      },
+      prio: {
+        type: Sequelize.INTEGER
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -19,7 +25,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       }
-    }).then(() => queryInterface.addConstraint('SectionPriorities', ['id'], {
+    }).then(() => queryInterface.addConstraint('SectionPriorities', ['user_id'], {
       type: 'FOREIGN KEY',
       name: 'user_id',
       references: {
@@ -28,7 +34,8 @@ module.exports = {
       },
       onDelete: 'no action',
       onUpdate: 'no action'
-    }))
+    })).then(() => queryInterface.sequelize.query('ALTER TABLE `SectionPriorities` ADD UNIQUE `unique_index`(`user_id`, `prio`, `section`)'
+    ))
   },
   down: (queryInterface, Sequelize) => {
     return queryInterface.dropTable('SectionPriorities')
