@@ -25,17 +25,21 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       }
-    }).then(() => queryInterface.addConstraint('SectionPriorities', ['user_id'], {
-      type: 'FOREIGN KEY',
-      name: 'user_id',
-      references: {
-        table: 'Users',
-        field: 'id'
-      },
-      onDelete: 'no action',
-      onUpdate: 'no action'
-    })).then(() => queryInterface.sequelize.query('ALTER TABLE `SectionPriorities` ADD UNIQUE `unique_index`(`user_id`, `prio`, `section`)'
-    ))
+    })
+      .then(() => queryInterface.addConstraint('SectionPriorities', ['user_id'], {
+        type: 'FOREIGN KEY',
+        name: 'user_id',
+        references: {
+          table: 'Users',
+          field: 'id'
+        },
+        onDelete: 'no action',
+        onUpdate: 'no action'
+      }))
+      .then(() => queryInterface.sequelize.query('ALTER TABLE `SectionPriorities` ADD UNIQUE `unique_index`(`user_id`, `prio`, `section`)'))
+      .then(() => queryInterface.sequelize.query('ALTER TABLE `SectionPriorities` ADD UNIQUE `one_prio`(`user_id`, `prio`)'))
+      .then(() => queryInterface.sequelize.query('ALTER TABLE `SectionPriorities` ADD UNIQUE `one_section`(`user_id`, `section`)')
+    )
   },
   down: (queryInterface, Sequelize) => {
     return queryInterface.dropTable('SectionPriorities')
