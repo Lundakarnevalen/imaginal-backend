@@ -39,7 +39,7 @@ const getSectionPriorities = function (user, done) {
   }).then(prios => done(null, prios.reduce(flatten, [])))
 }
 
-const isValidPrioArray = function (array, callback) {
+const isValidPrioArray = function (array) {
   if (Array.isArray(array)) {
     return (new Set(array)).size !== array.length
   }

@@ -9,7 +9,8 @@ const setSectionPriorities = function (req, res, next) {
     if (err) {
       return res.status(500).json({
         success,
-        message: 'Priorities were not set'
+        message: 'Priorities were not set',
+        err
       })
     }
     if (success) {
@@ -18,7 +19,7 @@ const setSectionPriorities = function (req, res, next) {
         message: 'Priorities set successfully'
       })
     } else {
-      return res.status(403).json({
+      return res.status(400).json({
         success,
         message: 'Priorities can no longer be set'
       })
@@ -31,7 +32,8 @@ const getSectionPriorities = function (req, res, next) {
     if (err) {
       res.status(500).json({
         success: false,
-        message: 'Failed to get priorities'
+        message: 'Failed to get priorities',
+        err
       })
     }
     res.json({
