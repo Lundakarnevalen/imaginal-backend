@@ -5,23 +5,22 @@ const setSectionPriorities = function (req, res, next) {
     res.status(422).json({success: false, message: 'Missing parameters'})
   }
 
-  SectionPriorities.setSectionPriorities(req.user, req.body.sectionPriorities, function (err, success) {
+  SectionPriorities.setSectionPriorities(req.user, req.body.sectionPriorities, function (err, success, message) {
     if (err) {
       return res.status(500).json({
         success,
-        message: 'Priorities were not set',
-        err
+        message
       })
     }
     if (success) {
       return res.json({
         success,
-        message: 'Priorities set successfully'
+        message
       })
     } else {
       return res.status(400).json({
         success,
-        message: 'Priorities can no longer be set'
+        message
       })
     }
   })

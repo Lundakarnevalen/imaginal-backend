@@ -16,11 +16,11 @@ const SectionPriority = dbc.define('SectionPriority', {
 const setSectionPriorities = function (user, sectionPriorities, done) {
   const lastDate = new Date(2020, 0, 0, 0, 0, 0, 0) // new Date(year, month, day, hours, minutes, seconds, milliseconds)
   if (Date.now() > lastDate.getTime()) {
-    return done(null, false)
+    return done(null, false, 'Last date passed!')
   }
 
-  if (isValidPrioArray(sectionPriorities)) {
-    return done('Invalid array!', false)
+  if (uniqueSections(sectionPriorities)) {
+    return done(null, false, 'Duplicate sections!')
   }
 
   SectionPriority.destroy({
@@ -28,7 +28,7 @@ const setSectionPriorities = function (user, sectionPriorities, done) {
       user_id: user.id
     }
   }).then(() => sectionPriorities.forEach((currentValue, index) => SectionPriority.create({user_id: user.id, section: currentValue, prio: index})))
-  return done(null, true)
+  return done(null, true, 'Priorities set')
 }
 
 const getSectionPriorities = function (user, done) {
@@ -36,19 +36,15 @@ const getSectionPriorities = function (user, done) {
     where: {
       user_id: user.id
     }
-  }).then(prios => done(null, prios.reduce(flatten, [])))
+  }).then(prios => done(null, makeSendablePrios(prios)))
 }
 
-const isValidPrioArray = function (array) {
-  if (Array.isArray(array)) {
-    return (new Set(array)).size !== array.length
-  }
-  return false
+const uniqueSections = function (array) {
+  return (new Set(array)).size !== array.length
 }
 
-const flatten = function (acc, cVal, cInd, arr){
-  acc.push(cVal.section)
-  return acc
+const makeSendablePrios = function (prios) {
+  return prios[0].section.split(',')
 }
 
 module.exports = {

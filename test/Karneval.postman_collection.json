@@ -1,17 +1,27 @@
 {
 	"info": {
 		"name": "Karneval",
-		"_postman_id": "08bf49d6-02fe-2e56-e25f-baa090958f42",
+		"_postman_id": "c3fb424e-3dab-b6b9-9833-9f6396c24b31",
 		"description": "# Introduction\nWhat does your API do?\n\n# Overview\nThings that the developers should know about\n\n# Authentication\nWhat is the preferred way of using the API?\n\n# Error Codes\nWhat errors and status codes can a user expect?\n\n# Rate limit\nIs there a limit to the number of requests an user can send?",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "userrelated",
+			"name": "User, register",
+			"description": "",
 			"item": [
 				{
 					"name": "Register a user",
 					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.globals.set(\"randomUsername\", Math.random().toString(36).substring(7));"
+								]
+							}
+						},
 						{
 							"listen": "test",
 							"script": {
@@ -28,15 +38,6 @@
 									"});",
 									"",
 									""
-								]
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.globals.set(\"randomUsername\", Math.random().toString(36).substring(7));"
 								]
 							}
 						}
@@ -68,7 +69,7 @@
 					},
 					"response": [
 						{
-							"id": "a5afb5d3-b599-4723-976e-77560543b67e",
+							"id": "0188e905-eed2-43e4-ad11-5894a79e5b65",
 							"name": "Register a user",
 							"originalRequest": {
 								"method": "POST",
@@ -244,7 +245,7 @@
 					},
 					"response": [
 						{
-							"id": "e5b5c354-2b6c-4bc9-bba2-08d8f0ae7f89",
+							"id": "e46925fa-93da-4b76-b508-4551082d85b3",
 							"name": "Register a user",
 							"originalRequest": {
 								"method": "POST",
@@ -318,7 +319,13 @@
 							"body": "{\"success\":true,\"message\":\"You are now registered\"}"
 						}
 					]
-				},
+				}
+			]
+		},
+		{
+			"name": "User, email login",
+			"description": "",
+			"item": [
 				{
 					"name": "Email Login",
 					"event": [
@@ -376,7 +383,7 @@
 					},
 					"response": [
 						{
-							"id": "1f4b6d33-812e-4ff2-bbb8-f96e088bb5ae",
+							"id": "ec7fbdb7-fba1-41cb-861b-ebcb91388e16",
 							"name": "Email Login",
 							"originalRequest": {
 								"method": "POST",
@@ -589,129 +596,13 @@
 						}
 					},
 					"response": []
-				},
-				{
-					"name": "API token \"hello\"",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});"
-								]
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{accessToken}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"email\":\"{{randomUsername}}\"\n}"
-						},
-						"url": {
-							"raw": "http://localhost:3000/api/hello",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"api",
-								"hello"
-							]
-						}
-					},
-					"response": [
-						{
-							"id": "860f746c-89cc-45b9-b35e-becf24a56e21",
-							"name": "API token \"hello\"",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "http://localhost:3000/api/hello",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "3000",
-									"path": [
-										"api",
-										"hello"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "html",
-							"_postman_previewtype": "text",
-							"header": [
-								{
-									"key": "Connection",
-									"value": "keep-alive",
-									"name": "Connection",
-									"description": "Options that are desired for the connection"
-								},
-								{
-									"key": "Content-Length",
-									"value": "12",
-									"name": "Content-Length",
-									"description": "The length of the response body in octets (8-bit bytes)"
-								},
-								{
-									"key": "Content-Type",
-									"value": "text/html; charset=utf-8",
-									"name": "Content-Type",
-									"description": "The mime type of this content"
-								},
-								{
-									"key": "Date",
-									"value": "Thu, 09 Nov 2017 12:39:00 GMT",
-									"name": "Date",
-									"description": "The date and time that the message was sent"
-								},
-								{
-									"key": "ETag",
-									"value": "W/\"c-Lve95gjOVATpfV8EL5X4nxwjKHE\"",
-									"name": "ETag",
-									"description": "An identifier for a specific version of a resource, often a message digest"
-								},
-								{
-									"key": "X-Powered-By",
-									"value": "Express",
-									"name": "X-Powered-By",
-									"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
-								}
-							],
-							"cookie": [],
-							"responseTime": 35,
-							"body": "Hello World!"
-						}
-					]
-				},
+				}
+			]
+		},
+		{
+			"name": "User, password reset",
+			"description": "",
+			"item": [
 				{
 					"name": "Initiate password Reset",
 					"event": [
@@ -805,6 +696,150 @@
 					"response": []
 				},
 				{
+					"name": "Email Login new password",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.sendRequest(\"https://postman-echo.com/get\", function (err, response) {",
+									"    console.log(response.json());",
+									"});"
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.globals.set(\"accessToken\", pm.response.json().accessToken);",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Successfield true on statuscode 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(true);",
+									"});",
+									"",
+									"pm.test(\"Body must contain accessToken\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"accessToken\");",
+									"});",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\":\"{{randomUsername}}\",\n  \"password\":\"newPass\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/login/email",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"login",
+								"email"
+							]
+						},
+						"description": "Login with email"
+					},
+					"response": [
+						{
+							"id": "eaeebae1-1385-4556-835f-cfcfdc659455",
+							"name": "Email Login",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\":\"user\",\n  \"password\":\"password\"\n}"
+								},
+								"url": {
+									"raw": "http://localhost:3000/login/email",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"login",
+										"email"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"_postman_previewtype": "text",
+							"header": [
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"name": "Connection",
+									"description": "Options that are desired for the connection"
+								},
+								{
+									"key": "Content-Length",
+									"value": "193",
+									"name": "Content-Length",
+									"description": "The length of the response body in octets (8-bit bytes)"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8",
+									"name": "Content-Type",
+									"description": "The mime type of this content"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 09 Nov 2017 12:06:51 GMT",
+									"name": "Date",
+									"description": "The date and time that the message was sent"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"c1-0lqyrhRnwAK+F+XU+aYzPKYaT84\"",
+									"name": "ETag",
+									"description": "An identifier for a specific version of a resource, often a message digest"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "Express",
+									"name": "X-Powered-By",
+									"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+								}
+							],
+							"cookie": [],
+							"responseTime": 250,
+							"body": "{\"success\":true,\"message\":\"Successfully logged in\",\"accessToken\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIiLCJpYXQiOjE1MTAyMjkyMTF9.0Ht-w2nzThhNCqbQvAdQAkABlH93BwS92TPe9DHZAuE\"}"
+						}
+					]
+				},
+				{
 					"name": "Bad password reset change password",
 					"event": [
 						{
@@ -847,48 +882,39 @@
 						"description": "Sends a request that should fail"
 					},
 					"response": []
-				},
+				}
+			]
+		},
+		{
+			"name": "API, meta",
+			"description": "",
+			"item": [
 				{
-					"name": "Email Login new password",
+					"name": "API token \"hello\"",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
 								"exec": [
-									"pm.globals.set(\"accessToken\", pm.response.json().accessToken);",
-									"",
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"pm.test(\"Successfield true on statuscode 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.success).to.eql(true);",
-									"});",
-									"",
-									"pm.test(\"Body must contain accessToken\", function () {",
-									"    pm.expect(pm.response.text()).to.include(\"accessToken\");",
-									"});",
-									"",
-									""
-								]
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.sendRequest(\"https://postman-echo.com/get\", function (err, response) {",
-									"    console.log(response.json());",
 									"});"
 								]
 							}
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -898,55 +924,48 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"email\":\"{{randomUsername}}\",\n  \"password\":\"newPass\"\n}"
+							"raw": "{\n  \"email\":\"{{randomUsername}}\"\n}"
 						},
 						"url": {
-							"raw": "http://localhost:3000/login/email",
+							"raw": "http://localhost:3000/api/hello",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
-								"login",
-								"email"
+								"api",
+								"hello"
 							]
-						},
-						"description": "Login with email"
+						}
 					},
 					"response": [
 						{
-							"id": "a0091b42-8b7c-46e1-9abc-af0b241bda81",
-							"name": "Email Login",
+							"id": "926bc8ba-cfe0-4622-b984-4969111e0f71",
+							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"name": "Content-Type",
-										"value": "application/json"
-									}
-								],
+								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"email\":\"user\",\n  \"password\":\"password\"\n}"
+									"raw": ""
 								},
 								"url": {
-									"raw": "http://localhost:3000/login/email",
+									"raw": "http://localhost:3000/api/hello",
 									"protocol": "http",
 									"host": [
 										"localhost"
 									],
 									"port": "3000",
 									"path": [
-										"login",
-										"email"
+										"api",
+										"hello"
 									]
 								}
 							},
 							"status": "OK",
 							"code": 200,
-							"_postman_previewlanguage": "json",
+							"_postman_previewlanguage": "html",
 							"_postman_previewtype": "text",
 							"header": [
 								{
@@ -957,25 +976,25 @@
 								},
 								{
 									"key": "Content-Length",
-									"value": "193",
+									"value": "12",
 									"name": "Content-Length",
 									"description": "The length of the response body in octets (8-bit bytes)"
 								},
 								{
 									"key": "Content-Type",
-									"value": "application/json; charset=utf-8",
+									"value": "text/html; charset=utf-8",
 									"name": "Content-Type",
 									"description": "The mime type of this content"
 								},
 								{
 									"key": "Date",
-									"value": "Thu, 09 Nov 2017 12:06:51 GMT",
+									"value": "Thu, 09 Nov 2017 12:39:00 GMT",
 									"name": "Date",
 									"description": "The date and time that the message was sent"
 								},
 								{
 									"key": "ETag",
-									"value": "W/\"c1-0lqyrhRnwAK+F+XU+aYzPKYaT84\"",
+									"value": "W/\"c-Lve95gjOVATpfV8EL5X4nxwjKHE\"",
 									"name": "ETag",
 									"description": "An identifier for a specific version of a resource, often a message digest"
 								},
@@ -987,14 +1006,25 @@
 								}
 							],
 							"cookie": [],
-							"responseTime": 250,
-							"body": "{\"success\":true,\"message\":\"Successfully logged in\",\"accessToken\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIiLCJpYXQiOjE1MTAyMjkyMTF9.0Ht-w2nzThhNCqbQvAdQAkABlH93BwS92TPe9DHZAuE\"}"
+							"responseTime": 35,
+							"body": "Hello World!"
 						}
 					]
 				},
 				{
 					"name": "Fail to access resource that doesnt exist",
 					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.sendRequest(\"https://postman-echo.com/get\", function (err, response) {",
+									"    console.log(response.json());",
+									"});"
+								]
+							}
+						},
 						{
 							"listen": "test",
 							"script": {
@@ -1004,17 +1034,6 @@
 									"    pm.response.to.have.status(404);",
 									"});",
 									""
-								]
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.sendRequest(\"https://postman-echo.com/get\", function (err, response) {",
-									"    console.log(response.json());",
-									"});"
 								]
 							}
 						}
@@ -1049,7 +1068,7 @@
 					},
 					"response": [
 						{
-							"id": "d7cb49a3-1e8d-4f4a-bea3-ff65243eb139",
+							"id": "b0f068dd-1abe-416b-b664-89c60ffb2f3b",
 							"name": "Email Login",
 							"originalRequest": {
 								"method": "POST",
@@ -1124,6 +1143,222 @@
 							"body": "{\"success\":true,\"message\":\"Successfully logged in\",\"accessToken\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIiLCJpYXQiOjE1MTAyMjkyMTF9.0Ht-w2nzThhNCqbQvAdQAkABlH93BwS92TPe9DHZAuE\"}"
 						}
 					]
+				}
+			]
+		},
+		{
+			"name": "API, section priorities",
+			"description": "",
+			"item": [
+				{
+					"name": "Set priorities",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "68c49aae-842c-4efb-aae4-0de6cf30e535",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Successfield true on statuscode 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(true);",
+									"});",
+									"",
+									"pm.test(\"Body must contain message\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"message\");",
+									"});",
+									""
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "f3720808-4899-405c-bb7b-56ff6f5899bf",
+								"type": "text/javascript",
+								"exec": [
+									"pm.globals.set(\"sectionPriorities\", [\"A\", \"B\", \"C\", \"F\"]);",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"sectionPriorities\":[\"{{sectionPriorities}}\"]\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/section",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"section"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get same priorities",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1d436d06-21b4-4eb5-b169-05ec2d202604",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Successfield true on statuscode 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(true);",
+									"});",
+									"",
+									"pm.test(\"Body must match sectionPriorities\", function () {",
+									"    pm.expect(pm.response.json().sectionPriorities).to.eql(pm.globals.get(\"sectionPriorities\"));",
+									"});",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:3000/api/section",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"section"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Set duplicate prio",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6b7717a0-5bd0-42e1-b9a3-6bd5a75fa566",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Successfield false on statuscode 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(false);",
+									"});",
+									"",
+									"pm.test(\"Body must contain message about duplicate\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"message\");",
+									"    pm.expect(pm.response.text()).to.include(\"Duplicate\");",
+									"});",
+									""
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "f3720808-4899-405c-bb7b-56ff6f5899bf",
+								"type": "text/javascript",
+								"exec": [
+									"pm.globals.set(\"sectionPriorities\", [\"A\", \"B\", \"C\", \"F\"]);",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"sectionPriorities\":[\"A\", \"A\", \"B\", \"C\"]\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/section",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"section"
+							]
+						},
+						"description": ""
+					},
+					"response": []
 				}
 			]
 		}
