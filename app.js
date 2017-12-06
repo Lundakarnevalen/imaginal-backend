@@ -7,6 +7,7 @@ const forgotPassword = require('./controllers/forgotpassword')
 const passport = require('passport')
 require('./config/passport')(passport)
 const userinfo = require('./controllers/userinfo')
+const section = require('./controllers/section')
 
 app.use(bodyParser.json())
 app.use(passport.initialize())
@@ -66,6 +67,10 @@ app.post('/api/hello', function (req, res) {
     message: 'Hello World!'
   })
 })
+
+app.post('/api/section', section.setSectionPriorities)
+
+app.get('/api/section', section.getSectionPriorities)
 
 app.all('*', function (req, res) {
   res.status(404).json({
