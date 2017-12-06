@@ -1,7 +1,8 @@
 'use strict'
 
 let setUserInfo = function (req, res) {
-  if (req.body.name) req.user.name = req.body.name
+  if (req.body.firstName) req.user.firstName = req.body.firstName
+  if (req.body.lastName) req.user.lastName = req.body.lastName
   if (req.body.phoneNumber) req.user.phoneNumber = req.body.phoneNumber
   if (req.body.address) req.user.address = req.body.address
   if (req.body.postNumber) req.user.postNumber = req.body.postNumber

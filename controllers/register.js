@@ -28,7 +28,8 @@ const createUser = function (email, password, res) {
   users.User.create({
     email: email,
     phoneNumber: '',
-    name: '',
+    firstName: '',
+    lastName: '',
     address: '',
     postNumber: '',
     city: '',
