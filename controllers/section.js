@@ -1,4 +1,4 @@
-const SectionPriorities = require('../models/sectionPriority')
+const SectionPriorities = require('../models/sectionpriority')
 
 const setSectionPriorities = function (req, res, next) {
   if (!req.body.sectionPriorities || !Array.isArray(req.body.sectionPriorities)) {
