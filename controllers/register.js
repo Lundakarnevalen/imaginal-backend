@@ -1,6 +1,8 @@
 'use strict'
 
 const users = require('../models/users')
+const role = require('../models/role')
+const userrole = require('../models/userrole')
 
 const registerUser = function (req, res) {
   if (req.body.email && req.body.password) {
@@ -24,6 +26,9 @@ const registerUser = function (req, res) {
   }
 }
 
+let finalUser
+let finalRole
+
 const createUser = function (email, password, res) {
   users.User.create({
     email: email,
@@ -37,6 +42,7 @@ const createUser = function (email, password, res) {
     personalNumber: ''
   })
   .then(user => {
+    finalUser = user
     users.setNewPassword(user, password)
     res.json({
       success: true,
@@ -46,6 +52,16 @@ const createUser = function (email, password, res) {
   .then((user) => {
     //create KarnevalInfo entry here
   })
+  .then(() => role.Role.create({
+    Description: 'karnevalist'
+  }))
+  .then(role => {
+    finalRole = role
+  })
+  .then(() => userrole.UserRole.create({
+    UserId: finalUser.id,
+    RoleId: finalRole.id
+  }))
 }
 
 module.exports = {
