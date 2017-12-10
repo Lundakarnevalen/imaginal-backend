@@ -22,14 +22,13 @@ const KarnevalInfo = dbc.define('KarnevalInfo', {
   groupLeader: Sequelize.STRING,
   interests: Sequelize.STRING,
   misc: Sequelize.STRING,
-  plenipotentiary: Sequelize.STRING,
-  prio: Sequelize.INTEGER
+  plenipotentiary: Sequelize.STRING
 })
 
-const initKarnevalInfo = function(user, done) {
+const initKarnevalInfo = function (user, done) {
   KarnevalInfo.create({
-    user_id: user.id,
-    //set to zero, or no?
+    user_id: user.id
+    // set to zero, or no?
   })
 }
 

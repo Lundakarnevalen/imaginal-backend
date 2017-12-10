@@ -50,7 +50,7 @@ const createUser = function (email, password, res) {
     })
   })
   .then((user) => {
-    //create KarnevalInfo entry here
+    // create KarnevalInfo entry here
   })
   .then(() => role.Role.create({
     Description: 'karnevalist'

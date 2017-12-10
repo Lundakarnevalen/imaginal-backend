@@ -2,7 +2,6 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    const strType = { type: Sequelize.STRING, allowNull: false }
     return queryInterface.createTable('KarnevalInfo', {
       id: {
         autoIncrement: true,
@@ -14,46 +13,46 @@ module.exports = {
         allowNull: false
       },
       language: {
-        strType
+        type: Sequelize.STRING
       },
       driversLicense: {
-        strType
+        type: Sequelize.STRING
       },
       foodPreference: {
-        strType
+        type: Sequelize.STRING
       },
-      disability: {     //funktionsvariation
-        strType
+      disability: {     // funktionsvariation
+        type: Sequelize.STRING
       },
       audition: {
-        strType
+        type: Sequelize.STRING
       },
       talent: {
-        strType
+        type: Sequelize.STRING
       },
       entertainmentCategory: {
-        strType
+        type: Sequelize.STRING
       },
       corps: {
-        strType
+        type: Sequelize.STRING
       },
       startOfStudies: {
-        strType
+        type: Sequelize.STRING
       },
       pastInvolvement: {
-        strType
+        type: Sequelize.STRING
       },
       groupLeader: {
-        strType
+        type: Sequelize.STRING
       },
       interests: {
-        strType
+        type: Sequelize.STRING
       },
       misc: {
-        strType
+        type: Sequelize.STRING
       },
       plenipotentiary: {
-        strType
+        type: Sequelize.STRING
       },
       createdAt: {
         type: Sequelize.DATE,
@@ -64,15 +63,15 @@ module.exports = {
         allowNull: false
       }
     }).then(() => queryInterface.addConstraint('KarnevalInfo', ['user_id'], {
-        type: 'FOREIGN KEY',
-        name: 'user_id',
-        references: {
-          table: 'Users',
-          field: 'id'
-        },
-        onDelete: 'no action',
-        onUpdate: 'no action'
-      })
+      type: 'FOREIGN KEY',
+      name: 'user_id',
+      references: {
+        table: 'Users',
+        field: 'id'
+      },
+      onDelete: 'no action',
+      onUpdate: 'no action'
+    })
     )
   },
   down: (queryInterface, Sequelize) => {
