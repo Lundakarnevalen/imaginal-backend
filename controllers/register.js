@@ -43,6 +43,9 @@ const createUser = function (email, password, res) {
       message: 'You are now registered'
     })
   })
+  .then((user) => {
+    //create KarnevalInfo entry here
+  })
 }
 
 module.exports = {
