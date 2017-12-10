@@ -8,11 +8,8 @@ const passport = require('passport')
 require('./config/passport')(passport)
 const userinfo = require('./controllers/userinfo')
 const section = require('./controllers/section')
-<<<<<<< HEAD
 const karnevalinfo = require('./controllers/karnevalinfo')
-=======
 const users = require('./controllers/users')
->>>>>>> origin
 
 app.use(bodyParser.json())
 app.use(passport.initialize())
