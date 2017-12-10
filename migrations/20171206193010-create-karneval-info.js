@@ -64,7 +64,7 @@ module.exports = {
       }
     }).then(() => queryInterface.addConstraint('KarnevalInfo', ['user_id'], {
       type: 'FOREIGN KEY',
-      name: 'user_id',
+      name: 'Info must have user',
       references: {
         table: 'Users',
         field: 'id'
