@@ -25,14 +25,6 @@ const KarnevalInfo = dbc.define('KarnevalInfo', {
   plenipotentiary: Sequelize.STRING
 })
 
-const initKarnevalInfo = function (user, done) {
-  KarnevalInfo.create({
-    user_id: user.id
-    // set to zero, or no?
-  })
-}
-
 module.exports = {
-  KarnevalInfo,
-  initKarnevalInfo
+  KarnevalInfo
 }
