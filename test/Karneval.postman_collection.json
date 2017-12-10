@@ -1,27 +1,17 @@
 {
 	"info": {
 		"name": "Karneval",
-		"_postman_id": "c3fb424e-3dab-b6b9-9833-9f6396c24b31",
+		"_postman_id": "f67de700-558b-3ca6-5f70-524fb9ee268d",
 		"description": "# Introduction\nWhat does your API do?\n\n# Overview\nThings that the developers should know about\n\n# Authentication\nWhat is the preferred way of using the API?\n\n# Error Codes\nWhat errors and status codes can a user expect?\n\n# Rate limit\nIs there a limit to the number of requests an user can send?",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
 			"name": "User, register",
-			"description": "",
 			"item": [
 				{
 					"name": "Register a user",
 					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.globals.set(\"randomUsername\", Math.random().toString(36).substring(7));"
-								]
-							}
-						},
 						{
 							"listen": "test",
 							"script": {
@@ -38,6 +28,15 @@
 									"});",
 									"",
 									""
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.globals.set(\"randomUsername\", Math.random().toString(36).substring(7));"
 								]
 							}
 						}
@@ -69,7 +68,7 @@
 					},
 					"response": [
 						{
-							"id": "0188e905-eed2-43e4-ad11-5894a79e5b65",
+							"id": "e534b55b-bcff-4872-946d-6e03020fa5ce",
 							"name": "Register a user",
 							"originalRequest": {
 								"method": "POST",
@@ -245,7 +244,7 @@
 					},
 					"response": [
 						{
-							"id": "e46925fa-93da-4b76-b508-4551082d85b3",
+							"id": "ba6c067b-4e2c-41cb-89d5-a55f855eac00",
 							"name": "Register a user",
 							"originalRequest": {
 								"method": "POST",
@@ -324,7 +323,6 @@
 		},
 		{
 			"name": "User, email login",
-			"description": "",
 			"item": [
 				{
 					"name": "Email Login",
@@ -383,7 +381,7 @@
 					},
 					"response": [
 						{
-							"id": "ec7fbdb7-fba1-41cb-861b-ebcb91388e16",
+							"id": "26346cba-855f-4c4c-b08a-1e45f72e068a",
 							"name": "Email Login",
 							"originalRequest": {
 								"method": "POST",
@@ -601,7 +599,6 @@
 		},
 		{
 			"name": "User, password reset",
-			"description": "",
 			"item": [
 				{
 					"name": "Initiate password Reset",
@@ -699,17 +696,6 @@
 					"name": "Email Login new password",
 					"event": [
 						{
-							"listen": "prerequest",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.sendRequest(\"https://postman-echo.com/get\", function (err, response) {",
-									"    console.log(response.json());",
-									"});"
-								]
-							}
-						},
-						{
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
@@ -731,6 +717,17 @@
 									"});",
 									"",
 									""
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.sendRequest(\"https://postman-echo.com/get\", function (err, response) {",
+									"    console.log(response.json());",
+									"});"
 								]
 							}
 						}
@@ -763,7 +760,7 @@
 					},
 					"response": [
 						{
-							"id": "eaeebae1-1385-4556-835f-cfcfdc659455",
+							"id": "bafffa52-4020-4a80-9cbd-3dc504d83105",
 							"name": "Email Login",
 							"originalRequest": {
 								"method": "POST",
@@ -887,7 +884,6 @@
 		},
 		{
 			"name": "API, meta",
-			"description": "",
 			"item": [
 				{
 					"name": "API token \"hello\"",
@@ -941,7 +937,7 @@
 					},
 					"response": [
 						{
-							"id": "926bc8ba-cfe0-4622-b984-4969111e0f71",
+							"id": "759d2ac0-b0d0-4809-8b4f-9d2af6dcde52",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -1015,17 +1011,6 @@
 					"name": "Fail to access resource that doesnt exist",
 					"event": [
 						{
-							"listen": "prerequest",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.sendRequest(\"https://postman-echo.com/get\", function (err, response) {",
-									"    console.log(response.json());",
-									"});"
-								]
-							}
-						},
-						{
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
@@ -1034,6 +1019,17 @@
 									"    pm.response.to.have.status(404);",
 									"});",
 									""
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.sendRequest(\"https://postman-echo.com/get\", function (err, response) {",
+									"    console.log(response.json());",
+									"});"
 								]
 							}
 						}
@@ -1068,7 +1064,7 @@
 					},
 					"response": [
 						{
-							"id": "b0f068dd-1abe-416b-b664-89c60ffb2f3b",
+							"id": "6d0f63c4-8ddf-4c9f-a074-25c96838f378",
 							"name": "Email Login",
 							"originalRequest": {
 								"method": "POST",
@@ -1148,7 +1144,6 @@
 		},
 		{
 			"name": "API, section priorities",
-			"description": "",
 			"item": [
 				{
 					"name": "Set priorities",
@@ -1156,7 +1151,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "68c49aae-842c-4efb-aae4-0de6cf30e535",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
@@ -1179,7 +1173,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "f3720808-4899-405c-bb7b-56ff6f5899bf",
 								"type": "text/javascript",
 								"exec": [
 									"pm.globals.set(\"sectionPriorities\", [\"A\", \"B\", \"C\", \"F\"]);",
@@ -1221,8 +1214,7 @@
 								"api",
 								"section"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -1232,7 +1224,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "1d436d06-21b4-4eb5-b169-05ec2d202604",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
@@ -1266,7 +1257,10 @@
 						},
 						"method": "GET",
 						"header": [],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "http://localhost:3000/api/section",
 							"protocol": "http",
@@ -1278,8 +1272,7 @@
 								"api",
 								"section"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -1289,7 +1282,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "6b7717a0-5bd0-42e1-b9a3-6bd5a75fa566",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 400\", function () {",
@@ -1313,7 +1305,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "f3720808-4899-405c-bb7b-56ff6f5899bf",
 								"type": "text/javascript",
 								"exec": [
 									"pm.globals.set(\"sectionPriorities\", [\"A\", \"B\", \"C\", \"F\"]);",
@@ -1354,6 +1345,126 @@
 							"path": [
 								"api",
 								"section"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User, get",
+			"description": "",
+			"item": [
+				{
+					"name": "Get user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Successfield true on statuscode 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(true);",
+									"});",
+									"",
+									"pm.test(\"Body must contain user\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"user\");",
+									"});",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"test2\"\n}"
+						},
+						"url": {
+							"raw": "localhost:3000/api/users/{{randomUsername}}",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								"{{randomUsername}}"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get all users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Successfield true on statuscode 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(true);",
+									"});",
+									"",
+									"pm.test(\"Body must contain user\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"users\");",
+									"});",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"test2\"\n}"
+						},
+						"url": {
+							"raw": "localhost:3000/api/users",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users"
 							]
 						},
 						"description": ""
