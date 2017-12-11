@@ -12,6 +12,24 @@ const Role = dbc.define('Role', {
   }
 })
 
+const addRole = function () {
+
+}
+
+const addUser = function () {
+
+}
+
+const uniqueSections = function (array) {
+  return (new Set(array)).size !== array.length
+}
+
+const makeSendablePrios = function (userRoles) {
+  return userRoles[0].section.split(',')
+}
+
 module.exports = {
-  Role
+  Role,
+  addRole,
+  addUser
 }

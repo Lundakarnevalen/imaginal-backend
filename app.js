@@ -8,6 +8,8 @@ const passport = require('passport')
 require('./config/passport')(passport)
 const userinfo = require('./controllers/userinfo')
 const section = require('./controllers/section')
+const role = require('./controllers/role')
+//const user = require('./controllers/')
 
 app.use(bodyParser.json())
 app.use(passport.initialize())
@@ -71,6 +73,11 @@ app.post('/api/hello', function (req, res) {
 app.post('/api/section', section.setSectionPriorities)
 
 app.get('/api/section', section.getSectionPriorities)
+
+//app.get('/api/users/:email/roles', user.getRoles)
+app.get('/api/roles/:role/users', role.getUsers) // req.roleid, res.emails
+app.post('/api/roles', role.addRole) // post.roleDescription
+app.post('/api/roles/:role', role.addUser) // req.roleid, post.email
 
 app.all('*', function (req, res) {
   res.status(404).json({
