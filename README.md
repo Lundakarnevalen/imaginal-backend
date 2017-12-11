@@ -32,7 +32,7 @@ Init database tables
 Config application parameters
 ```
 export MYSQL_USER='user'
-export MYSQL_PASSWORD='passwd'
+export MYSQL_PASS='passwd'
 export TOKEN_SECRET='secret'
 ```
 
