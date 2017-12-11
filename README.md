@@ -32,7 +32,7 @@ Init database tables
 Config application parameters
 ```
 export MYSQL_USER='user'
-export MYSQL_PASSWORD='passwd'
+export MYSQL_PASS='passwd'
 export TOKEN_SECRET='secret'
 ```
 
@@ -58,6 +58,12 @@ make sure server is running and you have env variables
 npm run apidoc
 open doc.html
 ```
+## API codes
+200: OK
+400: User sent bad information or missing parameters
+401: User does not have appropriate privileges
+404: No such end point
+500: Internal error, not caused by user
 
 ## Conventions
 * [standard.js](https://github.com/standard/standard) - JavaScript Style used 
