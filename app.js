@@ -7,6 +7,7 @@ const forgotPassword = require('./controllers/forgotpassword')
 const passport = require('passport')
 require('./config/passport')(passport)
 const userinfo = require('./controllers/userinfo')
+const role = require('./controllers/role')
 
 app.use(bodyParser.json())
 app.use(passport.initialize())
@@ -21,6 +22,10 @@ app.use(function (error, req, res, next) {
   }
   next()
 })
+
+/** ADD ROLE */
+
+app.post('/role/addrole', role.addRole)
 
 /** REGISTER USER */
 app.post('/register', register.registerUser)
