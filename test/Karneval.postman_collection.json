@@ -2,7 +2,7 @@
 	"info": {
 		"name": "Karneval",
 		"_postman_id": "c3fb424e-3dab-b6b9-9833-9f6396c24b31",
-		"description": "# Introduction\nBackend till lundakarnevalen 2018.\n\n# Overview\nTestserver på 146.185.173.31:3000, exempel är till localhost. Endast JSON accepteras.\n\n# Error Codes\n200: OK \n\n400: User sent bad information or missing parameters \n\n401: User does not have appropriate privileges \n\n404: No such end point \n\n500: Internal error, not caused by user",
+		"description": "# Introduction\nBackend for Lundakarnevalen 2018.\n\n# Overview\nPreferably test against localhost, but there might be a light testserver at 146.185.173.31:3000. Only JSON is accepted.\n\n# Error Codes\n200: OK \n\n400: User sent bad information or missing parameters \n\n401: User does not have appropriate privileges \n\n404: No such end point \n\n500: Internal error, not caused by user",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
