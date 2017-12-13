@@ -1,14 +1,13 @@
 {
 	"info": {
 		"name": "Karneval",
-		"_postman_id": "c3fb424e-3dab-b6b9-9833-9f6396c24b31",
+		"_postman_id": "bbaf3a4a-c855-0100-e1b8-671325307d18",
 		"description": "# Introduction\nBackend for Lundakarnevalen 2018.\n\n# Overview\nPreferably test against localhost, but there might be a light testserver at 146.185.173.31:3000. Only JSON is accepted.\n\n# Error Codes\n200: OK \n\n400: User sent bad information or missing parameters \n\n401: User does not have appropriate privileges \n\n404: No such end point \n\n500: Internal error, not caused by user",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
 			"name": "User, register",
-			"description": "",
 			"item": [
 				{
 					"name": "Register a user",
@@ -69,7 +68,7 @@
 					},
 					"response": [
 						{
-							"id": "eaebd42a-fd5b-4a87-a650-2adedb180cda",
+							"id": "5760903f-b23d-4b0b-a61a-7996d7b7c13c",
 							"name": "Register a user",
 							"originalRequest": {
 								"method": "POST",
@@ -194,7 +193,7 @@
 					},
 					"response": [
 						{
-							"id": "91269f00-9621-4d21-90e8-3bd1c8683183",
+							"id": "266b22e9-6b0a-4a34-9cb0-018ea4315433",
 							"name": "Missing field register",
 							"originalRequest": {
 								"method": "POST",
@@ -318,7 +317,7 @@
 					},
 					"response": [
 						{
-							"id": "c2773983-e05c-4691-b0cd-5336dfcf9d6f",
+							"id": "256da8ed-56de-49dc-b177-a6deb21ee337",
 							"name": "Fail to reregister same user",
 							"originalRequest": {
 								"method": "POST",
@@ -396,7 +395,6 @@
 		},
 		{
 			"name": "User, email login",
-			"description": "",
 			"item": [
 				{
 					"name": "Email Login",
@@ -455,7 +453,7 @@
 					},
 					"response": [
 						{
-							"id": "f2e2b608-3b3d-4e92-a6a9-fa87278f837a",
+							"id": "7e4ced44-3e4e-4253-9fc5-d41b218f4b47",
 							"name": "Email Login",
 							"originalRequest": {
 								"method": "POST",
@@ -576,7 +574,7 @@
 					},
 					"response": [
 						{
-							"id": "9b7004e3-28b8-45f8-9c9a-e256ce0b8033",
+							"id": "2629e089-f0e5-4bde-9b4c-2e20d0d341d7",
 							"name": "Wrong email login",
 							"originalRequest": {
 								"method": "POST",
@@ -697,7 +695,7 @@
 					},
 					"response": [
 						{
-							"id": "969a2ae8-5e9f-44ff-8979-2d05578bdf8b",
+							"id": "36c59e18-f9d6-4a95-908a-75552c828ebd",
 							"name": "Wrong password login",
 							"originalRequest": {
 								"method": "POST",
@@ -818,7 +816,7 @@
 					},
 					"response": [
 						{
-							"id": "db341591-9599-4f2c-8eb7-e6fb6c9038d6",
+							"id": "5fbf182c-92f2-468d-9cf4-8fd6f910644b",
 							"name": "Missing field login",
 							"originalRequest": {
 								"method": "POST",
@@ -897,7 +895,6 @@
 		},
 		{
 			"name": "User, password reset",
-			"description": "",
 			"item": [
 				{
 					"name": "Initiate password Reset",
@@ -948,7 +945,7 @@
 					},
 					"response": [
 						{
-							"id": "957c9ca5-8154-4c5b-ab2c-e60e5a4e984e",
+							"id": "b59be5f0-aa48-4a7f-8a06-08856eda1945",
 							"name": "Initiate password Reset",
 							"originalRequest": {
 								"method": "POST",
@@ -1066,7 +1063,7 @@
 					},
 					"response": [
 						{
-							"id": "abbdb9da-abb5-4fea-88c3-c84943bd10a7",
+							"id": "6600b62c-eb4f-43f9-848d-6aef5396ec60",
 							"name": "Password reset change password",
 							"originalRequest": {
 								"method": "POST",
@@ -1209,7 +1206,7 @@
 					},
 					"response": [
 						{
-							"id": "5afb3fb4-f9a0-497e-84f4-c8753ba6af57",
+							"id": "5b1c2550-0f2a-4288-937a-13a869fc6cec",
 							"name": "Email Login new password",
 							"originalRequest": {
 								"method": "POST",
@@ -1328,7 +1325,7 @@
 					},
 					"response": [
 						{
-							"id": "660aa11f-2bc0-40cd-9cc9-fc0d71914a8e",
+							"id": "55f1b045-c535-4278-b35e-a57275e5a27b",
 							"name": "Bad password reset change password",
 							"originalRequest": {
 								"method": "POST",
@@ -1407,7 +1404,6 @@
 		},
 		{
 			"name": "API, meta",
-			"description": "",
 			"item": [
 				{
 					"name": "API token \"hello\"",
@@ -1461,7 +1457,7 @@
 					},
 					"response": [
 						{
-							"id": "5968cd8e-36c4-48b4-9304-90adbf68bf71",
+							"id": "37024a36-49d1-4762-9307-fe6b87b4173a",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -1593,7 +1589,7 @@
 					},
 					"response": [
 						{
-							"id": "61190df2-4bb3-4b69-8130-841544c06aa3",
+							"id": "1bd4198c-8795-43ca-a212-f0cf6a80abdb",
 							"name": "Fail to access resource that doesnt exist",
 							"originalRequest": {
 								"method": "POST",
@@ -1674,7 +1670,6 @@
 		},
 		{
 			"name": "API, section priorities",
-			"description": "",
 			"item": [
 				{
 					"name": "Set priorities",
@@ -1747,12 +1742,11 @@
 								"api",
 								"section"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": [
 						{
-							"id": "81fe632a-f53f-475b-978a-6ed3914ba5b2",
+							"id": "10c95298-e8ec-4dff-9039-8dc1c7e97d64",
 							"name": "Set priorities",
 							"originalRequest": {
 								"method": "POST",
@@ -1867,7 +1861,10 @@
 						},
 						"method": "GET",
 						"header": [],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "http://localhost:3000/api/section",
 							"protocol": "http",
@@ -1879,17 +1876,19 @@
 								"api",
 								"section"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": [
 						{
-							"id": "900045d1-f8c5-480c-b3c0-22a2de0e3b6c",
+							"id": "842364f8-a9fe-4af2-8567-82fd8d30b63e",
 							"name": "Get same priorities",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
-								"body": {},
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
 								"url": {
 									"raw": "http://localhost:3000/api/section",
 									"protocol": "http",
@@ -2023,12 +2022,11 @@
 								"api",
 								"section"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": [
 						{
-							"id": "24358d88-3a20-4d6b-84f1-da8275542f7f",
+							"id": "48cadd70-bf2f-4be2-a046-1a4205328c46",
 							"name": "Set duplicate prio",
 							"originalRequest": {
 								"method": "POST",
@@ -2472,8 +2470,7 @@
 								"user",
 								"karnevalistinfo"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -2512,7 +2509,10 @@
 						},
 						"method": "GET",
 						"header": [],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "http://localhost:3000/api/user/karnevalistinfo",
 							"protocol": "http",
@@ -2565,14 +2565,14 @@
 						],
 						"body": {},
 						"url": {
-							"raw": "localhost:3000/api/users/nonexisting",
+							"raw": "localhost:3000/api/user/nonexisting",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
 								"api",
-								"users",
+								"user",
 								"nonexisting"
 							]
 						},
