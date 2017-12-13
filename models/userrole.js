@@ -53,6 +53,19 @@ UserRole.sync()
 Role.sync()
 User.sync()
 
+const getUsers = function (roleId, callback) {
+  UserRole.findAll({
+    where: {
+      RoleId: roleId
+    }
+  }).then(users => done(null, makeSendablePrios(userRoles)))
+}
+
+const makeSendablePrios = function (userRoles) {
+  return userRoles[0].section.split(',')
+}
+
 module.exports = {
-  UserRole
+  UserRole,
+  getUsers
 }

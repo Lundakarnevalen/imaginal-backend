@@ -25,10 +25,6 @@ app.use(function (error, req, res, next) {
   next()
 })
 
-/** ADD ROLE */
-
-app.post('/role/addrole', role.addRole)
-
 /** REGISTER USER */
 app.post('/register', register.registerUser)
 
@@ -67,6 +63,7 @@ app.all(/(\/)?api\/.*/, function (req, res, next) {
 app.put('/api/user/setuserinfo', userinfo.setUserInfo)
 
 app.get('/api/users', users.getAll)
+
 app.get('/api/users/:email', users.getById)
 
 /*******************/
@@ -80,6 +77,19 @@ app.post('/api/hello', function (req, res) {
 app.post('/api/section', section.setSectionPriorities)
 
 app.get('/api/section', section.getSectionPriorities)
+
+/** ROLES */
+
+app.post('/api/role/addrole/:email/:roleid', role.addRole) // Adds a single role to a single user
+
+app.post('/api/role/removerole/:email/:roleid', role.removeRole) // Adds a single role to a single user
+
+app.post('/api/role/getusers/:roleid', role.getUsers) // Gets all users that has a given role
+
+//app.get('/api/users/:email/roles', user.getRoles)
+//app.get('/api/roles/:role/users', role.getUsers) // req.roleid, res.emails
+//app.post('/api/roles', role.addRole) // post.roleDescription
+//app.post('/api/roles/:role', role.addUser) // req.roleid, post.email
 
 app.all('*', function (req, res) {
   res.status(404).json({

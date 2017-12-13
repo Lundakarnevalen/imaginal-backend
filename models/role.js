@@ -1,7 +1,6 @@
 'use strict'
 const Sequelize = require('sequelize')
 const dbc = require('../config/database')
-const user = require('./users')
 
 const Role = dbc.define('Role', {
   id: {
