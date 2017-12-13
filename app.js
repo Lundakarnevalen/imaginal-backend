@@ -6,7 +6,6 @@ const register = require('./controllers/register')
 const forgotPassword = require('./controllers/forgotpassword')
 const passport = require('passport')
 require('./config/passport')(passport)
-const userinfo = require('./controllers/userinfo')
 const section = require('./controllers/section')
 const karnevalistinfo = require('./controllers/karnevalistinfo')
 const users = require('./controllers/users')
@@ -71,11 +70,11 @@ app.put('/api/user/karnevalistinfo', karnevalistinfo.setKarnevalistInfo)
 
 app.get('/api/user/karnevalistinfo', karnevalistinfo.getKarnevalistInfo)
 
-app.put('/api/user/user', userinfo.setUserInfo)
+app.put('/api/user/:email', users.setUserInfo)
+
+app.get('/api/user/:email', users.getById)
 
 app.get('/api/users', users.getAll)
-
-app.get('/api/users/:email', users.getById)
 
 app.post('/api/section', section.setSectionPriorities)
 
