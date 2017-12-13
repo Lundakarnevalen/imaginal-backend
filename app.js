@@ -8,6 +8,7 @@ const passport = require('passport')
 require('./config/passport')(passport)
 const role = require('./controllers/role')
 const section = require('./controllers/section')
+const checkin = require('./controllers/checkin')
 const karnevalistinfo = require('./controllers/karnevalistinfo')
 const users = require('./controllers/users')
 
@@ -71,7 +72,11 @@ app.put('/api/user/karnevalistinfo', karnevalistinfo.setKarnevalistInfo)
 
 app.get('/api/user/karnevalistinfo', karnevalistinfo.getKarnevalistInfo)
 
-app.put('/api/user/:email', users.setUserInfo)
+//app.get('/api/user/checkin', checkin.get
+
+app.post('/api/user/:email', users.setUserInfo)
+
+app.post('/api/user/checkin/:email', checkin.checkIn)
 
 app.get('/api/user/:email', users.getById)
 
