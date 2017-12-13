@@ -8,10 +8,20 @@
 	"item": [
 		{
 			"name": "User, register",
+			"description": "",
 			"item": [
 				{
 					"name": "Register a user",
 					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.globals.set(\"randomUsername\", Math.random().toString(36).substring(7));"
+								]
+							}
+						},
 						{
 							"listen": "test",
 							"script": {
@@ -30,15 +40,6 @@
 									""
 								]
 							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.globals.set(\"randomUsername\", Math.random().toString(36).substring(7));"
-								]
-							}
 						}
 					],
 					"request": {
@@ -51,7 +52,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"email\":\"{{randomUsername}}\",\n  \"password\":\"password\"\n}"
+							"raw": "{\n  \"email\":\"{{randomUsername}}\",\n  \"password\":\"password\",\n  \"postNumber\": \"123\",\n  \"talent\":\"saknas\"\n}"
 						},
 						"url": {
 							"raw": "http://localhost:3000/register",
@@ -68,7 +69,7 @@
 					},
 					"response": [
 						{
-							"id": "b51b4c7a-6aa3-4d5f-833d-07fc828b9c62",
+							"id": "eaebd42a-fd5b-4a87-a650-2adedb180cda",
 							"name": "Register a user",
 							"originalRequest": {
 								"method": "POST",
@@ -193,7 +194,7 @@
 					},
 					"response": [
 						{
-							"id": "84e14d11-2b6e-4b11-8b3e-51b449e5c725",
+							"id": "91269f00-9621-4d21-90e8-3bd1c8683183",
 							"name": "Missing field register",
 							"originalRequest": {
 								"method": "POST",
@@ -317,7 +318,7 @@
 					},
 					"response": [
 						{
-							"id": "33423928-51b0-4105-8b66-b70a7e46e5e7",
+							"id": "c2773983-e05c-4691-b0cd-5336dfcf9d6f",
 							"name": "Fail to reregister same user",
 							"originalRequest": {
 								"method": "POST",
@@ -395,6 +396,7 @@
 		},
 		{
 			"name": "User, email login",
+			"description": "",
 			"item": [
 				{
 					"name": "Email Login",
@@ -453,7 +455,7 @@
 					},
 					"response": [
 						{
-							"id": "4d3c5964-648d-4448-b28a-8c99e923f7b4",
+							"id": "f2e2b608-3b3d-4e92-a6a9-fa87278f837a",
 							"name": "Email Login",
 							"originalRequest": {
 								"method": "POST",
@@ -574,7 +576,7 @@
 					},
 					"response": [
 						{
-							"id": "9e6035c9-7993-4b53-a701-d854a6d9fa20",
+							"id": "9b7004e3-28b8-45f8-9c9a-e256ce0b8033",
 							"name": "Wrong email login",
 							"originalRequest": {
 								"method": "POST",
@@ -695,7 +697,7 @@
 					},
 					"response": [
 						{
-							"id": "0c87da0c-891b-404d-9a1b-dee72f58aa7a",
+							"id": "969a2ae8-5e9f-44ff-8979-2d05578bdf8b",
 							"name": "Wrong password login",
 							"originalRequest": {
 								"method": "POST",
@@ -816,7 +818,7 @@
 					},
 					"response": [
 						{
-							"id": "62b6d1e5-4f3b-480c-8f50-eb20ad109825",
+							"id": "db341591-9599-4f2c-8eb7-e6fb6c9038d6",
 							"name": "Missing field login",
 							"originalRequest": {
 								"method": "POST",
@@ -895,6 +897,7 @@
 		},
 		{
 			"name": "User, password reset",
+			"description": "",
 			"item": [
 				{
 					"name": "Initiate password Reset",
@@ -945,7 +948,7 @@
 					},
 					"response": [
 						{
-							"id": "fa31fc31-66bc-46a3-9ae8-db9adadf8534",
+							"id": "957c9ca5-8154-4c5b-ab2c-e60e5a4e984e",
 							"name": "Initiate password Reset",
 							"originalRequest": {
 								"method": "POST",
@@ -1063,7 +1066,7 @@
 					},
 					"response": [
 						{
-							"id": "bce9c8f8-5ca7-4c80-9812-964b53d3f75f",
+							"id": "abbdb9da-abb5-4fea-88c3-c84943bd10a7",
 							"name": "Password reset change password",
 							"originalRequest": {
 								"method": "POST",
@@ -1142,6 +1145,17 @@
 					"name": "Email Login new password",
 					"event": [
 						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.sendRequest(\"https://postman-echo.com/get\", function (err, response) {",
+									"    console.log(response.json());",
+									"});"
+								]
+							}
+						},
+						{
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
@@ -1163,17 +1177,6 @@
 									"});",
 									"",
 									""
-								]
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.sendRequest(\"https://postman-echo.com/get\", function (err, response) {",
-									"    console.log(response.json());",
-									"});"
 								]
 							}
 						}
@@ -1206,7 +1209,7 @@
 					},
 					"response": [
 						{
-							"id": "9bd34789-3056-48ae-8875-d144468b0564",
+							"id": "5afb3fb4-f9a0-497e-84f4-c8753ba6af57",
 							"name": "Email Login new password",
 							"originalRequest": {
 								"method": "POST",
@@ -1325,7 +1328,7 @@
 					},
 					"response": [
 						{
-							"id": "fd525732-ef06-4b86-825e-0a565fe6a0f6",
+							"id": "660aa11f-2bc0-40cd-9cc9-fc0d71914a8e",
 							"name": "Bad password reset change password",
 							"originalRequest": {
 								"method": "POST",
@@ -1404,6 +1407,7 @@
 		},
 		{
 			"name": "API, meta",
+			"description": "",
 			"item": [
 				{
 					"name": "API token \"hello\"",
@@ -1457,7 +1461,7 @@
 					},
 					"response": [
 						{
-							"id": "242f111a-db09-4f7d-8dcc-35517b8fe721",
+							"id": "5968cd8e-36c4-48b4-9304-90adbf68bf71",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -1536,6 +1540,17 @@
 					"name": "Fail to access resource that doesnt exist",
 					"event": [
 						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.sendRequest(\"https://postman-echo.com/get\", function (err, response) {",
+									"    console.log(response.json());",
+									"});"
+								]
+							}
+						},
+						{
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
@@ -1544,17 +1559,6 @@
 									"    pm.response.to.have.status(404);",
 									"});",
 									""
-								]
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.sendRequest(\"https://postman-echo.com/get\", function (err, response) {",
-									"    console.log(response.json());",
-									"});"
 								]
 							}
 						}
@@ -1589,7 +1593,7 @@
 					},
 					"response": [
 						{
-							"id": "b0a56e9e-5226-4bba-af1c-d0472694d72e",
+							"id": "61190df2-4bb3-4b69-8130-841544c06aa3",
 							"name": "Fail to access resource that doesnt exist",
 							"originalRequest": {
 								"method": "POST",
@@ -1670,6 +1674,7 @@
 		},
 		{
 			"name": "API, section priorities",
+			"description": "",
 			"item": [
 				{
 					"name": "Set priorities",
@@ -1677,6 +1682,7 @@
 						{
 							"listen": "test",
 							"script": {
+								"id": "68c49aae-842c-4efb-aae4-0de6cf30e535",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
@@ -1699,6 +1705,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
+								"id": "f3720808-4899-405c-bb7b-56ff6f5899bf",
 								"type": "text/javascript",
 								"exec": [
 									"pm.globals.set(\"sectionPriorities\", [\"A\", \"B\", \"C\", \"F\"]);",
@@ -1740,11 +1747,12 @@
 								"api",
 								"section"
 							]
-						}
+						},
+						"description": ""
 					},
 					"response": [
 						{
-							"id": "c55c2ade-67a6-449d-8650-9b185431446a",
+							"id": "81fe632a-f53f-475b-978a-6ed3914ba5b2",
 							"name": "Set priorities",
 							"originalRequest": {
 								"method": "POST",
@@ -1825,6 +1833,7 @@
 						{
 							"listen": "test",
 							"script": {
+								"id": "1d436d06-21b4-4eb5-b169-05ec2d202604",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
@@ -1858,10 +1867,7 @@
 						},
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
+						"body": {},
 						"url": {
 							"raw": "http://localhost:3000/api/section",
 							"protocol": "http",
@@ -1873,11 +1879,12 @@
 								"api",
 								"section"
 							]
-						}
+						},
+						"description": ""
 					},
 					"response": [
 						{
-							"id": "69405375-5e2c-421e-b996-0626752a9977",
+							"id": "900045d1-f8c5-480c-b3c0-22a2de0e3b6c",
 							"name": "Get same priorities",
 							"originalRequest": {
 								"method": "GET",
@@ -1950,6 +1957,7 @@
 						{
 							"listen": "test",
 							"script": {
+								"id": "6b7717a0-5bd0-42e1-b9a3-6bd5a75fa566",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 400\", function () {",
@@ -1973,6 +1981,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
+								"id": "f3720808-4899-405c-bb7b-56ff6f5899bf",
 								"type": "text/javascript",
 								"exec": [
 									"pm.globals.set(\"sectionPriorities\", [\"A\", \"B\", \"C\", \"F\"]);",
@@ -2014,132 +2023,12 @@
 								"api",
 								"section"
 							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "User, get",
-			"description": "",
-			"item": [
-				{
-					"name": "Get user",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"pm.test(\"Successfield true on statuscode 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.success).to.eql(true);",
-									"});",
-									"",
-									"pm.test(\"Body must contain user\", function () {",
-									"    pm.expect(pm.response.text()).to.include(\"user\");",
-									"});",
-									""
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer {{accessToken}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"email\": \"test2\"\n}"
-						},
-						"url": {
-							"raw": "localhost:3000/api/users/{{randomUsername}}",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"api",
-								"users",
-								"{{randomUsername}}"
-							]
-						},
-						"description": ""
-					},
-					"response": []
-				},
-				{
-					"name": "Get all users",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"pm.test(\"Successfield true on statuscode 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.success).to.eql(true);",
-									"});",
-									"",
-									"pm.test(\"Body must contain user\", function () {",
-									"    pm.expect(pm.response.text()).to.include(\"users\");",
-									"});",
-									""
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer {{accessToken}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"email\": \"test2\"\n}"
-						},
-						"url": {
-							"raw": "localhost:3000/api/users",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"api",
-								"users"
-							]
 						},
 						"description": ""
 					},
 					"response": [
 						{
-							"id": "7266b5f0-15b8-45c5-969f-df936bfc7124",
+							"id": "24358d88-3a20-4d6b-84f1-da8275542f7f",
 							"name": "Set duplicate prio",
 							"originalRequest": {
 								"method": "POST",
@@ -2213,6 +2102,433 @@
 							"body": "{\"success\":false,\"message\":\"Duplicate sections!\"}"
 						}
 					]
+				}
+			]
+		},
+		{
+			"name": "API, userinfo",
+			"item": [
+				{
+					"name": "Get userinfo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Successfield true on statuscode 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(true);",
+									"});",
+									"",
+									"pm.test(\"Body must contain user\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"user\");",
+									"});",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"test2\"\n}"
+						},
+						"url": {
+							"raw": "localhost:3000/api/user/{{randomUsername}}",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user",
+								"{{randomUsername}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fail to get other user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "cd238b13-37b6-4731-88c6-7c7cd60b05de",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"",
+									"pm.test(\"Successfield false on statuscode 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(false);",
+									"});",
+									"",
+									"pm.test(\"Body must contain message\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"message\");",
+									"});",
+									""
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "deff2c42-9133-4388-a331-82cf870564ab",
+								"type": "text/javascript",
+								"exec": [
+									"pm.globals.set(\"seedUser\", \"karnevalist\");",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"test2\"\n}"
+						},
+						"url": {
+							"raw": "localhost:3000/api/user/{{seedUser}}",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user",
+								"{{seedUser}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Set user info",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "44054671-e53e-44bc-8b6c-aa6990fef725",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Successfield true on statuscode 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(true);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"postNumber\": \"123\"\n}"
+						},
+						"url": {
+							"raw": "localhost:3000/api/user/{{randomUsername}}",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user",
+								"{{randomUsername}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fail to set other users info",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c7123b01-cdb9-43cd-81a5-c270f0c33b71",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"",
+									"pm.test(\"Successfield false on statuscode 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(false);",
+									"});",
+									"",
+									"pm.test(\"Body must contain message\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"message\");",
+									"});",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"postNumber\": \"123\"\n}"
+						},
+						"url": {
+							"raw": "localhost:3000/api/user/{{seedUser}}",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user",
+								"{{seedUser}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Successfield true on statuscode 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(true);",
+									"});",
+									"",
+									"pm.test(\"Body must contain user\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"users\");",
+									"});",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"test2\"\n}"
+						},
+						"url": {
+							"raw": "localhost:3000/api/users",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Set karnevalistinfo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6f6eecaa-b1c3-42f3-ab25-c8d47ce55384",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Successfield true on statuscode 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(true);",
+									"});",
+									"",
+									"pm.test(\"Body must contain info\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"info\");",
+									"});",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"talent\":\"lol no\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/user/karnevalistinfo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user",
+								"karnevalistinfo"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get Karnevalist info",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d0bf3cad-bee6-478f-8955-aae5eb0c44a9",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Data must belong to a user\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"id\");",
+									"    pm.expect(pm.response.text()).to.include(\"user_id\");",
+									"});",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:3000/api/user/karnevalistinfo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user",
+								"karnevalistinfo"
+							]
+						},
+						"description": ""
+					},
+					"response": []
 				}
 			]
 		}
