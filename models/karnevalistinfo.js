@@ -2,7 +2,7 @@
 const dbc = require('../config/database')
 const Sequelize = require('sequelize')
 
-const KarnevalInfo = dbc.define('KarnevalInfo', {
+const KarnevalistInfo = dbc.define('KarnevalistInfo', {
   id: {
     autoIncrement: true,
     primaryKey: true,
@@ -26,5 +26,5 @@ const KarnevalInfo = dbc.define('KarnevalInfo', {
 })
 
 module.exports = {
-  KarnevalistInfo: KarnevalInfo
+  KarnevalistInfo
 }

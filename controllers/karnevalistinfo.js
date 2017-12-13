@@ -2,7 +2,7 @@
 
 const karnevalistInfo = require('../models/karnevalistinfo')
 
-let setKarnevalistInfo = function (req, res) {
+const setKarnevalistInfo = function (req, res) {
   karnevalistInfo.KarnevalistInfo.findOne({
     where: {user_id: req.user.id}
   }).then((entry) => {
@@ -29,7 +29,17 @@ let setKarnevalistInfo = function (req, res) {
   })
 }
 
+const getKarnevalistInfo = function (req, res) {
+  karnevalistInfo.KarnevalistInfo.findOne({
+    where: {user_id: req.user.id}
+  }).then(info => {
+    res.json(
+      info.dataValues
+    )
+  })
+}
+
 module.exports = {
   setKarnevalistInfo,
-  setKarnevalistInfo
+  getKarnevalistInfo
 }

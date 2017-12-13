@@ -67,11 +67,11 @@ app.post('/api/hello', function (req, res) {
   })
 })
 
-app.put('/api/user/setkarnevalistinfo', karnevalistinfo.setKarnevalistInfo)
+app.put('/api/user/karnevalistinfo', karnevalistinfo.setKarnevalistInfo)
 
-app.get('/api/user/setkarnevalistinfo', karnevalistinfo.getKarnevalistInfo)
+app.get('/api/user/karnevalistinfo', karnevalistinfo.getKarnevalistInfo)
 
-app.put('/api/user/setuserinfo', userinfo.setUserInfo)
+app.put('/api/user/user', userinfo.setUserInfo)
 
 app.get('/api/users', users.getAll)
 
