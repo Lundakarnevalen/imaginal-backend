@@ -43,9 +43,15 @@ const getById = function (req, res) {
     attributes: ['id', 'email', 'name', 'phoneNumber', 'address', 'postNumber', 'city', 'careOf', 'personalNumber'],
     where: { email: req.params.email }
   }).then(user => {
-    res.json({
-      success: true,
-      user
+    if(user){
+      return res.json({
+        success: true,
+        user
+      })
+    }
+    res.status(400).json({
+      success: false,
+      message: 'User not found'
     })
   })
 }
