@@ -1,3 +1,9 @@
+TODO BEFORE MERGE:
+GET checkinstatus
+Passing tests
+Foregin keys
+
+
 # Backend for lundakarnevalen 2018
 
 The backend for the quadrennial carnival in Lund, Sweden. Template for readme https://gist.github.com/PurpleBooth/109311bb0361f32d87a2.
