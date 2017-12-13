@@ -2,7 +2,7 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('KarnevalInfos', {
+    return queryInterface.createTable('KarnevalistInfos', {
       id: {
         autoIncrement: true,
         primaryKey: true,
@@ -62,7 +62,7 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: false
       }
-    }).then(() => queryInterface.addConstraint('KarnevalInfos', ['user_id'], {
+    }).then(() => queryInterface.addConstraint('KarnevalistInfos', ['user_id'], {
       type: 'FOREIGN KEY',
       name: 'Info must have user',
       references: {
@@ -75,6 +75,6 @@ module.exports = {
     )
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('KarnevalInfos')
+    return queryInterface.dropTable('KarnevalistInfos')
   }
 }

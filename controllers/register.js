@@ -3,7 +3,7 @@
 const users = require('../models/users')
 const role = require('../models/role')
 const userrole = require('../models/userrole')
-const karnevalinfo = require('../models/karnevalinfo')
+const karnevalistinfo = require('../models/karnevalistinfo')
 
 const registerUser = function (req, res) {
   if (req.body.email && req.body.password) {
@@ -49,7 +49,7 @@ const createUser = function (req, res) {
       })
       return user
     })
-    .then((user) => karnevalinfo.KarnevalInfo.create({
+    .then((user) => karnevalistinfo.KarnevalistInfo.create({
       user_id: user.id,
       language: req.body.language || '',
       driversLicense: req.body.driversLicense || '',

@@ -1,9 +1,9 @@
 'use strict'
 
-const karnevalInfo = require('../models/karnevalinfo')
+const karnevalistInfo = require('../models/karnevalistinfo')
 
-let setKarnevalInfo = function (req, res) {
-  karnevalInfo.KarnevalInfo.findOne({
+let setKarnevalistInfo = function (req, res) {
+  karnevalistInfo.KarnevalistInfo.findOne({
     where: {user_id: req.user.id}
   }).then((entry) => {
     if (req.body.language) entry.language = req.body.language
@@ -23,12 +23,13 @@ let setKarnevalInfo = function (req, res) {
     entry.save().then(() => {
       res.json({
         success: true,
-        message: 'Karneval info updated'
+        message: 'Karnevalist info updated'
       })
     })
   })
 }
 
 module.exports = {
-  setKarnevalInfo
+  setKarnevalistInfo,
+  setKarnevalistInfo
 }

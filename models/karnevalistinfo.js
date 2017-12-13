@@ -26,5 +26,5 @@ const KarnevalInfo = dbc.define('KarnevalInfo', {
 })
 
 module.exports = {
-  KarnevalInfo
+  KarnevalistInfo: KarnevalInfo
 }

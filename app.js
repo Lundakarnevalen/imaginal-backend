@@ -8,7 +8,7 @@ const passport = require('passport')
 require('./config/passport')(passport)
 const userinfo = require('./controllers/userinfo')
 const section = require('./controllers/section')
-const karnevalinfo = require('./controllers/karnevalinfo')
+const karnevalistinfo = require('./controllers/karnevalistinfo')
 const users = require('./controllers/users')
 
 app.use(bodyParser.json())
@@ -59,7 +59,6 @@ app.all(/(\/)?api\/.*/, function (req, res, next) {
   })(req, res, next)
 })
 
-
 /*******************/
 app.post('/api/hello', function (req, res) {
   res.json({
@@ -68,10 +67,11 @@ app.post('/api/hello', function (req, res) {
   })
 })
 
-/** UPDATE USER INFO */
-app.put('/api/user/setuserinfo', userinfo.setUserInfo)
+app.put('/api/user/setkarnevalistinfo', karnevalistinfo.setKarnevalistInfo)
 
-app.put('/api/user/setkarnevalinfo', karnevalinfo.setKarnevalInfo)
+app.get('/api/user/setkarnevalistinfo', karnevalistinfo.getKarnevalistInfo)
+
+app.put('/api/user/setuserinfo', userinfo.setUserInfo)
 
 app.get('/api/users', users.getAll)
 
