@@ -1,7 +1,7 @@
 {
 	"info": {
 		"name": "Karneval",
-		"_postman_id": "f67de700-558b-3ca6-5f70-524fb9ee268d",
+		"_postman_id": "e54b9069-a363-1cca-e685-91ededc563b5",
 		"description": "# Introduction\nWhat does your API do?\n\n# Overview\nThings that the developers should know about\n\n# Authentication\nWhat is the preferred way of using the API?\n\n# Error Codes\nWhat errors and status codes can a user expect?\n\n# Rate limit\nIs there a limit to the number of requests an user can send?",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -68,7 +68,7 @@
 					},
 					"response": [
 						{
-							"id": "e534b55b-bcff-4872-946d-6e03020fa5ce",
+							"id": "7987b019-8e5d-4f25-83ad-f99bdbfa17b4",
 							"name": "Register a user",
 							"originalRequest": {
 								"method": "POST",
@@ -244,7 +244,7 @@
 					},
 					"response": [
 						{
-							"id": "ba6c067b-4e2c-41cb-89d5-a55f855eac00",
+							"id": "60843f57-a42d-4da9-830c-67cf695e527d",
 							"name": "Register a user",
 							"originalRequest": {
 								"method": "POST",
@@ -381,7 +381,7 @@
 					},
 					"response": [
 						{
-							"id": "26346cba-855f-4c4c-b08a-1e45f72e068a",
+							"id": "08970950-0490-4d51-bb3f-13818fc55f25",
 							"name": "Email Login",
 							"originalRequest": {
 								"method": "POST",
@@ -760,7 +760,7 @@
 					},
 					"response": [
 						{
-							"id": "bafffa52-4020-4a80-9cbd-3dc504d83105",
+							"id": "186af2c3-57ce-4ed9-9d48-871e65832436",
 							"name": "Email Login",
 							"originalRequest": {
 								"method": "POST",
@@ -937,7 +937,7 @@
 					},
 					"response": [
 						{
-							"id": "759d2ac0-b0d0-4809-8b4f-9d2af6dcde52",
+							"id": "22743830-4401-48e0-9415-9db4cfc4276f",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -1064,7 +1064,7 @@
 					},
 					"response": [
 						{
-							"id": "6d0f63c4-8ddf-4c9f-a074-25c96838f378",
+							"id": "6aaf799e-d077-4344-9df2-9d8d70670961",
 							"name": "Email Login",
 							"originalRequest": {
 								"method": "POST",
@@ -1354,7 +1354,6 @@
 		},
 		{
 			"name": "User, get",
-			"description": "",
 			"item": [
 				{
 					"name": "Get user",
@@ -1409,8 +1408,7 @@
 								"users",
 								"{{randomUsername}}"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -1466,8 +1464,58 @@
 								"api",
 								"users"
 							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get missing User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b4f03aa6-af92-4213-9dd9-09dd0d2161d7",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Successfield true on statuscode 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(false);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "localhost:3000/api/users/nonexisting",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								"nonexisting"
+							]
 						},
-						"description": ""
+						"description": "Do a get request for a non-existing user. Should return error."
 					},
 					"response": []
 				}
