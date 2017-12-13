@@ -66,6 +66,9 @@ const createUser = function (req, res) {
       misc: req.body.misc || '',
       plenipotentiary: req.body.plenipotentiary || ''
     }))
+    .then(() => role.Role.findOne({
+      where: {Description: 'karnevalist'}
+    }))
     .then((role) => userrole.UserRole.create({
       UserId: finalUser.id,
       RoleId: role.id
