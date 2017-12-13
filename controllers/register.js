@@ -45,7 +45,8 @@ const createUser = function (req, res) {
       users.setNewPassword(user, req.body.password)
       res.json({
         success: true,
-        message: 'You are now registered'
+        message: 'You are now registered',
+        accessToken: req.user.token
       })
       return user
     })
