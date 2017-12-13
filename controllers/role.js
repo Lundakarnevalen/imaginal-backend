@@ -1,14 +1,6 @@
 const User = require('../models/users').User
 const Role = require('../models/role').Role
 
-User.create({
-  email: 'diggahenke'
-})
-
-User.create({
-  email: 'diggahenkesfar'
-})
-
 const addRole = function (req, res) {
   let email = req.params.email
   let roleId = req.params.roleid
@@ -44,7 +36,7 @@ const getUsers = function (req, res) {
     }
   }).then(role => {
     role.getUsers().then(users => {
-      resp = {}
+      let resp = {}
       resp.success = true
       resp.users = []
       for (let i = 0; i < users.length; ++i) {

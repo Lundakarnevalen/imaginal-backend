@@ -17,19 +17,6 @@ const UserRole = dbc.define('UserRole', {
     type: Sequelize.INTEGER
   }
 })
-/*  Creates a role and adds a user to that
-Role.create({
-  description: 'Administrator'
-}).then(newrole => {
-  newrole.save()
-  User.findOne({
-    where: {id: 20}
-  }).then(user => {
-    user.setRoles([newrole])
-  })
-}).save
-
-*/
 
 User.belongsToMany(Role, {
   through: {
@@ -53,19 +40,6 @@ UserRole.sync()
 Role.sync()
 User.sync()
 
-const getUsers = function (roleId, callback) {
-  UserRole.findAll({
-    where: {
-      RoleId: roleId
-    }
-  }).then(users => done(null, makeSendablePrios(userRoles)))
-}
-
-const makeSendablePrios = function (userRoles) {
-  return userRoles[0].section.split(',')
-}
-
 module.exports = {
-  UserRole,
-  getUsers
+  UserRole
 }
