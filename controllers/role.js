@@ -1,5 +1,6 @@
 const User = require('../models/users').User
 const Role = require('../models/role').Role
+const UserRoles = require('../models/userrole')
 
 const addRole = function (req, res) {
   let email = req.params.email
@@ -51,7 +52,7 @@ const getUsers = function (req, res) {
 }
 
 const findUserAndRole = function (req, res, email, roleId, callback) {  // callback takes two arguments, user and role
-  isAdmin(req.user).then(admin => {
+  UserRoles.hasRole(req.user, 'administrator').then(admin => {
     if (admin) {
       findUser(email).then(user => {
         if (!user) {
@@ -67,14 +68,6 @@ const findUserAndRole = function (req, res, email, roleId, callback) {  // callb
     } else {
       return notAuthorized(res)
     }
-  })
-}
-
-const isAdmin = function (user) { // returns a boolean-promise
-  return Role.findOne({
-    where: {description: 'administrator'}
-  }).then(role => {
-    return user.hasRole(role)
   })
 }
 

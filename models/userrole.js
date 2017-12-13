@@ -36,10 +36,15 @@ Role.belongsToMany(User, {
   constraints: false
 })
 
-UserRole.sync()
-Role.sync()
-User.sync()
+const hasRole = function (user, role) { // (user, role) returns a boolean-promise
+  return Role.findOne({
+    where: {description: role}
+  }).then(role => {
+    return user.hasRole(role)
+  })
+}
 
 module.exports = {
-  UserRole
+  UserRole,
+  hasRole
 }

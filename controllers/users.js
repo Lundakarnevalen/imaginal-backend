@@ -1,16 +1,25 @@
 'use strict'
 
 const users = require('../models/users')
+const UserRoles = require('../models/userrole')
 
 const getAll = function (req, res) {
-  // TODO: check if admin
-  users.User.findAll({
-    attributes: ['id', 'email', 'name', 'phoneNumber', 'address', 'postNumber', 'city', 'careOf', 'personalNumber']
-  }).then(allUsers => {
-    res.json({
-      success: true,
-      users: allUsers
-    })
+  UserRoles.hasRole(req.user, 'administrator').then(isadmin => {
+    if (isadmin) {
+      users.User.findAll({
+        attributes: ['id', 'email', 'name', 'phoneNumber', 'address', 'postNumber', 'city', 'careOf', 'personalNumber']
+      }).then(allUsers => {
+        res.json({
+          success: true,
+          users: allUsers
+        })
+      })
+    } else {
+      res.status(401).json({
+        success: true,
+        message: 'Unauthorized'
+      })
+    }
   })
 }
 
@@ -38,15 +47,24 @@ const getById = function (req, res) {
       user: myuser
     })
   }
-  // TODO: check if admin
-  users.User.findOne({
-    attributes: ['id', 'email', 'name', 'phoneNumber', 'address', 'postNumber', 'city', 'careOf', 'personalNumber'],
-    where: { email: req.params.email }
-  }).then(user => {
-    res.json({
-      success: true,
-      user
-    })
+
+  UserRoles.hasRole(req.user, 'administrator').then(isadmin => {
+    if (isadmin) {
+      users.User.findOne({
+        attributes: ['id', 'email', 'name', 'phoneNumber', 'address', 'postNumber', 'city', 'careOf', 'personalNumber'],
+        where: {email: req.params.email}
+      }).then(user => {
+        res.json({
+          success: true,
+          user
+        })
+      })
+    } else {
+      res.status(401).json({
+        success: true,
+        message: 'Unauthorized'
+      })
+    }
   })
 }
 

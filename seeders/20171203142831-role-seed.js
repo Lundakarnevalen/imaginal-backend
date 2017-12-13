@@ -3,11 +3,11 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.bulkInsert('Roles', [{
-      description: 'administrator',
+      description: 'administrator'
     }], {})
 
     return queryInterface.bulkInsert('Roles', [{
-      description: 'karnevalist',
+      description: 'karnevalist'
     }], {})
     /*
       Add altering commands here.
