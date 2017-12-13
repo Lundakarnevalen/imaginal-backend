@@ -2,9 +2,33 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    return queryInterface.bulkInsert('Users', [{
+    await queryInterface.bulkInsert('Users', [{
       email: 'admin@lundakarnevalen.se',
-      password: '$2a$10$HEbL5HaUXdD3ZnUDhQnMYueuW3n4v92aPs4imN.FlRD/on4DI/55e'
+      firstName: 'saknas',
+      lastName: 'saknas',
+      phoneNumber: 'saknas',
+      address: 'saknas',
+      postNumber: 'saknas',
+      city: 'saknas',
+      careOf: 'saknas',
+      personalNumber: 'saknas',
+      password: '$2a$10$HEbL5HaUXdD3ZnUDhQnMYueuW3n4v92aPs4imN.FlRD/on4DI/55e',
+      createdAt: new Date().toISOString().substr(0, 10),
+      updatedAt: new Date().toISOString().substr(0, 10)
+    }], {})
+    return queryInterface.bulkInsert('Users', [{
+      email: 'karnevalist',
+      firstName: 'saknas',
+      lastName: 'saknas',
+      phoneNumber: 'saknas',
+      address: 'saknas',
+      postNumber: 'saknas',
+      city: 'saknas',
+      careOf: 'saknas',
+      personalNumber: 'saknas',
+      password: 'testPasswordPleaseIgnore',
+      createdAt: new Date().toISOString().substr(0, 10),
+      updatedAt: new Date().toISOString().substr(0, 10)
     }], {})
     /*
       Add altering commands here.

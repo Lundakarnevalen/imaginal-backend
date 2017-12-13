@@ -5,7 +5,13 @@ module.exports = {
 
     await queryInterface.addColumn(
       'Users',
-      'name',
+      'firstName',
+      type
+    )
+
+    await queryInterface.addColumn(
+      'Users',
+      'lastName',
       type
     )
 
@@ -47,7 +53,8 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.removeColumn('Users', 'name')
+    await queryInterface.removeColumn('Users', 'firstName')
+    await queryInterface.removeColumn('Users', 'lastName')
     await queryInterface.removeColumn('Users', 'address')
     await queryInterface.removeColumn('Users', 'postNumber')
     await queryInterface.removeColumn('Users', 'city')

@@ -63,6 +63,7 @@ typings/
 # IDE
 .idea/vcs.xml
 .idea/
+.vscode/
 
 # macOS
 .DS_Store
