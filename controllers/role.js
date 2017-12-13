@@ -72,7 +72,7 @@ const findUserAndRole = function (req, res, email, roleId, callback) {  // callb
 
 const isAdmin = function (user) { // returns a boolean-promise
   return Role.findOne({
-    where: {description: 'Administrator'}
+    where: {description: 'administrator'}
   }).then(role => {
     return user.hasRole(role)
   })

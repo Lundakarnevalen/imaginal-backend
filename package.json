@@ -30,7 +30,7 @@
     "passport-http-bearer": "^1.0.1",
     "passport-jwt": "^3.0.0",
     "passport-local": "^1.0.0",
-    "sequelize": "^4.28.0",
+    "sequelize": "^4.28.1",
     "sequelize-cli": "^3.2.0"
   },
   "devDependencies": {
