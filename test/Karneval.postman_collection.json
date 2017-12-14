@@ -1,7 +1,7 @@
 {
 	"info": {
 		"name": "Karneval",
-		"_postman_id": "f67de700-558b-3ca6-5f70-524fb9ee268d",
+		"_postman_id": "c0bd4764-efb3-2c4b-a475-cf5e85d5260a",
 		"description": "# Introduction\nWhat does your API do?\n\n# Overview\nThings that the developers should know about\n\n# Authentication\nWhat is the preferred way of using the API?\n\n# Error Codes\nWhat errors and status codes can a user expect?\n\n# Rate limit\nIs there a limit to the number of requests an user can send?",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -68,7 +68,7 @@
 					},
 					"response": [
 						{
-							"id": "e534b55b-bcff-4872-946d-6e03020fa5ce",
+							"id": "fab5df8e-74df-4aa9-b28c-fd09946c3085",
 							"name": "Register a user",
 							"originalRequest": {
 								"method": "POST",
@@ -244,7 +244,7 @@
 					},
 					"response": [
 						{
-							"id": "ba6c067b-4e2c-41cb-89d5-a55f855eac00",
+							"id": "88a1dce4-ac35-4595-96c3-520dd1b5b968",
 							"name": "Register a user",
 							"originalRequest": {
 								"method": "POST",
@@ -381,7 +381,7 @@
 					},
 					"response": [
 						{
-							"id": "26346cba-855f-4c4c-b08a-1e45f72e068a",
+							"id": "6571b2ec-f7d1-49f7-9829-fa9fc312eef5",
 							"name": "Email Login",
 							"originalRequest": {
 								"method": "POST",
@@ -760,7 +760,7 @@
 					},
 					"response": [
 						{
-							"id": "bafffa52-4020-4a80-9cbd-3dc504d83105",
+							"id": "816ab099-e98a-4d2b-a1cc-3f161fa6ef63",
 							"name": "Email Login",
 							"originalRequest": {
 								"method": "POST",
@@ -937,7 +937,7 @@
 					},
 					"response": [
 						{
-							"id": "759d2ac0-b0d0-4809-8b4f-9d2af6dcde52",
+							"id": "d1b38a70-801f-4312-a1c2-893b7997f763",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -1064,7 +1064,7 @@
 					},
 					"response": [
 						{
-							"id": "6d0f63c4-8ddf-4c9f-a074-25c96838f378",
+							"id": "d660babf-2b58-4c53-bb60-9510d3fd5b17",
 							"name": "Email Login",
 							"originalRequest": {
 								"method": "POST",
@@ -1354,7 +1354,6 @@
 		},
 		{
 			"name": "User, get",
-			"description": "",
 			"item": [
 				{
 					"name": "Get user",
@@ -1409,8 +1408,7 @@
 								"users",
 								"{{randomUsername}}"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -1466,10 +1464,747 @@
 								"api",
 								"users"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
+				}
+			]
+		},
+		{
+			"name": "Roles test",
+			"description": "",
+			"item": [
+				{
+					"name": "Unauthorized addRole",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\":\"{{randomUsername}}\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/hello",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"hello"
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "5ebc07dc-5b27-4f9b-a283-ae5f07b7581f",
+							"name": "API token \"hello\"",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/hello",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"hello"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "html",
+							"_postman_previewtype": "text",
+							"header": [
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"name": "Connection",
+									"description": "Options that are desired for the connection"
+								},
+								{
+									"key": "Content-Length",
+									"value": "12",
+									"name": "Content-Length",
+									"description": "The length of the response body in octets (8-bit bytes)"
+								},
+								{
+									"key": "Content-Type",
+									"value": "text/html; charset=utf-8",
+									"name": "Content-Type",
+									"description": "The mime type of this content"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 09 Nov 2017 12:39:00 GMT",
+									"name": "Date",
+									"description": "The date and time that the message was sent"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"c-Lve95gjOVATpfV8EL5X4nxwjKHE\"",
+									"name": "ETag",
+									"description": "An identifier for a specific version of a resource, often a message digest"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "Express",
+									"name": "X-Powered-By",
+									"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+								}
+							],
+							"cookie": [],
+							"responseTime": 35,
+							"body": "Hello World!"
+						}
+					]
+				},
+				{
+					"name": "Unauthorized removeRole",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\":\"{{randomUsername}}\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/hello",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"hello"
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "0879f7c9-1a6a-4fab-9df0-90b8eb96f120",
+							"name": "API token \"hello\"",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/hello",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"hello"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "html",
+							"_postman_previewtype": "text",
+							"header": [
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"name": "Connection",
+									"description": "Options that are desired for the connection"
+								},
+								{
+									"key": "Content-Length",
+									"value": "12",
+									"name": "Content-Length",
+									"description": "The length of the response body in octets (8-bit bytes)"
+								},
+								{
+									"key": "Content-Type",
+									"value": "text/html; charset=utf-8",
+									"name": "Content-Type",
+									"description": "The mime type of this content"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 09 Nov 2017 12:39:00 GMT",
+									"name": "Date",
+									"description": "The date and time that the message was sent"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"c-Lve95gjOVATpfV8EL5X4nxwjKHE\"",
+									"name": "ETag",
+									"description": "An identifier for a specific version of a resource, often a message digest"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "Express",
+									"name": "X-Powered-By",
+									"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+								}
+							],
+							"cookie": [],
+							"responseTime": 35,
+							"body": "Hello World!"
+						}
+					]
+				},
+				{
+					"name": "addRole",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\":\"{{randomUsername}}\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/hello",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"hello"
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "426eb7d5-d478-4a68-8d09-6a1400a69bc0",
+							"name": "API token \"hello\"",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/hello",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"hello"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "html",
+							"_postman_previewtype": "text",
+							"header": [
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"name": "Connection",
+									"description": "Options that are desired for the connection"
+								},
+								{
+									"key": "Content-Length",
+									"value": "12",
+									"name": "Content-Length",
+									"description": "The length of the response body in octets (8-bit bytes)"
+								},
+								{
+									"key": "Content-Type",
+									"value": "text/html; charset=utf-8",
+									"name": "Content-Type",
+									"description": "The mime type of this content"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 09 Nov 2017 12:39:00 GMT",
+									"name": "Date",
+									"description": "The date and time that the message was sent"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"c-Lve95gjOVATpfV8EL5X4nxwjKHE\"",
+									"name": "ETag",
+									"description": "An identifier for a specific version of a resource, often a message digest"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "Express",
+									"name": "X-Powered-By",
+									"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+								}
+							],
+							"cookie": [],
+							"responseTime": 35,
+							"body": "Hello World!"
+						}
+					]
+				},
+				{
+					"name": "addRole for new user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\":\"{{randomUsername}}\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/hello",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"hello"
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "c54d36ae-fc8a-4538-a1ec-41699940d073",
+							"name": "API token \"hello\"",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/hello",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"hello"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "html",
+							"_postman_previewtype": "text",
+							"header": [
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"name": "Connection",
+									"description": "Options that are desired for the connection"
+								},
+								{
+									"key": "Content-Length",
+									"value": "12",
+									"name": "Content-Length",
+									"description": "The length of the response body in octets (8-bit bytes)"
+								},
+								{
+									"key": "Content-Type",
+									"value": "text/html; charset=utf-8",
+									"name": "Content-Type",
+									"description": "The mime type of this content"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 09 Nov 2017 12:39:00 GMT",
+									"name": "Date",
+									"description": "The date and time that the message was sent"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"c-Lve95gjOVATpfV8EL5X4nxwjKHE\"",
+									"name": "ETag",
+									"description": "An identifier for a specific version of a resource, often a message digest"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "Express",
+									"name": "X-Powered-By",
+									"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+								}
+							],
+							"cookie": [],
+							"responseTime": 35,
+							"body": "Hello World!"
+						}
+					]
+				},
+				{
+					"name": "remove role",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\":\"{{randomUsername}}\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/hello",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"hello"
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "faac2cd6-96fc-4abc-82a6-0efb5955b1ed",
+							"name": "API token \"hello\"",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/hello",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"hello"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "html",
+							"_postman_previewtype": "text",
+							"header": [
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"name": "Connection",
+									"description": "Options that are desired for the connection"
+								},
+								{
+									"key": "Content-Length",
+									"value": "12",
+									"name": "Content-Length",
+									"description": "The length of the response body in octets (8-bit bytes)"
+								},
+								{
+									"key": "Content-Type",
+									"value": "text/html; charset=utf-8",
+									"name": "Content-Type",
+									"description": "The mime type of this content"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 09 Nov 2017 12:39:00 GMT",
+									"name": "Date",
+									"description": "The date and time that the message was sent"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"c-Lve95gjOVATpfV8EL5X4nxwjKHE\"",
+									"name": "ETag",
+									"description": "An identifier for a specific version of a resource, often a message digest"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "Express",
+									"name": "X-Powered-By",
+									"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+								}
+							],
+							"cookie": [],
+							"responseTime": 35,
+							"body": "Hello World!"
+						}
+					]
+				},
+				{
+					"name": "Unauthorized removeRole copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\":\"{{randomUsername}}\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/hello",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"hello"
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "af80b8a8-081a-42e9-892f-704503591c5a",
+							"name": "API token \"hello\"",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/hello",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"hello"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "html",
+							"_postman_previewtype": "text",
+							"header": [
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"name": "Connection",
+									"description": "Options that are desired for the connection"
+								},
+								{
+									"key": "Content-Length",
+									"value": "12",
+									"name": "Content-Length",
+									"description": "The length of the response body in octets (8-bit bytes)"
+								},
+								{
+									"key": "Content-Type",
+									"value": "text/html; charset=utf-8",
+									"name": "Content-Type",
+									"description": "The mime type of this content"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 09 Nov 2017 12:39:00 GMT",
+									"name": "Date",
+									"description": "The date and time that the message was sent"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"c-Lve95gjOVATpfV8EL5X4nxwjKHE\"",
+									"name": "ETag",
+									"description": "An identifier for a specific version of a resource, often a message digest"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "Express",
+									"name": "X-Powered-By",
+									"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+								}
+							],
+							"cookie": [],
+							"responseTime": 35,
+							"body": "Hello World!"
+						}
+					]
 				}
 			]
 		}
