@@ -22,12 +22,14 @@ const User = dbc.define('User', {
 })
 
 const setNewPassword = function (user, password) {
-  bcrypt.hash(password, 10, function (err, hash) {
-    if (err) {
-      throw err
-    }
-    user.password = hash
-    user.save()
+  return new Promise((resolve, reject) => {
+    bcrypt.hash(password, 10, (err, hash) => {
+      if (err) {
+        throw err
+      }
+      user.password = hash
+      user.save().then(resolve).catch(reject)
+    })
   })
 }
 

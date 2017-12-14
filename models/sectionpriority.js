@@ -27,8 +27,13 @@ const setSectionPriorities = function (user, sectionPriorities, done) {
     where: {
       user_id: user.id
     }
-  }).then(() => sectionPriorities.forEach((currentValue, index) => SectionPriority.create({user_id: user.id, section: currentValue, prio: index})))
-  return done(null, true, 'Priorities set')
+  }).then(() => sectionPriorities.forEach((currentValue, index) => SectionPriority.create({
+    user_id: user.id,
+    section: currentValue,
+    prio: index
+  }).then((priority) => {
+    return done(null, true, 'Priorities set')
+  })))
 }
 
 const getSectionPriorities = function (user, done) {
@@ -36,15 +41,25 @@ const getSectionPriorities = function (user, done) {
     where: {
       user_id: user.id
     }
-  }).then(prios => done(null, makeSendablePrios(prios)))
+  }).then(prios => {
+    if (!prios) {
+      return done(null, null)
+    } else {
+      return done(null, makeSendablePrios(prios))
+    }
+  })
 }
 
 const uniqueSections = function (array) {
   return (new Set(array)).size !== array.length
 }
 
-const makeSendablePrios = function (prios) {
-  return prios[0].section.split(',')
+const makeSendablePrios = function (prios) {  // This doesn't always work! Fix it!
+  if (prios.length > 0) {
+    return prios[0].section.split(',')
+  } else {
+    return ''
+  }
 }
 
 module.exports = {
