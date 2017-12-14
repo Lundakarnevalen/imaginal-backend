@@ -54,7 +54,7 @@ const uniqueSections = function (array) {
   return (new Set(array)).size !== array.length
 }
 
-const makeSendablePrios = function (prios) {  // This doesn't always work! Fix it!
+const makeSendablePrios = function (prios) { // What to return if prios is empty?
   if (prios.length > 0) {
     return prios[0].section.split(',')
   } else {
