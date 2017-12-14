@@ -44,7 +44,7 @@ const getById = function (req, res) {
     attributes: ['id', 'email', 'firstname', 'lastname', 'phoneNumber', 'address', 'postNumber', 'city', 'careOf', 'personalNumber'],
     where: { email: req.params.email }
   }).then(user => {
-    if(user){
+    if (user) {
       return res.json({
         success: true,
         user
