@@ -4,7 +4,9 @@ module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert('UserRoles', [{
       roleId: 1,
-      userId: 1
+      userId: 1,
+      createdAt: new Date().toISOString().substr(0, 10),
+      updatedAt: new Date().toISOString().substr(0, 10)
     }], {})
     /*
       Add altering commands here.

@@ -91,17 +91,6 @@
                 message:
                   type: "string"
                   description: "Failure message"
-          "422":
-            description: "Failed to log in due to missing credentials"
-            schema: 
-              type: "object"
-              properties:
-                success:
-                  type: "boolean"
-                  description: "Failure values"
-                message:
-                  type: "string"
-                  description: "Failure message"
           "500":
             description: "Failed to log in due to internal server error"
             schema: 
@@ -135,6 +124,173 @@
                   description: "Success message"
           "401":
             description: "Unauthorized"
+            schema: 
+              type: "object"
+              properties:
+                success:
+                  type: "boolean"
+                  description: "Failure values"
+                message:
+                  type: "string"
+                  description: "Failure message"
+    /api/users: 
+      get:
+        description: "Get all users, requires admin"
+        parameters:
+          - in: "header"
+            name: "Authorization"
+            type: "string"
+            required: true
+        responses: 
+          "200":
+            description: "Successfully fetched all users"
+            schema: 
+              type: "object"
+              properties:
+                success:
+                  type: "boolean"
+                  description: "Success values"
+                users:
+                  type: "array"
+                  description: "Array of all users"
+                  items:
+                    type: "object"
+          "401":
+            description: "Unauthorized"
+            schema: 
+              type: "object"
+              properties:
+                success:
+                  type: "boolean"
+                  description: "Failure values"
+                message:
+                  type: "string"
+                  description: "Failure message"
+    /api/users/{email}: 
+      get:
+        description: "Get user defined by email"
+        parameters:
+          - in: "header"
+            name: "Authorization"
+            type: "string"
+            required: true
+          - in: "path"
+            name: "email"
+            type: "string"
+            required: true
+        responses: 
+          "200":
+            description: "Successfully fetched user"
+            schema: 
+              type: "object"
+              properties:
+                success:
+                  type: "boolean"
+                  description: "Success values"
+                user:
+                  type: "object"
+                  description: "User information"
+          "401":
+            description: "Unauthorized"
+            schema: 
+              type: "object"
+              properties:
+                success:
+                  type: "boolean"
+                  description: "Failure values"
+                message:
+                  type: "string"
+                  description: "Failure message"
+    /api/section: 
+      get:
+        description: "Get users section priorities"
+        parameters:
+          - in: "header"
+            name: "Authorization"
+            type: "string"
+            required: true
+        responses: 
+          "200":
+            description: "Successfully fetched priorities"
+            schema: 
+              type: "object"
+              properties:
+                success:
+                  type: "boolean"
+                  description: "Success values"
+                sectionPriorities:
+                  type: "array"
+                  description: "Array of section priorities in order of prio"
+                  items:
+                    type: "object"
+          "401":
+            description: "Unauthorized"
+            schema: 
+              type: "object"
+              properties:
+                success:
+                  type: "boolean"
+                  description: "Failure values"
+                message:
+                  type: "string"
+                  description: "Failure message"
+          "500":
+            description: "Internal server error"
+            schema: 
+              type: "object"
+              properties:
+                success:
+                  type: "boolean"
+                  description: "Failure values"
+                message:
+                  type: "string"
+                  description: "Failure message"
+      post:
+        description: "Get users section priorities"
+        parameters:
+          - in: "header"
+            name: "Authorization"
+            type: "string"
+            required: true
+          - in: "body"
+            name: "sections"
+            schema:
+              type: "object"
+              required:
+                - "sectionPriorities"
+              properties:
+                sectionPriorities:
+                  type: "array"
+                  description: "Array of section priorities in prio order, will override exisiting ones"
+                  items:
+                    type: "string"
+        responses: 
+          "200":
+            description: "Successfully fetched priorities"
+            schema: 
+              type: "object"
+              properties:
+                success:
+                  type: "boolean"
+                  description: "Success values"
+                sectionPriorities:
+                  type: "array"
+                  description: "Array of section priorities in order of prio"
+                  items:
+                    type: "object"
+          "401":
+            description: "Unauthorized"
+            schema: 
+              type: "object"
+              properties:
+                success:
+                  type: "boolean"
+                  description: "Failure values"
+                message:
+                  type: "string"
+                  description: "Failure message"
+          "500":
+            description: "Internal server error"
             schema: 
               type: "object"
               properties:
