@@ -25,7 +25,8 @@ const setNewPassword = function (user, password) {
   return new Promise((resolve, reject) => {
     bcrypt.hash(password, 10, (err, hash) => {
       if (err) {
-        throw err
+        reject(err)
+        return
       }
       user.password = hash
       user.save().then(resolve).catch(reject)
