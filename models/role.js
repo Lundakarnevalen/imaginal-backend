@@ -11,8 +11,6 @@ const Role = dbc.define('Role', {
   description: Sequelize.STRING
 })
 
-Role.sync()
-
 module.exports = {
   Role
 }
