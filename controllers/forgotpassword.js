@@ -37,14 +37,20 @@ const forgotPassword = function (req, res) {
       })
       .then((passwordToken) => {
         if (!passwordToken) {
-          forgotPass.create({email: user.email, token: token})
+          forgotPass.create({email: user.email, token: token}).then(() => {
+            res.json({
+              success: true,
+              passwordToken: token
+            })
+          })
         } else {
-          passwordToken.update({email: user.email, token: token})
+          passwordToken.update({email: user.email, token: token}).then(() => {
+            res.json({
+              success: true,
+              passwordToken: token
+            })
+          })
         }
-        res.json({
-          success: true,
-          passwordToken: token
-        })
       })
     })
   })

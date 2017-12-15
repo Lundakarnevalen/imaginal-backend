@@ -1,16 +1,25 @@
 'use strict'
 
 const users = require('../models/users')
+const UserRoles = require('../models/userrole')
 
 const getAll = function (req, res) {
-  // TODO: check if admin
-  users.User.findAll({
-    attributes: ['id', 'email', 'firstName', 'lastName', 'phoneNumber', 'address', 'postNumber', 'city', 'careOf', 'personalNumber']
-  }).then(allUsers => {
-    res.json({
-      success: true,
-      users: allUsers
-    })
+  UserRoles.hasRole(req.user, 'administrator').then(isadmin => {
+    if (isadmin) {
+      users.User.findAll({
+        attributes: ['id', 'email', 'name', 'phoneNumber', 'address', 'postNumber', 'city', 'careOf', 'personalNumber']
+      }).then(allUsers => {
+        res.json({
+          success: true,
+          users: allUsers
+        })
+      })
+    } else {
+      res.status(401).json({
+        success: false,
+        message: 'Unauthorized'
+      })
+    }
   })
 }
 
@@ -38,17 +47,32 @@ const getById = function (req, res) {
       success: true,
       user: myuser
     })
-  }
-  // TODO: check if admin
-  users.User.findOne({
-    attributes: ['id', 'email', 'firstname', 'lastname', 'phoneNumber', 'address', 'postNumber', 'city', 'careOf', 'personalNumber'],
-    where: { email: req.params.email }
-  }).then(user => {
-    res.json({
-      success: true,
-      user
+  } else {
+    UserRoles.hasRole(req.user, 'administrator').then(isadmin => {
+      if (isadmin) {
+        users.User.findOne({
+          attributes: ['id', 'email', 'firstName', 'lastName', 'phoneNumber', 'address', 'postNumber', 'city', 'careOf', 'personalNumber'],
+          where: {email: req.params.email}
+        }).then(user => {
+          if (user) {
+            return res.json({
+              success: true,
+              user
+            })
+          }
+          return res.status(400).json({
+            success: false,
+            message: 'User not found'
+          })
+        })
+      } else {
+        res.status(401).json({
+          success: false,
+          message: 'Unauthorized'
+        })
+      }
     })
-  })
+  }
 }
 
 const setUserInfo = function (req, res) {

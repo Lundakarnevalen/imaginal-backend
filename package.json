@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "apidoc": "pretty-swag -i swagger.yaml",
-    "test": "standard --fix && nyc mocha",
-    "postman": "newman run ./test/Karneval.postman_collection.json",
+    "test": "standard --fix && nyc mocha && node setupadmintest.js && newman run ./test/Karneval.postman_collection.json",
     "start": "node app.js"
   },
   "repository": {
@@ -30,14 +29,14 @@
     "passport-http-bearer": "^1.0.1",
     "passport-jwt": "^3.0.0",
     "passport-local": "^1.0.0",
-    "sequelize": "^4.15.0",
-    "sequelize-cli": "^3.0.0"
+    "sequelize": "^4.28.1",
+    "sequelize-cli": "^3.2.0"
   },
   "devDependencies": {
     "mocha": "^4.0.1",
-    "newman": "^3.8.3",
-    "nyc": "^11.3.0",
-    "pretty-swag": "^0.1.134",
+    "newman": "^3.9.1",
+    "nyc": "^11.4.0",
+    "pretty-swag": "^0.1.138",
     "standard": "^10.0.3"
   },
   "standard": {

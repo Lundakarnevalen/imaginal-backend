@@ -24,9 +24,10 @@ mysql -u<user> -p<password>
 CREATE DATABASE karneval;
 ```
 
-Init database tables
+Init and seed database tables
 ```
 ./node_modules/.bin/sequelize db:migrate
+./node_modules/.bin/sequelize db:seed:all
 ```
 
 Config application parameters
