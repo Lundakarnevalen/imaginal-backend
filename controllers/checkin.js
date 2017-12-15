@@ -21,7 +21,6 @@ const checkIn = function (req, res) {
     }
     UserRoles.hasRole(req.user, 'administrator').then(isadmin => {
       if (isadmin) {
-        console.log(req.params.email)
         users.User.findOne({
           where: {email: req.params.email}
         }).then(user => {

@@ -34,12 +34,12 @@ const createUser = function (req, res) {
     email: req.body.email,
     phoneNumber: req.body.postNumber || '',
     firstName: req.body.firstName || '',
-    lastName: req.body.firstName || '',
-    address: req.body.firstName || '',
-    postNumber: req.body.firstName || '',
-    city: req.body.firstName || '',
-    careOf: req.body.firstName || '',
-    personalNumber: req.body.firstName || ''
+    lastName: req.body.lastName || '',
+    address: req.body.address || '',
+    postNumber: req.body.postNumber || '',
+    city: req.body.city || '',
+    careOf: req.body.careOf || '',
+    personalNumber: req.body.personalNumber || ''
   })
     .then(user => {
       finalUser = user
