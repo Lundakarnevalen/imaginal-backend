@@ -4,6 +4,7 @@ const users = require('../models/users')
 const role = require('../models/role')
 const userrole = require('../models/userrole')
 const karnevalistinfo = require('../models/karnevalistinfo')
+const jwt = require('jsonwebtoken')
 
 const registerUser = function (req, res) {
   if (req.body.email && req.body.password) {
@@ -43,6 +44,7 @@ const createUser = function (req, res) {
     .then(user => {
       finalUser = user
       users.setNewPassword(user, req.body.password)
+      user.token = jwt.sign({email: user.email}, process.env.TOKEN_SECRET || 'secret')
       return user
     })
     .then((user) => karnevalistinfo.KarnevalistInfo.create({
@@ -72,7 +74,7 @@ const createUser = function (req, res) {
     .then(() => {
       res.json({
         success: true,
-        message: 'You are now registered',
+        message: 'You are now registered with email ' + finalUser.email,
         accessToken: finalUser.token
       })
     })

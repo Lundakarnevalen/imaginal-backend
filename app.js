@@ -80,7 +80,6 @@ app.get('/api/users', users.getAll)
 app.post('/api/section', section.setSectionPriorities)
 app.get('/api/section', section.getSectionPriorities)
 
-
 app.post('/api/role/addrole/:email/:roleid', role.addRole) // Adds a single role to a single user
 app.post('/api/role/removerole/:email/:roleid', role.removeRole) // Adds a single role to a single user
 app.post('/api/role/getusers/:roleid', role.getUsers) // Gets all users that has a given role

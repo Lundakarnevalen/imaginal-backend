@@ -3,7 +3,7 @@ const users = require('../models/users')
 const UserRoles = require('../models/userrole')
 
 const checkIn = function (req, res) {
-  if (req.params.email) {
+  if (!req.params.email) {
     return res.status(400).json({
       success: false,
       message: 'Missing email param'
@@ -14,13 +14,14 @@ const checkIn = function (req, res) {
     where: {user_id: req.params.email}
   }).then(row => {
     if (row) {
-      return res.json({
+      return res.status(400).json({
         success: false,
         message: req.params.email + ' is already checked in.'
       })
     }
     UserRoles.hasRole(req.user, 'administrator').then(isadmin => {
-      if (!isadmin) {
+      if (isadmin) {
+        console.log(req.params.email)
         users.User.findOne({
           where: {email: req.params.email}
         }).then(user => {
@@ -34,7 +35,7 @@ const checkIn = function (req, res) {
               })
             })
           } else {
-            return res.json({
+            return res.status(400).json({
               success: false,
               message: 'No such user'
             })
@@ -67,7 +68,7 @@ const checkStatus = function (req, res) {
         message: req.params.email + ' is checked in.'
       })
     }
-    res.json({
+    res.status(400).json({
       success: false,
       message: req.params.email + ' is not checked in.'
     })
