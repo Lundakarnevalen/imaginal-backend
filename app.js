@@ -72,9 +72,9 @@ app.put('/api/user/karnevalistinfo', karnevalistinfo.setKarnevalistInfo)
 
 app.get('/api/user/karnevalistinfo', karnevalistinfo.getKarnevalistInfo)
 
-//app.get('/api/user/checkin', checkin.get
+// app.get('/api/user/checkin', checkin.get
 
-app.post('/api/user/:email', users.setUserInfo)
+app.put('/api/user/:email', users.setUserInfo)
 
 app.post('/api/user/checkin/:email', checkin.checkIn)
 
