@@ -7,7 +7,8 @@ const Checkin = dbc.define('Checkin', {
     primaryKey: true,
     type: Sequelize.INTEGER
   },
-  user_id: Sequelize.INTEGER
+  user_id: Sequelize.INTEGER,
+  checker_id: Sequelize.INTEGER
 })
 
 module.exports = {

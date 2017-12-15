@@ -2,14 +2,22 @@
 
 const users = require('../models/users')
 const role = require('../models/role')
-const userrole = require('../models/userrole')
 const karnevalistinfo = require('../models/karnevalistinfo')
 const jwt = require('jsonwebtoken')
 
 const registerUser = function (req, res) {
+  if (typeof req.body.personalNumber === 'undefined' || req.body.personalNumber.length !== 10) {
+    return res.status(400).json({
+      success: false,
+      message: 'Invalid personal number format'
+    })
+  }
   if (req.body.email && req.body.password) {
     users.User.findOne({
-      where: {email: req.body.email}
+      where: {personalNumber: req.body.personalNumber},
+      $or: [{
+        email: req.body.email
+      }]
     })
       .then((user) => {
         if (user !== null) {
@@ -39,7 +47,7 @@ const createUser = function (req, res) {
     postNumber: req.body.firstName || '',
     city: req.body.firstName || '',
     careOf: req.body.firstName || '',
-    personalNumber: req.body.firstName || ''
+    personalNumber: req.body.personalNumber || ''
   })
     .then(user => {
       finalUser = user
@@ -67,11 +75,9 @@ const createUser = function (req, res) {
     .then(() => role.Role.findOne({
       where: {Description: 'karnevalist'}
     }))
-    .then((role) => userrole.UserRole.create({
-      UserId: finalUser.id,
-      RoleId: role.id
-    }))
-    .then(() => {
+    .then((role) => {
+      return finalUser.addRole([role])
+    }).then(() => {
       res.json({
         success: true,
         message: 'You are now registered with email ' + finalUser.email,

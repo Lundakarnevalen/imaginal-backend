@@ -1,32 +1,20 @@
 {
 	"info": {
 		"name": "Karneval",
-		"_postman_id": "c3fb424e-3dab-b6b9-9833-9f6396c24b31",
+		"_postman_id": "2167e048-abe8-165a-8dee-83bc4515ec42",
 		"description": "# Introduction\nBackend till lundakarnevalen 2018.\n\n# Overview\nTestserver på 146.185.173.31:3000, exempel är till localhost. Endast JSON accepteras.\n\n# Error Codes\n200: OK \n\n400: User sent bad information or missing parameters \n\n401: User does not have appropriate privileges \n\n404: No such end point \n\n500: Internal error, not caused by user",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
 			"name": "User, register",
-			"description": "",
 			"item": [
 				{
 					"name": "Register a user",
 					"event": [
 						{
-							"listen": "prerequest",
-							"script": {
-								"id": "c7891fc7-ec65-4378-8cf8-adea3c66774c",
-								"type": "text/javascript",
-								"exec": [
-									"pm.globals.set(\"randomUsername\", Math.random().toString(36).substring(7));"
-								]
-							}
-						},
-						{
 							"listen": "test",
 							"script": {
-								"id": "08977659-2295-4510-bafc-06a9fbb9b54b",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
@@ -42,6 +30,20 @@
 									""
 								]
 							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.globals.set(\"randomUsername\", Math.random().toString(36).substring(7));",
+									"pm.globals.set(\"randomUserPIN\", Math.floor(Math.random() * 10000000000));",
+									"",
+									"pm.sendRequest(\"https://postman-echo.com/get\", function (err, response) {",
+									"    console.log(response.json());",
+									"});"
+								]
+							}
 						}
 					],
 					"request": {
@@ -54,24 +56,25 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"email\":\"{{randomUsername}}\",\n  \"password\":\"password\",\n  \"postNumber\": \"123\",\n  \"talent\":\"saknas\"\n}"
+							"raw": "{\n  \"email\":\"{{randomUsername}}\",\n  \"password\":\"password\",\n  \"postNumber\": \"123\",\n  \"talent\":\"saknas\",\n  \"personalNumber\": \"{{randomUserPIN}}\"\n}"
 						},
 						"url": {
-							"raw": "http://localhost:3000/register",
+							"raw": "http://localhost:3000/register/",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
-								"register"
+								"register",
+								""
 							]
 						},
 						"description": "Register request"
 					},
 					"response": [
 						{
-							"id": "ee197697-4ffc-4fef-8011-beafedd97d9b",
+							"id": "3fec6a78-5841-4526-b406-00db735f2d93",
 							"name": "Register a user",
 							"originalRequest": {
 								"method": "POST",
@@ -145,7 +148,7 @@
 							"body": "{\"success\":true,\"message\":\"You are now registered\"}"
 						},
 						{
-							"id": "9e0f6636-c7ee-4d13-8197-ef5ebb4b9d18",
+							"id": "6a8f4bfc-e198-4a27-8e75-26efcb308080",
 							"name": "Register a user",
 							"originalRequest": {
 								"method": "POST",
@@ -174,6 +177,7 @@
 							"status": "OK",
 							"code": 200,
 							"_postman_previewlanguage": "json",
+							"_postman_previewtype": "html",
 							"header": [
 								{
 									"key": "Connection",
@@ -253,7 +257,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"eail\":\"test@gmail.com\",\n  \"password\":\"password\"\n}"
+							"raw": "{\n  \"eail\":\"test@gmail.com\",\n  \"password\":\"password\",\n  \"personalNumber\": \"1011121314\"\n}"
 						},
 						"url": {
 							"raw": "http://localhost:3000/register",
@@ -269,12 +273,15 @@
 					},
 					"response": [
 						{
-							"id": "199a65e3-545a-4316-be50-fcf33059a623",
+							"id": "025192b3-b53d-44e8-b7ad-925be6b944eb",
 							"name": "Missing field register",
 							"originalRequest": {
 								"header": [],
 								"body": {
 									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
 									"raw": ""
 								}
 							},
@@ -376,7 +383,131 @@
 					},
 					"response": [
 						{
-							"id": "d29aad46-f62f-4064-8cc9-4b8afef5f1b7",
+							"id": "6bbf8369-9e0e-4e1b-9ab5-7b88b0bdcd11",
+							"name": "Fail to reregister same user",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\":\"{{randomUsername}}\",\n  \"password\":\"password\"\n}"
+								},
+								"url": {
+									"raw": "http://localhost:3000/register",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"register"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"_postman_previewtype": "text",
+							"header": [
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"name": "Connection",
+									"description": "Options that are desired for the connection"
+								},
+								{
+									"key": "Content-Length",
+									"value": "49",
+									"name": "Content-Length",
+									"description": "The length of the response body in octets (8-bit bytes)"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8",
+									"name": "Content-Type",
+									"description": "The mime type of this content"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 06 Dec 2017 19:38:07 GMT",
+									"name": "Date",
+									"description": "The date and time that the message was sent"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"31-WKEMg8zALB1Ko0WjUHi/6RBGHVc\"",
+									"name": "ETag",
+									"description": "An identifier for a specific version of a resource, often a message digest"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "Express",
+									"name": "X-Powered-By",
+									"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+								}
+							],
+							"cookie": [],
+							"responseTime": 64,
+							"body": "{\"success\":false,\"message\":\"User already exists\"}"
+						}
+					]
+				},
+				{
+					"name": "Fail to reregister user same PIN",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Successfield false on statuscode 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(false);",
+									"});",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\":\"invalid!\",\n  \"password\":\"password\",\n  \"postNumber\": \"123\",\n  \"talent\":\"saknas\",\n  \"personalNumber\": \"{{randomUserPIN}}\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"register"
+							]
+						},
+						"description": "Register request"
+					},
+					"response": [
+						{
+							"id": "cb58c1c7-d76b-412b-b340-8c11bb93abe1",
 							"name": "Fail to reregister same user",
 							"originalRequest": {
 								"method": "POST",
@@ -454,7 +585,6 @@
 		},
 		{
 			"name": "User, email login",
-			"description": "",
 			"item": [
 				{
 					"name": "Email Login",
@@ -462,7 +592,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "f8801c37-f925-423b-92f7-9de12bc36888",
 								"type": "text/javascript",
 								"exec": [
 									"pm.globals.set(\"accessToken\", pm.response.json().accessToken);",
@@ -514,12 +643,15 @@
 					},
 					"response": [
 						{
-							"id": "92d5489b-1f56-4cda-8f13-af0f56c0cfc4",
+							"id": "ef89a36b-0dc6-4912-a94c-31264665c507",
 							"name": "Email Login",
 							"originalRequest": {
 								"header": [],
 								"body": {
 									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
 									"raw": ""
 								}
 							},
@@ -577,7 +709,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "f8801c37-f925-423b-92f7-9de12bc36888",
 								"type": "text/javascript",
 								"exec": [
 									"pm.globals.set(\"accessToken\", pm.response.json().accessToken);",
@@ -629,12 +760,15 @@
 					},
 					"response": [
 						{
-							"id": "41b9832b-d059-4963-80d2-0f48610e1300",
+							"id": "99a21249-7a68-4ec5-ab20-970d58f423dc",
 							"name": "Email Login",
 							"originalRequest": {
 								"header": [],
 								"body": {
 									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
 									"raw": ""
 								}
 							},
@@ -732,7 +866,7 @@
 					},
 					"response": [
 						{
-							"id": "e2ec59a6-dda5-4d0c-a784-5ff24634c139",
+							"id": "288dbde0-5723-4acd-9ce0-d5d0f5756d15",
 							"name": "Wrong email login",
 							"originalRequest": {
 								"method": "POST",
@@ -853,7 +987,7 @@
 					},
 					"response": [
 						{
-							"id": "38dc379b-713b-4300-bb03-232832023a4a",
+							"id": "26bf7463-94a7-42f5-8421-bb36252e6e6f",
 							"name": "Wrong password login",
 							"originalRequest": {
 								"method": "POST",
@@ -974,12 +1108,15 @@
 					},
 					"response": [
 						{
-							"id": "58a5f4cd-3c6f-4f70-96b9-21011b75dba7",
+							"id": "785ce505-1353-4576-a4c1-ffef4137aaaf",
 							"name": "Missing field login",
 							"originalRequest": {
 								"header": [],
 								"body": {
 									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
 									"raw": ""
 								}
 							},
@@ -1035,7 +1172,6 @@
 		},
 		{
 			"name": "User, password reset",
-			"description": "",
 			"item": [
 				{
 					"name": "Initiate password Reset",
@@ -1086,7 +1222,7 @@
 					},
 					"response": [
 						{
-							"id": "205c1562-0e1c-4ae8-8a51-b8615fd74494",
+							"id": "6b8e6ea6-a46f-4cd4-a6ce-eb126f9039eb",
 							"name": "Initiate password Reset",
 							"originalRequest": {
 								"method": "POST",
@@ -1204,12 +1340,15 @@
 					},
 					"response": [
 						{
-							"id": "429408d0-dff2-48f6-a8c3-eaf8d600b880",
+							"id": "50462d88-8f73-4704-9e6d-4144de639867",
 							"name": "Password reset change password",
 							"originalRequest": {
 								"header": [],
 								"body": {
 									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
 									"raw": ""
 								}
 							},
@@ -1265,17 +1404,6 @@
 					"name": "Email Login new password",
 					"event": [
 						{
-							"listen": "prerequest",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.sendRequest(\"https://postman-echo.com/get\", function (err, response) {",
-									"    console.log(response.json());",
-									"});"
-								]
-							}
-						},
-						{
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
@@ -1297,6 +1425,17 @@
 									"});",
 									"",
 									""
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.sendRequest(\"https://postman-echo.com/get\", function (err, response) {",
+									"    console.log(response.json());",
+									"});"
 								]
 							}
 						}
@@ -1329,7 +1468,7 @@
 					},
 					"response": [
 						{
-							"id": "1d08da61-a9d8-4a9b-a414-816aac71aefb",
+							"id": "c82f3388-382a-411f-83ba-f774f70bcef0",
 							"name": "Email Login new password",
 							"originalRequest": {
 								"method": "POST",
@@ -1448,12 +1587,15 @@
 					},
 					"response": [
 						{
-							"id": "956ed836-0e33-4969-b370-07fe7ecb11b7",
+							"id": "2423de2b-529e-42d5-a807-d5ba11d44e76",
 							"name": "Bad password reset change password",
 							"originalRequest": {
 								"header": [],
 								"body": {
 									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
 									"raw": ""
 								}
 							},
@@ -1509,7 +1651,6 @@
 		},
 		{
 			"name": "API, meta",
-			"description": "",
 			"item": [
 				{
 					"name": "API token \"hello\"",
@@ -1563,7 +1704,7 @@
 					},
 					"response": [
 						{
-							"id": "d4f13245-5773-4925-9129-a1a2b14b0850",
+							"id": "3089b3cc-4964-4d45-afa5-d380faa774b5",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -1642,17 +1783,6 @@
 					"name": "Fail to access resource that doesnt exist",
 					"event": [
 						{
-							"listen": "prerequest",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.sendRequest(\"https://postman-echo.com/get\", function (err, response) {",
-									"    console.log(response.json());",
-									"});"
-								]
-							}
-						},
-						{
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
@@ -1661,6 +1791,17 @@
 									"    pm.response.to.have.status(404);",
 									"});",
 									""
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.sendRequest(\"https://postman-echo.com/get\", function (err, response) {",
+									"    console.log(response.json());",
+									"});"
 								]
 							}
 						}
@@ -1695,7 +1836,7 @@
 					},
 					"response": [
 						{
-							"id": "bf247989-c172-4c85-a676-27f4888f4892",
+							"id": "95f4c558-73dd-4c6f-a658-acce68d242ad",
 							"name": "Fail to access resource that doesnt exist",
 							"originalRequest": {
 								"method": "POST",
@@ -1776,7 +1917,6 @@
 		},
 		{
 			"name": "API, section priorities",
-			"description": "",
 			"item": [
 				{
 					"name": "Set priorities",
@@ -1784,7 +1924,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "68c49aae-842c-4efb-aae4-0de6cf30e535",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
@@ -1807,7 +1946,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "f3720808-4899-405c-bb7b-56ff6f5899bf",
 								"type": "text/javascript",
 								"exec": [
 									"pm.globals.set(\"sectionPriorities\", [\"A\", \"B\", \"C\", \"F\"]);",
@@ -1849,17 +1987,19 @@
 								"api",
 								"section"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": [
 						{
-							"id": "259c9e2a-ed43-4fea-be76-cc28e2479786",
+							"id": "c0991418-65ff-464a-978b-525a25e3f900",
 							"name": "Set priorities",
 							"originalRequest": {
 								"header": [],
 								"body": {
 									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
 									"raw": ""
 								}
 							},
@@ -1917,7 +2057,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "1d436d06-21b4-4eb5-b169-05ec2d202604",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
@@ -1951,7 +2090,10 @@
 						},
 						"method": "GET",
 						"header": [],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "http://localhost:3000/api/section",
 							"protocol": "http",
@@ -1963,17 +2105,19 @@
 								"api",
 								"section"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": [
 						{
-							"id": "1f5c4f97-34b6-45ef-8cda-9bbb8750411d",
+							"id": "fd2655e0-97b8-4a31-9346-e92f42c81ae7",
 							"name": "Get same priorities",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
-								"body": {},
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
 								"url": {
 									"raw": "http://localhost:3000/api/section",
 									"protocol": "http",
@@ -2041,7 +2185,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "6b7717a0-5bd0-42e1-b9a3-6bd5a75fa566",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 400\", function () {",
@@ -2065,7 +2208,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "f3720808-4899-405c-bb7b-56ff6f5899bf",
 								"type": "text/javascript",
 								"exec": [
 									"pm.globals.set(\"sectionPriorities\", [\"A\", \"B\", \"C\", \"F\"]);",
@@ -2107,17 +2249,19 @@
 								"api",
 								"section"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": [
 						{
-							"id": "bcf89c02-34b5-4869-a527-4c55589ed00e",
+							"id": "bfed52e0-0558-4bb1-8576-14e0cf6b2ff7",
 							"name": "Set duplicate prio",
 							"originalRequest": {
 								"header": [],
 								"body": {
 									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
 									"raw": ""
 								}
 							},
@@ -2237,7 +2381,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "44054671-e53e-44bc-8b6c-aa6990fef725",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
@@ -2290,7 +2433,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "6f6eecaa-b1c3-42f3-ab25-c8d47ce55384",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
@@ -2345,8 +2487,7 @@
 								"user",
 								"karnevalistinfo"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -2356,7 +2497,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "d0bf3cad-bee6-478f-8955-aae5eb0c44a9",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
@@ -2385,7 +2525,10 @@
 						},
 						"method": "GET",
 						"header": [],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "http://localhost:3000/api/user/karnevalistinfo",
 							"protocol": "http",
@@ -2398,8 +2541,7 @@
 								"user",
 								"karnevalistinfo"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				}
@@ -2407,7 +2549,6 @@
 		},
 		{
 			"name": "API, karnevalist privileges",
-			"description": "",
 			"item": [
 				{
 					"name": "Fail to get all users",
@@ -2415,7 +2556,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "cf5f6b7d-f612-43a9-8085-2056c4029564",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 401\", function () {",
@@ -2467,7 +2607,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "cd238b13-37b6-4731-88c6-7c7cd60b05de",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 401\", function () {",
@@ -2490,7 +2629,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "deff2c42-9133-4388-a331-82cf870564ab",
 								"type": "text/javascript",
 								"exec": [
 									"pm.globals.set(\"seedUser\", \"karnevalist\");",
@@ -2546,7 +2684,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "c7123b01-cdb9-43cd-81a5-c270f0c33b71",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 401\", function () {",
@@ -2600,6 +2737,30 @@
 				},
 				{
 					"name": "Fail to check in other user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"",
+									"pm.test(\"Successfield false on statuscode 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(false);",
+									"});",
+									"",
+									"pm.test(\"Body must contain message\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"message\");",
+									"});",
+									""
+								]
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -2634,8 +2795,7 @@
 								"checkin",
 								"{{seedUser}}"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				}
@@ -2643,7 +2803,6 @@
 		},
 		{
 			"name": "API, admin privileges",
-			"description": "",
 			"item": [
 				{
 					"name": "Admin email login",
@@ -2651,7 +2810,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "1fe7c67d-b8f3-4415-9a6c-a0b9f4bb073f",
 								"type": "text/javascript",
 								"exec": [
 									"pm.globals.set(\"adminToken\", pm.response.json().accessToken);",
@@ -2703,7 +2861,7 @@
 					},
 					"response": [
 						{
-							"id": "ba540fc0-5381-426c-bf97-ee5726997deb",
+							"id": "df8d428d-d235-4101-91ae-b71179dcc010",
 							"name": "Email Login",
 							"originalRequest": {
 								"method": "POST",
@@ -2784,7 +2942,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "2f07c9a5-c35a-4169-8b43-11c27e7fac64",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 400\", function () {",
@@ -2800,16 +2957,6 @@
 									"pm.test(\"Body must contain message\", function () {",
 									"    pm.expect(pm.response.text()).to.include(\"message\");",
 									"});",
-									""
-								]
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "94e55f12-27ff-4501-bf0e-0e4974cef3c1",
-								"type": "text/javascript",
-								"exec": [
 									""
 								]
 							}
@@ -2862,7 +3009,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "a904e6f7-15a4-499a-bfb2-e70d74721f8b",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
@@ -2901,7 +3047,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "localhost:3000/api/user/checkin/{{randomUsername}}",
+							"raw": "localhost:3000/api/user/checkin/{{randomUserPIN}}",
 							"host": [
 								"localhost"
 							],
@@ -2910,10 +3056,9 @@
 								"api",
 								"user",
 								"checkin",
-								"{{randomUsername}}"
+								"{{randomUserPIN}}"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -2923,7 +3068,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "a7e2e7d9-2d1f-47c3-ae5a-dda247f16921",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 400\", function () {",
@@ -2973,8 +3117,7 @@
 								"checkin",
 								"{{randomUsername}}"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -2984,7 +3127,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "eef862fb-485e-49a4-8a45-037150d20ee5",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
@@ -3034,8 +3176,7 @@
 								"checkin",
 								"{{randomUsername}}"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -3045,7 +3186,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "9cbda95f-9fdb-407c-a91d-d5d1fa6336d3",
 								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 400\", function () {",
@@ -3095,8 +3235,7 @@
 								"checkin",
 								"{{seedUser}}"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				}
@@ -3166,7 +3305,7 @@
 					},
 					"response": [
 						{
-							"id": "4f056c3e-1a87-4969-b7fd-fda168c0cae1",
+							"id": "20dde6c1-a83a-41d6-a675-d521089c9c99",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -3297,7 +3436,7 @@
 					},
 					"response": [
 						{
-							"id": "d29c8bd1-90fc-4c2d-9237-30d81da71a2b",
+							"id": "35655bc4-6cb0-47b0-9053-18949e00106a",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -3428,7 +3567,7 @@
 					},
 					"response": [
 						{
-							"id": "d3385db7-1348-4076-936b-a0120311c5f5",
+							"id": "69c1ac7c-134d-4836-98c6-90b7c1737072",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -3559,7 +3698,7 @@
 					},
 					"response": [
 						{
-							"id": "d782efbe-345d-4d0e-9ec3-bddb1b2cc23f",
+							"id": "3a4320c8-c20b-483f-950d-cf4be37024e7",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -3700,7 +3839,7 @@
 					},
 					"response": [
 						{
-							"id": "c5e78abe-6704-4f4d-b416-d9e42c31d9ab",
+							"id": "2560bf6b-0b05-439e-bca0-92a734561499",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -3831,7 +3970,7 @@
 					},
 					"response": [
 						{
-							"id": "69b6a751-79be-4268-aad9-8f9aaab558dd",
+							"id": "9b42409c-7e30-449e-8927-b71e26f519f2",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -3962,7 +4101,7 @@
 					},
 					"response": [
 						{
-							"id": "38ca9a4d-4fed-4faa-a13e-f42ec2e422ac",
+							"id": "9826a420-1ad4-460b-8b68-9eed58cb385d",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -4093,7 +4232,7 @@
 					},
 					"response": [
 						{
-							"id": "8ac73e0f-38c0-4eb9-b6e8-c0cf60f87f5c",
+							"id": "f3e58ad3-f92f-4d2f-b8e6-8d023bc17790",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -4164,28 +4303,402 @@
 					]
 				}
 			]
-		}
-	],
-	"event": [
-		{
-			"listen": "prerequest",
-			"script": {
-				"exec": [
-					""
-				],
-				"id": "45be8e48-5932-4420-96c8-36301cdfbddb",
-				"type": "text/javascript"
-			}
 		},
 		{
-			"listen": "test",
-			"script": {
-				"exec": [
-					""
-				],
-				"id": "515d3f5a-338d-4ef1-99b8-46108f1d1097",
-				"type": "text/javascript"
-			}
+			"name": "Checkin, get status",
+			"description": "",
+			"item": [
+				{
+					"name": "User gets his checkin status",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Successfield true on statuscode 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(true);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/user/checkin/{{randomUsername}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user",
+								"checkin",
+								"{{randomUsername}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "df6bc401-2e5e-4d7a-9f06-eab780d62b18",
+							"name": "API token \"hello\"",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/hello",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"hello"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "html",
+							"_postman_previewtype": "text",
+							"header": [
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"name": "Connection",
+									"description": "Options that are desired for the connection"
+								},
+								{
+									"key": "Content-Length",
+									"value": "12",
+									"name": "Content-Length",
+									"description": "The length of the response body in octets (8-bit bytes)"
+								},
+								{
+									"key": "Content-Type",
+									"value": "text/html; charset=utf-8",
+									"name": "Content-Type",
+									"description": "The mime type of this content"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 09 Nov 2017 12:39:00 GMT",
+									"name": "Date",
+									"description": "The date and time that the message was sent"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"c-Lve95gjOVATpfV8EL5X4nxwjKHE\"",
+									"name": "ETag",
+									"description": "An identifier for a specific version of a resource, often a message digest"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "Express",
+									"name": "X-Powered-By",
+									"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+								}
+							],
+							"cookie": [],
+							"responseTime": 35,
+							"body": "Hello World!"
+						}
+					]
+				},
+				{
+					"name": "Admin gets user checkin status",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Successfield true on statuscode 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(true);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/user/checkin/{{randomUsername}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user",
+								"checkin",
+								"{{randomUsername}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "35ce6170-38e3-4729-ac4c-48e0d64968f3",
+							"name": "API token \"hello\"",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/hello",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"hello"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "html",
+							"_postman_previewtype": "text",
+							"header": [
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"name": "Connection",
+									"description": "Options that are desired for the connection"
+								},
+								{
+									"key": "Content-Length",
+									"value": "12",
+									"name": "Content-Length",
+									"description": "The length of the response body in octets (8-bit bytes)"
+								},
+								{
+									"key": "Content-Type",
+									"value": "text/html; charset=utf-8",
+									"name": "Content-Type",
+									"description": "The mime type of this content"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 09 Nov 2017 12:39:00 GMT",
+									"name": "Date",
+									"description": "The date and time that the message was sent"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"c-Lve95gjOVATpfV8EL5X4nxwjKHE\"",
+									"name": "ETag",
+									"description": "An identifier for a specific version of a resource, often a message digest"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "Express",
+									"name": "X-Powered-By",
+									"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+								}
+							],
+							"cookie": [],
+							"responseTime": 35,
+							"body": "Hello World!"
+						}
+					]
+				},
+				{
+					"name": "Fail other user tries to get other checkin status",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"",
+									"pm.test(\"Successfield true on statuscode 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(false);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/user/checkin/{{seedUser}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user",
+								"checkin",
+								"{{seedUser}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "fc1f5bb8-25a9-4327-9e14-9753eddf1959",
+							"name": "API token \"hello\"",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/hello",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"hello"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "html",
+							"_postman_previewtype": "text",
+							"header": [
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"name": "Connection",
+									"description": "Options that are desired for the connection"
+								},
+								{
+									"key": "Content-Length",
+									"value": "12",
+									"name": "Content-Length",
+									"description": "The length of the response body in octets (8-bit bytes)"
+								},
+								{
+									"key": "Content-Type",
+									"value": "text/html; charset=utf-8",
+									"name": "Content-Type",
+									"description": "The mime type of this content"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 09 Nov 2017 12:39:00 GMT",
+									"name": "Date",
+									"description": "The date and time that the message was sent"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"c-Lve95gjOVATpfV8EL5X4nxwjKHE\"",
+									"name": "ETag",
+									"description": "An identifier for a specific version of a resource, often a message digest"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "Express",
+									"name": "X-Powered-By",
+									"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+								}
+							],
+							"cookie": [],
+							"responseTime": 35,
+							"body": "Hello World!"
+						}
+					]
+				}
+			]
 		}
 	]
 }

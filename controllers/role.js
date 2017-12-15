@@ -7,10 +7,11 @@ const addRole = function (req, res) {
   let roleId = req.params.roleid
 
   findUserAndRole(req, res, email, roleId, function (user, role) {
-    user.addRole([role])
-    return res.json({
-      success: true,
-      message: 'Role added'
+    user.addRole([role]).then(() => {
+      return res.json({
+        success: true,
+        message: 'Role added'
+      })
     })
   })
 }
@@ -20,10 +21,11 @@ const removeRole = function (req, res) {
   let roleId = req.params.roleid
 
   findUserAndRole(req, res, email, roleId, function (user, role) {
-    user.removeRole([role])
-    return res.json({
-      success: true,
-      message: 'Role removed'
+    user.removeRole([role]).then(() => {
+      return res.json({
+        success: true,
+        message: 'Role removed'
+      })
     })
   })
 }
@@ -38,6 +40,12 @@ const getUsers = function (req, res) {
           id: roleId
         }
       }).then(role => {
+        if (!role) {
+          return res.status(400).json({
+            success: false,
+            message: 'Role not found'
+          })
+        }
         role.getUsers().then(users => {
           let resp = {}
           resp.success = true

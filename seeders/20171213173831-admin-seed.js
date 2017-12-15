@@ -43,7 +43,7 @@ module.exports = {
   },
 
   down: (queryInterface, Sequelize) => {
-    return queryInterface.bulkDelete('Roles', null, {})
+    return queryInterface.bulkDelete('Users', null, {})
     /*
       Add reverting commands here.
       Return a promise to correctly handle asynchronicity.
