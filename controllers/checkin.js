@@ -6,7 +6,7 @@ const checkIn = function (req, res) {
   if (!req.params.email) {
     return res.status(400).json({
       success: false,
-      message: 'Missing parameters'
+      message: 'Missing email param'
     })
   }
 
@@ -40,6 +40,31 @@ const checkIn = function (req, res) {
   })
 }
 
+const checkStatus = function (req, res) {
+  if (!req.params.email) {
+    return res.status(400).json({
+      success: false,
+      message: 'Missing email param'
+    })
+  }
+
+  checkin.Checkin.findOne({
+    where: {user_id: req.params.email}
+  }).then((check) => {
+    if (check) {
+      return res.json({
+        success: true,
+        message: req.params.email + ' is checked in.'
+      })
+    }
+    res.json({
+      success: false,
+      message: req.params.email + ' is not checked in.'
+    })
+  })
+}
+
 module.exports = {
-  checkIn
+  checkIn,
+  checkStatus
 }
