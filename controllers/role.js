@@ -7,7 +7,7 @@ const addRole = function (req, res) {
   let roleId = req.params.roleid
 
   findUserAndRole(req, res, email, roleId, function (user, role) {
-    user.setRoles([role])
+    user.addRole([role])
     return res.json({
       success: true,
       message: 'Role added'

@@ -94,11 +94,6 @@ app.post('/api/role/removerole/:email/:roleid', role.removeRole) // Adds a singl
 
 app.post('/api/role/getusers/:roleid', role.getUsers) // Gets all users that has a given role
 
-// app.get('/api/users/:email/roles', user.getRoles)
-// app.get('/api/roles/:role/users', role.getUsers) // req.roleid, res.emails
-// app.post('/api/roles', role.addRole) // post.roleDescription
-// app.post('/api/roles/:role', role.addUser) // req.roleid, post.email
-
 app.all('*', function (req, res) {
   res.status(404).json({
     success: false,

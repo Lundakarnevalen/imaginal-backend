@@ -27,8 +27,8 @@ const registerUser = function (req, res) {
   }
 }
 
-let finalUser
 const createUser = function (req, res) {
+  let finalUser
   users.User.create({
     email: req.body.email,
     phoneNumber: req.body.postNumber || '',
@@ -43,11 +43,6 @@ const createUser = function (req, res) {
     .then(user => {
       finalUser = user
       users.setNewPassword(user, req.body.password)
-      res.json({
-        success: true,
-        message: 'You are now registered',
-        accessToken: user.token
-      })
       return user
     })
     .then((user) => karnevalistinfo.KarnevalistInfo.create({
@@ -74,6 +69,13 @@ const createUser = function (req, res) {
       UserId: finalUser.id,
       RoleId: role.id
     }))
+    .then(() => {
+      res.json({
+        success: true,
+        message: 'You are now registered',
+        accessToken: finalUser.token
+      })
+    })
 }
 
 module.exports = {
