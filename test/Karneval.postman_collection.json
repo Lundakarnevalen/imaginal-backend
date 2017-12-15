@@ -1,7 +1,7 @@
 {
 	"info": {
 		"name": "Karneval",
-		"_postman_id": "569d6f48-c296-93a1-13d4-5e337485d831",
+		"_postman_id": "a27b7c6c-5d82-1ca2-014e-39a3f9728ab1",
 		"description": "# Introduction\nWhat does your API do?\n\n# Overview\nThings that the developers should know about\n\n# Authentication\nWhat is the preferred way of using the API?\n\n# Error Codes\nWhat errors and status codes can a user expect?\n\n# Rate limit\nIs there a limit to the number of requests an user can send?",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -68,7 +68,7 @@
 					},
 					"response": [
 						{
-							"id": "e690ee27-e45f-40e8-a79c-4a56e93b2bd8",
+							"id": "8a22adb4-1eb8-48a8-91e0-a37aa5271450",
 							"name": "Register a user",
 							"originalRequest": {
 								"method": "POST",
@@ -193,7 +193,7 @@
 					},
 					"response": [
 						{
-							"id": "64cfefe8-a502-454b-928d-8f33d3ee672d",
+							"id": "55f84c64-2d4e-4a10-b867-99659cabcc3c",
 							"name": "Missing field register",
 							"originalRequest": {
 								"method": "POST",
@@ -317,7 +317,7 @@
 					},
 					"response": [
 						{
-							"id": "5d3fe906-8ff9-45cf-a3ed-9207a115c2f4",
+							"id": "247e4efb-b58e-4510-92d3-5523c1e924fa",
 							"name": "Fail to reregister same user",
 							"originalRequest": {
 								"method": "POST",
@@ -453,7 +453,7 @@
 					},
 					"response": [
 						{
-							"id": "f230f628-d276-4367-9c4c-ab1fff4a0ba7",
+							"id": "000922ad-edf3-437d-9c2e-6c0d0f99ee3d",
 							"name": "Email Login",
 							"originalRequest": {
 								"method": "POST",
@@ -574,7 +574,7 @@
 					},
 					"response": [
 						{
-							"id": "e3b1fb22-55cf-42e1-bc47-4b99cca40fdf",
+							"id": "5e29880b-049d-4646-a211-9fcbd55d2710",
 							"name": "Wrong email login",
 							"originalRequest": {
 								"method": "POST",
@@ -695,7 +695,7 @@
 					},
 					"response": [
 						{
-							"id": "0acb6cce-6c66-44f6-a6db-4270ada87311",
+							"id": "571fcdef-ea6f-4bd2-9089-820675df6787",
 							"name": "Wrong password login",
 							"originalRequest": {
 								"method": "POST",
@@ -816,7 +816,7 @@
 					},
 					"response": [
 						{
-							"id": "2c37eff0-3538-4805-8e22-892a21e14e91",
+							"id": "588963cc-438a-4b20-92c5-f44ec493bf5b",
 							"name": "Missing field login",
 							"originalRequest": {
 								"method": "POST",
@@ -945,7 +945,7 @@
 					},
 					"response": [
 						{
-							"id": "68a92ba4-784a-4226-a7d3-7b2c44e5e28f",
+							"id": "7225b15c-289e-49c1-810b-7b75f607f82b",
 							"name": "Initiate password Reset",
 							"originalRequest": {
 								"method": "POST",
@@ -1063,7 +1063,7 @@
 					},
 					"response": [
 						{
-							"id": "a67fcae2-b925-4a20-b6a7-6cc9f90cf854",
+							"id": "a7104c0f-68fe-4f85-ac59-91160dafbc35",
 							"name": "Password reset change password",
 							"originalRequest": {
 								"method": "POST",
@@ -1206,7 +1206,7 @@
 					},
 					"response": [
 						{
-							"id": "aae9ae8c-a9ea-4fad-90c5-955259a34dec",
+							"id": "10f40c03-a222-45fb-bab1-5a1c386c3957",
 							"name": "Email Login new password",
 							"originalRequest": {
 								"method": "POST",
@@ -1325,7 +1325,7 @@
 					},
 					"response": [
 						{
-							"id": "92d198e6-2c67-421f-ab47-853ebd48b695",
+							"id": "ed0a66d7-83dc-418a-a81e-d952b948c5cb",
 							"name": "Bad password reset change password",
 							"originalRequest": {
 								"method": "POST",
@@ -1457,7 +1457,7 @@
 					},
 					"response": [
 						{
-							"id": "510e8c96-54eb-4444-903c-76aa76796862",
+							"id": "51a85750-9767-4909-b02a-b2808fa9ef4c",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -1589,7 +1589,7 @@
 					},
 					"response": [
 						{
-							"id": "cda0e0df-7916-423b-8cfa-62796cab3f9c",
+							"id": "967ddb07-3535-4827-9d87-08d6875879b5",
 							"name": "Fail to access resource that doesnt exist",
 							"originalRequest": {
 								"method": "POST",
@@ -1744,7 +1744,7 @@
 					},
 					"response": [
 						{
-							"id": "a08cf33e-fb63-4db7-956d-8c5ab98f968e",
+							"id": "c2f35692-83d6-4d1f-982f-3062e28c4ee3",
 							"name": "Set priorities",
 							"originalRequest": {
 								"method": "POST",
@@ -1877,7 +1877,7 @@
 					},
 					"response": [
 						{
-							"id": "8f935bf9-406c-4020-bdee-c7976458819e",
+							"id": "2190765d-3726-4e27-97fd-3818c300d83f",
 							"name": "Get same priorities",
 							"originalRequest": {
 								"method": "GET",
@@ -2021,7 +2021,7 @@
 					},
 					"response": [
 						{
-							"id": "961a08fd-f5c4-40e8-af7c-d5d51369b4ef",
+							"id": "8b3eaa3a-67ea-4cc5-818e-a20ed7378359",
 							"name": "Set duplicate prio",
 							"originalRequest": {
 								"method": "POST",
@@ -2580,7 +2580,7 @@
 					},
 					"response": [
 						{
-							"id": "8de67990-80e8-4c0e-ad88-1333b5004114",
+							"id": "aa24b576-8df2-4fed-80f9-fc984204dda9",
 							"name": "Email Login",
 							"originalRequest": {
 								"method": "POST",
@@ -2735,8 +2735,14 @@
 							"script": {
 								"type": "text/javascript",
 								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"",
+									"pm.test(\"Successfield false on statuscode 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(false);",
 									"});"
 								]
 							}
@@ -2762,10 +2768,10 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"email\":\"{{randomUsername}}\"\n}"
+							"raw": ""
 						},
 						"url": {
-							"raw": "http://localhost:3000/api/hello",
+							"raw": "http://localhost:3000/api/role/addrole/admin@lundakarnevalen.se/2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -2773,13 +2779,16 @@
 							"port": "3000",
 							"path": [
 								"api",
-								"hello"
+								"role",
+								"addrole",
+								"admin@lundakarnevalen.se",
+								"2"
 							]
 						}
 					},
 					"response": [
 						{
-							"id": "f8b6b91e-d71d-4eaa-9482-46f1cda6f332",
+							"id": "8ffb6950-42a9-414f-ad31-fa898593b3a0",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -2857,8 +2866,14 @@
 							"script": {
 								"type": "text/javascript",
 								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"",
+									"pm.test(\"Successfield false on statuscode 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(false);",
 									"});"
 								]
 							}
@@ -2884,10 +2899,10 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"email\":\"{{randomUsername}}\"\n}"
+							"raw": ""
 						},
 						"url": {
-							"raw": "http://localhost:3000/api/hello",
+							"raw": "http://localhost:3000/api/role/addrole/admin@lundakarnevalen.se/2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -2895,13 +2910,16 @@
 							"port": "3000",
 							"path": [
 								"api",
-								"hello"
+								"role",
+								"addrole",
+								"admin@lundakarnevalen.se",
+								"2"
 							]
 						}
 					},
 					"response": [
 						{
-							"id": "e02e87eb-31f5-4e99-8882-009954fb179f",
+							"id": "df60dd96-a772-4a97-845a-150d0ae62017",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -2981,6 +2999,12 @@
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Successfield true on statuscode 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(true);",
 									"});"
 								]
 							}
@@ -2992,7 +3016,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "{{accessToken}}",
+									"value": "{{adminToken}}",
 									"type": "string"
 								}
 							]
@@ -3006,10 +3030,10 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"email\":\"{{randomUsername}}\"\n}"
+							"raw": ""
 						},
 						"url": {
-							"raw": "http://localhost:3000/api/hello",
+							"raw": "http://localhost:3000/api/role/addrole/{{randomUsername}}/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -3017,13 +3041,16 @@
 							"port": "3000",
 							"path": [
 								"api",
-								"hello"
+								"role",
+								"addrole",
+								"{{randomUsername}}",
+								"1"
 							]
 						}
 					},
 					"response": [
 						{
-							"id": "7129edb0-7b58-4073-a39e-84340fbe6b89",
+							"id": "efc2fb0b-e1d3-4c09-beb1-b0bf642f5ca2",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -3103,6 +3130,12 @@
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Successfield true on statuscode 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(true);",
 									"});"
 								]
 							}
@@ -3131,7 +3164,7 @@
 							"raw": "{\n  \"email\":\"{{randomUsername}}\"\n}"
 						},
 						"url": {
-							"raw": "http://localhost:3000/api/hello",
+							"raw": "http://localhost:3000/api/role/addrole/admin@lundakarnevalen.se/2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -3139,13 +3172,157 @@
 							"port": "3000",
 							"path": [
 								"api",
-								"hello"
+								"role",
+								"addrole",
+								"admin@lundakarnevalen.se",
+								"2"
 							]
 						}
 					},
 					"response": [
 						{
-							"id": "f161d48e-cf9b-4ba4-90f4-ddbd6b60fd01",
+							"id": "303f4ee0-7203-4091-84a2-a59e0ed08acf",
+							"name": "API token \"hello\"",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/hello",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"hello"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "html",
+							"_postman_previewtype": "text",
+							"header": [
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"name": "Connection",
+									"description": "Options that are desired for the connection"
+								},
+								{
+									"key": "Content-Length",
+									"value": "12",
+									"name": "Content-Length",
+									"description": "The length of the response body in octets (8-bit bytes)"
+								},
+								{
+									"key": "Content-Type",
+									"value": "text/html; charset=utf-8",
+									"name": "Content-Type",
+									"description": "The mime type of this content"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 09 Nov 2017 12:39:00 GMT",
+									"name": "Date",
+									"description": "The date and time that the message was sent"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"c-Lve95gjOVATpfV8EL5X4nxwjKHE\"",
+									"name": "ETag",
+									"description": "An identifier for a specific version of a resource, often a message digest"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "Express",
+									"name": "X-Powered-By",
+									"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+								}
+							],
+							"cookie": [],
+							"responseTime": 35,
+							"body": "Hello World!"
+						}
+					]
+				},
+				{
+					"name": "Get all users with admin role",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Successfield true on statuscode 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(true);",
+									"});",
+									"",
+									"pm.test(\"Got two users\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.users.length).to.eql(2);",
+									"});",
+									"",
+									"pm.test(\"Admin name should be saknas\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.users[0].firstName).to.eql(\"saknas\");",
+									"    pm.expect(jsonData.users[0].lastName).to.eql(\"saknas\");",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\":\"{{randomUsername}}\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/role/getusers/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"role",
+								"getusers",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "6b7a62d8-67ce-4411-86e0-b1c313d58425",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -3225,6 +3402,12 @@
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Successfield true on statuscode 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(true);",
 									"});"
 								]
 							}
@@ -3250,10 +3433,10 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"email\":\"{{randomUsername}}\"\n}"
+							"raw": ""
 						},
 						"url": {
-							"raw": "http://localhost:3000/api/hello",
+							"raw": "http://localhost:3000/api/role/removerole/{{randomUsername}}/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -3261,13 +3444,16 @@
 							"port": "3000",
 							"path": [
 								"api",
-								"hello"
+								"role",
+								"removerole",
+								"{{randomUsername}}",
+								"1"
 							]
 						}
 					},
 					"response": [
 						{
-							"id": "f9370c5b-9ade-43f8-81a0-153d27427816",
+							"id": "6d2984b0-ceba-4965-a904-0ec13216d58c",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -3338,15 +3524,152 @@
 					]
 				},
 				{
-					"name": "Unauthorized removeRole copy",
+					"name": "Unathorized get all users with admin role",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
 								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"",
+									"pm.test(\"Successfield false on statuscode 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(false);",
+									"});",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/role/getusers/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"role",
+								"getusers",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "a055af75-f331-4e49-bdb2-7ab4a6b99754",
+							"name": "API token \"hello\"",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/hello",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"hello"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "html",
+							"_postman_previewtype": "text",
+							"header": [
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"name": "Connection",
+									"description": "Options that are desired for the connection"
+								},
+								{
+									"key": "Content-Length",
+									"value": "12",
+									"name": "Content-Length",
+									"description": "The length of the response body in octets (8-bit bytes)"
+								},
+								{
+									"key": "Content-Type",
+									"value": "text/html; charset=utf-8",
+									"name": "Content-Type",
+									"description": "The mime type of this content"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 09 Nov 2017 12:39:00 GMT",
+									"name": "Date",
+									"description": "The date and time that the message was sent"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"c-Lve95gjOVATpfV8EL5X4nxwjKHE\"",
+									"name": "ETag",
+									"description": "An identifier for a specific version of a resource, often a message digest"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "Express",
+									"name": "X-Powered-By",
+									"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+								}
+							],
+							"cookie": [],
+							"responseTime": 35,
+							"body": "Hello World!"
+						}
+					]
+				},
+				{
+					"name": "Unathorized remove role",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"",
+									"pm.test(\"Successfield true on statuscode 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(false);",
 									"});"
 								]
 							}
@@ -3372,10 +3695,10 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"email\":\"{{randomUsername}}\"\n}"
+							"raw": ""
 						},
 						"url": {
-							"raw": "http://localhost:3000/api/hello",
+							"raw": "http://localhost:3000/api/role/removerole/{{randomUsername}}/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -3383,13 +3706,16 @@
 							"port": "3000",
 							"path": [
 								"api",
-								"hello"
+								"role",
+								"removerole",
+								"{{randomUsername}}",
+								"1"
 							]
 						}
 					},
 					"response": [
 						{
-							"id": "4579b22e-f1a7-4139-a61c-183b5ff6c9c5",
+							"id": "fdd5ad40-3adf-46aa-8e00-aa39e4f849e4",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",

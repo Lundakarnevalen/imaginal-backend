@@ -31,23 +31,30 @@ const removeRole = function (req, res) {
 const getUsers = function (req, res) {
   let roleId = req.params.roleid
 
-  Role.findOne({
-    where: {
-      id: roleId
-    }
-  }).then(role => {
-    role.getUsers().then(users => {
-      let resp = {}
-      resp.success = true
-      resp.users = []
-      for (let i = 0; i < users.length; ++i) {
-        resp.users.push({
-          email: users[i].email,
-          name: users[i].name
+  UserRoles.hasRole(req.user, 'administrator').then(admin => {
+    if (admin) {
+      Role.findOne({
+        where: {
+          id: roleId
+        }
+      }).then(role => {
+        role.getUsers().then(users => {
+          let resp = {}
+          resp.success = true
+          resp.users = []
+          for (let i = 0; i < users.length; ++i) {
+            resp.users.push({
+              email: users[i].email,
+              firstName: users[i].firstName,
+              lastName: users[i].lastName
+            })
+          }
+          res.send(resp)
         })
-      }
-      res.send(resp)
-    })
+      })
+    } else {
+      return notAuthorized(res)
+    }
   })
 }
 
