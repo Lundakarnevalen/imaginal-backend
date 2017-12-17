@@ -7,7 +7,7 @@ const getAll = function (req, res) {
   UserRoles.hasRole(req.user, 'administrator').then(isadmin => {
     if (isadmin) {
       users.User.findAll({
-        attributes: ['id', 'email', 'name', 'phoneNumber', 'address', 'postNumber', 'city', 'careOf', 'personalNumber']
+        attributes: ['id', 'email', 'firstName', 'lastName', 'phoneNumber', 'address', 'postNumber', 'city', 'careOf', 'personalNumber']
       }).then(allUsers => {
         res.json({
           success: true,

@@ -44,7 +44,7 @@ app.all(/(\/)?api\/.*/, function (req, res, next) {
     }
 
     if (!user) {
-      return res.json({
+      return res.status(401).json({
         success: false,
         message: 'Unauthorized'
       })
