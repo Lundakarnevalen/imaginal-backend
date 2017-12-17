@@ -14,9 +14,10 @@ const registerUser = function (req, res) {
   }
   if (req.body.email && req.body.password) {
     users.User.findOne({
-      where: {
-        $or: [{personalNumber: req.body.personalNumber}, {email: req.body.email}]
-      }
+      where: {personalNumber: req.body.personalNumber},
+      $or: [{
+        email: req.body.email
+      }]
     })
       .then((user) => {
         if (user !== null) {
@@ -39,13 +40,13 @@ const createUser = function (req, res) {
   let finalUser
   users.User.create({
     email: req.body.email,
-    phoneNumber: req.body.postNumber || '',
+    phoneNumber: req.body.phoneNumber || '',
     firstName: req.body.firstName || '',
-    lastName: req.body.firstName || '',
-    address: req.body.firstName || '',
-    postNumber: req.body.firstName || '',
-    city: req.body.firstName || '',
-    careOf: req.body.firstName || '',
+    lastName: req.body.lastName|| '',
+    address: req.body.address || '',
+    postNumber: req.body.postNumber || '',
+    city: req.body.city || '',
+    careOf: req.body.careOf || '',
     personalNumber: req.body.personalNumber || ''
   })
     .then(user => {
