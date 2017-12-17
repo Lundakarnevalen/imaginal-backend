@@ -14,9 +14,10 @@ const registerUser = function (req, res) {
   }
   if (req.body.email && req.body.password) {
     users.User.findOne({
-      where: {
-        $or: [{personalNumber: req.body.personalNumber}, {email: req.body.email}]
-      }
+      where: {personalNumber: req.body.personalNumber},
+      $or: [{
+        email: req.body.email
+      }]
     })
       .then((user) => {
         if (user !== null) {
