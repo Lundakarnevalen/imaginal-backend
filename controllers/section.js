@@ -2,7 +2,7 @@ const SectionPriorities = require('../models/sectionpriority')
 
 const setSectionPriorities = function (req, res, next) {
   if (!req.body.sectionPriorities || !Array.isArray(req.body.sectionPriorities)) {
-    res.status(400).json({success: false, message: 'Missing parameters'})
+    return res.status(400).json({success: false, message: 'Missing parameters'})
   }
 
   SectionPriorities.setSectionPriorities(req.user, req.body.sectionPriorities, function (err, success, message) {

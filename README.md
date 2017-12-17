@@ -44,7 +44,7 @@ npm start
 ## Scripts
 If you have username root and no password on mysql, you can use
 ```
-sh init
+sh dbinit
 ```
 On mac or linux (maybe). If you don't want to make a backup, use.
 
