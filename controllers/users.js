@@ -76,7 +76,15 @@ const getById = function (req, res) {
 }
 
 const setUserInfo = function (req, res) {
-  if (req.params.email === req.user.email) {
+  UserRoles.hasRole(req.user, 'administrator').then(isadmin => {
+    if (!isadmin) {
+      if (req.params.email !== req.user.email) {
+        return res.status(401).json({
+          success: false,
+          message: 'Permission denied'
+        })
+      }
+    }
     if (req.body.firstName) req.user.firstName = req.body.firstName
     if (req.body.lastName) req.user.lastName = req.body.lastName
     if (req.body.phoneNumber) req.user.phoneNumber = req.body.phoneNumber
@@ -91,12 +99,7 @@ const setUserInfo = function (req, res) {
         message: 'User info updated'
       })
     })
-  } else {
-    res.status(401).json({
-      success: false,
-      message: 'Permission denied'
-    })
-  }
+  })
 }
 
 module.exports = {
