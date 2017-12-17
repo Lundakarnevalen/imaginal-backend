@@ -14,7 +14,9 @@ const checkIn = function (req, res) {
   UserRoles.hasRole(req.user, 'administrator').then(isadmin => {
     if (isadmin) {
       return users.User.findOne({
-        where: {personalNumber: req.params.pin}
+        where: {
+          $or: [{personalNumber: req.params.pin}, {email: req.params.pin}]
+        }
       })
     } else {
       let err = {
@@ -39,7 +41,7 @@ const checkIn = function (req, res) {
   }).then((row) => {
     if (row) {
       let err = {
-        status: 400,
+        status: 200,
         message: checkinUser.email + ' is already checked in.'
       }
       return Promise.reject(err)
@@ -94,17 +96,10 @@ const checkStatus = function (req, res) {
       where: {user_id: user.id}
     })
   }).then((check) => {
-    if (check) {
-      return res.json({
-        success: true,
-        message: req.params.email + ' is checked in.'
-      })
-    }
-    let err = {
-      status: 400,
-      message: req.params.email + ' is not checked in.'
-    }
-    return Promise.reject(err)
+    return res.json({
+      success: true,
+      checkedIn: !!check // throws to bool
+    })
   }).catch((reject) => {
     res.status(reject.status).json({
       success: false,
