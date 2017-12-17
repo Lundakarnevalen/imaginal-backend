@@ -2,13 +2,21 @@
 
 const users = require('../models/users')
 const role = require('../models/role')
-const userrole = require('../models/userrole')
 const karnevalistinfo = require('../models/karnevalistinfo')
+const jwt = require('jsonwebtoken')
 
 const registerUser = function (req, res) {
+  if (typeof req.body.personalNumber === 'undefined' || req.body.personalNumber.length !== 10) {
+    return res.status(400).json({
+      success: false,
+      message: 'Invalid personal number format'
+    })
+  }
   if (req.body.email && req.body.password) {
     users.User.findOne({
-      where: {email: req.body.email}
+      where: {
+        $or: [{personalNumber: req.body.personalNumber}, {email: req.body.email}]
+      }
     })
       .then((user) => {
         if (user !== null) {
@@ -33,7 +41,7 @@ const createUser = function (req, res) {
     email: req.body.email,
     phoneNumber: req.body.phoneNumber || '',
     firstName: req.body.firstName || '',
-    lastName: req.body.lastName|| '',
+    lastName: req.body.lastName || '',
     address: req.body.address || '',
     postNumber: req.body.postNumber || '',
     city: req.body.city || '',
@@ -43,6 +51,7 @@ const createUser = function (req, res) {
     .then(user => {
       finalUser = user
       users.setNewPassword(user, req.body.password)
+      user.token = jwt.sign({email: user.email}, process.env.TOKEN_SECRET || 'secret')
       return user
     })
     .then((user) => karnevalistinfo.KarnevalistInfo.create({
@@ -65,14 +74,12 @@ const createUser = function (req, res) {
     .then(() => role.Role.findOne({
       where: {Description: 'karnevalist'}
     }))
-    .then((role) => userrole.UserRole.create({
-      UserId: finalUser.id,
-      RoleId: role.id
-    }))
-    .then(() => {
+    .then((role) => {
+      return finalUser.addRole([role])
+    }).then(() => {
       res.json({
         success: true,
-        message: 'You are now registered',
+        message: 'You are now registered with email ' + finalUser.email,
         accessToken: finalUser.token
       })
     })

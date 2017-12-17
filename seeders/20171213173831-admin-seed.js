@@ -16,20 +16,6 @@ module.exports = {
       createdAt: new Date().toISOString().substr(0, 10),
       updatedAt: new Date().toISOString().substr(0, 10)
     }], {})
-    return queryInterface.bulkInsert('Users', [{
-      email: 'karnevalist',
-      firstName: 'saknas',
-      lastName: 'saknas',
-      phoneNumber: 'saknas',
-      address: 'saknas',
-      postNumber: 'saknas',
-      city: 'saknas',
-      careOf: 'saknas',
-      personalNumber: 'saknas',
-      password: 'testPasswordPleaseIgnore',
-      createdAt: new Date().toISOString().substr(0, 10),
-      updatedAt: new Date().toISOString().substr(0, 10)
-    }], {})
     /*
       Add altering commands here.
       Return a promise to correctly handle asynchronicity.
@@ -43,7 +29,7 @@ module.exports = {
   },
 
   down: (queryInterface, Sequelize) => {
-    return queryInterface.bulkDelete('Roles', null, {})
+    return queryInterface.bulkDelete('Users', null, {})
     /*
       Add reverting commands here.
       Return a promise to correctly handle asynchronicity.
