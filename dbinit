@@ -1,0 +1,5 @@
+mysqldump --opt -u root karneval > backup$(date +%Y%m%d-%H%M%S).sql
+mysql -u root -e "DROP DATABASE IF EXISTS Karneval;CREATE DATABASE Karneval;USE Karneval;"
+./node_modules/.bin/sequelize db:migrate
+./node_modules/.bin/sequelize db:seed:all
+npm start

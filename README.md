@@ -16,7 +16,7 @@ These instructions will get you a copy of the project up and running on your loc
 Install dependencies
 ```
 npm install
-```
+``` 
 
 Create database "karneval"
 ```
@@ -40,6 +40,16 @@ export TOKEN_SECRET='secret'
 Run server
 ```
 npm start
+```
+## Scripts
+If you have username root and no password on mysql, you can use
+```
+sh dbinit
+```
+On mac or linux (maybe). If you don't want to make a backup, use.
+
+```
+sh noBackupinit
 ```
 
 ## Running the tests
