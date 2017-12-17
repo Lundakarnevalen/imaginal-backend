@@ -41,7 +41,7 @@ const createUser = function (req, res) {
     email: req.body.email,
     phoneNumber: req.body.phoneNumber || '',
     firstName: req.body.firstName || '',
-    lastName: req.body.lastName|| '',
+    lastName: req.body.lastName || '',
     address: req.body.address || '',
     postNumber: req.body.postNumber || '',
     city: req.body.city || '',
