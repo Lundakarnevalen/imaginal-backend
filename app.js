@@ -8,6 +8,7 @@ const passport = require('passport')
 require('./config/passport')(passport)
 const role = require('./controllers/role')
 const section = require('./controllers/section')
+const checkin = require('./controllers/checkin')
 const karnevalistinfo = require('./controllers/karnevalistinfo')
 const users = require('./controllers/users')
 
@@ -33,7 +34,6 @@ app.post('/login/email', login.loginByEmail)
 
 /** FORGOT PASSWORD */
 app.post('/login/forgotpassword', forgotPassword.forgotPassword)
-
 app.post('/login/resetpassword', forgotPassword.setNewPassword)
 
 /** AUTHENTICATE TOKENS */
@@ -44,7 +44,7 @@ app.all(/(\/)?api\/.*/, function (req, res, next) {
     }
 
     if (!user) {
-      return res.json({
+      return res.status(401).json({
         success: false,
         message: 'Unauthorized'
       })
@@ -68,25 +68,20 @@ app.post('/api/hello', function (req, res) {
 })
 
 app.put('/api/user/karnevalistinfo', karnevalistinfo.setKarnevalistInfo)
-
 app.get('/api/user/karnevalistinfo', karnevalistinfo.getKarnevalistInfo)
 
+app.get('/api/user/checkin/:email', checkin.checkStatus)
+app.post('/api/user/checkin/:identification', checkin.checkIn) // PIN = personal identity number
+
 app.put('/api/user/:email', users.setUserInfo)
-
 app.get('/api/user/:email', users.getById)
-
 app.get('/api/users', users.getAll)
 
 app.post('/api/section', section.setSectionPriorities)
-
 app.get('/api/section', section.getSectionPriorities)
 
-/** ROLES */
-
 app.post('/api/role/addrole/:email/:roleid', role.addRole) // Adds a single role to a single user
-
 app.post('/api/role/removerole/:email/:roleid', role.removeRole) // Adds a single role to a single user
-
 app.post('/api/role/getusers/:roleid', role.getUsers) // Gets all users that has a given role
 
 app.all('*', function (req, res) {

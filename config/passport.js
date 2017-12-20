@@ -41,7 +41,6 @@ module.exports = function (passport) {
         if (err) {
           return done(null, false)
         }
-
         User.findOne({
           where: { token: token }
         })
