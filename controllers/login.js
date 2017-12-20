@@ -29,7 +29,18 @@ const loginByEmail = function (req, res, next) {
         return res.json({
           success: true,
           message: 'Successfully logged in',
-          accessToken: req.user.token
+          accessToken: req.user.token,
+          userinfo: {
+            email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            phoneNumber: user.phoneNumber,
+            address: user.address,
+            postNumber: user.postNumber,
+            city: user.city,
+            careOf: user.careOf,
+            personalNumber: user.personalNumber
+          }
         })
       })
     })(req, res, next)
