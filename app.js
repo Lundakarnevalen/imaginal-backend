@@ -71,7 +71,7 @@ app.put('/api/user/karnevalistinfo', karnevalistinfo.setKarnevalistInfo)
 app.get('/api/user/karnevalistinfo', karnevalistinfo.getKarnevalistInfo)
 
 app.get('/api/user/checkin/:email', checkin.checkStatus)
-app.post('/api/user/checkin/:pin', checkin.checkIn) // PIN = personal identity number
+app.post('/api/user/checkin/:identification', checkin.checkIn) // PIN = personal identity number
 
 app.put('/api/user/:email', users.setUserInfo)
 app.get('/api/user/:email', users.getById)
