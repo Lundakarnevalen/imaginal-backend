@@ -17,16 +17,15 @@ const registerUser = function (req, res) {
       where: {
         $or: [{personalNumber: req.body.personalNumber}, {email: req.body.email}]
       }
+    }).then((user) => {
+      if (user !== null) {
+        return res.status(400).json({
+          success: false,
+          message: 'User already exists'
+        })
+      }
+      createUser(req, res)
     })
-      .then((user) => {
-        if (user !== null) {
-          return res.status(400).json({
-            success: false,
-            message: 'User already exists'
-          })
-        }
-        createUser(req, res)
-      })
   } else {
     res.status(400).json({
       success: false,
@@ -41,7 +40,7 @@ const createUser = function (req, res) {
     email: req.body.email,
     phoneNumber: req.body.phoneNumber || '',
     firstName: req.body.firstName || '',
-    lastName: req.body.lastName|| '',
+    lastName: req.body.lastName || '',
     address: req.body.address || '',
     postNumber: req.body.postNumber || '',
     city: req.body.city || '',

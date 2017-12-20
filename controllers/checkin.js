@@ -3,10 +3,10 @@ const users = require('../models/users')
 const UserRoles = require('../models/userrole')
 
 const checkIn = function (req, res) {
-  if (!req.params.pin) {
+  if (!req.params.identification) {
     return res.status(400).json({
       success: false,
-      message: 'Missing PIN param'
+      message: 'Missing identification param'
     })
   }
 
@@ -15,7 +15,7 @@ const checkIn = function (req, res) {
     if (isadmin) {
       return users.User.findOne({
         where: {
-          $or: [{personalNumber: req.params.pin}, {email: req.params.pin}]
+          $or: [{personalNumber: req.params.identification}, {email: req.params.identification}]
         }
       })
     } else {
@@ -52,7 +52,7 @@ const checkIn = function (req, res) {
       }).then(() => {
         return res.json({
           success: true,
-          message: req.params.pin + ' checked in successfully.'
+          message: req.params.identification + ' checked in successfully.'
         })
       })
     }
