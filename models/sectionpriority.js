@@ -31,9 +31,9 @@ const setSectionPriorities = function (user, sectionPriorities, done) {
     user_id: user.id,
     section: currentValue,
     prio: index
-  }).then((priority) => {
+  }))).then((priority) => {
     return done(null, true, 'Priorities set')
-  })))
+  })
 }
 
 const getSectionPriorities = function (user, done) {
@@ -45,21 +45,13 @@ const getSectionPriorities = function (user, done) {
     if (!prios) {
       return done(null, null)
     } else {
-      return done(null, makeSendablePrios(prios))
+      return done(null, prios.map(x => x.section))
     }
   })
 }
 
 const uniqueSections = function (array) {
   return (new Set(array)).size !== array.length
-}
-
-const makeSendablePrios = function (prios) { // What to return if prios is empty?
-  if (prios.length > 0) {
-    return prios[0].section.split(',')
-  } else {
-    return ''
-  }
 }
 
 module.exports = {
