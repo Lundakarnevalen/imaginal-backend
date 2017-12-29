@@ -26,17 +26,17 @@ app.use(function (error, req, res, next) {
   next()
 })
 
-/** REGISTER USER */
+/**
+ * Unauthorized endpoints
+ */
 app.post('/register', register.registerUser)
-
-/** LOGIN */
 app.post('/login/email', login.loginByEmail)
-
-/** FORGOT PASSWORD */
 app.post('/login/forgotpassword', forgotPassword.forgotPassword)
 app.post('/login/resetpassword', forgotPassword.setNewPassword)
 
-/** AUTHENTICATE TOKENS */
+/**
+ * Authenticate tokens
+ */
 app.all(/(\/)?api\/.*/, function (req, res, next) {
   passport.authenticate('bearer', {session: false}, function (err, user, info) {
     if (err) {
@@ -59,7 +59,9 @@ app.all(/(\/)?api\/.*/, function (req, res, next) {
   })(req, res, next)
 })
 
-/*******************/
+/**
+ * Authorized endpoints
+ */
 app.post('/api/hello', function (req, res) {
   res.json({
     success: true,
@@ -80,9 +82,9 @@ app.get('/api/users', users.getAll)
 app.post('/api/section', section.setSectionPriorities)
 app.get('/api/section', section.getSectionPriorities)
 
-app.post('/api/role/addrole/:email/:roleid', role.addRole) // Adds a single role to a single user
-app.post('/api/role/removerole/:email/:roleid', role.removeRole) // Adds a single role to a single user
-app.post('/api/role/getusers/:roleid', role.getUsers) // Gets all users that has a given role
+app.post('/api/role/:email/:roleid', role.addRole) // Adds a single role to a single user
+app.delete('/api/role/:email/:roleid', role.removeRole) // Remove role from user
+app.get('/api/role/:roleid', role.getUsers) // Gets all users that has a given role
 
 app.all('*', function (req, res) {
   res.status(404).json({
