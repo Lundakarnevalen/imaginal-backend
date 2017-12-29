@@ -6,7 +6,6 @@ const jwt = require('jsonwebtoken')
 const sequelize = require('../config/database')
 
 const registerUser = function (req, res) {
-  console.log(req.body)
   if (typeof req.body.personalNumber === 'undefined' || req.body.personalNumber.length !== 10) {
     return res.status(400).json({
       success: false,
