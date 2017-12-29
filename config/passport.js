@@ -1,6 +1,7 @@
 const LocalStrategy = require('passport-local').Strategy
 const BearerStrategy = require('passport-http-bearer').Strategy
 const User = require('../models/users').User
+const KarnevalistInfo = require('../models/users').KarnevalistInfo
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
@@ -42,7 +43,9 @@ module.exports = function (passport) {
           return done(null, false)
         }
         User.findOne({
-          where: { token: token }
+          attributes: ['id', 'email', 'firstName', 'lastName', 'phoneNumber', 'address', 'postNumber', 'city', 'careOf', 'personalNumber'],
+          where: { token: token },
+          include: [{model: KarnevalistInfo}]
         })
         .then(function (user) {
           if (!user) {

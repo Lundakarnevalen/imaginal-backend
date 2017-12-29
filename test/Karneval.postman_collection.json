@@ -1,7 +1,7 @@
 {
 	"info": {
 		"name": "Karneval",
-		"_postman_id": "e735d58b-967c-d764-3350-d2e777527fae",
+		"_postman_id": "ad79b522-d309-8fa7-3944-ea1cd93509ef",
 		"description": "# Introduction\nBackend till lundakarnevalen 2018.\n\n# Overview\nTestserver på 146.185.173.31:3000, exempel är till localhost. Endast JSON accepteras.\n\n# Error Codes\n200: OK \n\n400: User sent bad information or missing parameters \n\n401: User does not have appropriate privileges \n\n404: No such end point \n\n500: Internal error, not caused by user",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -74,7 +74,7 @@
 					},
 					"response": [
 						{
-							"id": "c6393cd8-6e3f-44ce-88b2-69f81c5edb36",
+							"id": "a7ac1d12-be4c-4ccf-b6ff-1533274d35a5",
 							"name": "Register a user",
 							"originalRequest": {
 								"method": "POST",
@@ -148,7 +148,7 @@
 							"body": "{\"success\":true,\"message\":\"You are now registered\"}"
 						},
 						{
-							"id": "8aa5ebca-ea6d-4f7e-93ea-b9c6ae419749",
+							"id": "d06522d3-37fc-409c-865f-4bb0289d6851",
 							"name": "Register a user",
 							"originalRequest": {
 								"method": "POST",
@@ -273,7 +273,7 @@
 					},
 					"response": [
 						{
-							"id": "1e669bc5-40ce-495b-bb35-293241cda4c3",
+							"id": "37d5d022-1a40-4c67-b185-ba6fa2376911",
 							"name": "Missing field register",
 							"originalRequest": {
 								"header": [],
@@ -383,7 +383,7 @@
 					},
 					"response": [
 						{
-							"id": "166704b1-1abb-4c1a-9b76-b8a9abd531a1",
+							"id": "02d3a2e7-f525-4c1c-b515-27a794986f6e",
 							"name": "Fail to reregister same user",
 							"originalRequest": {
 								"method": "POST",
@@ -507,7 +507,7 @@
 					},
 					"response": [
 						{
-							"id": "010da489-8425-40ce-929e-9452196dff4f",
+							"id": "32d7d3fa-418e-47d7-b04a-d3f6d21348ce",
 							"name": "Fail to reregister same user",
 							"originalRequest": {
 								"method": "POST",
@@ -643,7 +643,7 @@
 					},
 					"response": [
 						{
-							"id": "d143c45f-2e97-4255-9570-922d55c59941",
+							"id": "101e86fb-2b69-467e-8b3b-b35a9360f15a",
 							"name": "Email Login",
 							"originalRequest": {
 								"header": [],
@@ -749,7 +749,7 @@
 					},
 					"response": [
 						{
-							"id": "d4e76ce2-4dab-4d78-8c7a-c1b929221bee",
+							"id": "5d50d72f-171c-4378-8096-d96e727dcff0",
 							"name": "Wrong email login",
 							"originalRequest": {
 								"method": "POST",
@@ -870,7 +870,7 @@
 					},
 					"response": [
 						{
-							"id": "14718dde-83a5-4ebd-bad5-99a7aa6e8d5c",
+							"id": "3930a396-ae0a-40a3-b6a8-5154c62358aa",
 							"name": "Wrong password login",
 							"originalRequest": {
 								"method": "POST",
@@ -991,7 +991,7 @@
 					},
 					"response": [
 						{
-							"id": "8ff86cad-a4f5-4201-8672-431a61716ae6",
+							"id": "11de449a-8438-44cc-8739-fe9992e8d45d",
 							"name": "Missing field login",
 							"originalRequest": {
 								"header": [],
@@ -1105,7 +1105,7 @@
 					},
 					"response": [
 						{
-							"id": "172603d7-abe4-4b54-b111-39cc39530bf9",
+							"id": "1355b80a-8649-4dd5-b34d-39842469d972",
 							"name": "Initiate password Reset",
 							"originalRequest": {
 								"method": "POST",
@@ -1223,7 +1223,7 @@
 					},
 					"response": [
 						{
-							"id": "e6b3bcbf-b7b4-4040-8242-8f7d69709760",
+							"id": "51a8301a-cd87-4ed1-9755-a43348830d11",
 							"name": "Password reset change password",
 							"originalRequest": {
 								"header": [],
@@ -1351,7 +1351,7 @@
 					},
 					"response": [
 						{
-							"id": "6eba59b2-2b07-48b2-97e0-48064fc2d486",
+							"id": "8e9204e7-2790-484f-9311-b11952e21f22",
 							"name": "Email Login new password",
 							"originalRequest": {
 								"method": "POST",
@@ -1470,7 +1470,7 @@
 					},
 					"response": [
 						{
-							"id": "e673a10a-9208-48e5-8541-fa39c6f254aa",
+							"id": "e5edcb78-b80f-490c-84bc-6b1457ecde8c",
 							"name": "Bad password reset change password",
 							"originalRequest": {
 								"header": [],
@@ -1587,7 +1587,7 @@
 					},
 					"response": [
 						{
-							"id": "ae8ae516-3e63-4ba5-a60f-dd4d40f34298",
+							"id": "c2163c99-53f7-443e-adc5-a89974637d31",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -1719,7 +1719,7 @@
 					},
 					"response": [
 						{
-							"id": "bddecbea-e841-42b4-a457-2ea0046f8a12",
+							"id": "e0fa1576-4ce4-42ef-b421-7a7b0b68f774",
 							"name": "Fail to access resource that doesnt exist",
 							"originalRequest": {
 								"method": "POST",
@@ -1853,7 +1853,7 @@
 					},
 					"response": [
 						{
-							"id": "977e664c-dc4a-4e77-9b62-074b2e7de7b7",
+							"id": "47e44484-e88a-4891-9458-14b800f13888",
 							"name": "Email Login",
 							"originalRequest": {
 								"method": "POST",
@@ -1996,7 +1996,7 @@
 					},
 					"response": [
 						{
-							"id": "5398c6c6-2277-4369-9118-12bd4aef8183",
+							"id": "e1f7d406-d60b-424f-b13d-62771f784aed",
 							"name": "Set priorities",
 							"originalRequest": {
 								"header": [],
@@ -2109,7 +2109,7 @@
 					},
 					"response": [
 						{
-							"id": "619d86c7-4373-4003-8f2c-d1416486db71",
+							"id": "582bdc20-9d33-471c-88de-bd8870571360",
 							"name": "Get same priorities",
 							"originalRequest": {
 								"method": "GET",
@@ -2253,7 +2253,7 @@
 					},
 					"response": [
 						{
-							"id": "e3cd63cb-319f-4e94-9a1a-8dfa87b12ae0",
+							"id": "8ddb127d-8d55-473f-b1a5-2e6f13361234",
 							"name": "Set duplicate prio",
 							"originalRequest": {
 								"header": [],
@@ -2381,7 +2381,7 @@
 					},
 					"response": [
 						{
-							"id": "f4e2d1a1-8f49-496b-9501-ffee0cae3c96",
+							"id": "16fc6e5a-1fe7-4d8b-a383-08ade0c3391d",
 							"name": "Set priorities",
 							"originalRequest": {
 								"header": [],
@@ -2444,130 +2444,6 @@
 			]
 		},
 		{
-			"name": "API, karnevalist info",
-			"item": [
-				{
-					"name": "Set own karnevalistinfo",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"pm.test(\"Successfield true on statuscode 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.success).to.eql(true);",
-									"});",
-									"",
-									"pm.test(\"Body must contain info\", function () {",
-									"    pm.expect(pm.response.text()).to.include(\"info\");",
-									"});",
-									""
-								]
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{accessToken}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"talent\":\"lol no\"\n}"
-						},
-						"url": {
-							"raw": "http://localhost:3000/api/user/karnevalistinfo",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"api",
-								"user",
-								"karnevalistinfo"
-							]
-						},
-						"description": "Fields that can be set:\nlanguage:\ndriversLicense:\nfoodPreference:\ndisability:\naudition: \ntalent:\nentertainmentCategory: \ncorps: \nstartOfStudies:\npastInvolvement: \ngroupLeader:\ninterests:\nmisc: \nplenipotentiary:"
-					},
-					"response": []
-				},
-				{
-					"name": "Get own Karnevalist info",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"pm.test(\"Data must belong to a user\", function () {",
-									"    pm.expect(pm.response.text()).to.include(\"id\");",
-									"    pm.expect(pm.response.text()).to.include(\"user_id\");",
-									"});",
-									""
-								]
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{accessToken}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "http://localhost:3000/api/user/karnevalistinfo",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"api",
-								"user",
-								"karnevalistinfo"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
 			"name": "API, userinfo",
 			"item": [
 				{
@@ -2620,6 +2496,125 @@
 							]
 						},
 						"description": "The following fields can be send.\n\nemail:\nphoneNumber:\nfirstName:\nlastName:\naddress:\npostNumber:\ncity:\ncareOf:\npersonalNumber:"
+					},
+					"response": []
+				},
+				{
+					"name": "Set own karnevalistinfo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Successfield true on statuscode 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(true);",
+									"});",
+									"",
+									"pm.test(\"Body must contain info\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"info\");",
+									"});",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"talent\":\"lol no\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/user/{{randomUsername}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user",
+								"{{randomUsername}}"
+							]
+						},
+						"description": "Fields that can be set:\nlanguage:\ndriversLicense:\nfoodPreference:\ndisability:\naudition: \ntalent:\nentertainmentCategory: \ncorps: \nstartOfStudies:\npastInvolvement: \ngroupLeader:\ninterests:\nmisc: \nplenipotentiary:"
+					},
+					"response": []
+				},
+				{
+					"name": "Get own Karnevalist info",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Data must belong to a user\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"id\");",
+									"    pm.expect(pm.response.text()).to.include(\"KarnevalistInfo\");",
+									"});",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/user/{{randomUsername}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user",
+								"{{randomUsername}}"
+							]
+						}
 					},
 					"response": []
 				},
@@ -3446,7 +3441,7 @@
 					},
 					"response": [
 						{
-							"id": "3c36bbe9-decc-4999-b97a-686874955e0b",
+							"id": "b18f5605-727a-4e2e-a400-8e84fe93962b",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -3640,7 +3635,7 @@
 					},
 					"response": [
 						{
-							"id": "98b5b4c0-e9d0-4fa4-80a7-4978723d96c5",
+							"id": "d335e8d0-21bb-45f3-b49f-82cbd4b7c387",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -3770,7 +3765,7 @@
 					},
 					"response": [
 						{
-							"id": "fbffb245-e444-4d2f-bf01-b9c6fff00042",
+							"id": "c60c35c3-4005-472c-80c7-0035a3ee3d1f",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -3905,7 +3900,7 @@
 					},
 					"response": [
 						{
-							"id": "31930071-8e51-453e-9e5f-243082147414",
+							"id": "39fa3c41-2680-4917-a348-d3a2c0903361",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -4035,7 +4030,7 @@
 					},
 					"response": [
 						{
-							"id": "44a7612d-a162-48bb-9c86-de1489af6d1b",
+							"id": "45cc2bda-1661-4b3b-be43-b92be6fcc95e",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -4165,7 +4160,7 @@
 					},
 					"response": [
 						{
-							"id": "992d49fa-e30e-42fc-a015-b34ea0125919",
+							"id": "2dd158e8-989a-4fc6-9787-e9724f3cb0b3",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -4295,7 +4290,7 @@
 					},
 					"response": [
 						{
-							"id": "f248526f-6a9c-45cc-b3ed-7fc80ace7639",
+							"id": "7a14ec6f-43d6-4930-9925-f750fcb61c8c",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -4435,7 +4430,7 @@
 					},
 					"response": [
 						{
-							"id": "52e258ab-0ed6-4046-acc2-a7eabb7dfab8",
+							"id": "222d054a-3396-434f-916a-677ae10bd788",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -4565,7 +4560,7 @@
 					},
 					"response": [
 						{
-							"id": "d07da50c-08c2-44f2-ae0f-ce9fbff05823",
+							"id": "114ed6c5-e637-4cab-ad7a-e02299dfd6c5",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -4695,7 +4690,7 @@
 					},
 					"response": [
 						{
-							"id": "3a6193b3-b726-499a-9d0e-7adb746a6ff1",
+							"id": "e1634532-2497-487d-9a0e-25ee015508bc",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -4825,7 +4820,7 @@
 					},
 					"response": [
 						{
-							"id": "5175d1f9-a9a5-4eb6-9fe2-9e31605ba192",
+							"id": "f0b45640-184c-4542-b8c0-da52847d0bc6",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",

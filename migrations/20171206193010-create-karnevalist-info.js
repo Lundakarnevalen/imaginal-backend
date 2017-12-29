@@ -8,9 +8,8 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      user_id: {
-        type: Sequelize.INTEGER,
-        allowNull: false
+      userId: {
+        type: Sequelize.INTEGER
       },
       language: {
         type: Sequelize.STRING
@@ -62,17 +61,7 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: false
       }
-    }).then(() => queryInterface.addConstraint('KarnevalistInfos', ['user_id'], {
-      type: 'FOREIGN KEY',
-      name: 'Info must have user',
-      references: {
-        table: 'Users',
-        field: 'id'
-      },
-      onDelete: 'no action',
-      onUpdate: 'no action'
     })
-    )
   },
   down: (queryInterface, Sequelize) => {
     return queryInterface.dropTable('KarnevalistInfos')

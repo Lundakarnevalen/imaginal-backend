@@ -21,6 +21,31 @@ const User = dbc.define('User', {
   personalNumber: Sequelize.STRING
 })
 
+const KarnevalistInfo = dbc.define('KarnevalistInfo', {
+  id: {
+    autoIncrement: true,
+    primaryKey: true,
+    type: Sequelize.INTEGER
+  },
+  language: Sequelize.STRING,
+  driversLicense: Sequelize.STRING,
+  foodPreference: Sequelize.STRING,
+  disability: Sequelize.STRING,
+  audition: Sequelize.STRING,
+  talent: Sequelize.STRING,
+  entertainmentCategory: Sequelize.STRING,
+  corps: Sequelize.STRING,
+  startOfStudies: Sequelize.STRING,
+  pastInvolvement: Sequelize.STRING,
+  groupLeader: Sequelize.STRING,
+  interests: Sequelize.STRING,
+  misc: Sequelize.STRING,
+  plenipotentiary: Sequelize.STRING
+})
+
+// This adds UserId to KarnevalistInfo as foreign key
+User.hasOne(KarnevalistInfo)
+
 const setNewPassword = function (user, password) {
   return new Promise((resolve, reject) => {
     bcrypt.hash(password, 10, (err, hash) => {
@@ -36,5 +61,6 @@ const setNewPassword = function (user, password) {
 
 module.exports = {
   User,
+  KarnevalistInfo,
   setNewPassword
 }
