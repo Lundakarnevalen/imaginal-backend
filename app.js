@@ -9,7 +9,6 @@ require('./config/passport')(passport)
 const role = require('./controllers/role')
 const section = require('./controllers/section')
 const checkin = require('./controllers/checkin')
-const karnevalistinfo = require('./controllers/karnevalistinfo')
 const users = require('./controllers/users')
 
 app.use(bodyParser.json())
@@ -68,9 +67,6 @@ app.post('/api/hello', function (req, res) {
     message: 'Hello World!'
   })
 })
-
-app.put('/api/user/karnevalistinfo', karnevalistinfo.setKarnevalistInfo)
-app.get('/api/user/karnevalistinfo', karnevalistinfo.getKarnevalistInfo)
 
 app.get('/api/user/checkin/:email', checkin.checkStatus)
 app.post('/api/user/checkin/:identification', checkin.checkIn) // PIN = personal identity number

@@ -2,8 +2,8 @@
 
 const users = require('../models/users')
 const role = require('../models/role')
-const karnevalistinfo = require('../models/karnevalistinfo')
 const jwt = require('jsonwebtoken')
+const sequelize = require('../config/database')
 
 const registerUser = function (req, res) {
   if (typeof req.body.personalNumber === 'undefined' || req.body.personalNumber.length !== 10) {
@@ -36,25 +36,24 @@ const registerUser = function (req, res) {
 
 const createUser = function (req, res) {
   let finalUser
-  users.User.create({
-    email: req.body.email,
-    phoneNumber: req.body.phoneNumber || '',
-    firstName: req.body.firstName || '',
-    lastName: req.body.lastName || '',
-    address: req.body.address || '',
-    postNumber: req.body.postNumber || '',
-    city: req.body.city || '',
-    careOf: req.body.careOf || '',
-    personalNumber: req.body.personalNumber || ''
-  })
+  sequelize.transaction(function (t) {
+    return users.User.create({
+      email: req.body.email,
+      phoneNumber: req.body.phoneNumber || '',
+      firstName: req.body.firstName || '',
+      lastName: req.body.lastName || '',
+      address: req.body.address || '',
+      postNumber: req.body.postNumber || '',
+      city: req.body.city || '',
+      careOf: req.body.careOf || '',
+      personalNumber: req.body.personalNumber || ''
+    }, {transaction: t})
     .then(user => {
-      finalUser = user
       users.setNewPassword(user, req.body.password)
       user.token = jwt.sign({email: user.email}, process.env.TOKEN_SECRET || 'secret')
-      return user
+      finalUser = user
     })
-    .then((user) => karnevalistinfo.KarnevalistInfo.create({
-      user_id: user.id,
+    .then(() => finalUser.createKarnevalistInfo({
       language: req.body.language || '',
       driversLicense: req.body.driversLicense || '',
       foodPreference: req.body.foodPreference || '',
@@ -69,19 +68,30 @@ const createUser = function (req, res) {
       interests: req.body.interests || '',
       misc: req.body.misc || '',
       plenipotentiary: req.body.plenipotentiary || ''
-    }))
-    .then(() => role.Role.findOne({
-      where: {Description: 'karnevalist'}
-    }))
-    .then((role) => {
-      return finalUser.addRole([role])
-    }).then(() => {
-      res.json({
-        success: true,
-        message: 'You are now registered with email ' + finalUser.email,
-        accessToken: finalUser.token
-      })
+    }, {transaction: t}))
+    .then(() => {
+      return role.Role.findOne({
+        where: {Description: 'karnevalist'}
+      }, {transaction: t})
     })
+    .then((role) => {
+      return finalUser.addRole([role], {transaction: t})
+    })
+  })
+  .then(() => {
+    res.json({
+      success: true,
+      message: 'You are now registered with email ' + finalUser.email,
+      accessToken: finalUser.token
+    })
+  })
+  .catch(err => {
+    console.log(err)
+    res.status(500).json({
+      success: false,
+      message: 'Failed to register'
+    })
+  })
 }
 
 module.exports = {
