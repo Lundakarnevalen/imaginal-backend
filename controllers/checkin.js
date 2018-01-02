@@ -108,7 +108,49 @@ const checkStatus = function (req, res) {
   })
 }
 
+const listCheckins = function (req, res) {
+  UserRoles.hasRole(req.user, 'administrator')
+    .then(isadmin => {
+      if (!isadmin) {
+        let err = {
+          status: 401,
+          message: 'Admin privileges required'
+        }
+        return Promise.reject(err)
+      }
+      if (!req.params.email) {
+        let err = {
+          status: 400,
+          message: 'Missing email param'
+        }
+        return Promise.reject(err)
+      }
+      return checkin.Checkin.findAll({
+        where: {checker_id: req.user.id}
+      })
+    })
+    .then(list => {
+      if (list.length === 0) {
+        let err = {
+          status: 200,
+          message: 'No users checked in by ' + req.params.email
+        }
+        return Promise.reject(err)
+      }
+      return res.json({
+        success: true,
+        userids: list.map(x => (x.user_id))
+      })
+    })
+    .catch(reject => {
+      res.status(reject.status).json({
+        success: false,
+        message: reject.message
+      })
+    })
+}
 module.exports = {
   checkIn,
-  checkStatus
+  checkStatus,
+  listCheckins
 }

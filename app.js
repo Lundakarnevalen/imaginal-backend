@@ -69,7 +69,9 @@ app.post('/api/hello', function (req, res) {
 })
 
 app.get('/api/user/checkin/:email', checkin.checkStatus)
-app.post('/api/user/checkin/:identification', checkin.checkIn) // PIN = personal identity number
+app.post('/api/user/checkin/:identification', checkin.checkIn)
+
+app.get('/api/user/listcheckins/:email', checkin.listCheckins)
 
 app.put('/api/user/:email', users.setUserInfo)
 app.get('/api/user/:email', users.getById)
@@ -78,9 +80,9 @@ app.get('/api/users', users.getAll)
 app.post('/api/section', section.setSectionPriorities)
 app.get('/api/section', section.getSectionPriorities)
 
-app.post('/api/role/:email/:roleid', role.addRole) // Adds a single role to a single user
-app.delete('/api/role/:email/:roleid', role.removeRole) // Remove role from user
-app.get('/api/role/:roleid', role.getUsers) // Gets all users that has a given role
+app.post('/api/role/:email/:roleid', role.addRole)
+app.delete('/api/role/:email/:roleid', role.removeRole)
+app.get('/api/role/:roleid', role.getUsers)
 
 app.all('*', function (req, res) {
   res.status(404).json({
