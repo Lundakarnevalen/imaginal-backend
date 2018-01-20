@@ -10,7 +10,7 @@ const checkIn = function (req, res) {
     })
   }
 
-  let checkinUser
+  let checker
   UserRoles.hasRole(req.user, 'administrator').then(isadmin => {
     if (isadmin) {
       return users.User.findOne({
@@ -27,7 +27,7 @@ const checkIn = function (req, res) {
     }
   }).then((user) => {
     if (user) {
-      checkinUser = user
+      checker = user
       return checkin.Checkin.findOne({
         where: {user_id: user.id}
       })
@@ -42,14 +42,15 @@ const checkIn = function (req, res) {
     if (row) {
       let err = {
         status: 200,
-        message: checkinUser.email + ' is already checked in.'
+        message: checker.email + ' is already checked in.'
       }
       return Promise.reject(err)
     } else {
-      checkin.Checkin.create({
+      /*checkin.Checkin.create({
         user_id: checkinUser.id,
-        checker_id: req.user.id
-      }).then(() => {
+        checker_id: req.user.id*/
+      req.user.addChecker_id([checker]).then(() => {
+        console.log('FYTFFFFFFFFFFFFFFF')
         return res.json({
           success: true,
           message: req.params.identification + ' checked in successfully.'
