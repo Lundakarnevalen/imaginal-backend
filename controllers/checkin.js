@@ -134,7 +134,7 @@ const listCheckins = function (req, res) {
           })
         })
         .then(list => {
-          if (list.length === 0) {
+          if (!list || list.length === 0) {
             let err = {
               status: 200,
               message: 'No users checked in by ' + req.params.email
