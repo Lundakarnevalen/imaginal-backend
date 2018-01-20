@@ -2449,124 +2449,6 @@
 			"name": "API, userinfo",
 			"item": [
 				{
-					"name": "Set user info",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"pm.test(\"Successfield true on statuscode 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.success).to.eql(true);",
-									"});"
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer {{accessToken}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"postNumber\": \"1234\"\n}"
-						},
-						"url": {
-							"raw": "localhost:3000/api/user/{{randomUsername}}",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"api",
-								"user",
-								"{{randomUsername}}"
-							]
-						},
-						"description": "The following fields can be send.\n\nemail:\nphoneNumber:\nfirstName:\nlastName:\naddress:\npostNumber:\ncity:\ncareOf:\npersonalNumber:"
-					},
-					"response": []
-				},
-				{
-					"name": "Set own karnevalistinfo",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"pm.test(\"Successfield true on statuscode 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.success).to.eql(true);",
-									"});",
-									"",
-									"pm.test(\"Body must contain info\", function () {",
-									"    pm.expect(pm.response.text()).to.include(\"info\");",
-									"});",
-									""
-								]
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{accessToken}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"talent\":\"lol no\"\n}"
-						},
-						"url": {
-							"raw": "http://localhost:3000/api/user/{{randomUsername}}",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"api",
-								"user",
-								"{{randomUsername}}"
-							]
-						},
-						"description": "Fields that can be set:\nlanguage:\ndriversLicense:\nfoodPreference:\ndisability:\naudition: \ntalent:\nentertainmentCategory: \ncorps: \nstartOfStudies:\npastInvolvement: \ngroupLeader:\ninterests:\nmisc: \nplenipotentiary:"
-					},
-					"response": []
-				},
-				{
 					"name": "Get own Karnevalist info",
 					"event": [
 						{
@@ -2620,7 +2502,127 @@
 					},
 					"response": []
 				},
+              {
+                "name": "Set own karnevalistinfo",
+                "event": [
+                  {
+                    "listen": "test",
+                    "script": {
+                      "type": "text/javascript",
+                      "exec": [
+                        "pm.test(\"Status code is 200\", function () {",
+                        "    pm.response.to.have.status(200);",
+                        "});",
+                        "",
+                        "pm.test(\"Successfield true on statuscode 200\", function () {",
+                        "    pm.response.to.have.status(200);",
+                        "    var jsonData = pm.response.json();",
+                        "    pm.expect(jsonData.success).to.eql(true);",
+                        "});",
+                        "",
+                        "pm.test(\"Body must contain info\", function () {",
+                        "    pm.expect(pm.response.text()).to.include(\"info\");",
+                        "});",
+                        ""
+                      ]
+                    }
+                  }
+                ],
+                "request": {
+                  "auth": {
+                    "type": "bearer",
+                    "bearer": [
+                      {
+                        "key": "token",
+                        "value": "{{accessToken}}",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "method": "PUT",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\n\t\"talent\":\"lol no\"\n}"
+                  },
+                  "url": {
+                    "raw": "http://localhost:3000/api/user/{{randomUsername}}",
+                    "protocol": "http",
+                    "host": [
+                      "localhost"
+                    ],
+                    "port": "3000",
+                    "path": [
+                      "api",
+                      "user",
+                      "{{randomUsername}}"
+                    ]
+                  },
+                  "description": "Fields that can be set:\nlanguage:\ndriversLicense:\nfoodPreference:\ndisability:\naudition: \ntalent:\nentertainmentCategory: \ncorps: \nstartOfStudies:\npastInvolvement: \ngroupLeader:\ninterests:\nmisc: \nplenipotentiary:"
+                },
+                "response": []
+              },
+              {
+                "name": "Get own Karnevalist info",
+                "event": [
+                  {
+                    "listen": "test",
+                    "script": {
+                      "type": "text/javascript",
+                      "exec": [
+                        "pm.test(\"Status code is 200\", function () {",
+                        "    pm.response.to.have.status(200);",
+                        "});",
+                        "",
+                        "pm.test(\"Data must belong to a user\", function () {",
+                        "    pm.expect(pm.response.text()).to.include(\"id\");",
+                        "    pm.expect(pm.response.text()).to.include(\"KarnevalistInfo\");",
+                        "});",
+                        ""
+                      ]
+                    }
+                  }
+                ],
+                "request": {
+                  "auth": {
+                    "type": "bearer",
+                    "bearer": [
+                      {
+                        "key": "token",
+                        "value": "{{accessToken}}",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "method": "GET",
+                  "header": [],
+                  "body": {
+                    "mode": "raw",
+                    "raw": ""
+                  },
+                  "url": {
+                    "raw": "http://localhost:3000/api/user/{{randomUsername}}",
+                    "protocol": "http",
+                    "host": [
+                      "localhost"
+                    ],
+                    "port": "3000",
+                    "path": [
+                      "api",
+                      "user",
+                      "{{randomUsername}}"
+                    ]
+                  }
+                },
+                "response": []
+              },
 				{
+
 					"name": "Get userinfo",
 					"event": [
 						{
@@ -2934,7 +2936,7 @@
 								"api",
 								"user",
 								"{{randomUsername}}"
-							]
+										]
 						}
 					},
 					"response": []

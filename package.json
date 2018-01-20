@@ -25,18 +25,19 @@
     "express": "^4.16.1",
     "jsonwebtoken": "^8.1.0",
     "mysql2": "^1.4.2",
+    "nvm": "0.0.4",
     "passport": "^0.4.0",
     "passport-http-bearer": "^1.0.1",
     "passport-jwt": "^3.0.0",
     "passport-local": "^1.0.0",
-    "sequelize": "^4.28.1",
+    "sequelize": "^4.31.2",
     "sequelize-cli": "^3.2.0"
   },
   "devDependencies": {
-    "mocha": "^4.0.1",
-    "newman": "^3.9.1",
-    "nyc": "^11.4.0",
-    "pretty-swag": "^0.1.138",
+    "mocha": "^4.1.0",
+    "newman": "^3.9.3",
+    "nyc": "^11.4.1",
+    "pretty-swag": "^0.1.144",
     "standard": "^10.0.3"
   },
   "standard": {
