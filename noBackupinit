@@ -1,4 +1,4 @@
-mysql -u root -e "DROP DATABASE IF EXISTS Karneval;CREATE DATABASE Karneval CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;USE Karneval;"
+mysql -u root -e "DROP DATABASE IF EXISTS karneval;CREATE DATABASE karneval CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;USE karneval;"
 ./node_modules/.bin/sequelize db:migrate
 ./node_modules/.bin/sequelize db:seed:all
 npm start

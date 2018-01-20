@@ -2940,7 +2940,7 @@
 								"api",
 								"user",
 								"{{randomUsername}}"
-							]
+										]
 						}
 					},
 					"response": []

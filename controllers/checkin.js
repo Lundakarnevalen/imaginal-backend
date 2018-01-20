@@ -125,30 +125,36 @@ const listCheckins = function (req, res) {
         }
         return Promise.reject(err)
       }
-      return checkin.Checkin.findAll({
-        where: {checker_id: req.user.id}
+      users.User.findOne({
+        where: {email: req.params.email}
       })
-    })
-    .then(list => {
-      if (list.length === 0) {
-        let err = {
-          status: 200,
-          message: 'No users checked in by ' + req.params.email
-        }
-        return Promise.reject(err)
-      }
-      return res.json({
-        success: true,
-        userids: list.map(x => (x.user_id))
-      })
-    })
-    .catch(reject => {
-      res.status(reject.status).json({
-        success: false,
-        message: reject.message
-      })
+        .then((user) => {
+          return checkin.Checkin.findAll({
+            where: {checker_id: user.id}
+          })
+        })
+        .then(list => {
+          if (list.length === 0) {
+            let err = {
+              status: 200,
+              message: 'No users checked in by ' + req.params.email
+            }
+            return Promise.reject(err)
+          }
+          return res.json({
+            success: true,
+            userids: list.map(x => (x.user_id))
+          })
+        })
+        .catch(reject => {
+          res.status(reject.status).json({
+            success: false,
+            message: reject.message
+          })
+        })
     })
 }
+
 module.exports = {
   checkIn,
   checkStatus,
