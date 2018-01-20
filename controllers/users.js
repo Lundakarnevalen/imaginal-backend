@@ -6,7 +6,13 @@ const UserRoles = require('../models/userrole')
 const getAll = function (req, res) {
   UserRoles.hasRole(req.user, 'administrator').then(isadmin => {
     if (isadmin) {
+      const offset = parseInt(req.query.offset) || 0
+      const limit = 25
+      console.log('\n' + offset + '\n')
       users.User.findAll({
+        order: ['id'],
+        offset: offset,
+        limit: limit,
         attributes: ['id', 'email', 'firstName', 'lastName', 'phoneNumber', 'address', 'postNumber', 'city', 'careOf', 'personalNumber'],
         include: [{model: users.KarnevalistInfo}]
       }).then(allUsers => {
