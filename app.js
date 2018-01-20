@@ -68,6 +68,8 @@ app.post('/api/hello', function (req, res) {
   })
 })
 
+app.get('/api/getallsections', section.getAllSections)
+
 app.get('/api/user/checkin/:email', checkin.checkStatus)
 app.post('/api/user/checkin/:identification', checkin.checkIn)
 

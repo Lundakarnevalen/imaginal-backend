@@ -42,16 +42,25 @@ const setSectionPriorities = function (user, sections, done) {
   if (uniqueSections(sections)) {
     return done(null, false, 'Duplicate sections!')
   }
+  sections.forEach((sectionid, index) => {
+    if (typeof (parseInt(sectionid)) !== 'number' || isNaN(parseInt(sectionid))) {
+      return done(null, false, 'Invalid sectionid')
+    }
+    console.log(sectionid + ' ' + index)
+  })
 
   SectionPriority.destroy({
     where: {
       user_id: user.id
     }
-  }).then(() => sections.forEach((sectionid, index) => SectionPriority.create({
-    user_id: user.id,
-    section: sectionid,
-    prio: index
-  }))).then((priority) => {
+  }).then(() => sections.forEach((sectionid, index) => {
+    const section = parseInt(sectionid)
+    SectionPriority.create({
+      user_id: user.id,
+      section: parseInt(section),
+      prio: index
+    })
+  })).then((priority) => {
     return done(null, true, 'Priorities set')
   })
 }

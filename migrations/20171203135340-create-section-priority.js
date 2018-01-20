@@ -26,17 +26,6 @@ module.exports = {
         type: Sequelize.DATE
       }
     })
-      // Sätta ihop det i ett many-to-many?
-      /* .then(() => queryInterface.addConstraint('SectionPriorities', ['user_id'], {
-        type: 'FOREIGN KEY',
-        name: 'user_id',
-        references: {
-          table: 'Users',
-          field: 'id'
-        },
-        onDelete: 'no action',
-        onUpdate: 'no action'
-      })) */
   },
   down: (queryInterface, Sequelize) => {
     return queryInterface.dropTable('SectionPriorities')
