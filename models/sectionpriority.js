@@ -46,7 +46,6 @@ const setSectionPriorities = function (user, sections, done) {
     if (typeof (parseInt(sectionid)) !== 'number' || isNaN(parseInt(sectionid))) {
       return done(null, false, 'Invalid sectionid')
     }
-    console.log(sectionid + ' ' + index)
   })
 
   SectionPriority.destroy({
