@@ -12,7 +12,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       section: {
-        type: Sequelize.STRING
+        type: Sequelize.INTEGER
       },
       prio: {
         type: Sequelize.INTEGER
@@ -26,7 +26,8 @@ module.exports = {
         type: Sequelize.DATE
       }
     })
-      .then(() => queryInterface.addConstraint('SectionPriorities', ['user_id'], {
+      // Sätta ihop det i ett many-to-many?
+      /* .then(() => queryInterface.addConstraint('SectionPriorities', ['user_id'], {
         type: 'FOREIGN KEY',
         name: 'user_id',
         references: {
@@ -35,7 +36,7 @@ module.exports = {
         },
         onDelete: 'no action',
         onUpdate: 'no action'
-      }))
+      })) */
   },
   down: (queryInterface, Sequelize) => {
     return queryInterface.dropTable('SectionPriorities')
