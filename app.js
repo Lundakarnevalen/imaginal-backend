@@ -33,7 +33,7 @@ app.post('/login/email', login.loginByEmail)
 app.post('/login/forgotpassword', forgotPassword.forgotPassword)
 app.post('/login/resetpassword', forgotPassword.setNewPassword)
 
-app.get('/api/getallsections', section.getAllSections)
+app.get('/getallsections', section.getAllSections)
 
 /**
  * Authenticate tokens
@@ -69,7 +69,6 @@ app.post('/api/hello', function (req, res) {
     message: 'Hello World!'
   })
 })
-
 
 app.get('/api/user/checkin/:email', checkin.checkStatus)
 app.post('/api/user/checkin/:identification', checkin.checkIn)

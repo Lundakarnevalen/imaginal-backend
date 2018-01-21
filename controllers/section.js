@@ -47,7 +47,17 @@ const getAllSections = function (req, res, next) {
   Sections.Section.findAll()
     .then((sections) => {
       'use strict'
-      const sectionList = sections.map(section => section.name)
+      const sectionList = sections.map(section => {
+        let sect = {}
+        sect['id'] = section.id
+        sect['nameSv'] = section.nameSv
+        sect['nameEn'] = section.nameEv
+        sect['imageUrl'] = section.imageUrl
+        sect['textSv'] = section.textSv
+        sect['textEn'] = section.textEn
+
+        return sect
+      })
       res.json({
         success: true,
         sections: sectionList
