@@ -46,7 +46,6 @@ const getById = function (req, res) {
     require('../models/users').isCheckedIn(req.user).then((checkedIn) => {
       let user = req.user.toJSON()
       user['checkedIn'] = checkedIn
-      console.log(user)
       return res.json({
         success: true,
         user: user
