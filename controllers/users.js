@@ -20,7 +20,7 @@ const getAll = function (req, res) {
         offset: offset,
         limit: limit,
         attributes: ['id', 'email', 'firstName', 'lastName', 'phoneNumber', 'address', 'postNumber', 'city', 'careOf', 'personalNumber'],
-        include: [{model: users.KarnevalistInfo}, {model: Checkin, as: 'user'}]
+        include: [{model: users.KarnevalistInfo}, {model: Checkin, as: 'checkin'}]
       }).then(allUsers => {
         res.json({
           success: true,

@@ -46,7 +46,7 @@ const checkIn = function (req, res) {
       }
       return Promise.reject(err)
     } else {
-      req.user.addUser([checker]).then(() => {
+      checker.addChecker([req.user]).then(() => {
         return res.json({
           success: true,
           message: req.params.identification + ' checked in successfully.'

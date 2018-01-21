@@ -21,7 +21,7 @@ User.belongsToMany(Checkin, {
     model: Checkin,
     unique: true
   },
-  as: 'user',
+  as: 'checkin',
   foreignKey: 'id'
 })
 

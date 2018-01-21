@@ -93,6 +93,11 @@ app.all('*', function (req, res) {
   })
 })
 
-app.listen(3000, function () {
-  console.log('Listening on port 3000')
-})
+
+require('./config/database')
+  .sync()
+  .then(() => {
+    app.listen(3000, function() {
+      console.log('Listening on port 3000')
+    })
+  })
