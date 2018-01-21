@@ -1,7 +1,7 @@
 {
 	"info": {
 		"name": "Karneval",
-		"_postman_id": "25959e83-a17f-8a53-c811-fb8f4aad949c",
+		"_postman_id": "6baef5de-a9c4-f58e-a6f7-0fb132cf85b9",
 		"description": "# Introduction\nBackend till lundakarnevalen 2018.\n\n# Overview\nTestserver på 146.185.173.31:3000, exempel är till localhost. Endast JSON accepteras.\n\n# Error Codes\n200: OK \n\n400: User sent bad information or missing parameters \n\n401: User does not have appropriate privileges \n\n404: No such end point \n\n500: Internal error, not caused by user",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -74,7 +74,7 @@
 					},
 					"response": [
 						{
-							"id": "36fff535-98cd-4d5f-9460-a02421ae915c",
+							"id": "f09755bd-be30-4ae5-be75-fd1a332cc9b3",
 							"name": "Register a user",
 							"originalRequest": {
 								"method": "POST",
@@ -148,7 +148,7 @@
 							"body": "{\"success\":true,\"message\":\"You are now registered\"}"
 						},
 						{
-							"id": "3b9f33b4-30b9-4db1-9240-9256d3a08ee1",
+							"id": "fd861ffd-8252-4bc4-9aa9-77dc42502252",
 							"name": "Register a user",
 							"originalRequest": {
 								"method": "POST",
@@ -273,7 +273,7 @@
 					},
 					"response": [
 						{
-							"id": "8c362815-0df2-4a4f-87ed-122ccd470fb5",
+							"id": "a7a65cce-a264-45d3-b6eb-639c78fb4c07",
 							"name": "Missing field register",
 							"originalRequest": {
 								"header": [],
@@ -383,7 +383,7 @@
 					},
 					"response": [
 						{
-							"id": "08a71cbc-dd73-4874-af44-b00f5c357b34",
+							"id": "8875cabe-f1c6-471a-ba8e-881a84e9cf56",
 							"name": "Fail to reregister same user",
 							"originalRequest": {
 								"method": "POST",
@@ -507,7 +507,7 @@
 					},
 					"response": [
 						{
-							"id": "32cbee90-a0eb-427d-8cdb-e92fed9fae18",
+							"id": "35efc56f-331b-4f95-ab09-c96a6857e3b9",
 							"name": "Fail to reregister same user",
 							"originalRequest": {
 								"method": "POST",
@@ -649,7 +649,7 @@
 					},
 					"response": [
 						{
-							"id": "a1655ea1-349a-4047-a1f1-c26c0a49feb8",
+							"id": "9e837476-62f8-46e3-a89c-68b04e151efc",
 							"name": "Email Login",
 							"originalRequest": {
 								"header": [],
@@ -755,7 +755,7 @@
 					},
 					"response": [
 						{
-							"id": "9488c542-7c9e-475b-ba69-87c4b467b7fd",
+							"id": "0a889dfa-eed9-4503-881e-35993b094c31",
 							"name": "Wrong email login",
 							"originalRequest": {
 								"method": "POST",
@@ -876,7 +876,7 @@
 					},
 					"response": [
 						{
-							"id": "c71279c2-dcfd-4549-b39c-8f9472a70c65",
+							"id": "c0d248ab-f73a-48fb-99e6-c7ba5615f9af",
 							"name": "Wrong password login",
 							"originalRequest": {
 								"method": "POST",
@@ -997,7 +997,7 @@
 					},
 					"response": [
 						{
-							"id": "f65039d4-9e5d-495a-81d2-76e4d165e64d",
+							"id": "b2f9bb21-767c-4253-a3ab-c695f168fe79",
 							"name": "Missing field login",
 							"originalRequest": {
 								"header": [],
@@ -1111,7 +1111,7 @@
 					},
 					"response": [
 						{
-							"id": "a55e64ed-ef21-421d-8443-be4b57f14050",
+							"id": "042ad9c5-1eb4-420d-871b-c7f46a21db76",
 							"name": "Initiate password Reset",
 							"originalRequest": {
 								"method": "POST",
@@ -1229,7 +1229,7 @@
 					},
 					"response": [
 						{
-							"id": "f7b8ac22-d97b-4e6c-b363-1573f0f83519",
+							"id": "1ac0cb0d-287e-446a-806c-f6e38630fa72",
 							"name": "Password reset change password",
 							"originalRequest": {
 								"header": [],
@@ -1357,7 +1357,8 @@
 					},
 					"response": [
 						{
-							"id": "99fc5202-c342-4074-8ec6-5a385a27ca76",
+
+							"id": "dace0983-616d-4b12-ba6b-98549b4cd787",
 							"name": "Email Login new password",
 							"originalRequest": {
 								"method": "POST",
@@ -1476,7 +1477,7 @@
 					},
 					"response": [
 						{
-							"id": "734813d1-07a1-4d44-bf52-bc210c8d86d5",
+							"id": "c414951e-fb20-4b85-9448-27a68f8e3e2f",
 							"name": "Bad password reset change password",
 							"originalRequest": {
 								"header": [],
@@ -1593,7 +1594,7 @@
 					},
 					"response": [
 						{
-							"id": "978c8bd7-d42e-43ea-b049-2fd80ceb4b85",
+							"id": "5a048675-513d-4231-b76e-49708fb5e7a0",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -1725,7 +1726,7 @@
 					},
 					"response": [
 						{
-							"id": "faa972a5-f7a3-494a-a407-2d021e2b1218",
+							"id": "c661e2b3-9923-4802-9608-7b426cb7192c",
 							"name": "Fail to access resource that doesnt exist",
 							"originalRequest": {
 								"method": "POST",
@@ -1859,7 +1860,7 @@
 					},
 					"response": [
 						{
-							"id": "1bcb3dd8-d5fa-4b9e-af39-c7df1fb28a7b",
+							"id": "6eec3a9a-8e20-431a-8b6a-d049b343f205",
 							"name": "Email Login",
 							"originalRequest": {
 								"method": "POST",
@@ -1940,21 +1941,21 @@
 			"name": "API, section priorities",
 			"item": [
 				{
-					"name": "Set priorities",
+					"name": "Set invalid priorities",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
 								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
 									"});",
 									"",
-									"pm.test(\"Successfield true on statuscode 200\", function () {",
-									"    pm.response.to.have.status(200);",
+									"pm.test(\"Successfield false on statuscode 400\", function () {",
+									"    pm.response.to.have.status(400);",
 									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.success).to.eql(true);",
+									"    pm.expect(jsonData.success).to.eql(false);",
 									"});",
 									"",
 									"pm.test(\"Body must contain message\", function () {",
@@ -2002,7 +2003,253 @@
 					},
 					"response": [
 						{
-							"id": "84aa0000-52d3-4c58-8ba4-a67d3870cfff",
+							"id": "a81a45af-9c7e-4111-aded-293ce0788c8c",
+							"name": "Set priorities",
+							"originalRequest": {
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": ""
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"_postman_previewtype": "text",
+							"header": [
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"name": "Connection",
+									"description": "Options that are desired for the connection"
+								},
+								{
+									"key": "Content-Length",
+									"value": "43",
+									"name": "Content-Length",
+									"description": "The length of the response body in octets (8-bit bytes)"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8",
+									"name": "Content-Type",
+									"description": "The mime type of this content"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 06 Dec 2017 19:39:42 GMT",
+									"name": "Date",
+									"description": "The date and time that the message was sent"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"2b-6AVg9bJpmppFTOi/0oROCda8V34\"",
+									"name": "ETag",
+									"description": "An identifier for a specific version of a resource, often a message digest"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "Express",
+									"name": "X-Powered-By",
+									"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+								}
+							],
+							"cookie": [],
+							"responseTime": 63,
+							"body": "{\"success\":true,\"message\":\"Priorities set\"}"
+						}
+					]
+				},
+				{
+					"name": "Set invalid priorities 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Successfield false on statuscode 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(false);",
+									"});",
+									"",
+									"pm.test(\"Body must contain message\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"message\");",
+									"});",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"sectionPriorities\":[\"\", \"B\", \"C\"]\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/section",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"section"
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "bec76512-71e4-456c-9455-95b288739b63",
+							"name": "Set priorities",
+							"originalRequest": {
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": ""
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"_postman_previewtype": "text",
+							"header": [
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"name": "Connection",
+									"description": "Options that are desired for the connection"
+								},
+								{
+									"key": "Content-Length",
+									"value": "43",
+									"name": "Content-Length",
+									"description": "The length of the response body in octets (8-bit bytes)"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8",
+									"name": "Content-Type",
+									"description": "The mime type of this content"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 06 Dec 2017 19:39:42 GMT",
+									"name": "Date",
+									"description": "The date and time that the message was sent"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"2b-6AVg9bJpmppFTOi/0oROCda8V34\"",
+									"name": "ETag",
+									"description": "An identifier for a specific version of a resource, often a message digest"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "Express",
+									"name": "X-Powered-By",
+									"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+								}
+							],
+							"cookie": [],
+							"responseTime": 63,
+							"body": "{\"success\":true,\"message\":\"Priorities set\"}"
+						}
+					]
+				},
+				{
+					"name": "Set priorities",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Successfield true on statuscode 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(true);",
+									"});",
+									"",
+									"pm.test(\"Body must contain message\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"message\");",
+									"});",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"sectionPriorities\":[\"1\", \"2\", \"3\"]\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/section",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"section"
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "5867e137-cfdd-49db-b1be-48d9b37fe5a4",
 							"name": "Set priorities",
 							"originalRequest": {
 								"header": [],
@@ -2115,7 +2362,7 @@
 					},
 					"response": [
 						{
-							"id": "4fdaf6a5-28a9-4dd4-b1e8-18aaf08cad70",
+							"id": "73787584-f42d-43a7-b4ee-da2eb406215e",
 							"name": "Get same priorities",
 							"originalRequest": {
 								"method": "GET",
@@ -2259,7 +2506,7 @@
 					},
 					"response": [
 						{
-							"id": "917ad3bc-8318-42c2-afc5-194e06c72b96",
+							"id": "0d4c4864-2604-48c4-b542-726d23809e2b",
 							"name": "Set duplicate prio",
 							"originalRequest": {
 								"header": [],
@@ -2387,7 +2634,7 @@
 					},
 					"response": [
 						{
-							"id": "ff7162d6-f72d-4810-b727-6de803c3e88e",
+							"id": "8b6298ae-0889-4e69-9592-ecc261cd6f87",
 							"name": "Set priorities",
 							"originalRequest": {
 								"header": [],
@@ -3577,7 +3824,7 @@
 					},
 					"response": [
 						{
-							"id": "b5292873-abd8-4ee7-a276-990d8cea931a",
+							"id": "e449b668-2e93-4d49-9d38-3d81e0da4fd9",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -3771,7 +4018,7 @@
 					},
 					"response": [
 						{
-							"id": "74077a02-6702-4dc8-a9d0-bff2f029a95b",
+							"id": "80cf3cda-373c-4108-ae10-1370e8d796ef",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -3901,7 +4148,7 @@
 					},
 					"response": [
 						{
-							"id": "e74a680f-b53b-47f8-807b-2c238663e7a6",
+							"id": "65a71d05-da01-4571-bc7f-8d9cd3c59185",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -4036,7 +4283,7 @@
 					},
 					"response": [
 						{
-							"id": "61ddec2b-7a49-46a8-a557-2f89c0856f7f",
+							"id": "255b9a58-fd97-488d-a94a-0ac0614be036",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -4166,7 +4413,7 @@
 					},
 					"response": [
 						{
-							"id": "fb24c915-0bd3-454d-b727-3b9e1b92dbd8",
+							"id": "a7aaafed-b729-4d84-b702-d11a1d2048c5",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -4296,7 +4543,7 @@
 					},
 					"response": [
 						{
-							"id": "e7d7a238-34be-4608-a7d4-34f87ff81054",
+							"id": "59f8cfe6-2bdb-45c2-9337-da32510f2ca4",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -4426,7 +4673,7 @@
 					},
 					"response": [
 						{
-							"id": "bd3a8670-35d3-4e62-91a9-a4b2629baff8",
+							"id": "c54cf762-0526-45bb-90ba-152007b26d6b",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -4566,7 +4813,7 @@
 					},
 					"response": [
 						{
-							"id": "c8e0d6f4-1e04-4f51-a631-57f60712c313",
+							"id": "9637a8ce-64c8-4b73-b48b-b00d8bb7fce8",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -4696,7 +4943,7 @@
 					},
 					"response": [
 						{
-							"id": "5f8e023c-560f-4da5-b61f-fbb30e165759",
+							"id": "071548d6-6da2-4a3b-adab-c81093293f92",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -4826,7 +5073,7 @@
 					},
 					"response": [
 						{
-							"id": "97c3db0a-7f8d-4d86-bae1-4612cb6994e8",
+							"id": "83a5dc89-e1ba-403e-ab24-637ebe640923",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -4956,7 +5203,7 @@
 					},
 					"response": [
 						{
-							"id": "f2616f26-b62a-4799-ad50-42a353bcba5d",
+							"id": "b804aafa-1eb1-476b-897a-f250b2799be3",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
