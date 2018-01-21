@@ -1,7 +1,7 @@
 {
 	"info": {
 		"name": "Karneval",
-		"_postman_id": "0f5fc6ab-65f8-b375-94f4-2760818150da",
+		"_postman_id": "25959e83-a17f-8a53-c811-fb8f4aad949c",
 		"description": "# Introduction\nBackend till lundakarnevalen 2018.\n\n# Overview\nTestserver på 146.185.173.31:3000, exempel är till localhost. Endast JSON accepteras.\n\n# Error Codes\n200: OK \n\n400: User sent bad information or missing parameters \n\n401: User does not have appropriate privileges \n\n404: No such end point \n\n500: Internal error, not caused by user",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -15,7 +15,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "82ce8924-d33e-4559-b24c-b6343fb8c274",
 								"type": "text/javascript",
 								"exec": [
 									"pm.globals.set(\"accessToken\", pm.response.json().accessToken);",
@@ -37,7 +36,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "0e1702e4-2957-4433-b179-68670360829b",
 								"type": "text/javascript",
 								"exec": [
 									"pm.globals.set(\"randomUsername\", Math.random().toString(36).substring(7));",
@@ -76,7 +74,7 @@
 					},
 					"response": [
 						{
-							"id": "a3da2987-f14c-4314-a17b-de5dff9009c3",
+							"id": "36fff535-98cd-4d5f-9460-a02421ae915c",
 							"name": "Register a user",
 							"originalRequest": {
 								"method": "POST",
@@ -150,7 +148,7 @@
 							"body": "{\"success\":true,\"message\":\"You are now registered\"}"
 						},
 						{
-							"id": "04160c33-f9d6-401a-8232-a6e5d60b27bc",
+							"id": "3b9f33b4-30b9-4db1-9240-9256d3a08ee1",
 							"name": "Register a user",
 							"originalRequest": {
 								"method": "POST",
@@ -275,7 +273,7 @@
 					},
 					"response": [
 						{
-							"id": "19c185bf-122b-4e0f-8172-6f3bd561d4c3",
+							"id": "8c362815-0df2-4a4f-87ed-122ccd470fb5",
 							"name": "Missing field register",
 							"originalRequest": {
 								"header": [],
@@ -385,7 +383,7 @@
 					},
 					"response": [
 						{
-							"id": "87812737-8426-45ee-a67f-838e27fede0f",
+							"id": "08a71cbc-dd73-4874-af44-b00f5c357b34",
 							"name": "Fail to reregister same user",
 							"originalRequest": {
 								"method": "POST",
@@ -509,7 +507,7 @@
 					},
 					"response": [
 						{
-							"id": "83a8b500-7bb7-4e55-aa7c-d20c390fdc37",
+							"id": "32cbee90-a0eb-427d-8cdb-e92fed9fae18",
 							"name": "Fail to reregister same user",
 							"originalRequest": {
 								"method": "POST",
@@ -612,6 +610,12 @@
 									"    pm.expect(pm.response.text()).to.include(\"accessToken\");",
 									"});",
 									"",
+									"",
+									"pm.test(\"User is not checked in\", function() {",
+									"    console.log(pm.response.json().userinfo)",
+									"    pm.expect(pm.response.json().userinfo.checkedIn).to.eql(false)",
+									"})",
+									"",
 									""
 								]
 							}
@@ -645,7 +649,7 @@
 					},
 					"response": [
 						{
-							"id": "f130edba-6de6-4bf3-a349-d59c676b3dbf",
+							"id": "a1655ea1-349a-4047-a1f1-c26c0a49feb8",
 							"name": "Email Login",
 							"originalRequest": {
 								"header": [],
@@ -751,7 +755,7 @@
 					},
 					"response": [
 						{
-							"id": "934b2872-0c1d-4897-a3dd-c5569bef098a",
+							"id": "9488c542-7c9e-475b-ba69-87c4b467b7fd",
 							"name": "Wrong email login",
 							"originalRequest": {
 								"method": "POST",
@@ -872,7 +876,7 @@
 					},
 					"response": [
 						{
-							"id": "840bf437-3328-4b44-9fbf-50a150521f61",
+							"id": "c71279c2-dcfd-4549-b39c-8f9472a70c65",
 							"name": "Wrong password login",
 							"originalRequest": {
 								"method": "POST",
@@ -993,7 +997,7 @@
 					},
 					"response": [
 						{
-							"id": "60655760-cc5d-463f-88e7-a440df0cca69",
+							"id": "f65039d4-9e5d-495a-81d2-76e4d165e64d",
 							"name": "Missing field login",
 							"originalRequest": {
 								"header": [],
@@ -1107,7 +1111,7 @@
 					},
 					"response": [
 						{
-							"id": "c07ce108-359b-4b51-9e51-d1c3a3f115cd",
+							"id": "a55e64ed-ef21-421d-8443-be4b57f14050",
 							"name": "Initiate password Reset",
 							"originalRequest": {
 								"method": "POST",
@@ -1225,7 +1229,7 @@
 					},
 					"response": [
 						{
-							"id": "6f9c82ea-6d2c-45e2-9e24-c9139fb11567",
+							"id": "f7b8ac22-d97b-4e6c-b363-1573f0f83519",
 							"name": "Password reset change password",
 							"originalRequest": {
 								"header": [],
@@ -1353,7 +1357,7 @@
 					},
 					"response": [
 						{
-							"id": "f98f7cf8-3247-4d21-b70f-3ee888560f10",
+							"id": "99fc5202-c342-4074-8ec6-5a385a27ca76",
 							"name": "Email Login new password",
 							"originalRequest": {
 								"method": "POST",
@@ -1472,7 +1476,7 @@
 					},
 					"response": [
 						{
-							"id": "87e30b62-e8be-453f-9045-ab6e94c143e7",
+							"id": "734813d1-07a1-4d44-bf52-bc210c8d86d5",
 							"name": "Bad password reset change password",
 							"originalRequest": {
 								"header": [],
@@ -1589,7 +1593,7 @@
 					},
 					"response": [
 						{
-							"id": "23f9ded2-fb0d-4dd0-9a2e-71ac83692a91",
+							"id": "978c8bd7-d42e-43ea-b049-2fd80ceb4b85",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -1721,7 +1725,7 @@
 					},
 					"response": [
 						{
-							"id": "55a7b9cb-3f30-4717-87f5-551fe3ffacfb",
+							"id": "faa972a5-f7a3-494a-a407-2d021e2b1218",
 							"name": "Fail to access resource that doesnt exist",
 							"originalRequest": {
 								"method": "POST",
@@ -1855,7 +1859,7 @@
 					},
 					"response": [
 						{
-							"id": "ff02e3d2-c5c6-4048-94bc-b65b37d867fd",
+							"id": "1bcb3dd8-d5fa-4b9e-af39-c7df1fb28a7b",
 							"name": "Email Login",
 							"originalRequest": {
 								"method": "POST",
@@ -1998,7 +2002,7 @@
 					},
 					"response": [
 						{
-							"id": "be9d06e5-dd89-41c9-93bf-541fe809e245",
+							"id": "84aa0000-52d3-4c58-8ba4-a67d3870cfff",
 							"name": "Set priorities",
 							"originalRequest": {
 								"header": [],
@@ -2111,7 +2115,7 @@
 					},
 					"response": [
 						{
-							"id": "b967d4fe-6419-4dc5-b821-730cdaa424b4",
+							"id": "4fdaf6a5-28a9-4dd4-b1e8-18aaf08cad70",
 							"name": "Get same priorities",
 							"originalRequest": {
 								"method": "GET",
@@ -2255,7 +2259,7 @@
 					},
 					"response": [
 						{
-							"id": "904cfb94-8697-4666-b3f5-d2404f28c9d1",
+							"id": "917ad3bc-8318-42c2-afc5-194e06c72b96",
 							"name": "Set duplicate prio",
 							"originalRequest": {
 								"header": [],
@@ -2383,7 +2387,7 @@
 					},
 					"response": [
 						{
-							"id": "9ea2dca8-6b8b-44ff-ab3b-87718af6344a",
+							"id": "ff7162d6-f72d-4810-b727-6de803c3e88e",
 							"name": "Set priorities",
 							"originalRequest": {
 								"header": [],
@@ -2502,127 +2506,126 @@
 					},
 					"response": []
 				},
-              {
-                "name": "Set own karnevalistinfo",
-                "event": [
-                  {
-                    "listen": "test",
-                    "script": {
-                      "type": "text/javascript",
-                      "exec": [
-                        "pm.test(\"Status code is 200\", function () {",
-                        "    pm.response.to.have.status(200);",
-                        "});",
-                        "",
-                        "pm.test(\"Successfield true on statuscode 200\", function () {",
-                        "    pm.response.to.have.status(200);",
-                        "    var jsonData = pm.response.json();",
-                        "    pm.expect(jsonData.success).to.eql(true);",
-                        "});",
-                        "",
-                        "pm.test(\"Body must contain info\", function () {",
-                        "    pm.expect(pm.response.text()).to.include(\"info\");",
-                        "});",
-                        ""
-                      ]
-                    }
-                  }
-                ],
-                "request": {
-                  "auth": {
-                    "type": "bearer",
-                    "bearer": [
-                      {
-                        "key": "token",
-                        "value": "{{accessToken}}",
-                        "type": "string"
-                      }
-                    ]
-                  },
-                  "method": "PUT",
-                  "header": [
-                    {
-                      "key": "Content-Type",
-                      "value": "application/json"
-                    }
-                  ],
-                  "body": {
-                    "mode": "raw",
-                    "raw": "{\n\t\"talent\":\"lol no\"\n}"
-                  },
-                  "url": {
-                    "raw": "http://localhost:3000/api/user/{{randomUsername}}",
-                    "protocol": "http",
-                    "host": [
-                      "localhost"
-                    ],
-                    "port": "3000",
-                    "path": [
-                      "api",
-                      "user",
-                      "{{randomUsername}}"
-                    ]
-                  },
-                  "description": "Fields that can be set:\nlanguage:\ndriversLicense:\nfoodPreference:\ndisability:\naudition: \ntalent:\nentertainmentCategory: \ncorps: \nstartOfStudies:\npastInvolvement: \ngroupLeader:\ninterests:\nmisc: \nplenipotentiary:"
-                },
-                "response": []
-              },
-              {
-                "name": "Get own Karnevalist info",
-                "event": [
-                  {
-                    "listen": "test",
-                    "script": {
-                      "type": "text/javascript",
-                      "exec": [
-                        "pm.test(\"Status code is 200\", function () {",
-                        "    pm.response.to.have.status(200);",
-                        "});",
-                        "",
-                        "pm.test(\"Data must belong to a user\", function () {",
-                        "    pm.expect(pm.response.text()).to.include(\"id\");",
-                        "    pm.expect(pm.response.text()).to.include(\"KarnevalistInfo\");",
-                        "});",
-                        ""
-                      ]
-                    }
-                  }
-                ],
-                "request": {
-                  "auth": {
-                    "type": "bearer",
-                    "bearer": [
-                      {
-                        "key": "token",
-                        "value": "{{accessToken}}",
-                        "type": "string"
-                      }
-                    ]
-                  },
-                  "method": "GET",
-                  "header": [],
-                  "body": {
-                    "mode": "raw",
-                    "raw": ""
-                  },
-                  "url": {
-                    "raw": "http://localhost:3000/api/user/{{randomUsername}}",
-                    "protocol": "http",
-                    "host": [
-                      "localhost"
-                    ],
-                    "port": "3000",
-                    "path": [
-                      "api",
-                      "user",
-                      "{{randomUsername}}"
-                    ]
-                  }
-                },
-                "response": []
-              },
 				{
-
+					"name": "Set own karnevalistinfo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Successfield true on statuscode 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(true);",
+									"});",
+									"",
+									"pm.test(\"Body must contain info\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"info\");",
+									"});",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"talent\":\"lol no\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/user/{{randomUsername}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user",
+								"{{randomUsername}}"
+							]
+						},
+						"description": "Fields that can be set:\nlanguage:\ndriversLicense:\nfoodPreference:\ndisability:\naudition: \ntalent:\nentertainmentCategory: \ncorps: \nstartOfStudies:\npastInvolvement: \ngroupLeader:\ninterests:\nmisc: \nplenipotentiary:"
+					},
+					"response": []
+				},
+				{
+					"name": "Get own Karnevalist info",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Data must belong to a user\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"id\");",
+									"    pm.expect(pm.response.text()).to.include(\"KarnevalistInfo\");",
+									"});",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/user/{{randomUsername}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user",
+								"{{randomUsername}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Get userinfo",
 					"event": [
 						{
@@ -2643,6 +2646,12 @@
 									"pm.test(\"Body must contain user\", function () {",
 									"    pm.expect(pm.response.text()).to.include(\"user\");",
 									"});",
+									"",
+									"pm.test(\"user is not checked in\", function () {",
+									"    console.log(pm.response.json().user)",
+									"    pm.expect(pm.response.json().user.checkedIn).to.eql(false);",
+									"});",
+									"",
 									""
 								]
 							}
@@ -2936,7 +2945,7 @@
 								"api",
 								"user",
 								"{{randomUsername}}"
-										]
+							]
 						}
 					},
 					"response": []
@@ -3386,6 +3395,129 @@
 					"response": []
 				},
 				{
+					"name": "User login should now give checked in",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.globals.set(\"accessToken\", pm.response.json().accessToken);",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Successfield true on statuscode 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(true);",
+									"});",
+									"",
+									"pm.test(\"Body must contain accessToken\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"accessToken\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"User checked in\", function() {",
+									"    console.log(pm.response.json().userinfo)",
+									"    pm.expect(pm.response.json().userinfo.checkedIn).to.eql(true)",
+									"})",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\":\"{{randomUsername}}\",\n  \"password\":\"newPass\"\n\t\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/login/email",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"login",
+								"email"
+							]
+						},
+						"description": "Login with email"
+					},
+					"response": [
+						{
+							"id": "9047f277-edbe-43c9-a987-473067172ae0",
+							"name": "Email Login",
+							"originalRequest": {
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": ""
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"_postman_previewtype": "text",
+							"header": [
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"name": "Connection",
+									"description": "Options that are desired for the connection"
+								},
+								{
+									"key": "Content-Length",
+									"value": "215",
+									"name": "Content-Length",
+									"description": "The length of the response body in octets (8-bit bytes)"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8",
+									"name": "Content-Type",
+									"description": "The mime type of this content"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 06 Dec 2017 19:38:29 GMT",
+									"name": "Date",
+									"description": "The date and time that the message was sent"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"d7-CM0cvcomzXN4CcSAPgSlPJk6Stw\"",
+									"name": "ETag",
+									"description": "An identifier for a specific version of a resource, often a message digest"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "Express",
+									"name": "X-Powered-By",
+									"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+								}
+							],
+							"cookie": [],
+							"responseTime": 167,
+							"body": "{\"success\":true,\"message\":\"Successfully logged in\",\"accessToken\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjVzNmF4eDVudjNwbmV5a3o5ZjZyIiwiaWF0IjoxNTEyNTg5MTA5fQ.ZrP-nocxVOIqD5q31A40KMVPbq2ZAMjB1tN08N0hdQY\"}"
+						}
+					]
+				},
+				{
 					"name": "User gets own checkin status",
 					"event": [
 						{
@@ -3445,7 +3577,7 @@
 					},
 					"response": [
 						{
-							"id": "891430e3-3d66-41ca-961a-b01c74d8f760",
+							"id": "b5292873-abd8-4ee7-a276-990d8cea931a",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -3639,7 +3771,7 @@
 					},
 					"response": [
 						{
-							"id": "f630cf24-811f-448e-af59-061c91ae7427",
+							"id": "74077a02-6702-4dc8-a9d0-bff2f029a95b",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -3769,7 +3901,7 @@
 					},
 					"response": [
 						{
-							"id": "8c55c150-01b9-491e-8e5c-cbf06961a87f",
+							"id": "e74a680f-b53b-47f8-807b-2c238663e7a6",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -3904,7 +4036,7 @@
 					},
 					"response": [
 						{
-							"id": "d09c86a2-becf-4b77-9889-debcddf8c2ec",
+							"id": "61ddec2b-7a49-46a8-a557-2f89c0856f7f",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -4034,7 +4166,7 @@
 					},
 					"response": [
 						{
-							"id": "1c627a22-fab2-45b3-8471-1b307e194f78",
+							"id": "fb24c915-0bd3-454d-b727-3b9e1b92dbd8",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -4164,7 +4296,7 @@
 					},
 					"response": [
 						{
-							"id": "62949b69-5b7d-4eff-b3ba-9984c134228f",
+							"id": "e7d7a238-34be-4608-a7d4-34f87ff81054",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -4294,7 +4426,7 @@
 					},
 					"response": [
 						{
-							"id": "d2e2413a-6550-4bdf-8515-fa9a1bb37d8d",
+							"id": "bd3a8670-35d3-4e62-91a9-a4b2629baff8",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -4434,7 +4566,7 @@
 					},
 					"response": [
 						{
-							"id": "4579d58d-9152-48e9-82f8-ef754f98f6f8",
+							"id": "c8e0d6f4-1e04-4f51-a631-57f60712c313",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -4564,7 +4696,7 @@
 					},
 					"response": [
 						{
-							"id": "ca0135e9-c3dd-4fc6-9853-1dc9a847ce3e",
+							"id": "5f8e023c-560f-4da5-b61f-fbb30e165759",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -4694,7 +4826,7 @@
 					},
 					"response": [
 						{
-							"id": "da6e82c3-5855-46ab-bdef-b5be25ce8692",
+							"id": "97c3db0a-7f8d-4d86-bae1-4612cb6994e8",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -4824,7 +4956,7 @@
 					},
 					"response": [
 						{
-							"id": "441a29c7-45af-4c6d-8728-74a7bc3195c2",
+							"id": "f2616f26-b62a-4799-ad50-42a353bcba5d",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -4893,6 +5025,449 @@
 							"body": "Hello World!"
 						}
 					]
+				}
+			]
+		},
+		{
+			"name": "API, getAllUsers",
+			"description": "",
+			"item": [
+				{
+					"name": "getAllUsers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Successfield true on statuscode 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(true);",
+									"});",
+									"",
+									"pm.test(\"Should contain two users\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"user\");",
+									"    var users = pm.response.json().users;",
+									"    pm.expect(users.length).to.eql(2);",
+									"});",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"test2\"\n}"
+						},
+						"url": {
+							"raw": "localhost:3000/api/users",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllUsers using offset 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Successfield true on statuscode 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(true);",
+									"});",
+									"",
+									"pm.test(\"Should contain one users\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"user\");",
+									"    var users = pm.response.json().users;",
+									"    pm.expect(users.length).to.eql(1);",
+									"});",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"test2\"\n}"
+						},
+						"url": {
+							"raw": "localhost:3000/api/users?offset=1",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users"
+							],
+							"query": [
+								{
+									"key": "offset",
+									"value": "1",
+									"equals": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllUsers no users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Successfield true on statuscode 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(true);",
+									"});",
+									"",
+									"pm.test(\"Should contain one users\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"user\");",
+									"    var users = pm.response.json().users;",
+									"    pm.expect(users.length).to.eql(0);",
+									"});",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"test2\"\n}"
+						},
+						"url": {
+							"raw": "localhost:3000/api/users?offset=2",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users"
+							],
+							"query": [
+								{
+									"key": "offset",
+									"value": "2",
+									"equals": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllUsers invalid offset",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Successfield true on statuscode 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(true);",
+									"});",
+									"",
+									"pm.test(\"Should contain two users\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"user\");",
+									"    var users = pm.response.json().users;",
+									"    pm.expect(users.length).to.eql(2);",
+									"});",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"test2\"\n}"
+						},
+						"url": {
+							"raw": "localhost:3000/api/users?offset=a",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users"
+							],
+							"query": [
+								{
+									"key": "offset",
+									"value": "a",
+									"equals": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllUsers invalid offset2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 500\", function () {",
+									"    pm.response.to.have.status(500);",
+									"});",
+									"",
+									"pm.test(\"Successfield false on statuscode 500\", function () {",
+									"    pm.response.to.have.status(500);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(false);",
+									"});",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"test2\"\n}"
+						},
+						"url": {
+							"raw": "localhost:3000/api/users?offset=-5",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users"
+							],
+							"query": [
+								{
+									"key": "offset",
+									"value": "-5",
+									"equals": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllUsers invalid offset3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Successfield true on statuscode 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(true);",
+									"});",
+									"",
+									"pm.test(\"Should contain two users\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"user\");",
+									"    var users = pm.response.json().users;",
+									"    pm.expect(users.length).to.eql(2);",
+									"});",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"test2\"\n}"
+						},
+						"url": {
+							"raw": "localhost:3000/api/users?offset=",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users"
+							],
+							"query": [
+								{
+									"key": "offset",
+									"value": "",
+									"equals": true
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}

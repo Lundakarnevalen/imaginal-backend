@@ -24,16 +24,6 @@ app.use(function (error, req, res, next) {
   }
   next()
 })
-/*
-require('./models/users').User.findOne({
-  where: {id: 3}
-}).then((user) => {
-  'use strict'
-  console.log(user)
-  user.getChecker_id().then((asd) => {
-    console.log(asd)
-  })
-})*/
 
 /**
  * Unauthorized endpoints

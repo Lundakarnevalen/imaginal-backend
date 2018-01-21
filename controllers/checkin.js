@@ -46,11 +46,7 @@ const checkIn = function (req, res) {
       }
       return Promise.reject(err)
     } else {
-      /*checkin.Checkin.create({
-        user_id: checkinUser.id,
-        checker_id: req.user.id*/
-      req.user.addChecker_id([checker]).then(() => {
-        console.log('FYTFFFFFFFFFFFFFFF')
+      req.user.addUser([checker]).then(() => {
         return res.json({
           success: true,
           message: req.params.identification + ' checked in successfully.'

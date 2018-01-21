@@ -59,8 +59,17 @@ const setNewPassword = function (user, password) {
   })
 }
 
+/** TODO: Make this an istancedMethod, which I can't get to work */
+const isCheckedIn = function (user) {
+  'use strict'
+  return user.getChecker().then((checker) => {
+    return checker.length > 0
+  })
+}
+
 module.exports = {
   User,
   KarnevalistInfo,
-  setNewPassword
+  setNewPassword,
+  isCheckedIn
 }

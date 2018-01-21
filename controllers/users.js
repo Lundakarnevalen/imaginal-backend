@@ -8,7 +8,12 @@ const getAll = function (req, res) {
     if (isadmin) {
       const offset = parseInt(req.query.offset) || 0
       const limit = 25
-      console.log('\n' + offset + '\n')
+      if (offset < 0) {
+        return res.status(500).json({
+          success: false,
+          message: 'Invalid offset'
+        })
+      }
       users.User.findAll({
         order: ['id'],
         offset: offset,
@@ -38,9 +43,14 @@ const getById = function (req, res) {
     })
   }
   if (req.params.email === req.user.email) {
-    return res.json({
-      success: true,
-      user: req.user.toJSON()
+    require('../models/users').isCheckedIn(req.user).then((checkedIn) => {
+      let user = req.user.toJSON()
+      user['checkedIn'] = checkedIn
+      console.log(user)
+      return res.json({
+        success: true,
+        user: user
+      })
     })
   } else {
     UserRoles.hasRole(req.user, 'administrator').then(isadmin => {
