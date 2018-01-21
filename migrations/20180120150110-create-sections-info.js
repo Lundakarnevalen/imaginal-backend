@@ -11,8 +11,8 @@ module.exports = {
       nameSv: Sequelize.STRING,
       nameEn: Sequelize.STRING,
       imageUrl: Sequelize.STRING,
-      textSv: Sequelize.STRING,
-      textEn: Sequelize.STRING,
+      textSv: Sequelize.TEXT,
+      textEn: Sequelize.TEXT,
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
