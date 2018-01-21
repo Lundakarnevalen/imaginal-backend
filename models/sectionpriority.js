@@ -1,6 +1,8 @@
 'use strict'
 const dbc = require('../config/database')
 const Sequelize = require('sequelize')
+const User = require('./users').User
+const Section = require('./section').Section
 
 const SectionPriority = dbc.define('SectionPriority', {
   id: {
@@ -9,29 +11,55 @@ const SectionPriority = dbc.define('SectionPriority', {
     type: Sequelize.INTEGER
   },
   user_id: Sequelize.INTEGER,
-  section: Sequelize.STRING,
+  section: Sequelize.INTEGER,
   prio: Sequelize.INTEGER
 })
 
-const setSectionPriorities = function (user, sectionPriorities, done) {
+User.belongsToMany(Section, {
+  through: {
+    model: SectionPriority,
+    unique: false
+  },
+  foreignKey: 'user_id',
+  constraints: false
+})
+
+Section.belongsToMany(User, {
+  through: {
+    model: SectionPriority,
+    unique: false
+  },
+  foreignKey: 'section',
+  constraints: false
+})
+
+const setSectionPriorities = function (user, sections, done) {
   const lastDate = new Date(2020, 0, 0, 0, 0, 0, 0) // new Date(year, month, day, hours, minutes, seconds, milliseconds)
   if (Date.now() > lastDate.getTime()) {
     return done(null, false, 'Last date passed!')
   }
 
-  if (uniqueSections(sectionPriorities)) {
+  if (uniqueSections(sections)) {
     return done(null, false, 'Duplicate sections!')
   }
+  sections.forEach((sectionid, index) => {
+    if (typeof (parseInt(sectionid)) !== 'number' || isNaN(parseInt(sectionid))) {
+      return done(null, false, 'Invalid sectionid')
+    }
+  })
 
   SectionPriority.destroy({
     where: {
       user_id: user.id
     }
-  }).then(() => sectionPriorities.forEach((currentValue, index) => SectionPriority.create({
-    user_id: user.id,
-    section: currentValue,
-    prio: index
-  }))).then((priority) => {
+  }).then(() => sections.forEach((sectionid, index) => {
+    const section = parseInt(sectionid)
+    SectionPriority.create({
+      user_id: user.id,
+      section: parseInt(section),
+      prio: index
+    })
+  })).then((priority) => {
     return done(null, true, 'Priorities set')
   })
 }

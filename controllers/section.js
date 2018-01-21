@@ -1,4 +1,5 @@
 const SectionPriorities = require('../models/sectionpriority')
+const Sections = require('../models/section')
 
 const setSectionPriorities = function (req, res, next) {
   if (!req.body.sectionPriorities || !Array.isArray(req.body.sectionPriorities)) {
@@ -42,7 +43,30 @@ const getSectionPriorities = function (req, res, next) {
   })
 }
 
+const getAllSections = function (req, res, next) {
+  Sections.Section.findAll()
+    .then((sections) => {
+      'use strict'
+      const sectionList = sections.map(section => {
+        let sect = {}
+        sect['id'] = section.id
+        sect['nameSv'] = section.nameSv
+        sect['nameEn'] = section.nameEv
+        sect['imageUrl'] = section.imageUrl
+        sect['textSv'] = section.textSv
+        sect['textEn'] = section.textEn
+
+        return sect
+      })
+      res.json({
+        success: true,
+        sections: sectionList
+      })
+    })
+}
+
 module.exports = {
   setSectionPriorities,
-  getSectionPriorities
+  getSectionPriorities,
+  getAllSections
 }
