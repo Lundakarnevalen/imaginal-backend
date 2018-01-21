@@ -2,6 +2,7 @@
 
 const users = require('../models/users')
 const UserRoles = require('../models/userrole')
+const Checkin = require('../models/checkin').Checkin
 
 const getAll = function (req, res) {
   UserRoles.hasRole(req.user, 'administrator').then(isadmin => {
@@ -19,7 +20,7 @@ const getAll = function (req, res) {
         offset: offset,
         limit: limit,
         attributes: ['id', 'email', 'firstName', 'lastName', 'phoneNumber', 'address', 'postNumber', 'city', 'careOf', 'personalNumber'],
-        include: [{model: users.KarnevalistInfo}]
+        include: [{model: users.KarnevalistInfo}, {model: Checkin, as: 'user'}]
       }).then(allUsers => {
         res.json({
           success: true,

@@ -16,13 +16,13 @@ const Checkin = dbc.define('Checkin', {
   }
 })
 
-User.belongsToMany(User, {
+User.belongsToMany(Checkin, {
   through: {
     model: Checkin,
     unique: true
   },
   as: 'user',
-  foreignKey: 'checker_id'
+  foreignKey: 'id'
 })
 
 /** TODO: We want this (or the otherone, not sure) to be User.hasOne */
