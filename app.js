@@ -33,6 +33,8 @@ app.post('/login/email', login.loginByEmail)
 app.post('/login/forgotpassword', forgotPassword.forgotPassword)
 app.post('/login/resetpassword', forgotPassword.setNewPassword)
 
+app.get('/getallsections', section.getAllSections)
+
 /**
  * Authenticate tokens
  */
