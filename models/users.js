@@ -73,7 +73,7 @@ const setNewPassword = function(user, password) {
 
 const isCheckedIn = async user => {
   const checkIn = await user.getCheckin()
-  return checkIn && checkIn.userId === user.id
+  return !!checkIn && checkIn.userId === user.id
 }
 
 module.exports = {

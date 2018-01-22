@@ -3,7 +3,6 @@
 const users = require('../models/users')
 const Checkin = require('../models/checkin').Checkin
 const UserRoles = require('../models/userrole')
-const Checkin = require('../models/checkin').Checkin
 
 const getAll = async (req, res) => {
   const isAdmin = await UserRoles.hasRole(req.user, 'administrator') // Role constants? Roles.ADMIN?

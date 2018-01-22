@@ -58,7 +58,7 @@ const checkIn = async (req, res) => {
     await user.setCheckin(checkIn)
 
     // The user that checks in the other is set as the owner
-    await req.user.setCheckinOwnerhip(checkIn)
+    await req.user.setCheckinOwnership(checkIn)
 
     // Save the updated models
     await user.save()
