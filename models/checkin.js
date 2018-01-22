@@ -6,35 +6,13 @@ const Checkin = dbc.define('Checkin', {
   id: {
     autoIncrement: true,
     primaryKey: true,
-    type: Sequelize.INTEGER
+    type: Sequelize.INTEGER,
   },
-  user_id: {
-    type: Sequelize.INTEGER
-  },
-  checker_id: {
-    type: Sequelize.INTEGER
-  }
 })
 
-User.belongsToMany(User, {
-  through: {
-    model: Checkin,
-    unique: true
-  },
-  as: 'user',
-  foreignKey: 'checker_id'
-})
-
-/** TODO: We want this (or the otherone, not sure) to be User.hasOne */
-User.belongsToMany(User, {
-  through: {
-    model: Checkin,
-    unique: false
-  },
-  as: 'checker',
-  foreignKey: 'user_id'
-})
+User.hasMany(Checkin, { as: 'CheckinOwnership', foreignKey: 'checkerId' })
+User.hasOne(Checkin, { as: 'Checkin', foreignKey: 'userId' })
 
 module.exports = {
-  Checkin
+  Checkin,
 }

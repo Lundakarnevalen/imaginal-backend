@@ -15,11 +15,11 @@ app.use(bodyParser.json())
 app.use(passport.initialize())
 app.use(passport.session())
 
-app.use(function (error, req, res, next) {
+app.use(function(error, req, res, next) {
   if (error.name === 'SyntaxError') {
     res.status(400).json({
       status: false,
-      message: 'Bad Request, invalid json'
+      message: 'Bad Request, invalid json',
     })
   }
   next()
@@ -36,8 +36,12 @@ app.post('/login/resetpassword', forgotPassword.setNewPassword)
 /**
  * Authenticate tokens
  */
-app.all(/(\/)?api\/.*/, function (req, res, next) {
-  passport.authenticate('bearer', {session: false}, function (err, user, info) {
+app.all(/(\/)?api\/.*/, function(req, res, next) {
+  passport.authenticate('bearer', { session: false }, function(
+    err,
+    user,
+    info
+  ) {
     if (err) {
       return next(err)
     }
@@ -45,11 +49,11 @@ app.all(/(\/)?api\/.*/, function (req, res, next) {
     if (!user) {
       return res.status(401).json({
         success: false,
-        message: 'Unauthorized'
+        message: 'Unauthorized',
       })
     }
 
-    req.logIn(user, function (err) {
+    req.logIn(user, function(err) {
       if (err) {
         return next(err)
       }
@@ -61,10 +65,10 @@ app.all(/(\/)?api\/.*/, function (req, res, next) {
 /**
  * Authorized endpoints
  */
-app.post('/api/hello', function (req, res) {
+app.post('/api/hello', function(req, res) {
   res.json({
     success: true,
-    message: 'Hello World!'
+    message: 'Hello World!',
   })
 })
 
@@ -84,13 +88,17 @@ app.post('/api/role/:email/:roleid', role.addRole)
 app.delete('/api/role/:email/:roleid', role.removeRole)
 app.get('/api/role/:roleid', role.getUsers)
 
-app.all('*', function (req, res) {
+app.all('*', function(req, res) {
   res.status(404).json({
     success: false,
-    message: 'File not found'
+    message: 'File not found',
   })
 })
 
-app.listen(3000, function () {
-  console.log('Listening on port 3000')
-})
+require('./config/database')
+  .sync()
+  .then(() => {
+    app.listen(3000, function() {
+      console.log('Listening on port 3000')
+    })
+  })
