@@ -15,7 +15,6 @@ const checkIn = async (req, res) => {
     })
   }
 
-  // TODO Role constants? e.g. roles.ADMIN?
   const isAdmin = await UserRoles.hasRole(req.user, 'administrator')
 
   if (!isAdmin) {
@@ -91,7 +90,6 @@ const checkStatus = async (req, res) => {
     })
   }
 
-  // TODO Role constants? e.g. roles.ADMIN?
   const isAdmin = await UserRoles.hasRole(req.user, 'administrator')
 
   if (!isAdmin && email !== req.user.email) {
@@ -133,7 +131,6 @@ const listCheckins = async (req, res) => {
     })
   }
 
-  // TODO Role constants? e.g. roles.ADMIN?
   const isAdmin = await UserRoles.hasRole(req.user, 'administrator')
 
   if (!isAdmin) {
