@@ -610,6 +610,12 @@
 									"    pm.expect(pm.response.text()).to.include(\"accessToken\");",
 									"});",
 									"",
+									"",
+									"pm.test(\"User is not checked in\", function() {",
+									"    console.log(pm.response.json().userinfo)",
+									"    pm.expect(pm.response.json().userinfo.checkedIn).to.eql(false)",
+									"})",
+									"",
 									""
 								]
 							}
@@ -1351,7 +1357,7 @@
 					},
 					"response": [
 						{
-							"id": "ac7f3b4b-5a23-4428-ab88-ad2d5c13015a",
+							"id": "dace0983-616d-4b12-ba6b-98549b4cd787",
 							"name": "Email Login new password",
 							"originalRequest": {
 								"method": "POST",
@@ -2886,6 +2892,12 @@
 									"pm.test(\"Body must contain user\", function () {",
 									"    pm.expect(pm.response.text()).to.include(\"user\");",
 									"});",
+									"",
+									"pm.test(\"user is not checked in\", function () {",
+									"    console.log(pm.response.json().user)",
+									"    pm.expect(pm.response.json().user.checkedIn).to.eql(false);",
+									"});",
+									"",
 									""
 								]
 							}
@@ -3627,6 +3639,129 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "User login should now give checked in",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.globals.set(\"accessToken\", pm.response.json().accessToken);",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Successfield true on statuscode 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(true);",
+									"});",
+									"",
+									"pm.test(\"Body must contain accessToken\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"accessToken\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"User checked in\", function() {",
+									"    console.log(pm.response.json().userinfo)",
+									"    pm.expect(pm.response.json().userinfo.checkedIn).to.eql(true)",
+									"})",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\":\"{{randomUsername}}\",\n  \"password\":\"newPass\"\n\t\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/login/email",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"login",
+								"email"
+							]
+						},
+						"description": "Login with email"
+					},
+					"response": [
+						{
+							"id": "9047f277-edbe-43c9-a987-473067172ae0",
+							"name": "Email Login",
+							"originalRequest": {
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": ""
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"_postman_previewtype": "text",
+							"header": [
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"name": "Connection",
+									"description": "Options that are desired for the connection"
+								},
+								{
+									"key": "Content-Length",
+									"value": "215",
+									"name": "Content-Length",
+									"description": "The length of the response body in octets (8-bit bytes)"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8",
+									"name": "Content-Type",
+									"description": "The mime type of this content"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 06 Dec 2017 19:38:29 GMT",
+									"name": "Date",
+									"description": "The date and time that the message was sent"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"d7-CM0cvcomzXN4CcSAPgSlPJk6Stw\"",
+									"name": "ETag",
+									"description": "An identifier for a specific version of a resource, often a message digest"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "Express",
+									"name": "X-Powered-By",
+									"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+								}
+							],
+							"cookie": [],
+							"responseTime": 167,
+							"body": "{\"success\":true,\"message\":\"Successfully logged in\",\"accessToken\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjVzNmF4eDVudjNwbmV5a3o5ZjZyIiwiaWF0IjoxNTEyNTg5MTA5fQ.ZrP-nocxVOIqD5q31A40KMVPbq2ZAMjB1tN08N0hdQY\"}"
+						}
+					]
 				},
 				{
 					"name": "User gets own checkin status",
@@ -5136,6 +5271,449 @@
 							"body": "Hello World!"
 						}
 					]
+				}
+			]
+		},
+		{
+			"name": "API, getAllUsers",
+			"description": "",
+			"item": [
+				{
+					"name": "getAllUsers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Successfield true on statuscode 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(true);",
+									"});",
+									"",
+									"pm.test(\"Should contain two users\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"user\");",
+									"    var users = pm.response.json().users;",
+									"    pm.expect(users.length).to.eql(2);",
+									"});",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"test2\"\n}"
+						},
+						"url": {
+							"raw": "localhost:3000/api/users",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllUsers using offset 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Successfield true on statuscode 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(true);",
+									"});",
+									"",
+									"pm.test(\"Should contain one users\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"user\");",
+									"    var users = pm.response.json().users;",
+									"    pm.expect(users.length).to.eql(1);",
+									"});",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"test2\"\n}"
+						},
+						"url": {
+							"raw": "localhost:3000/api/users?offset=1",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users"
+							],
+							"query": [
+								{
+									"key": "offset",
+									"value": "1",
+									"equals": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllUsers no users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Successfield true on statuscode 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(true);",
+									"});",
+									"",
+									"pm.test(\"Should contain one users\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"user\");",
+									"    var users = pm.response.json().users;",
+									"    pm.expect(users.length).to.eql(0);",
+									"});",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"test2\"\n}"
+						},
+						"url": {
+							"raw": "localhost:3000/api/users?offset=2",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users"
+							],
+							"query": [
+								{
+									"key": "offset",
+									"value": "2",
+									"equals": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllUsers invalid offset",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Successfield true on statuscode 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(true);",
+									"});",
+									"",
+									"pm.test(\"Should contain two users\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"user\");",
+									"    var users = pm.response.json().users;",
+									"    pm.expect(users.length).to.eql(2);",
+									"});",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"test2\"\n}"
+						},
+						"url": {
+							"raw": "localhost:3000/api/users?offset=a",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users"
+							],
+							"query": [
+								{
+									"key": "offset",
+									"value": "a",
+									"equals": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllUsers invalid offset2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 500\", function () {",
+									"    pm.response.to.have.status(500);",
+									"});",
+									"",
+									"pm.test(\"Successfield false on statuscode 500\", function () {",
+									"    pm.response.to.have.status(500);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(false);",
+									"});",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"test2\"\n}"
+						},
+						"url": {
+							"raw": "localhost:3000/api/users?offset=-5",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users"
+							],
+							"query": [
+								{
+									"key": "offset",
+									"value": "-5",
+									"equals": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllUsers invalid offset3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Successfield true on statuscode 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(true);",
+									"});",
+									"",
+									"pm.test(\"Should contain two users\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"user\");",
+									"    var users = pm.response.json().users;",
+									"    pm.expect(users.length).to.eql(2);",
+									"});",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"test2\"\n}"
+						},
+						"url": {
+							"raw": "localhost:3000/api/users?offset=",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users"
+							],
+							"query": [
+								{
+									"key": "offset",
+									"value": "",
+									"equals": true
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}

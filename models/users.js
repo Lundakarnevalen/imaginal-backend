@@ -21,6 +21,15 @@ const User = dbc.define('User', {
   personalNumber: Sequelize.STRING
 })
 
+/* toJSON is called when sending/stringifying the user (e.g. res.json(user))
+ it removes sensitive data (password and access token) */
+User.prototype.toJSON = function () {
+  const usr = Object.assign({}, this.get())
+  delete usr.password
+  delete usr.token
+  return usr
+}
+
 const KarnevalistInfo = dbc.define('KarnevalistInfo', {
   id: {
     autoIncrement: true,
@@ -54,13 +63,22 @@ const setNewPassword = function (user, password) {
         return
       }
       user.password = hash
-      user.save().then(resolve).catch(reject)
+      user
+        .save()
+        .then(resolve)
+        .catch(reject)
     })
   })
+}
+
+const isCheckedIn = async user => {
+  const checkIn = await user.getCheckin()
+  return !!checkIn && checkIn.userId === user.id
 }
 
 module.exports = {
   User,
   KarnevalistInfo,
-  setNewPassword
+  setNewPassword,
+  isCheckedIn
 }

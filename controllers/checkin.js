@@ -1,158 +1,163 @@
-const checkin = require('../models/checkin')
-const users = require('../models/users')
+const Checkin = require('../models/checkin').Checkin
+const User = require('../models/users').User
 const UserRoles = require('../models/userrole')
 
-const checkIn = function (req, res) {
+/**
+ * checkIn checks in a user with req.user.
+ * @param {String} req.params.identification - email or personalNumber of the user to check in.
+ *
+ */
+const checkIn = async (req, res) => {
   if (!req.params.identification) {
     return res.status(400).json({
       success: false,
-      message: 'Missing identification param'
+      message: 'Missing identification parameter'
     })
   }
 
-  let checkinUser
-  UserRoles.hasRole(req.user, 'administrator').then(isadmin => {
-    if (isadmin) {
-      return users.User.findOne({
-        where: {
-          $or: [{personalNumber: req.params.identification}, {email: req.params.identification}]
-        }
-      })
-    } else {
-      let err = {
-        status: 401,
-        message: 'Admin privileges required.'
-      }
-      return Promise.reject(err)
-    }
-  }).then((user) => {
-    if (user) {
-      checkinUser = user
-      return checkin.Checkin.findOne({
-        where: {user_id: user.id}
-      })
-    } else {
-      let err = {
-        status: 400,
-        message: 'No such user'
-      }
-      return Promise.reject(err)
-    }
-  }).then((row) => {
-    if (row) {
-      let err = {
-        status: 200,
-        message: checkinUser.email + ' is already checked in.'
-      }
-      return Promise.reject(err)
-    } else {
-      checkin.Checkin.create({
-        user_id: checkinUser.id,
-        checker_id: req.user.id
-      }).then(() => {
-        return res.json({
-          success: true,
-          message: req.params.identification + ' checked in successfully.'
-        })
-      })
-    }
-  }).catch((reject) => {
-    res.status(reject.status).json({
+  const isAdmin = await UserRoles.hasRole(req.user, 'administrator')
+
+  if (!isAdmin) {
+    return res.status(401).json({
       success: false,
-      message: reject.message
+      message: 'Admin privileges required'
     })
+  }
+
+  // Find the user to check in
+  const user = await User.findOne({
+    where: {
+      $or: [
+        { personalNumber: req.params.identification },
+        { email: req.params.identification }
+      ]
+    }
+  })
+
+  if (!user) {
+    return res.status(400).json({
+      success: false,
+      message: `No user with PN or email '${req.params.identification}' found`
+    })
+  }
+
+  // Check if checkin already exists
+  const existningCheckin = await Checkin.findOne({ where: { userId: user.id } })
+  if (existningCheckin) {
+    return res.status(400).json({
+      success: false,
+      message: `User with id ${user.id} is already checked in`
+    })
+  }
+
+  try {
+    const checkIn = await Checkin.create()
+
+    // The user to be checked in is assigned a checkin object
+    await user.setCheckin(checkIn)
+
+    // The user that checks in the other is set as the owner
+    await req.user.setCheckinOwnership(checkIn)
+
+    // Save the updated models
+    await user.save()
+    await req.user.save()
+  } catch (err) {
+    console.error('Error when creating a checkin. Error: ', err)
+    return res.status(400).json({
+      success: false,
+      message: 'Error when checking in the user.'
+    })
+  }
+
+  return res.json({
+    success: true,
+    message: `Successfully checked in ${user.email}`
   })
 }
 
-const checkStatus = function (req, res) {
-  UserRoles.hasRole(req.user, 'administrator').then(isadmin => {
-    if (isadmin || req.params.email === req.user.email) {
-      if (!req.params.email) {
-        let err = {
-          status: 400,
-          message: 'Missing email param'
-        }
-        return Promise.reject(err)
-      }
-      return users.User.findOne({
-        where: {email: req.params.email}
-      })
-    } else {
-      let err = {
-        status: 401,
-        message: 'Unauthorized'
-      }
-      return Promise.reject(err)
-    }
-  }).then((user) => {
-    if (!user) {
-      let err = {
-        status: 400,
-        message: 'No such user'
-      }
-      return Promise.reject(err)
-    }
-    return checkin.Checkin.findOne({
-      where: {user_id: user.id}
-    })
-  }).then((check) => {
-    return res.json({
-      success: true,
-      checkedIn: !!check // throws to bool
-    })
-  }).catch((reject) => {
-    res.status(reject.status).json({
+/**
+ * checkStatus retrieves the check in status of the specified user.
+ * @param {*} req.params.email - Email of the user to check.
+ */
+const checkStatus = async (req, res) => {
+  const email = req.params.email
+
+  if (!email) {
+    return res.status(400).json({
       success: false,
-      message: reject.message
+      message: 'Missing email parameter'
     })
+  }
+
+  const isAdmin = await UserRoles.hasRole(req.user, 'administrator')
+
+  if (!isAdmin && email !== req.user.email) {
+    return res.status(401).json({
+      success: false,
+      message: "Admin privileges required to check another user's status"
+    })
+  }
+
+  const user = await User.findOne({ where: { email: email } })
+  if (!user) {
+    return res.status(400).json({
+      success: false,
+      message: 'No such user'
+    })
+  }
+
+  const checkIn = await Checkin.findOne({
+    where: { userId: user.id },
+    attributes: ['checkerId', 'userId', 'createdAt']
+  })
+
+  return res.json({
+    success: true,
+    checkedIn: !!checkIn,
+    checkInInfo: checkIn
   })
 }
 
-const listCheckins = function (req, res) {
-  UserRoles.hasRole(req.user, 'administrator')
-    .then(isadmin => {
-      if (!isadmin) {
-        let err = {
-          status: 401,
-          message: 'Admin privileges required'
-        }
-        return Promise.reject(err)
-      }
-      if (!req.params.email) {
-        let err = {
-          status: 400,
-          message: 'Missing email param'
-        }
-        return Promise.reject(err)
-      }
-      users.User.findOne({
-        where: {email: req.params.email}
-      })
-        .then((user) => {
-          return checkin.Checkin.findAll({
-            where: {checker_id: user.id}
-          })
-        })
-        .then(list => {
-          if (!list || list.length === 0) {
-            let err = {
-              status: 200,
-              message: 'No users checked in by ' + req.params.email
-            }
-            return Promise.reject(err)
-          }
-          return res.json({
-            success: true,
-            userids: list.map(x => (x.user_id))
-          })
-        })
-        .catch(reject => {
-          res.status(reject.status).json({
-            success: false,
-            message: reject.message
-          })
-        })
+/**
+ * listCheckins retrives all check ins made by the specified user.
+ * @param {*} req.params.email - The user's email
+ */
+const listCheckins = async (req, res) => {
+  if (!req.params.email) {
+    return res.status(400).json({
+      success: false,
+      message: 'Missing email parameter'
     })
+  }
+
+  const isAdmin = await UserRoles.hasRole(req.user, 'administrator')
+
+  if (!isAdmin) {
+    return res.status(401).json({
+      success: false,
+      message: 'Admin privileges required'
+    })
+  }
+
+  const user = await User.findOne({ where: { email: req.params.email } })
+  if (!user) {
+    return res.status(400).json({
+      success: false,
+      message: 'No such user'
+    })
+  }
+
+  const checkIns = await Checkin.findAll({
+    where: { checkerId: user.id },
+    attributes: ['createdAt', 'userId']
+  })
+
+  return res.json({
+    success: true,
+    checkerId: user.id,
+    checkIns
+  })
 }
 
 module.exports = {

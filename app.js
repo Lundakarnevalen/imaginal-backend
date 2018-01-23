@@ -39,7 +39,11 @@ app.get('/getallsections', section.getAllSections)
  * Authenticate tokens
  */
 app.all(/(\/)?api\/.*/, function (req, res, next) {
-  passport.authenticate('bearer', {session: false}, function (err, user, info) {
+  passport.authenticate('bearer', { session: false }, function (
+    err,
+    user,
+    info
+  ) {
     if (err) {
       return next(err)
     }
@@ -93,6 +97,10 @@ app.all('*', function (req, res) {
   })
 })
 
-app.listen(3000, function () {
-  console.log('Listening on port 3000')
-})
+require('./config/database')
+  .sync()
+  .then(() => {
+    app.listen(3000, function () {
+      console.log('Listening on port 3000')
+    })
+  })

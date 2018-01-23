@@ -26,21 +26,24 @@ const loginByEmail = function (req, res, next) {
             message: 'Incorrect login credentials.'
           })
         }
-        return res.json({
-          success: true,
-          message: 'Successfully logged in',
-          accessToken: req.user.token,
-          userinfo: {
-            email: user.email,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            phoneNumber: user.phoneNumber,
-            address: user.address,
-            postNumber: user.postNumber,
-            city: user.city,
-            careOf: user.careOf,
-            personalNumber: user.personalNumber
-          }
+        require('../models/users').isCheckedIn(user).then((checkedIn) => {
+          return res.json({
+            success: true,
+            message: 'Successfully logged in',
+            accessToken: req.user.token,
+            userinfo: {
+              email: user.email,
+              firstName: user.firstName,
+              lastName: user.lastName,
+              phoneNumber: user.phoneNumber,
+              address: user.address,
+              postNumber: user.postNumber,
+              city: user.city,
+              careOf: user.careOf,
+              personalNumber: user.personalNumber,
+              checkedIn: checkedIn
+            }
+          })
         })
       })
     })(req, res, next)
