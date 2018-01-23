@@ -1,7 +1,7 @@
 {
 	"info": {
 		"name": "Karneval",
-		"_postman_id": "6baef5de-a9c4-f58e-a6f7-0fb132cf85b9",
+		"_postman_id": "a33320d7-b71b-c44f-273e-4d84fbb11a31",
 		"description": "# Introduction\nBackend till lundakarnevalen 2018.\n\n# Overview\nTestserver på 146.185.173.31:3000, exempel är till localhost. Endast JSON accepteras.\n\n# Error Codes\n200: OK \n\n400: User sent bad information or missing parameters \n\n401: User does not have appropriate privileges \n\n404: No such end point \n\n500: Internal error, not caused by user",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -74,7 +74,7 @@
 					},
 					"response": [
 						{
-							"id": "f09755bd-be30-4ae5-be75-fd1a332cc9b3",
+							"id": "c5d797e7-eb18-4d5b-a215-ece3b468092e",
 							"name": "Register a user",
 							"originalRequest": {
 								"method": "POST",
@@ -148,7 +148,7 @@
 							"body": "{\"success\":true,\"message\":\"You are now registered\"}"
 						},
 						{
-							"id": "fd861ffd-8252-4bc4-9aa9-77dc42502252",
+							"id": "00927611-b5ee-46f2-bade-c19759d8e5c4",
 							"name": "Register a user",
 							"originalRequest": {
 								"method": "POST",
@@ -273,7 +273,7 @@
 					},
 					"response": [
 						{
-							"id": "a7a65cce-a264-45d3-b6eb-639c78fb4c07",
+							"id": "d274f4f6-dde7-4b25-a939-472ab10ba0d7",
 							"name": "Missing field register",
 							"originalRequest": {
 								"header": [],
@@ -341,12 +341,12 @@
 							"script": {
 								"type": "text/javascript",
 								"exec": [
-									"pm.test(\"Status code is 400\", function () {",
-									"    pm.response.to.have.status(400);",
+									"pm.test(\"Status code is 409\", function () {",
+									"    pm.response.to.have.status(409);",
 									"});",
 									"",
-									"pm.test(\"Successfield false on statuscode 400\", function () {",
-									"    pm.response.to.have.status(400);",
+									"pm.test(\"Successfield false on statuscode 409\", function () {",
+									"    pm.response.to.have.status(409);",
 									"    var jsonData = pm.response.json();",
 									"    pm.expect(jsonData.success).to.eql(false);",
 									"});",
@@ -366,7 +366,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"email\":\"{{randomUsername}}\",\n  \"password\":\"password\"\n}"
+							"raw": "{\n  \"email\":\"{{randomUsername}}\",\n  \"password\":\"password\",\n  \"personalNumber\": \"9101011111\"\n}"
 						},
 						"url": {
 							"raw": "http://localhost:3000/register",
@@ -383,7 +383,7 @@
 					},
 					"response": [
 						{
-							"id": "8875cabe-f1c6-471a-ba8e-881a84e9cf56",
+							"id": "489051b9-7d35-4ddc-bae8-82ef798839b4",
 							"name": "Fail to reregister same user",
 							"originalRequest": {
 								"method": "POST",
@@ -465,12 +465,12 @@
 							"script": {
 								"type": "text/javascript",
 								"exec": [
-									"pm.test(\"Status code is 400\", function () {",
-									"    pm.response.to.have.status(400);",
+									"pm.test(\"Status code is 409\", function () {",
+									"    pm.response.to.have.status(409);",
 									"});",
 									"",
-									"pm.test(\"Successfield false on statuscode 400\", function () {",
-									"    pm.response.to.have.status(400);",
+									"pm.test(\"Successfield false on statuscode 409\", function () {",
+									"    pm.response.to.have.status(409);",
 									"    var jsonData = pm.response.json();",
 									"    pm.expect(jsonData.success).to.eql(false);",
 									"});",
@@ -507,7 +507,7 @@
 					},
 					"response": [
 						{
-							"id": "35efc56f-331b-4f95-ab09-c96a6857e3b9",
+							"id": "e6495ef7-dd0b-427a-806d-bd56a41dff42",
 							"name": "Fail to reregister same user",
 							"originalRequest": {
 								"method": "POST",
@@ -649,7 +649,7 @@
 					},
 					"response": [
 						{
-							"id": "9e837476-62f8-46e3-a89c-68b04e151efc",
+							"id": "2314a2d7-b392-4ce9-bb66-94618b3ee92d",
 							"name": "Email Login",
 							"originalRequest": {
 								"header": [],
@@ -755,7 +755,7 @@
 					},
 					"response": [
 						{
-							"id": "0a889dfa-eed9-4503-881e-35993b094c31",
+							"id": "0480335a-0bac-424a-9d06-31f6c62c01b5",
 							"name": "Wrong email login",
 							"originalRequest": {
 								"method": "POST",
@@ -876,7 +876,7 @@
 					},
 					"response": [
 						{
-							"id": "c0d248ab-f73a-48fb-99e6-c7ba5615f9af",
+							"id": "ddd63ea3-670b-43e6-861b-1f4b92ead6a5",
 							"name": "Wrong password login",
 							"originalRequest": {
 								"method": "POST",
@@ -997,7 +997,7 @@
 					},
 					"response": [
 						{
-							"id": "b2f9bb21-767c-4253-a3ab-c695f168fe79",
+							"id": "c557d2ab-d39e-4a8c-8dba-d4f9d68fe687",
 							"name": "Missing field login",
 							"originalRequest": {
 								"header": [],
@@ -1111,7 +1111,7 @@
 					},
 					"response": [
 						{
-							"id": "042ad9c5-1eb4-420d-871b-c7f46a21db76",
+							"id": "d3088189-6253-49b6-95bf-a87f7cb5c2ef",
 							"name": "Initiate password Reset",
 							"originalRequest": {
 								"method": "POST",
@@ -1229,7 +1229,7 @@
 					},
 					"response": [
 						{
-							"id": "1ac0cb0d-287e-446a-806c-f6e38630fa72",
+							"id": "e1347a9f-79c7-4f43-bd0b-5cc99166c400",
 							"name": "Password reset change password",
 							"originalRequest": {
 								"header": [],
@@ -1357,7 +1357,6 @@
 					},
 					"response": [
 						{
-
 							"id": "dace0983-616d-4b12-ba6b-98549b4cd787",
 							"name": "Email Login new password",
 							"originalRequest": {
@@ -1477,7 +1476,7 @@
 					},
 					"response": [
 						{
-							"id": "c414951e-fb20-4b85-9448-27a68f8e3e2f",
+							"id": "d9c57f19-e01b-4af2-8497-2c19a33dec6a",
 							"name": "Bad password reset change password",
 							"originalRequest": {
 								"header": [],
@@ -1594,7 +1593,7 @@
 					},
 					"response": [
 						{
-							"id": "5a048675-513d-4231-b76e-49708fb5e7a0",
+							"id": "abbf0cb6-9adf-47b3-8ba8-ab244741a2af",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -1726,7 +1725,7 @@
 					},
 					"response": [
 						{
-							"id": "c661e2b3-9923-4802-9608-7b426cb7192c",
+							"id": "b4d144a3-7da8-4919-981c-3bbf06f2f80a",
 							"name": "Fail to access resource that doesnt exist",
 							"originalRequest": {
 								"method": "POST",
@@ -1860,7 +1859,7 @@
 					},
 					"response": [
 						{
-							"id": "6eec3a9a-8e20-431a-8b6a-d049b343f205",
+							"id": "78c1aa26-a3ba-4695-b899-fdb370fd438c",
 							"name": "Email Login",
 							"originalRequest": {
 								"method": "POST",
@@ -2003,7 +2002,7 @@
 					},
 					"response": [
 						{
-							"id": "a81a45af-9c7e-4111-aded-293ce0788c8c",
+							"id": "9d8f8d1e-a06e-46e7-aac2-e75b8f2b667a",
 							"name": "Set priorities",
 							"originalRequest": {
 								"header": [],
@@ -2126,7 +2125,7 @@
 					},
 					"response": [
 						{
-							"id": "bec76512-71e4-456c-9455-95b288739b63",
+							"id": "f3240d62-863c-4a9d-9723-a237d47689f8",
 							"name": "Set priorities",
 							"originalRequest": {
 								"header": [],
@@ -2249,7 +2248,7 @@
 					},
 					"response": [
 						{
-							"id": "5867e137-cfdd-49db-b1be-48d9b37fe5a4",
+							"id": "c48621e4-b852-4e31-93d0-8c7f67a28f14",
 							"name": "Set priorities",
 							"originalRequest": {
 								"header": [],
@@ -2362,7 +2361,7 @@
 					},
 					"response": [
 						{
-							"id": "73787584-f42d-43a7-b4ee-da2eb406215e",
+							"id": "dbe82132-47a2-4e92-91a7-ece5f92e8a6e",
 							"name": "Get same priorities",
 							"originalRequest": {
 								"method": "GET",
@@ -2506,7 +2505,7 @@
 					},
 					"response": [
 						{
-							"id": "0d4c4864-2604-48c4-b542-726d23809e2b",
+							"id": "eb6d7af8-af0c-4c6e-8e62-c2857eadb956",
 							"name": "Set duplicate prio",
 							"originalRequest": {
 								"header": [],
@@ -2634,7 +2633,7 @@
 					},
 					"response": [
 						{
-							"id": "8b6298ae-0889-4e69-9592-ecc261cd6f87",
+							"id": "e02908fc-335d-42a5-bd5c-0eccaf740085",
 							"name": "Set priorities",
 							"originalRequest": {
 								"header": [],
@@ -3824,7 +3823,7 @@
 					},
 					"response": [
 						{
-							"id": "e449b668-2e93-4d49-9d38-3d81e0da4fd9",
+							"id": "5e4479d7-671e-419c-a90e-7891f9bff212",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -4018,7 +4017,7 @@
 					},
 					"response": [
 						{
-							"id": "80cf3cda-373c-4108-ae10-1370e8d796ef",
+							"id": "769db28b-e093-4191-a2e0-87e3b922be1e",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -4148,7 +4147,7 @@
 					},
 					"response": [
 						{
-							"id": "65a71d05-da01-4571-bc7f-8d9cd3c59185",
+							"id": "599162c6-80a4-45d0-ae89-bb8ca3049654",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -4283,7 +4282,7 @@
 					},
 					"response": [
 						{
-							"id": "255b9a58-fd97-488d-a94a-0ac0614be036",
+							"id": "6f6fe2c9-146f-42dc-a5df-740df50d596d",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -4413,7 +4412,7 @@
 					},
 					"response": [
 						{
-							"id": "a7aaafed-b729-4d84-b702-d11a1d2048c5",
+							"id": "61bc6887-bba8-41d6-a36c-2503cd7502d4",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -4543,7 +4542,7 @@
 					},
 					"response": [
 						{
-							"id": "59f8cfe6-2bdb-45c2-9337-da32510f2ca4",
+							"id": "8aed19a3-caa2-4d3b-9f10-04e0816ace1a",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -4673,7 +4672,7 @@
 					},
 					"response": [
 						{
-							"id": "c54cf762-0526-45bb-90ba-152007b26d6b",
+							"id": "5d49471b-9ae8-431a-87ed-addb5bfc3575",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -4813,7 +4812,7 @@
 					},
 					"response": [
 						{
-							"id": "9637a8ce-64c8-4b73-b48b-b00d8bb7fce8",
+							"id": "7a0809ad-5938-4854-b761-6a65efb3e989",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -4943,7 +4942,7 @@
 					},
 					"response": [
 						{
-							"id": "071548d6-6da2-4a3b-adab-c81093293f92",
+							"id": "db3f46be-b66e-43a1-b0fc-1fd516c959d7",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -5073,7 +5072,7 @@
 					},
 					"response": [
 						{
-							"id": "83a5dc89-e1ba-403e-ab24-637ebe640923",
+							"id": "05d2f366-1f7d-41d7-b393-a2615b6ee22f",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -5203,7 +5202,7 @@
 					},
 					"response": [
 						{
-							"id": "b804aafa-1eb1-476b-897a-f250b2799be3",
+							"id": "7bbaf0bf-cef5-4988-9b8b-c411106e9844",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
