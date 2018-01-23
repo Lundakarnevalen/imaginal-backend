@@ -11,7 +11,7 @@ const checkIn = async (req, res) => {
   if (!req.params.identification) {
     return res.status(400).json({
       success: false,
-      message: 'Missing identification parameter',
+      message: 'Missing identification parameter'
     })
   }
 
@@ -21,7 +21,7 @@ const checkIn = async (req, res) => {
   if (!isAdmin) {
     return res.status(401).json({
       success: false,
-      message: 'Admin privileges required',
+      message: 'Admin privileges required'
     })
   }
 
@@ -30,15 +30,15 @@ const checkIn = async (req, res) => {
     where: {
       $or: [
         { personalNumber: req.params.identification },
-        { email: req.params.identification },
-      ],
-    },
+        { email: req.params.identification }
+      ]
+    }
   })
 
   if (!user) {
     return res.status(400).json({
       success: false,
-      message: `No user with PN or email '${req.params.identification}' found`,
+      message: `No user with PN or email '${req.params.identification}' found`
     })
   }
 
@@ -47,7 +47,7 @@ const checkIn = async (req, res) => {
   if (existningCheckin) {
     return res.status(400).json({
       success: false,
-      message: `User with id ${user.id} is already checked in`,
+      message: `User with id ${user.id} is already checked in`
     })
   }
 
@@ -67,13 +67,13 @@ const checkIn = async (req, res) => {
     console.error('Error when creating a checkin. Error: ', err)
     return res.status(400).json({
       success: false,
-      message: 'Error when checking in the user.',
+      message: 'Error when checking in the user.'
     })
   }
 
   return res.json({
     success: true,
-    message: `Successfully checked in ${user.email}`,
+    message: `Successfully checked in ${user.email}`
   })
 }
 
@@ -87,7 +87,7 @@ const checkStatus = async (req, res) => {
   if (!email) {
     return res.status(400).json({
       success: false,
-      message: 'Missing email parameter',
+      message: 'Missing email parameter'
     })
   }
 
@@ -97,7 +97,7 @@ const checkStatus = async (req, res) => {
   if (!isAdmin && email !== req.user.email) {
     return res.status(401).json({
       success: false,
-      message: "Admin privileges required to check another user's status",
+      message: "Admin privileges required to check another user's status"
     })
   }
 
@@ -105,19 +105,19 @@ const checkStatus = async (req, res) => {
   if (!user) {
     return res.status(400).json({
       success: false,
-      message: 'No such user',
+      message: 'No such user'
     })
   }
 
   const checkIn = await Checkin.findOne({
     where: { userId: user.id },
-    attributes: ['checkerId', 'userId', 'createdAt'],
+    attributes: ['checkerId', 'userId', 'createdAt']
   })
 
   return res.json({
     success: true,
     checkedIn: !!checkIn,
-    checkInInfo: checkIn,
+    checkInInfo: checkIn
   })
 }
 
@@ -129,7 +129,7 @@ const listCheckins = async (req, res) => {
   if (!req.params.email) {
     return res.status(400).json({
       success: false,
-      message: 'Missing email parameter',
+      message: 'Missing email parameter'
     })
   }
 
@@ -139,7 +139,7 @@ const listCheckins = async (req, res) => {
   if (!isAdmin) {
     return res.status(401).json({
       success: false,
-      message: 'Admin privileges required',
+      message: 'Admin privileges required'
     })
   }
 
@@ -147,24 +147,24 @@ const listCheckins = async (req, res) => {
   if (!user) {
     return res.status(400).json({
       success: false,
-      message: 'No such user',
+      message: 'No such user'
     })
   }
 
   const checkIns = await Checkin.findAll({
     where: { checkerId: user.id },
-    attributes: ['createdAt', 'userId'],
+    attributes: ['createdAt', 'userId']
   })
 
   return res.json({
     success: true,
     checkerId: user.id,
-    checkIns,
+    checkIns
   })
 }
 
 module.exports = {
   checkIn,
   checkStatus,
-  listCheckins,
+  listCheckins
 }

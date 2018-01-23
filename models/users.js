@@ -6,7 +6,7 @@ const User = dbc.define('User', {
   id: {
     autoIncrement: true,
     primaryKey: true,
-    type: Sequelize.INTEGER,
+    type: Sequelize.INTEGER
   },
   email: Sequelize.STRING,
   password: Sequelize.STRING,
@@ -18,12 +18,12 @@ const User = dbc.define('User', {
   postNumber: Sequelize.STRING,
   city: Sequelize.STRING,
   careOf: Sequelize.STRING,
-  personalNumber: Sequelize.STRING,
+  personalNumber: Sequelize.STRING
 })
 
-/* toJSON is called when sending/stringifying the user (e.g. res.json(user)) 
+/* toJSON is called when sending/stringifying the user (e.g. res.json(user))
  it removes sensitive data (password and access token) */
-User.prototype.toJSON = function() {
+User.prototype.toJSON = function () {
   const usr = Object.assign({}, this.get())
   delete usr.password
   delete usr.token
@@ -34,7 +34,7 @@ const KarnevalistInfo = dbc.define('KarnevalistInfo', {
   id: {
     autoIncrement: true,
     primaryKey: true,
-    type: Sequelize.INTEGER,
+    type: Sequelize.INTEGER
   },
   language: Sequelize.STRING,
   driversLicense: Sequelize.STRING,
@@ -49,13 +49,13 @@ const KarnevalistInfo = dbc.define('KarnevalistInfo', {
   groupLeader: Sequelize.STRING,
   interests: Sequelize.STRING,
   misc: Sequelize.STRING,
-  plenipotentiary: Sequelize.STRING,
+  plenipotentiary: Sequelize.STRING
 })
 
 // This adds UserId to KarnevalistInfo as foreign key
 User.hasOne(KarnevalistInfo)
 
-const setNewPassword = function(user, password) {
+const setNewPassword = function (user, password) {
   return new Promise((resolve, reject) => {
     bcrypt.hash(password, 10, (err, hash) => {
       if (err) {
@@ -80,5 +80,5 @@ module.exports = {
   User,
   KarnevalistInfo,
   setNewPassword,
-  isCheckedIn,
+  isCheckedIn
 }

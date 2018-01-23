@@ -6,13 +6,13 @@ const Checkin = dbc.define('Checkin', {
   id: {
     autoIncrement: true,
     primaryKey: true,
-    type: Sequelize.INTEGER,
-  },
+    type: Sequelize.INTEGER
+  }
 })
 
 User.hasMany(Checkin, { as: 'CheckinOwnership', foreignKey: 'checkerId' })
 User.hasOne(Checkin, { as: 'Checkin', foreignKey: 'userId' })
 
 module.exports = {
-  Checkin,
+  Checkin
 }
