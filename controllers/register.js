@@ -6,32 +6,49 @@ const jwt = require('jsonwebtoken')
 const sequelize = require('../config/database')
 
 const registerUser = function (req, res) {
-  if (typeof req.body.personalNumber === 'undefined' || req.body.personalNumber.length !== 10) {
+  let error = []
+  if (!req.body.personalNumber || req.body.personalNumber.length !== 10) {
+    error.push('personalNumber')
+  }
+  if (!req.body.email) {
+    error.push('email')
+  }
+  if (!req.body.password) {
+    error.push('password')
+  }
+  if (error.length !== 0) {
     return res.status(400).json({
       success: false,
-      message: 'Invalid personal number format'
+      message: 'Invalid parameters',
+      error
     })
   }
-  if (req.body.email && req.body.password) {
-    users.User.findOne({
-      where: {
-        $or: [{personalNumber: req.body.personalNumber}, {email: req.body.email}]
-      }
-    }).then((user) => {
-      if (user !== null) {
-        return res.status(400).json({
-          success: false,
-          message: 'User already exists'
-        })
-      }
-      createUser(req, res)
-    })
-  } else {
-    res.status(400).json({
-      success: false,
-      message: 'Missing parameters'
-    })
-  }
+
+  users.User.findAll({
+    where: {
+      $or: [{personalNumber: req.body.personalNumber}, {email: req.body.email}]
+    }
+  }).then((users) => {
+    if (users.length > 0) {
+      error = []
+      let pn = false
+      let mail = false
+
+      users.forEach((user) => {
+        if (user.email === req.body.email) { mail = true }
+        if (user.personalNumber === req.body.personalNumber) { pn = true }
+      })
+      pn && error.push('personalNumber')
+      mail && error.push('email')
+
+      return res.status(409).json({
+        success: false,
+        message: 'User already exists',
+        error
+      })
+    }
+    createUser(req, res)
+  })
 }
 
 const createUser = function (req, res) {
