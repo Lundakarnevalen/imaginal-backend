@@ -29,7 +29,6 @@ const registerUser = function (req, res) {
       $or: [{personalNumber: req.body.personalNumber}, {email: req.body.email}]
     }
   }).then((users) => {
-    console.log(users)
     if (users.length > 0) {
       error = []
       let pn = false
