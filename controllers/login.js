@@ -1,6 +1,7 @@
 'use strict'
 
 const passport = require('passport')
+const users = require('../models/users')
 
 const loginByEmail = function (req, res, next) {
   if (!req.body.email || !req.body.password) {
@@ -19,31 +20,33 @@ const loginByEmail = function (req, res, next) {
           message: 'Incorrect login credentials.'
         })
       }
-      req.logIn(user, function (err) {
+      req.logIn(user, async (err) => {
         if (err) {
           return res.json({
             success: false,
             message: 'Incorrect login credentials.'
           })
         }
-        require('../models/users').isCheckedIn(user).then((checkedIn) => {
-          return res.json({
-            success: true,
-            message: 'Successfully logged in',
-            accessToken: req.user.token,
-            userinfo: {
-              email: user.email,
-              firstName: user.firstName,
-              lastName: user.lastName,
-              phoneNumber: user.phoneNumber,
-              address: user.address,
-              postNumber: user.postNumber,
-              city: user.city,
-              careOf: user.careOf,
-              personalNumber: user.personalNumber,
-              checkedIn: checkedIn
-            }
-          })
+        const checkedIn = await users.isCheckedIn(user)
+        const karnevalistInfo = await users.KarnevalistInfo.findOne({
+          where: {userId: user.id},
+          attributes: ['language', 'driversLicense', 'disability',
+            'audition', 'talent', 'entertainmentCategory',
+            'corps', 'startOfStudies', 'pastInvolvement',
+            'groupLeader', 'interests', 'misc',
+            'plenipotentiary']
+        })
+        const info = {
+          ...user.toJSON(),
+          ...karnevalistInfo.dataValues
+        }
+
+        return res.json({
+          success: true,
+          message: 'Successfully logged in',
+          accessToken: req.user.token,
+          checkedIn,
+          info
         })
       })
     })(req, res, next)
