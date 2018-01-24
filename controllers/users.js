@@ -28,8 +28,8 @@ const getAll = async (req, res) => {
     offset: offset,
     limit: limit,
     include: [
-      { model: users.KarnevalistInfo },
-      { model: Checkin, as: 'Checkin', attributes: ['checkerId', 'createdAt'] }
+      {model: users.KarnevalistInfo},
+      {model: Checkin, as: 'Checkin', attributes: ['checkerId', 'createdAt']}
     ]
   })
 
@@ -42,10 +42,10 @@ const getAll = async (req, res) => {
   })
 }
 
-const getById = async (req, res) => {
-  const email = req.params.email
+const getByPersonalNumber = async (req, res) => {
+  const pin = req.params.pin
 
-  if (!email) {
+  if (!pin) {
     return res.status(400).json({
       success: false,
       message: 'Missing email parameter'
@@ -54,7 +54,7 @@ const getById = async (req, res) => {
 
   const isAdmin = await UserRoles.hasRole(req.user, 'administrator')
 
-  if (!isAdmin && email !== req.user.email) {
+  if (!isAdmin && pin !== req.user.personalNumber) {
     return res.status(401).json({
       success: false,
       message: 'Admin privileges required'
@@ -62,10 +62,58 @@ const getById = async (req, res) => {
   }
 
   let user = await users.User.findOne({
-    where: { email },
+    where: {peronalNumber: pin},
     include: [
-      { model: users.KarnevalistInfo },
-      { model: Checkin, as: 'Checkin', attributes: ['checkerId', 'createdAt'] }
+      {model: users.KarnevalistInfo},
+      {model: Checkin, as: 'Checkin', attributes: ['checkerId', 'createdAt']}
+    ]
+  })
+
+  if (!user) {
+    return res.status(400).json({
+      success: false,
+      message: 'No such user'
+    })
+  }
+
+  user = user.toJSON()
+  user.checkedIn = !!user.Checkin
+
+  return res.json({
+    success: true,
+    user
+  })
+}
+
+const getById = async (req, res) => {
+  const identification = req.params.identification
+
+  if (!identification) {
+    return res.status(400).json({
+      success: false,
+      message: 'Missing identification parameter'
+    })
+  }
+
+  const isAdmin = await UserRoles.hasRole(req.user, 'administrator')
+
+  if (!(isAdmin || (identification === req.user.email || identification === req.user.personalNumber))) {
+    return res.status(401).json({
+      success: false,
+      message: 'Admin privileges required'
+    })
+  }
+
+  let user = await users.User.findOne({
+    where: {
+      $or: [
+        {personalNumber: identification},
+        {email: identification}
+      ]
+    },
+    include: [
+      {model: users.KarnevalistInfo},
+      {model: Checkin, as: 'Checkin', attributes: ['checkerId', 'createdAt']}
     ]
   })
 
@@ -97,8 +145,8 @@ const setUserInfo = async (req, res) => {
   }
 
   const user = await users.User.findOne({
-    where: { email },
-    include: [{ model: users.KarnevalistInfo }]
+    where: {email},
+    include: [{model: users.KarnevalistInfo}]
   })
 
   if (!user) {
@@ -155,5 +203,6 @@ const setUserInfo = async (req, res) => {
 module.exports = {
   getAll,
   getById,
+  getByPersonalNumber,
   setUserInfo
 }
