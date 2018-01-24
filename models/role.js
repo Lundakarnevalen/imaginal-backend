@@ -11,6 +11,11 @@ const Role = dbc.define('Role', {
   description: Sequelize.STRING
 })
 
+Role.prototype.toJSON = function () {
+  const role = Object.assign({}, this.get())
+  return role.description
+}
+
 module.exports = {
   Role
 }

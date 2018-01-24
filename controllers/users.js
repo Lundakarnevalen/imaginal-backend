@@ -5,7 +5,7 @@ const Checkin = require('../models/checkin').Checkin
 const UserRoles = require('../models/userrole')
 
 const getAll = async (req, res) => {
-  const isAdmin = await UserRoles.hasRole(req.user, 'administrator') 
+  const isAdmin = await UserRoles.hasRole(req.user, 'administrator')
 
   if (!isAdmin) {
     return res.status(401).json({
