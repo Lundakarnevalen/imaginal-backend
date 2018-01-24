@@ -82,15 +82,15 @@ const getById = async (req, res) => {
       'plenipotentiary']
   })
 
-  const info = {
+  const userinfo = {
+    checkedIn,
     ...user.toJSON(),
     ...karnevalistInfo.dataValues
   }
 
   return res.json({
     success: true,
-    checkedIn,
-    info
+    userinfo
   })
 }
 

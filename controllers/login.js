@@ -36,7 +36,8 @@ const loginByEmail = function (req, res, next) {
             'groupLeader', 'interests', 'misc',
             'plenipotentiary']
         })
-        const info = {
+        const userinfo = {
+          checkedIn,
           ...user.toJSON(),
           ...karnevalistInfo.dataValues
         }
@@ -45,8 +46,7 @@ const loginByEmail = function (req, res, next) {
           success: true,
           message: 'Successfully logged in',
           accessToken: req.user.token,
-          checkedIn,
-          info
+          userinfo
         })
       })
     })(req, res, next)
