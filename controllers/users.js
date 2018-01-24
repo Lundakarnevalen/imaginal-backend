@@ -28,8 +28,8 @@ const getAll = async (req, res) => {
     offset: offset,
     limit: limit,
     include: [
-      { model: users.KarnevalistInfo },
-      { model: Checkin, as: 'Checkin', attributes: ['checkerId', 'createdAt'] }
+      {model: users.KarnevalistInfo},
+      {model: Checkin, as: 'Checkin', attributes: ['checkerId', 'createdAt']}
     ]
   })
 
@@ -62,7 +62,7 @@ const getById = async (req, res) => {
   }
 
   const user = await users.User.findOne({
-    where: { email }
+    where: {email}
   })
 
   if (!user) {
@@ -73,6 +73,9 @@ const getById = async (req, res) => {
   }
 
   const checkedIn = await users.isCheckedIn(user)
+  const allRoles = await user.getRoles()
+  const roles = await allRoles.map(role => role.toJSON()).map(role => { return role })
+
   const karnevalistInfo = await users.KarnevalistInfo.findOne({
     where: {userId: user.id},
     attributes: ['language', 'driversLicense', 'disability',
@@ -85,7 +88,8 @@ const getById = async (req, res) => {
   const userinfo = {
     checkedIn,
     ...user.toJSON(),
-    ...karnevalistInfo.dataValues
+    ...karnevalistInfo.dataValues,
+    roles: [...roles]
   }
 
   return res.json({
@@ -106,8 +110,8 @@ const setUserInfo = async (req, res) => {
   }
 
   const user = await users.User.findOne({
-    where: { email },
-    include: [{ model: users.KarnevalistInfo }]
+    where: {email},
+    include: [{model: users.KarnevalistInfo}]
   })
 
   if (!user) {

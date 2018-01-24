@@ -28,6 +28,8 @@ const loginByEmail = function (req, res, next) {
           })
         }
         const checkedIn = await users.isCheckedIn(user)
+        const allRoles = await user.getRoles()
+        const roles = await allRoles.map(role => role.toJSON()).map(role => { return role })
         const karnevalistInfo = await users.KarnevalistInfo.findOne({
           where: {userId: user.id},
           attributes: ['language', 'driversLicense', 'disability',
@@ -36,10 +38,12 @@ const loginByEmail = function (req, res, next) {
             'groupLeader', 'interests', 'misc',
             'plenipotentiary']
         })
+
         const userinfo = {
           checkedIn,
           ...user.toJSON(),
-          ...karnevalistInfo.dataValues
+          ...karnevalistInfo.dataValues,
+          roles: [...roles]
         }
 
         return res.json({
