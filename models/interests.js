@@ -13,7 +13,7 @@ const Interests = dbc.define('Interests', {
 
 // This adds UserId to KarnevalistInfo as foreign key
 
-User.hasMany(Interests, {as: 'User', foreignKey: 'userId'})
+User.hasMany(Interests, {as: 'UserInterest', foreignKey: 'userId'})
 
 module.exports = {
   Interests
