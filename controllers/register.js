@@ -76,9 +76,9 @@ const createUser = function (req, res) {
         corps: req.body.corps || '',
         startOfStudies: req.body.startOfStudies || '',
         pastInvolvement: req.body.pastInvolvement || '',
-        groupLeader: req.body.groupLeader || '',
+        groupLeader: req.body.groupLeader || false,
         misc: req.body.misc || '',
-        plenipotentiary: req.body.plenipotentiary || '',
+        plenipotentiary: req.body.plenipotentiary || false,
         bff: req.body.bff || ''
       }, {transaction: t}))
       .then(() => {
