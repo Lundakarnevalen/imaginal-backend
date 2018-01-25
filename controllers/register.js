@@ -5,6 +5,7 @@ const role = require('../models/role')
 const jwt = require('jsonwebtoken')
 const sequelize = require('../config/database')
 const Interest = require('../models/interests').Interests
+const Skills = require('../models/skills').Skills
 
 const registerUser = function (req, res) {
   let error = []
@@ -19,6 +20,9 @@ const registerUser = function (req, res) {
   }
   if (!req.body.interest || !Array.isArray(req.body.interest)) {
     error.push('interest')
+  }
+  if (!req.body.skills || !Array.isArray(req.body.interest)) {
+    error.push('skills')
   }
 
   if (error.length !== 0) {
@@ -100,6 +104,15 @@ const createUser = function (req, res) {
             interest: inter
           }).then((inter) => {
             inter.save()
+          })
+        })
+      }).then(() => {
+        req.body.skills.map(skill => {
+          Skills.create({
+            userId: finalUser.dataValues.id,
+            skill: skill
+          }).then((skill) => {
+            skill.save()
           })
         })
       })

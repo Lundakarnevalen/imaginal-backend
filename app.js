@@ -10,7 +10,6 @@ const role = require('./controllers/role')
 const section = require('./controllers/section')
 const checkin = require('./controllers/checkin')
 const users = require('./controllers/users')
-const interest = require('./models/interests')
 
 app.use(bodyParser.json())
 app.use(passport.initialize())
@@ -25,25 +24,6 @@ app.use(function (error, req, res, next) {
   }
   next()
 })
-/*
-require('./models/interests').Interests.create({
-  userId: 1
-}).then((asd) => {
-  'use strict'
-  asd.interest = 'form node!'
-  asd.save()
-})
-
-require('./models/users').User.findOne({
-  where: {id: 1}
-}).then((user) => {
-  'use strict'
-  user.getUser().then((inter) => {
-    console.log('\n ' + inter.map(intere => { return intere.interest }) + '\n')
-  })
-  user.save().then(() => {
-  })
-})*/
 
 /**
  * Unauthorized endpoints
