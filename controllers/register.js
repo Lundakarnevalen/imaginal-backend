@@ -17,6 +17,10 @@ const registerUser = function (req, res) {
   if (!req.body.password) {
     error.push('password')
   }
+  if (!req.body.interest || !Array.isArray(req.body.interest)) {
+    error.push('interest')
+  }
+
   if (error.length !== 0) {
     return res.status(400).json({
       success: false,
@@ -93,16 +97,14 @@ const createUser = function (req, res) {
       .then((role) => {
         return finalUser.addRole([role], {transaction: t})
       }).then(() => {
-        if (req.body.interest && Array.isArray(req.body.interest)) {
-          req.body.interest.map(inter => {
-            Interest.create({
-              userId: finalUser.dataValues.id,
-              interest: inter
-            }).then((inter) => {
-              inter.save()
-            })
+        req.body.interest.map(inter => {
+          Interest.create({
+            userId: finalUser.dataValues.id,
+            interest: inter
+          }).then((inter) => {
+            inter.save()
           })
-        }
+        })
       })
   })
     .then(() => {
