@@ -4,6 +4,7 @@ const users = require('../models/users')
 const role = require('../models/role')
 const jwt = require('jsonwebtoken')
 const sequelize = require('../config/database')
+const Interest = require('../models/interests').Interests
 
 const registerUser = function (req, res) {
   let error = []
@@ -91,6 +92,17 @@ const createUser = function (req, res) {
       })
       .then((role) => {
         return finalUser.addRole([role], {transaction: t})
+      }).then(() => {
+        if (req.body.interest && Array.isArray(req.body.interest)) {
+          req.body.interest.map(inter => {
+            Interest.create({
+              userId: finalUser.dataValues.id,
+              interest: inter
+            }).then((inter) => {
+              inter.save()
+            })
+          })
+        }
       })
   })
     .then(() => {
