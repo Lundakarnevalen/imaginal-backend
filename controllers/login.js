@@ -30,9 +30,7 @@ const loginByEmail = async (req, res, next) => {
 
         const allRoles = await user.getRoles()
         const checkedIn = await users.isCheckedIn(user)
-        const roles = await allRoles.map(role => role.toJSON()).map(role => {
-          return role
-        })
+        const roles = await allRoles.map(role => role.toJSON())
 
         return res.json({
           success: true,
