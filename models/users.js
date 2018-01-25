@@ -18,7 +18,8 @@ const User = dbc.define('User', {
   postNumber: Sequelize.STRING,
   city: Sequelize.STRING,
   careOf: Sequelize.STRING,
-  personalNumber: Sequelize.STRING
+  personalNumber: Sequelize.STRING,
+  shirtSize: Sequelize.STRING
 })
 
 /* toJSON is called when sending/stringifying the user (e.g. res.json(user))
@@ -41,15 +42,13 @@ const KarnevalistInfo = dbc.define('KarnevalistInfo', {
   foodPreference: Sequelize.STRING,
   disability: Sequelize.STRING,
   audition: Sequelize.STRING,
-  talent: Sequelize.STRING,
-  entertainmentCategory: Sequelize.STRING,
   corps: Sequelize.STRING,
   startOfStudies: Sequelize.STRING,
   pastInvolvement: Sequelize.STRING,
-  groupLeader: Sequelize.STRING,
-  interests: Sequelize.STRING,
+  groupLeader: Sequelize.BOOLEAN,
   misc: Sequelize.STRING,
-  plenipotentiary: Sequelize.STRING
+  plenipotentiary: Sequelize.BOOLEAN,
+  bff: Sequelize.STRING
 })
 
 // This adds UserId to KarnevalistInfo as foreign key

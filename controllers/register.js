@@ -78,15 +78,12 @@ const createUser = function (req, res) {
         foodPreference: req.body.foodPreference || '',
         disability: req.body.disability || '',
         audition: req.body.audition || '',
-        talent: req.body.talent || '',
-        entertainmentCategory: req.body.entertainmentCategory || '',
         corps: req.body.corps || '',
         startOfStudies: req.body.startOfStudies || '',
         pastInvolvement: req.body.pastInvolvement || '',
-        groupLeader: req.body.groupLeader || '',
-        interests: req.body.interests || '',
+        groupLeader: req.body.groupLeader || false,
         misc: req.body.misc || '',
-        plenipotentiary: req.body.plenipotentiary || '',
+        plenipotentiary: req.body.plenipotentiary || false,
         bff: req.body.bff || ''
       }, {transaction: t}))
       .then(() => {
