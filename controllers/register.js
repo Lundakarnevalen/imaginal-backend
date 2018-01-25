@@ -59,7 +59,8 @@ const createUser = function (req, res) {
       postNumber: req.body.postNumber || '',
       city: req.body.city || '',
       careOf: req.body.careOf || '',
-      personalNumber: req.body.personalNumber || ''
+      personalNumber: req.body.personalNumber || '',
+      shirtSize: req.body.shirtSize || ''
     }, {transaction: t})
       .then(user => {
         users.setNewPassword(user, req.body.password)
@@ -80,7 +81,8 @@ const createUser = function (req, res) {
         groupLeader: req.body.groupLeader || '',
         interests: req.body.interests || '',
         misc: req.body.misc || '',
-        plenipotentiary: req.body.plenipotentiary || ''
+        plenipotentiary: req.body.plenipotentiary || '',
+        bff: req.body.bff || ''
       }, {transaction: t}))
       .then(() => {
         return role.Role.findOne({
