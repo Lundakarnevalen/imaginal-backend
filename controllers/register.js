@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken')
 const sequelize = require('../config/database')
 
 const registerUser = function (req, res) {
-  let error = []
+  const error = []
   if (!req.body.personalNumber || req.body.personalNumber.length !== 10) {
     error.push('personalNumber')
   }
@@ -30,8 +30,6 @@ const registerUser = function (req, res) {
     }
   }).then((users) => {
     if (users.length > 0) {
-      error = []
-
       users.forEach((user) => {
         if (user.email === req.body.email) { error.push('email') }
         if (user.personalNumber === req.body.personalNumber) { error.push('personalNumber') }

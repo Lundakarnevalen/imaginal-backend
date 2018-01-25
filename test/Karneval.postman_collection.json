@@ -74,7 +74,7 @@
 					},
 					"response": [
 						{
-							"id": "0dd29cb6-939a-4d3c-9ba7-34f3fcdab22c",
+							"id": "fa4d3b9a-c88d-4c15-9003-99bce15fa052",
 							"name": "Register a user",
 							"originalRequest": {
 								"method": "POST",
@@ -148,7 +148,7 @@
 							"body": "{\"success\":true,\"message\":\"You are now registered\"}"
 						},
 						{
-							"id": "4cbc0d5c-f69b-4210-a786-3bb1ccd6bb29",
+							"id": "3828394b-ce69-47a3-87c1-a29c0c9f1147",
 							"name": "Register a user",
 							"originalRequest": {
 								"method": "POST",
@@ -273,7 +273,7 @@
 					},
 					"response": [
 						{
-							"id": "7d5aff69-53a8-4aa2-b8cf-08afcbdd2470",
+							"id": "3bcf4750-25f1-484a-bd2d-8a72522f3cf1",
 							"name": "Missing field register",
 							"originalRequest": {
 								"header": [],
@@ -383,7 +383,7 @@
 					},
 					"response": [
 						{
-							"id": "cfe389f9-9224-40cf-a65e-5d3502a73ab7",
+							"id": "2a40c7ab-8f4e-4561-be16-b5288cde6e46",
 							"name": "Fail to reregister same user",
 							"originalRequest": {
 								"method": "POST",
@@ -507,7 +507,7 @@
 					},
 					"response": [
 						{
-							"id": "375a689f-ca61-4690-ba4b-0c5b54b1851f",
+							"id": "3e233b4a-f7f6-4a77-ab00-6663bd43d6a1",
 							"name": "Fail to reregister same user",
 							"originalRequest": {
 								"method": "POST",
@@ -649,7 +649,7 @@
 					},
 					"response": [
 						{
-							"id": "ad626edd-e9b4-44d8-b86e-f6e69213cf26",
+							"id": "74feb6ea-7387-4225-8e8f-b724f4bbd7d4",
 							"name": "Email Login",
 							"originalRequest": {
 								"header": [],
@@ -755,7 +755,7 @@
 					},
 					"response": [
 						{
-							"id": "5063149c-d00a-48a2-8a44-04754c538732",
+							"id": "ef360c47-b525-4f6d-95dd-5c19874a2efa",
 							"name": "Wrong email login",
 							"originalRequest": {
 								"method": "POST",
@@ -876,7 +876,7 @@
 					},
 					"response": [
 						{
-							"id": "fd83b200-4f66-4759-93e9-1bed9f713a98",
+							"id": "7e9644de-aadf-4366-89f9-4a052be6acc5",
 							"name": "Wrong password login",
 							"originalRequest": {
 								"method": "POST",
@@ -997,7 +997,7 @@
 					},
 					"response": [
 						{
-							"id": "ae7e0a6c-f844-417d-a18c-8ea7f9165714",
+							"id": "ef476d76-72d5-4318-95eb-a3ed6bf61611",
 							"name": "Missing field login",
 							"originalRequest": {
 								"header": [],
@@ -1111,7 +1111,7 @@
 					},
 					"response": [
 						{
-							"id": "81a55004-1deb-42ab-805d-e0a145c2588f",
+							"id": "ee94cfcb-3e7a-4bcf-a9f1-4525cd3aabc3",
 							"name": "Initiate password Reset",
 							"originalRequest": {
 								"method": "POST",
@@ -1229,7 +1229,7 @@
 					},
 					"response": [
 						{
-							"id": "230be706-3a43-4a10-9fbc-f1b3326ce114",
+							"id": "f2f6de36-45db-44ca-9261-f5e74df80646",
 							"name": "Password reset change password",
 							"originalRequest": {
 								"header": [],
@@ -1357,7 +1357,7 @@
 					},
 					"response": [
 						{
-							"id": "0dd228e1-4d6c-453e-bc9f-7044c2eed180",
+							"id": "540c4666-f2fe-4820-a570-62def8c96346",
 							"name": "Email Login new password",
 							"originalRequest": {
 								"method": "POST",
@@ -1476,7 +1476,7 @@
 					},
 					"response": [
 						{
-							"id": "9c30652a-e97f-413a-9a0c-74cc67bf3b24",
+							"id": "e5996193-8006-4819-8bf1-103563446281",
 							"name": "Bad password reset change password",
 							"originalRequest": {
 								"header": [],
@@ -1593,7 +1593,7 @@
 					},
 					"response": [
 						{
-							"id": "df3c1bf9-912e-4d76-a90a-899a5f964d64",
+							"id": "5eb64cda-84b6-4623-a3a3-09b08ba5e4f5",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -1725,7 +1725,7 @@
 					},
 					"response": [
 						{
-							"id": "04759118-bb10-4f4d-b227-ebb56de6d880",
+							"id": "1a427f01-c403-4663-99bb-ce97f908a2d7",
 							"name": "Fail to access resource that doesnt exist",
 							"originalRequest": {
 								"method": "POST",
@@ -1859,7 +1859,7 @@
 					},
 					"response": [
 						{
-							"id": "50ef2d81-20ee-43cc-ae3a-e720062c520a",
+							"id": "e30ae935-fae1-4818-8d0e-3bf3135e36cc",
 							"name": "Email Login",
 							"originalRequest": {
 								"method": "POST",
@@ -1931,765 +1931,6 @@
 							"cookie": [],
 							"responseTime": 167,
 							"body": "{\"success\":true,\"message\":\"Successfully logged in\",\"accessToken\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjVzNmF4eDVudjNwbmV5a3o5ZjZyIiwiaWF0IjoxNTEyNTg5MTA5fQ.ZrP-nocxVOIqD5q31A40KMVPbq2ZAMjB1tN08N0hdQY\"}"
-						}
-					]
-				}
-			]
-		},
-		{
-			"name": "API, section priorities",
-			"item": [
-				{
-					"name": "Set invalid priorities",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"Status code is 400\", function () {",
-									"    pm.response.to.have.status(400);",
-									"});",
-									"",
-									"pm.test(\"Successfield false on statuscode 400\", function () {",
-									"    pm.response.to.have.status(400);",
-									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.success).to.eql(false);",
-									"});",
-									"",
-									"pm.test(\"Body must contain message\", function () {",
-									"    pm.expect(pm.response.text()).to.include(\"message\");",
-									"});",
-									""
-								]
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{accessToken}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"sectionPriorities\":[\"A\", \"B\", \"C\"]\n}"
-						},
-						"url": {
-							"raw": "http://localhost:3000/api/section",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"api",
-								"section"
-							]
-						}
-					},
-					"response": [
-						{
-							"id": "e2f23d8c-a111-4615-ba4f-664b3ffc93a9",
-							"name": "Set priorities",
-							"originalRequest": {
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": ""
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"_postman_previewtype": "text",
-							"header": [
-								{
-									"key": "Connection",
-									"value": "keep-alive",
-									"name": "Connection",
-									"description": "Options that are desired for the connection"
-								},
-								{
-									"key": "Content-Length",
-									"value": "43",
-									"name": "Content-Length",
-									"description": "The length of the response body in octets (8-bit bytes)"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8",
-									"name": "Content-Type",
-									"description": "The mime type of this content"
-								},
-								{
-									"key": "Date",
-									"value": "Wed, 06 Dec 2017 19:39:42 GMT",
-									"name": "Date",
-									"description": "The date and time that the message was sent"
-								},
-								{
-									"key": "ETag",
-									"value": "W/\"2b-6AVg9bJpmppFTOi/0oROCda8V34\"",
-									"name": "ETag",
-									"description": "An identifier for a specific version of a resource, often a message digest"
-								},
-								{
-									"key": "X-Powered-By",
-									"value": "Express",
-									"name": "X-Powered-By",
-									"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
-								}
-							],
-							"cookie": [],
-							"responseTime": 63,
-							"body": "{\"success\":true,\"message\":\"Priorities set\"}"
-						}
-					]
-				},
-				{
-					"name": "Set invalid priorities 2",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"Status code is 400\", function () {",
-									"    pm.response.to.have.status(400);",
-									"});",
-									"",
-									"pm.test(\"Successfield false on statuscode 400\", function () {",
-									"    pm.response.to.have.status(400);",
-									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.success).to.eql(false);",
-									"});",
-									"",
-									"pm.test(\"Body must contain message\", function () {",
-									"    pm.expect(pm.response.text()).to.include(\"message\");",
-									"});",
-									""
-								]
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{accessToken}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"sectionPriorities\":[\"\", \"B\", \"C\"]\n}"
-						},
-						"url": {
-							"raw": "http://localhost:3000/api/section",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"api",
-								"section"
-							]
-						}
-					},
-					"response": [
-						{
-							"id": "e652f102-1f4c-4e25-8b39-c59800f7d17b",
-							"name": "Set priorities",
-							"originalRequest": {
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": ""
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"_postman_previewtype": "text",
-							"header": [
-								{
-									"key": "Connection",
-									"value": "keep-alive",
-									"name": "Connection",
-									"description": "Options that are desired for the connection"
-								},
-								{
-									"key": "Content-Length",
-									"value": "43",
-									"name": "Content-Length",
-									"description": "The length of the response body in octets (8-bit bytes)"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8",
-									"name": "Content-Type",
-									"description": "The mime type of this content"
-								},
-								{
-									"key": "Date",
-									"value": "Wed, 06 Dec 2017 19:39:42 GMT",
-									"name": "Date",
-									"description": "The date and time that the message was sent"
-								},
-								{
-									"key": "ETag",
-									"value": "W/\"2b-6AVg9bJpmppFTOi/0oROCda8V34\"",
-									"name": "ETag",
-									"description": "An identifier for a specific version of a resource, often a message digest"
-								},
-								{
-									"key": "X-Powered-By",
-									"value": "Express",
-									"name": "X-Powered-By",
-									"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
-								}
-							],
-							"cookie": [],
-							"responseTime": 63,
-							"body": "{\"success\":true,\"message\":\"Priorities set\"}"
-						}
-					]
-				},
-				{
-					"name": "Set priorities",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"pm.test(\"Successfield true on statuscode 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.success).to.eql(true);",
-									"});",
-									"",
-									"pm.test(\"Body must contain message\", function () {",
-									"    pm.expect(pm.response.text()).to.include(\"message\");",
-									"});",
-									""
-								]
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{accessToken}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"sectionPriorities\":[\"1\", \"2\", \"3\"]\n}"
-						},
-						"url": {
-							"raw": "http://localhost:3000/api/section",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"api",
-								"section"
-							]
-						}
-					},
-					"response": [
-						{
-							"id": "78337be5-b121-45f6-b27c-d659ba0b9afd",
-							"name": "Set priorities",
-							"originalRequest": {
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": ""
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"_postman_previewtype": "text",
-							"header": [
-								{
-									"key": "Connection",
-									"value": "keep-alive",
-									"name": "Connection",
-									"description": "Options that are desired for the connection"
-								},
-								{
-									"key": "Content-Length",
-									"value": "43",
-									"name": "Content-Length",
-									"description": "The length of the response body in octets (8-bit bytes)"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8",
-									"name": "Content-Type",
-									"description": "The mime type of this content"
-								},
-								{
-									"key": "Date",
-									"value": "Wed, 06 Dec 2017 19:39:42 GMT",
-									"name": "Date",
-									"description": "The date and time that the message was sent"
-								},
-								{
-									"key": "ETag",
-									"value": "W/\"2b-6AVg9bJpmppFTOi/0oROCda8V34\"",
-									"name": "ETag",
-									"description": "An identifier for a specific version of a resource, often a message digest"
-								},
-								{
-									"key": "X-Powered-By",
-									"value": "Express",
-									"name": "X-Powered-By",
-									"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
-								}
-							],
-							"cookie": [],
-							"responseTime": 63,
-							"body": "{\"success\":true,\"message\":\"Priorities set\"}"
-						}
-					]
-				},
-				{
-					"name": "Get same priorities",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"pm.test(\"Successfield true on statuscode 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.success).to.eql(true);",
-									"});"
-								]
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{accessToken}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "http://localhost:3000/api/section",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"api",
-								"section"
-							]
-						}
-					},
-					"response": [
-						{
-							"id": "5475bf55-2f77-4f5c-a58f-f52c102640bf",
-							"name": "Get same priorities",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "http://localhost:3000/api/section",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "3000",
-									"path": [
-										"api",
-										"section"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"_postman_previewtype": "text",
-							"header": [
-								{
-									"key": "Connection",
-									"value": "keep-alive",
-									"name": "Connection",
-									"description": "Options that are desired for the connection"
-								},
-								{
-									"key": "Content-Length",
-									"value": "54",
-									"name": "Content-Length",
-									"description": "The length of the response body in octets (8-bit bytes)"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8",
-									"name": "Content-Type",
-									"description": "The mime type of this content"
-								},
-								{
-									"key": "Date",
-									"value": "Wed, 06 Dec 2017 19:39:48 GMT",
-									"name": "Date",
-									"description": "The date and time that the message was sent"
-								},
-								{
-									"key": "ETag",
-									"value": "W/\"36-jeltwQMN7SoVTadxY50Ld+lmbqM\"",
-									"name": "ETag",
-									"description": "An identifier for a specific version of a resource, often a message digest"
-								},
-								{
-									"key": "X-Powered-By",
-									"value": "Express",
-									"name": "X-Powered-By",
-									"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
-								}
-							],
-							"cookie": [],
-							"responseTime": 22,
-							"body": "{\"success\":true,\"sectionPriorities\":[\"A\",\"B\",\"C\",\"F\"]}"
-						}
-					]
-				},
-				{
-					"name": "Set duplicate prio",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"Status code is 400\", function () {",
-									"    pm.response.to.have.status(400);",
-									"});",
-									"",
-									"pm.test(\"Successfield false on statuscode 400\", function () {",
-									"    pm.response.to.have.status(400);",
-									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.success).to.eql(false);",
-									"});",
-									"",
-									"pm.test(\"Body must contain message about duplicate\", function () {",
-									"    pm.expect(pm.response.text()).to.include(\"message\");",
-									"    pm.expect(pm.response.text()).to.include(\"Duplicate\");",
-									"});",
-									""
-								]
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.globals.set(\"sectionPriorities\", [\"A\", \"B\", \"C\", \"F\"]);",
-									""
-								]
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{accessToken}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"sectionPriorities\":[\"A\", \"A\", \"B\", \"C\"]\n}"
-						},
-						"url": {
-							"raw": "http://localhost:3000/api/section",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"api",
-								"section"
-							]
-						}
-					},
-					"response": [
-						{
-							"id": "0de2ec6c-ff51-44fc-8688-3ab64df559b8",
-							"name": "Set duplicate prio",
-							"originalRequest": {
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": ""
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "json",
-							"_postman_previewtype": "text",
-							"header": [
-								{
-									"key": "Connection",
-									"value": "keep-alive",
-									"name": "Connection",
-									"description": "Options that are desired for the connection"
-								},
-								{
-									"key": "Content-Length",
-									"value": "49",
-									"name": "Content-Length",
-									"description": "The length of the response body in octets (8-bit bytes)"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8",
-									"name": "Content-Type",
-									"description": "The mime type of this content"
-								},
-								{
-									"key": "Date",
-									"value": "Wed, 06 Dec 2017 19:39:55 GMT",
-									"name": "Date",
-									"description": "The date and time that the message was sent"
-								},
-								{
-									"key": "ETag",
-									"value": "W/\"31-LCQBmF+O9qnuulqSMG5d6bVfSCQ\"",
-									"name": "ETag",
-									"description": "An identifier for a specific version of a resource, often a message digest"
-								},
-								{
-									"key": "X-Powered-By",
-									"value": "Express",
-									"name": "X-Powered-By",
-									"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
-								}
-							],
-							"cookie": [],
-							"responseTime": 11,
-							"body": "{\"success\":false,\"message\":\"Duplicate sections!\"}"
-						}
-					]
-				},
-				{
-					"name": "Set with invalid parameters",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.test(\"Status code is 400\", function () {",
-									"    pm.response.to.have.status(400);",
-									"});",
-									"",
-									"pm.test(\"Successfield false on statuscode 400\", function () {",
-									"    pm.response.to.have.status(400);",
-									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.success).to.eql(false);",
-									"});"
-								]
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.globals.set(\"sectionPriorities\", [\"A\", \"B\", \"C\", \"F\"]);",
-									""
-								]
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{accessToken}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"sectionPriorities\":\"A, B, C, D\"\n}"
-						},
-						"url": {
-							"raw": "http://localhost:3000/api/section",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"api",
-								"section"
-							]
-						}
-					},
-					"response": [
-						{
-							"id": "014a8902-0b40-4a7b-bd8f-96d1e24d4faf",
-							"name": "Set priorities",
-							"originalRequest": {
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": ""
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"_postman_previewtype": "text",
-							"header": [
-								{
-									"description": "Options that are desired for the connection",
-									"key": "Connection",
-									"name": "Connection",
-									"value": "keep-alive"
-								},
-								{
-									"description": "The length of the response body in octets (8-bit bytes)",
-									"key": "Content-Length",
-									"name": "Content-Length",
-									"value": "43"
-								},
-								{
-									"description": "The mime type of this content",
-									"key": "Content-Type",
-									"name": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"description": "The date and time that the message was sent",
-									"key": "Date",
-									"name": "Date",
-									"value": "Wed, 06 Dec 2017 19:39:42 GMT"
-								},
-								{
-									"description": "An identifier for a specific version of a resource, often a message digest",
-									"key": "ETag",
-									"name": "ETag",
-									"value": "W/\"2b-6AVg9bJpmppFTOi/0oROCda8V34\""
-								},
-								{
-									"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)",
-									"key": "X-Powered-By",
-									"name": "X-Powered-By",
-									"value": "Express"
-								}
-							],
-							"cookie": [],
-							"responseTime": 63,
-							"body": "{\"success\":true,\"message\":\"Priorities set\"}"
 						}
 					]
 				}
@@ -3701,7 +2942,7 @@
 					},
 					"response": [
 						{
-							"id": "f236b9dc-86f4-4f9f-b236-cc2748d8d6ef",
+							"id": "175ebb63-c9fb-496f-bfb7-c9bfd76b645a",
 							"name": "Email Login",
 							"originalRequest": {
 								"header": [],
@@ -3821,7 +3062,7 @@
 					},
 					"response": [
 						{
-							"id": "9d396335-5090-44cb-b676-5c5cc5f9c1a2",
+							"id": "06f11e28-0ee8-4d78-97de-de9ff29137e4",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -4015,7 +3256,7 @@
 					},
 					"response": [
 						{
-							"id": "55e50ca8-c284-4298-8edf-dd0ee477ba8f",
+							"id": "aa760e6f-45cb-4ab4-94ab-2261a9407711",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -4145,7 +3386,7 @@
 					},
 					"response": [
 						{
-							"id": "8e6f1eb2-895c-4572-85e1-4ada4cdeb9b6",
+							"id": "8d0294ca-d230-4a13-ac7c-c989c6c4c7d4",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -4218,6 +3459,765 @@
 			]
 		},
 		{
+			"name": "API, section priorities",
+			"item": [
+				{
+					"name": "Set invalid priorities",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Successfield false on statuscode 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(false);",
+									"});",
+									"",
+									"pm.test(\"Body must contain message\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"message\");",
+									"});",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"sectionPriorities\":[\"A\", \"B\", \"C\"]\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/section",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"section"
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "0c05c8f4-091b-4d41-a15d-490532a14448",
+							"name": "Set priorities",
+							"originalRequest": {
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": ""
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"_postman_previewtype": "text",
+							"header": [
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"name": "Connection",
+									"description": "Options that are desired for the connection"
+								},
+								{
+									"key": "Content-Length",
+									"value": "43",
+									"name": "Content-Length",
+									"description": "The length of the response body in octets (8-bit bytes)"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8",
+									"name": "Content-Type",
+									"description": "The mime type of this content"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 06 Dec 2017 19:39:42 GMT",
+									"name": "Date",
+									"description": "The date and time that the message was sent"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"2b-6AVg9bJpmppFTOi/0oROCda8V34\"",
+									"name": "ETag",
+									"description": "An identifier for a specific version of a resource, often a message digest"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "Express",
+									"name": "X-Powered-By",
+									"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+								}
+							],
+							"cookie": [],
+							"responseTime": 63,
+							"body": "{\"success\":true,\"message\":\"Priorities set\"}"
+						}
+					]
+				},
+				{
+					"name": "Set invalid priorities 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Successfield false on statuscode 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(false);",
+									"});",
+									"",
+									"pm.test(\"Body must contain message\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"message\");",
+									"});",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"sectionPriorities\":[\"\", \"B\", \"C\"]\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/section",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"section"
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "e754161e-9e4e-4457-9138-cbb8fe908502",
+							"name": "Set priorities",
+							"originalRequest": {
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": ""
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"_postman_previewtype": "text",
+							"header": [
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"name": "Connection",
+									"description": "Options that are desired for the connection"
+								},
+								{
+									"key": "Content-Length",
+									"value": "43",
+									"name": "Content-Length",
+									"description": "The length of the response body in octets (8-bit bytes)"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8",
+									"name": "Content-Type",
+									"description": "The mime type of this content"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 06 Dec 2017 19:39:42 GMT",
+									"name": "Date",
+									"description": "The date and time that the message was sent"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"2b-6AVg9bJpmppFTOi/0oROCda8V34\"",
+									"name": "ETag",
+									"description": "An identifier for a specific version of a resource, often a message digest"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "Express",
+									"name": "X-Powered-By",
+									"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+								}
+							],
+							"cookie": [],
+							"responseTime": 63,
+							"body": "{\"success\":true,\"message\":\"Priorities set\"}"
+						}
+					]
+				},
+				{
+					"name": "Set priorities",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Successfield true on statuscode 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(true);",
+									"});",
+									"",
+									"pm.test(\"Body must contain message\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"message\");",
+									"});",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"sectionPriorities\":[\"1\", \"2\", \"3\"]\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/section",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"section"
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "8a28dc81-0705-4391-a9ce-f3157e8ca335",
+							"name": "Set priorities",
+							"originalRequest": {
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": ""
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"_postman_previewtype": "text",
+							"header": [
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"name": "Connection",
+									"description": "Options that are desired for the connection"
+								},
+								{
+									"key": "Content-Length",
+									"value": "43",
+									"name": "Content-Length",
+									"description": "The length of the response body in octets (8-bit bytes)"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8",
+									"name": "Content-Type",
+									"description": "The mime type of this content"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 06 Dec 2017 19:39:42 GMT",
+									"name": "Date",
+									"description": "The date and time that the message was sent"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"2b-6AVg9bJpmppFTOi/0oROCda8V34\"",
+									"name": "ETag",
+									"description": "An identifier for a specific version of a resource, often a message digest"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "Express",
+									"name": "X-Powered-By",
+									"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+								}
+							],
+							"cookie": [],
+							"responseTime": 63,
+							"body": "{\"success\":true,\"message\":\"Priorities set\"}"
+						}
+					]
+				},
+				{
+					"name": "Get same priorities",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Successfield true on statuscode 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(true);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/section",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"section"
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "cc8d85a9-1302-48b6-bd5e-f3da1e7f2488",
+							"name": "Get same priorities",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/section",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"section"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"_postman_previewtype": "text",
+							"header": [
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"name": "Connection",
+									"description": "Options that are desired for the connection"
+								},
+								{
+									"key": "Content-Length",
+									"value": "54",
+									"name": "Content-Length",
+									"description": "The length of the response body in octets (8-bit bytes)"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8",
+									"name": "Content-Type",
+									"description": "The mime type of this content"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 06 Dec 2017 19:39:48 GMT",
+									"name": "Date",
+									"description": "The date and time that the message was sent"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"36-jeltwQMN7SoVTadxY50Ld+lmbqM\"",
+									"name": "ETag",
+									"description": "An identifier for a specific version of a resource, often a message digest"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "Express",
+									"name": "X-Powered-By",
+									"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+								}
+							],
+							"cookie": [],
+							"responseTime": 22,
+							"body": "{\"success\":true,\"sectionPriorities\":[\"A\",\"B\",\"C\",\"F\"]}"
+						}
+					]
+				},
+				{
+					"name": "Set duplicate prio",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Successfield false on statuscode 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(false);",
+									"});",
+									"",
+									"pm.test(\"Body must contain message about duplicate\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"message\");",
+									"    pm.expect(pm.response.text()).to.include(\"Duplicate\");",
+									"});",
+									""
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.globals.set(\"sectionPriorities\", [\"A\", \"B\", \"C\", \"F\"]);",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"sectionPriorities\":[\"A\", \"A\", \"B\", \"C\"]\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/section",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"section"
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "743aead1-1dc3-4742-8cc4-78ce0eadb478",
+							"name": "Set duplicate prio",
+							"originalRequest": {
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": ""
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"_postman_previewtype": "text",
+							"header": [
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"name": "Connection",
+									"description": "Options that are desired for the connection"
+								},
+								{
+									"key": "Content-Length",
+									"value": "49",
+									"name": "Content-Length",
+									"description": "The length of the response body in octets (8-bit bytes)"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8",
+									"name": "Content-Type",
+									"description": "The mime type of this content"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 06 Dec 2017 19:39:55 GMT",
+									"name": "Date",
+									"description": "The date and time that the message was sent"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"31-LCQBmF+O9qnuulqSMG5d6bVfSCQ\"",
+									"name": "ETag",
+									"description": "An identifier for a specific version of a resource, often a message digest"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "Express",
+									"name": "X-Powered-By",
+									"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+								}
+							],
+							"cookie": [],
+							"responseTime": 11,
+							"body": "{\"success\":false,\"message\":\"Duplicate sections!\"}"
+						}
+					]
+				},
+				{
+					"name": "Set with invalid parameters",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Successfield false on statuscode 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(false);",
+									"});"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.globals.set(\"sectionPriorities\", [\"A\", \"B\", \"C\", \"F\"]);",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"sectionPriorities\":\"A, B, C, D\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/section",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"section"
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "2f68c2a1-bbc3-493d-89ca-b8572c8539eb",
+							"name": "Set priorities",
+							"originalRequest": {
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": ""
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"_postman_previewtype": "text",
+							"header": [
+								{
+									"description": "Options that are desired for the connection",
+									"key": "Connection",
+									"name": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"description": "The length of the response body in octets (8-bit bytes)",
+									"key": "Content-Length",
+									"name": "Content-Length",
+									"value": "43"
+								},
+								{
+									"description": "The mime type of this content",
+									"key": "Content-Type",
+									"name": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"description": "The date and time that the message was sent",
+									"key": "Date",
+									"name": "Date",
+									"value": "Wed, 06 Dec 2017 19:39:42 GMT"
+								},
+								{
+									"description": "An identifier for a specific version of a resource, often a message digest",
+									"key": "ETag",
+									"name": "ETag",
+									"value": "W/\"2b-6AVg9bJpmppFTOi/0oROCda8V34\""
+								},
+								{
+									"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)",
+									"key": "X-Powered-By",
+									"name": "X-Powered-By",
+									"value": "Express"
+								}
+							],
+							"cookie": [],
+							"responseTime": 63,
+							"body": "{\"success\":true,\"message\":\"Priorities set\"}"
+						}
+					]
+				}
+			]
+		},
+		{
 			"name": "Roles test",
 			"item": [
 				{
@@ -4280,7 +4280,7 @@
 					},
 					"response": [
 						{
-							"id": "4033d121-3236-46ec-8862-5164c42934ed",
+							"id": "bbb7a333-3747-4f48-a110-7fa946b8ba74",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -4410,7 +4410,7 @@
 					},
 					"response": [
 						{
-							"id": "27fb84c7-3ea6-4668-aa1d-d91ff4b2f0c9",
+							"id": "bb165172-7d6a-4368-b807-b2d625475885",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -4540,7 +4540,7 @@
 					},
 					"response": [
 						{
-							"id": "3807136d-d66b-42d3-87af-2409e0d4de00",
+							"id": "32ef8499-b043-4f1e-a894-e51570c97065",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -4670,7 +4670,7 @@
 					},
 					"response": [
 						{
-							"id": "3cc80376-3348-4182-a32a-6e08de58694e",
+							"id": "794e8c47-9846-49c2-8e56-6087ff32dff0",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -4810,7 +4810,7 @@
 					},
 					"response": [
 						{
-							"id": "0ccb03cb-47ad-4f07-b069-e5702936dad0",
+							"id": "ce31e49c-bc4a-4d37-b3fc-8d886aa2b757",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -4940,7 +4940,7 @@
 					},
 					"response": [
 						{
-							"id": "12a46754-416e-4d94-8432-d9980a8bfbc4",
+							"id": "20081f80-7cef-42a9-907f-0482e30abc0f",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -5070,7 +5070,7 @@
 					},
 					"response": [
 						{
-							"id": "e04333ff-4bbb-46e9-b051-bd822c83df60",
+							"id": "39125013-cefc-4c89-b0c4-896fc678c17d",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
@@ -5200,7 +5200,7 @@
 					},
 					"response": [
 						{
-							"id": "0c135123-b790-4064-ad4c-bcf24665cd44",
+							"id": "9aa88319-ff25-462d-b815-bec7ddd7eea2",
 							"name": "API token \"hello\"",
 							"originalRequest": {
 								"method": "POST",
