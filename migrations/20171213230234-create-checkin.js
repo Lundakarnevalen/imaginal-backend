@@ -9,7 +9,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      user_id: {
+      userId: {
         type: Sequelize.INTEGER,
         references: {
           model: {
@@ -18,7 +18,7 @@ module.exports = {
           key: 'id'
         }
       },
-      checker_id: {
+      checkerId: {
         type: Sequelize.INTEGER
       },
       createdAt: {

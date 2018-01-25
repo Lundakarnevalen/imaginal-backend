@@ -28,8 +28,8 @@ const getAll = async (req, res) => {
     offset: offset,
     limit: limit,
     include: [
-      { model: users.KarnevalistInfo },
-      { model: Checkin, as: 'Checkin', attributes: ['checkerId', 'createdAt'] }
+      {model: users.KarnevalistInfo},
+      {model: Checkin, as: 'Checkin', attributes: ['checkerId', 'createdAt']}
     ]
   })
 
@@ -61,12 +61,8 @@ const getById = async (req, res) => {
     })
   }
 
-  let user = await users.User.findOne({
-    where: { email },
-    include: [
-      { model: users.KarnevalistInfo },
-      { model: Checkin, as: 'Checkin', attributes: ['checkerId', 'createdAt'] }
-    ]
+  const user = await users.User.findOne({
+    where: {email}
   })
 
   if (!user) {
@@ -76,12 +72,29 @@ const getById = async (req, res) => {
     })
   }
 
-  user = user.toJSON()
-  user.checkedIn = !!user.Checkin
+  const checkedIn = await users.isCheckedIn(user)
+  const allRoles = await user.getRoles()
+  const roles = await allRoles.map(role => role.toJSON()).map(role => { return role })
+
+  const karnevalistInfo = await users.KarnevalistInfo.findOne({
+    where: {userId: user.id},
+    attributes: ['language', 'driversLicense', 'disability',
+      'audition', 'talent', 'entertainmentCategory',
+      'corps', 'startOfStudies', 'pastInvolvement',
+      'groupLeader', 'interests', 'misc',
+      'plenipotentiary']
+  })
+
+  const userinfo = {
+    checkedIn,
+    ...user.toJSON(),
+    ...karnevalistInfo.dataValues,
+    roles: [...roles]
+  }
 
   return res.json({
     success: true,
-    user
+    userinfo
   })
 }
 
@@ -97,8 +110,8 @@ const setUserInfo = async (req, res) => {
   }
 
   const user = await users.User.findOne({
-    where: { email },
-    include: [{ model: users.KarnevalistInfo }]
+    where: {email},
+    include: [{model: users.KarnevalistInfo}]
   })
 
   if (!user) {

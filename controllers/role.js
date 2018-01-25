@@ -16,6 +16,11 @@ const addRole = function (req, res) {
   })
 }
 
+Role.prototype.toJSON = function () {
+  const role = Object.assign({}, this.get())
+  return role.description
+}
+
 const removeRole = function (req, res) {
   let email = req.params.email
   let roleId = req.params.roleid
