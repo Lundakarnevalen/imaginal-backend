@@ -104,7 +104,8 @@ const getById = async (req, res) => {
     })
   }
 
-  let user = await users.User.findOne({
+  /** We may need this later, not sure
+   let user = await users.User.findOne({
     where: {
       $or: [
         {personalNumber: identification},
@@ -115,6 +116,14 @@ const getById = async (req, res) => {
       {model: users.KarnevalistInfo},
       {model: Checkin, as: 'Checkin', attributes: ['checkerId', 'createdAt']}
     ]
+    */
+  const user = await users.User.findOne({
+    where: {
+      $or: [
+        {personalNumber: identification},
+        {email: identification}
+      ]
+    }
   })
 
   if (!user) {
@@ -124,12 +133,29 @@ const getById = async (req, res) => {
     })
   }
 
-  user = user.toJSON()
-  user.checkedIn = !!user.Checkin
+  const checkedIn = await users.isCheckedIn(user)
+  const allRoles = await user.getRoles()
+  const roles = await allRoles.map(role => role.toJSON()).map(role => { return role })
+
+  const karnevalistInfo = await users.KarnevalistInfo.findOne({
+    where: {userId: user.id},
+    attributes: ['language', 'driversLicense', 'disability',
+      'audition', 'talent', 'entertainmentCategory',
+      'corps', 'startOfStudies', 'pastInvolvement',
+      'groupLeader', 'interests', 'misc',
+      'plenipotentiary']
+  })
+
+  const userinfo = {
+    checkedIn,
+    ...user.toJSON(),
+    ...karnevalistInfo.dataValues,
+    roles: [...roles]
+  }
 
   return res.json({
     success: true,
-    user
+    userinfo
   })
 }
 

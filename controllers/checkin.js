@@ -28,8 +28,8 @@ const checkIn = async (req, res) => {
   const user = await User.findOne({
     where: {
       $or: [
-        { personalNumber: req.params.identification },
-        { email: req.params.identification }
+        {personalNumber: req.params.identification},
+        {email: req.params.identification}
       ]
     }
   })
@@ -42,7 +42,7 @@ const checkIn = async (req, res) => {
   }
 
   // Check if checkin already exists
-  const existningCheckin = await Checkin.findOne({ where: { userId: user.id } })
+  const existningCheckin = await Checkin.findOne({where: {userId: user.id}})
   if (existningCheckin) {
     return res.status(400).json({
       success: false,
@@ -95,11 +95,11 @@ const checkStatus = async (req, res) => {
   if (!isAdmin && email !== req.user.email) {
     return res.status(401).json({
       success: false,
-      message: "Admin privileges required to check another user's status"
+      message: 'Admin privileges required to check another user\'s status'
     })
   }
 
-  const user = await User.findOne({ where: { email: email } })
+  const user = await User.findOne({where: {email: email}})
   if (!user) {
     return res.status(400).json({
       success: false,
@@ -108,14 +108,14 @@ const checkStatus = async (req, res) => {
   }
 
   const checkIn = await Checkin.findOne({
-    where: { userId: user.id },
+    where: {userId: user.id},
     attributes: ['checkerId', 'userId', 'createdAt']
   })
 
   return res.json({
     success: true,
     checkedIn: !!checkIn,
-    checkInInfo: checkIn
+    checkInInfo: checkIn || 'No info if not checked in'
   })
 }
 
@@ -140,7 +140,7 @@ const listCheckins = async (req, res) => {
     })
   }
 
-  const user = await User.findOne({ where: { email: req.params.email } })
+  const user = await User.findOne({where: {email: req.params.email}})
   if (!user) {
     return res.status(400).json({
       success: false,
@@ -149,7 +149,7 @@ const listCheckins = async (req, res) => {
   }
 
   const checkIns = await Checkin.findAll({
-    where: { checkerId: user.id },
+    where: {checkerId: user.id},
     attributes: ['createdAt', 'userId']
   })
 
