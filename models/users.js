@@ -48,7 +48,10 @@ const KarnevalistInfo = dbc.define('KarnevalistInfo', {
   groupLeader: Sequelize.BOOLEAN,
   misc: Sequelize.STRING,
   plenipotentiary: Sequelize.BOOLEAN,
-  bff: Sequelize.STRING
+  bff: Sequelize.STRING,
+  talent: Sequelize.STRING,
+  entertainmentCategory: Sequelize.STRING,
+  interests: Sequelize.STRING
 })
 
 // This adds UserId to KarnevalistInfo as foreign key
