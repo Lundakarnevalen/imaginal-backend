@@ -16,5 +16,5 @@ const SmallPleasures = dbc.define('SmallPleasures', {
 User.hasMany(SmallPleasures, {as: 'UserSmallAudition', foreignKey: 'userId'})
 
 module.exports = {
-    SmallPleasures
+  SmallPleasures
 }
