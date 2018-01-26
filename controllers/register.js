@@ -6,6 +6,8 @@ const jwt = require('jsonwebtoken')
 const sequelize = require('../config/database')
 const Interest = require('../models/interests').Interests
 const Skills = require('../models/skills').Skills
+const SmallPleasures = require('../models/smallpleasures').SmallPleasures
+const BigPleasures = require('../models/bigpleasures').BigPleasures
 
 const registerUser = function (req, res) {
   let error = []
@@ -23,6 +25,12 @@ const registerUser = function (req, res) {
   }
   if (!req.body.skills || !Array.isArray(req.body.interest)) {
     error.push('skills')
+  }
+  if (!req.body.smallPleasures || !Array.isArray(req.body.smallPleasures)) {
+    error.push('smallPleasures')
+  }
+  if (!req.body.bigPleasures || !Array.isArray(req.body.bigPleasures)) {
+    error.push('bigPleasures')
   }
 
   if (error.length !== 0) {
@@ -113,6 +121,24 @@ const createUser = function (req, res) {
             skill: skill
           }).then((skill) => {
             skill.save()
+          })
+        })
+      }).then(() => {
+        req.body.smallPleasures.map(audition => {
+          SmallPleasures.create({
+            userId: finalUser.dataValues.id,
+            audition: audition
+          }).then((audition) => {
+            audition.save()
+          })
+        })
+      }).then(() => {
+        req.body.bigPleasures.map(audition => {
+          BigPleasures.create({
+            userId: finalUser.dataValues.id,
+            audition: audition
+          }).then((audition) => {
+            audition.save()
           })
         })
       })
