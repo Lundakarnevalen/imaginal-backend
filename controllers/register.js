@@ -6,6 +6,8 @@ const jwt = require('jsonwebtoken')
 const sequelize = require('../config/database')
 const Interest = require('../models/interests').Interests
 const Skills = require('../models/skills').Skills
+const SmallPleasures = require('../models/smallpleasures').SmallPleasures
+const BigPleasures = require('../models/bigpleasures').BigPleasures
 
 const registerUser = function (req, res) {
   let error = []
@@ -17,12 +19,6 @@ const registerUser = function (req, res) {
   }
   if (!req.body.password) {
     error.push('password')
-  }
-  if (!req.body.interest || !Array.isArray(req.body.interest)) {
-    error.push('interest')
-  }
-  if (!req.body.skills || !Array.isArray(req.body.interest)) {
-    error.push('skills')
   }
 
   if (error.length !== 0) {
@@ -98,23 +94,49 @@ const createUser = function (req, res) {
       .then((role) => {
         return finalUser.addRole([role], {transaction: t})
       }).then(() => {
-        req.body.interest.map(inter => {
-          Interest.create({
-            userId: finalUser.dataValues.id,
-            interest: inter
-          }).then((inter) => {
-            inter.save()
+        if (typeof req.body.interest !== 'undefined' && req.body.interest.length > 0) {
+          req.body.interest.map(inter => {
+            Interest.create({
+              userId: finalUser.dataValues.id,
+              interest: inter
+            }).then((inter) => {
+              inter.save()
+            })
           })
-        })
+        }
       }).then(() => {
-        req.body.skills.map(skill => {
-          Skills.create({
-            userId: finalUser.dataValues.id,
-            skill: skill
-          }).then((skill) => {
-            skill.save()
+        if (typeof req.body.skills !== 'undefined' && req.body.skills.length > 0) {
+          req.body.skills.map(skill => {
+            Skills.create({
+              userId: finalUser.dataValues.id,
+              skill: skill
+            }).then((skill) => {
+              skill.save()
+            })
           })
-        })
+        }
+      }).then(() => {
+        if (typeof req.body.smallPleasures !== 'undefined' && req.body.smallPleasures.length > 0) {
+          req.body.smallPleasures.map(audition => {
+            SmallPleasures.create({
+              userId: finalUser.dataValues.id,
+              audition: audition
+            }).then((audition) => {
+              audition.save()
+            })
+          })
+        }
+      }).then(() => {
+        if (typeof req.body.bigPleasures !== 'undefined' && req.body.bigPleasures.length > 0) {
+          req.body.bigPleasures.map(audition => {
+            BigPleasures.create({
+              userId: finalUser.dataValues.id,
+              audition: audition
+            }).then((audition) => {
+              audition.save()
+            })
+          })
+        }
       })
   })
     .then(() => {
