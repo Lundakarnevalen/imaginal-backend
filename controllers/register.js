@@ -50,10 +50,13 @@ const registerUser = function (req, res) {
   })
 }
 
-const createUser = function (req, res) {
+const createUser = async (req, res) => {
+  const t = await sequelize.transaction({autocommit: false})
+	try {
+  console.log('\nASDASDASD\n' + req.body.interest)
   let finalUser
-  sequelize.transaction(function (t) {
-    return users.User.create({
+  await console.log('asd')
+  const user = await users.User.create({
       email: req.body.email,
       phoneNumber: req.body.phoneNumber || '',
       firstName: req.body.firstName || '',
@@ -65,11 +68,84 @@ const createUser = function (req, res) {
       personalNumber: req.body.personalNumber || '',
       shirtSize: req.body.shirtSize || ''
     }, {transaction: t})
-      .then(user => {
-        users.setNewPassword(user, req.body.password)
-        user.token = jwt.sign({email: user.email}, process.env.TOKEN_SECRET || 'secret')
-        finalUser = user
+
+   finalUser = user
+    await user.createKarnevalistInfo({
+        language: req.body.language || '',
+        driversLicense: req.body.driversLicense || '',
+        foodPreference: req.body.foodPreference || '',
+        disability: req.body.disability || '',
+        audition: req.body.audition || '',
+        corps: req.body.corps || '',
+        startOfStudies: req.body.startOfStudies || '',
+        pastInvolvement: req.body.pastInvolvement || '',
+        groupLeader: req.body.groupLeader || false,
+        misc: req.body.misc || '',
+        plenipotentiary: req.body.plenipotentiary || false,
+        bff: req.body.bff || ''
+      }, {transaction: t})
+
+     const karnerole = await role.Role.findOne({
+          where: {Description: 'karnevalist'}
+        }, {transaction: t})
+		
+      await user.addRole([karnerole], {transaction: t})
+
+        if (typeof req.body.interest !== 'undefined' && req.body.interest.length > 0) {
+		await Promise.all(req.body.interest.map(async (inter) => {
+            await Interest.create({
+              userId: finalUser.dataValues.id,
+              interest: inter
+            }, {transaction: t})
+          }))
+        }
+        if (typeof req.body.skills !== 'undefined' && req.body.skills.length > 0) {
+		await Promise.all(req.body.skills.map(async (skill) => {
+            await Skills.create({
+              userId: finalUser.dataValues.id,
+              skill: skill
+            }, {transaction: t})
+          }))
+        }
+        if (typeof req.body.smallPleasures !== 'undefined' && req.body.smallPleasures.length > 0) {
+		await Promise.all(req.body.smallPleasures.map(async (audition) => {
+            await SmallPleasures.create({
+              userId: finalUser.dataValues.id,
+              audition: audition
+            }, {transaction: t})
+          }))
+        }
+
+        if (typeof req.body.bigPleasures !== 'undefined' && req.body.bigPleasures.length > 0) {
+		await Promise.all(req.body.bigPleasures.map(async (audition) => {
+            await BigPleasures.create({
+              userId: finalUser.dataValues.id,
+              audition: audition
+            }, {transaction: t})
+          }))
+        }
+
+    users.setNewPassword(user, req.body.password)
+    user.token = jwt.sign({email: user.email}, process.env.TOKEN_SECRET || 'secret')
+    finalUser = user
+    t.commit()
+     res.json({
+        success: true,
+        message: 'You are now registered with email ' + finalUser.email,
+        accessToken: finalUser.token
       })
+	}
+	catch(err) {
+      t.rollback()
+      console.log(err)
+      console.log(err.sql)
+      res.status(500).json({
+        success: false,
+        message: 'Failed to register'
+      })
+    }
+}
+  /*})
       .then(() => finalUser.createKarnevalistInfo({
         language: req.body.language || '',
         driversLicense: req.body.driversLicense || '',
@@ -94,7 +170,7 @@ const createUser = function (req, res) {
       }).then(() => {
         if (typeof req.body.interest !== 'undefined' && req.body.interest.length > 0) {
           req.body.interest.map(inter => {
-            Interest.create({
+            return Interest.create({
               userId: finalUser.dataValues.id,
               interest: inter
             }, {transaction: t})
@@ -106,7 +182,7 @@ const createUser = function (req, res) {
             Skills.create({
               userId: finalUser.dataValues.id,
               skill: skill
-            }, {transaction: t})
+            }, {transaction: t}).save()
           })
         }
       }).then(() => {
@@ -115,8 +191,8 @@ const createUser = function (req, res) {
             SmallPleasures.create({
               userId: finalUser.dataValues.id,
               audition: audition
-            }, {transaction: t})
-          })
+            }, {transaction: t}).save()
+          }).save()
         }
       }).then(() => {
         if (typeof req.body.bigPleasures !== 'undefined' && req.body.bigPleasures.length > 0) {
@@ -124,11 +200,12 @@ const createUser = function (req, res) {
             BigPleasures.create({
               userId: finalUser.dataValues.id,
               audition: audition
-            }, {transaction: t})
-          })
+            }, {transaction: t}).save()
+          }).save()
         }
       })
     .then(() => {
+      t.commit()
       res.json({
         success: true,
         message: 'You are now registered with email ' + finalUser.email,
@@ -136,14 +213,16 @@ const createUser = function (req, res) {
       })
     })
     .catch(err => {
+      t.rollback()
       console.log(err)
+      console.log(err.sql)
       res.status(500).json({
         success: false,
         message: 'Failed to register'
       })
     })
   })
-}
+  */
 
 module.exports = {
   registerUser
