@@ -8,7 +8,7 @@ const Interests = dbc.define('Interests', {
     primaryKey: true,
     type: Sequelize.INTEGER
   },
-  interest: Sequelize.STRING
+  interest: Sequelize.TEXT
 })
 
 // This adds UserId to KarnevalistInfo as foreign key
