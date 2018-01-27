@@ -4,6 +4,10 @@ const users = require('../models/users')
 const role = require('../models/role')
 const jwt = require('jsonwebtoken')
 const sequelize = require('../config/database')
+const Interest = require('../models/interests').Interests
+const Skills = require('../models/skills').Skills
+const SmallPleasures = require('../models/smallpleasures').SmallPleasures
+const BigPleasures = require('../models/bigpleasures').BigPleasures
 
 const registerUser = function (req, res) {
   const error = []
@@ -16,6 +20,7 @@ const registerUser = function (req, res) {
   if (!req.body.password) {
     error.push('password')
   }
+
   if (error.length !== 0) {
     return res.status(400).json({
       success: false,
@@ -57,7 +62,8 @@ const createUser = function (req, res) {
       postNumber: req.body.postNumber || '',
       city: req.body.city || '',
       careOf: req.body.careOf || '',
-      personalNumber: req.body.personalNumber || ''
+      personalNumber: req.body.personalNumber || '',
+      shirtSize: req.body.shirtSize || ''
     }, {transaction: t})
       .then(user => {
         users.setNewPassword(user, req.body.password)
@@ -70,15 +76,13 @@ const createUser = function (req, res) {
         foodPreference: req.body.foodPreference || '',
         disability: req.body.disability || '',
         audition: req.body.audition || '',
-        talent: req.body.talent || '',
-        entertainmentCategory: req.body.entertainmentCategory || '',
         corps: req.body.corps || '',
         startOfStudies: req.body.startOfStudies || '',
         pastInvolvement: req.body.pastInvolvement || '',
-        groupLeader: req.body.groupLeader || '',
-        interests: req.body.interests || '',
+        groupLeader: req.body.groupLeader || false,
         misc: req.body.misc || '',
-        plenipotentiary: req.body.plenipotentiary || ''
+        plenipotentiary: req.body.plenipotentiary || false,
+        bff: req.body.bff || ''
       }, {transaction: t}))
       .then(() => {
         return role.Role.findOne({
@@ -87,8 +91,43 @@ const createUser = function (req, res) {
       })
       .then((role) => {
         return finalUser.addRole([role], {transaction: t})
+      }).then(() => {
+        if (typeof req.body.interest !== 'undefined' && req.body.interest.length > 0) {
+          req.body.interest.map(inter => {
+            Interest.create({
+              userId: finalUser.dataValues.id,
+              interest: inter
+            }, {transaction: t})
+          })
+        }
+      }).then(() => {
+        if (typeof req.body.skills !== 'undefined' && req.body.skills.length > 0) {
+          req.body.skills.map(skill => {
+            Skills.create({
+              userId: finalUser.dataValues.id,
+              skill: skill
+            }, {transaction: t})
+          })
+        }
+      }).then(() => {
+        if (typeof req.body.smallPleasures !== 'undefined' && req.body.smallPleasures.length > 0) {
+          req.body.smallPleasures.map(audition => {
+            SmallPleasures.create({
+              userId: finalUser.dataValues.id,
+              audition: audition
+            }, {transaction: t})
+          })
+        }
+      }).then(() => {
+        if (typeof req.body.bigPleasures !== 'undefined' && req.body.bigPleasures.length > 0) {
+          req.body.bigPleasures.map(audition => {
+            BigPleasures.create({
+              userId: finalUser.dataValues.id,
+              audition: audition
+            }, {transaction: t})
+          })
+        }
       })
-  })
     .then(() => {
       res.json({
         success: true,
@@ -103,6 +142,7 @@ const createUser = function (req, res) {
         message: 'Failed to register'
       })
     })
+  })
 }
 
 module.exports = {
