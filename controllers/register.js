@@ -99,9 +99,7 @@ const createUser = function (req, res) {
             Interest.create({
               userId: finalUser.dataValues.id,
               interest: inter
-            }).then((inter) => {
-              inter.save()
-            })
+            }, {transaction: t})
           })
         }
       }).then(() => {
@@ -110,9 +108,7 @@ const createUser = function (req, res) {
             Skills.create({
               userId: finalUser.dataValues.id,
               skill: skill
-            }).then((skill) => {
-              skill.save()
-            })
+            }, {transaction: t})
           })
         }
       }).then(() => {
@@ -121,9 +117,7 @@ const createUser = function (req, res) {
             SmallPleasures.create({
               userId: finalUser.dataValues.id,
               audition: audition
-            }).then((audition) => {
-              audition.save()
-            })
+            }, {transaction: t})
           })
         }
       }).then(() => {
@@ -132,13 +126,10 @@ const createUser = function (req, res) {
             BigPleasures.create({
               userId: finalUser.dataValues.id,
               audition: audition
-            }).then((audition) => {
-              audition.save()
-            })
+            }, {transaction: t})
           })
         }
       })
-  })
     .then(() => {
       res.json({
         success: true,
@@ -153,6 +144,7 @@ const createUser = function (req, res) {
         message: 'Failed to register'
       })
     })
+  })
 }
 
 module.exports = {
