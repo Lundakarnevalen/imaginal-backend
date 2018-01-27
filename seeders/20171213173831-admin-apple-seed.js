@@ -21,6 +21,25 @@ module.exports = {
       createdAt: new Date().toISOString().substr(0, 10),
       updatedAt: new Date().toISOString().substr(0, 10)
     }], {})
+    await queryInterface.bulkInsert('Users', [{
+      email: 'apple@apple.com',
+      firstName: 'saknas',
+      lastName: 'saknas',
+      phoneNumber: 'saknas',
+      address: 'saknas',
+      postNumber: 'saknas',
+      city: 'saknas',
+      careOf: 'saknas',
+      personalNumber: 'saknas',
+      password: '$2a$10$PFVCTETqQK3YCGukxs58SO3fZaSsgUPPgGON5pAhJyYcMvccSobdy',
+      createdAt: new Date().toISOString().substr(0, 10),
+      updatedAt: new Date().toISOString().substr(0, 10)
+    }], {})
+    await queryInterface.bulkInsert('KarnevalistInfos', [{
+      userId: 2,
+      createdAt: new Date().toISOString().substr(0, 10),
+      updatedAt: new Date().toISOString().substr(0, 10)
+    }], {})
     /*
       Add altering commands here.
       Return a promise to correctly handle asynchronicity.
