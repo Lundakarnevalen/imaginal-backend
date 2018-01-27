@@ -1,15 +1,15 @@
 'use strict'
-
 const passport = require('passport')
 const users = require('../models/users')
 
-const loginByEmail = function (req, res, next) {
+const loginByEmail = async (req, res, next) => {
   if (!req.body.email || !req.body.password) {
     return res.status(400).json({
       success: false,
       message: 'Missing parameters'
     })
   }
+
   passport.authenticate('local',
     function (err, user, info) {
       if (err) {
@@ -27,6 +27,7 @@ const loginByEmail = function (req, res, next) {
             message: 'Incorrect login credentials.'
           })
         }
+
         const checkedIn = await users.isCheckedIn(user)
         const allRoles = await user.getRoles()
         const roles = await allRoles.map(role => role.toJSON())

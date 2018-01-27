@@ -14,7 +14,7 @@ const registerUser = function (req, res) {
   if (!req.body.personalNumber || req.body.personalNumber.length !== 10) {
     error.push('personalNumber')
   }
-  if (!req.body.email) {
+  if (!req.body.email || !req.body.email.includes('@')) {
     error.push('email')
   }
   if (!req.body.password) {

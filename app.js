@@ -80,7 +80,8 @@ app.post('/api/user/checkin/:identification', checkin.checkIn)
 app.get('/api/user/listcheckins/:email', checkin.listCheckins)
 
 app.put('/api/user/:email', users.setUserInfo)
-app.get('/api/user/:email', users.getById)
+app.get('/api/user/:identification', users.getById)
+
 app.get('/api/users', users.getAll)
 
 app.post('/api/section', section.setSectionPriorities)

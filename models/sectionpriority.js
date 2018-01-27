@@ -42,11 +42,17 @@ const setSectionPriorities = function (user, sections, done) {
   if (uniqueSections(sections)) {
     return done(null, false, 'Duplicate sections!')
   }
+  let invalidNumber = false
   sections.forEach((sectionid, index) => {
+    if (invalidNumber) { return }
     if (typeof (parseInt(sectionid)) !== 'number' || isNaN(parseInt(sectionid))) {
-      return done(null, false, 'Invalid sectionid')
+      invalidNumber = true
     }
   })
+
+  if (invalidNumber) {
+    return done(null, false, 'Invalid sectionid')
+  }
 
   SectionPriority.destroy({
     where: {

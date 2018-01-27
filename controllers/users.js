@@ -43,26 +43,44 @@ const getAll = async (req, res) => {
 }
 
 const getById = async (req, res) => {
-  const email = req.params.email
+  const identification = req.params.identification
 
-  if (!email) {
+  if (!identification) {
     return res.status(400).json({
       success: false,
-      message: 'Missing email parameter'
+      message: 'Missing identification parameter'
     })
   }
 
   const isAdmin = await UserRoles.hasRole(req.user, 'administrator')
 
-  if (!isAdmin && email !== req.user.email) {
+  if (!(isAdmin || (identification === req.user.email || identification === req.user.personalNumber))) {
     return res.status(401).json({
       success: false,
       message: 'Admin privileges required'
     })
   }
 
+  /** We may need this later, not sure
+   let user = await users.User.findOne({
+    where: {
+      $or: [
+        {personalNumber: identification},
+        {email: identification}
+      ]
+    },
+    include: [
+      {model: users.KarnevalistInfo},
+      {model: Checkin, as: 'Checkin', attributes: ['checkerId', 'createdAt']}
+    ]
+    */
   const user = await users.User.findOne({
-    where: {email}
+    where: {
+      $or: [
+        {personalNumber: identification},
+        {email: identification}
+      ]
+    }
   })
 
   if (!user) {

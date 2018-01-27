@@ -38,7 +38,7 @@
 							"script": {
 								"type": "text/javascript",
 								"exec": [
-									"pm.globals.set(\"randomUsername\", Math.random().toString(36).substring(7));",
+									"pm.globals.set(\"randomUsername\", Math.random().toString(36).substring(7) + '@');",
 									"pm.globals.set(\"randomUserPIN\", Math.floor(Math.random() * 899999999 + 1000000000));",
 									"pm.globals.set(\"adminUsername\", \"admin@lundakarnevalen.se\");",
 									""
@@ -341,12 +341,12 @@
 							"script": {
 								"type": "text/javascript",
 								"exec": [
-									"pm.test(\"Status code is 409\", function () {",
-									"    pm.response.to.have.status(409);",
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
 									"});",
 									"",
-									"pm.test(\"Successfield false on statuscode 409\", function () {",
-									"    pm.response.to.have.status(409);",
+									"pm.test(\"Successfield false on statuscode 400\", function () {",
+									"    pm.response.to.have.status(400);",
 									"    var jsonData = pm.response.json();",
 									"    pm.expect(jsonData.success).to.eql(false);",
 									"});",
@@ -366,7 +366,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"email\":\"{{randomUsername}}\",\n  \"password\":\"password\",\n  \"personalNumber\": \"9101011111\"\n}"
+							"raw": "{\n  \"email\":\"{{randomUsername}}\",\n  \"password\":\"password\"\n}"
 						},
 						"url": {
 							"raw": "http://localhost:3000/register",
@@ -465,12 +465,12 @@
 							"script": {
 								"type": "text/javascript",
 								"exec": [
-									"pm.test(\"Status code is 409\", function () {",
-									"    pm.response.to.have.status(409);",
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
 									"});",
 									"",
-									"pm.test(\"Successfield false on statuscode 409\", function () {",
-									"    pm.response.to.have.status(409);",
+									"pm.test(\"Successfield false on statuscode 400\", function () {",
+									"    pm.response.to.have.status(400);",
 									"    var jsonData = pm.response.json();",
 									"    pm.expect(jsonData.success).to.eql(false);",
 									"});",
