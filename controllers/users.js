@@ -42,49 +42,6 @@ const getAll = async (req, res) => {
   })
 }
 
-const getByPersonalNumber = async (req, res) => {
-  const pin = req.params.pin
-
-  if (!pin) {
-    return res.status(400).json({
-      success: false,
-      message: 'Missing email parameter'
-    })
-  }
-
-  const isAdmin = await UserRoles.hasRole(req.user, 'administrator')
-
-  if (!isAdmin && pin !== req.user.personalNumber) {
-    return res.status(401).json({
-      success: false,
-      message: 'Admin privileges required'
-    })
-  }
-
-  let user = await users.User.findOne({
-    where: {peronalNumber: pin},
-    include: [
-      {model: users.KarnevalistInfo},
-      {model: Checkin, as: 'Checkin', attributes: ['checkerId', 'createdAt']}
-    ]
-  })
-
-  if (!user) {
-    return res.status(400).json({
-      success: false,
-      message: 'No such user'
-    })
-  }
-
-  user = user.toJSON()
-  user.checkedIn = !!user.Checkin
-
-  return res.json({
-    success: true,
-    user
-  })
-}
-
 const getById = async (req, res) => {
   const identification = req.params.identification
 
@@ -229,6 +186,5 @@ const setUserInfo = async (req, res) => {
 module.exports = {
   getAll,
   getById,
-  getByPersonalNumber,
   setUserInfo
 }
