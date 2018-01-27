@@ -3,8 +3,8 @@ const Role = require('../models/role').Role
 const UserRoles = require('../models/userrole')
 
 const addRole = function (req, res) {
-  let email = req.params.email
-  let roleId = req.params.roleid
+  const email = req.params.email
+  const roleId = req.params.roleid
 
   findUserAndRole(req, res, email, roleId, function (user, role) {
     user.addRole([role]).then(() => {
@@ -22,8 +22,8 @@ Role.prototype.toJSON = function () {
 }
 
 const removeRole = function (req, res) {
-  let email = req.params.email
-  let roleId = req.params.roleid
+  const email = req.params.email
+  const roleId = req.params.roleid
 
   findUserAndRole(req, res, email, roleId, function (user, role) {
     user.removeRole([role]).then(() => {
@@ -36,7 +36,7 @@ const removeRole = function (req, res) {
 }
 
 const getUsers = function (req, res) {
-  let roleId = req.params.roleid
+  const roleId = req.params.roleid
 
   UserRoles.hasRole(req.user, 'administrator').then(admin => {
     if (admin) {
@@ -52,7 +52,7 @@ const getUsers = function (req, res) {
           })
         }
         role.getUsers().then(users => {
-          let resp = {}
+          const resp = {}
           resp.success = true
           resp.users = []
           for (let i = 0; i < users.length; ++i) {
