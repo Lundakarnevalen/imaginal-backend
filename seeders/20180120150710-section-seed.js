@@ -223,17 +223,7 @@ module.exports = {
       updatedAt: new Date().toISOString().substr(0, 10)
     }], {})
 
-    await queryInterface.bulkInsert('Sections', [{
-      nameSv: '',
-      nameEn: '',
-      imageUrl: 'http://lundakarnevalen.se/wp-content/uploads/2017/12/loggaplaceholder.png',
-      textSv: '',
-      textEn: '',
-      createdAt: new Date().toISOString().substr(0, 10),
-      updatedAt: new Date().toISOString().substr(0, 10)
-    }], {})
-
-    await queryInterface.bulkInsert('Sections', [{
+     await queryInterface.bulkInsert('Sections', [{
       nameSv: 'Barnevalen',
       nameEn: 'Barnevalen',
       imageUrl: 'http://lundakarnevalen.se/wp-content/uploads/2017/12/loggaplaceholder.png',
