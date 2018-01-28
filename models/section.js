@@ -7,11 +7,11 @@ const Section = dbc.define('Sections', {
     primaryKey: true,
     type: Sequelize.INTEGER
   },
-  imageUrl: Sequelize.STRING,
+  imageUrl: Sequelize.TEXT,
   nameSv: Sequelize.STRING,
   nameEn: Sequelize.STRING,
-  textSv: Sequelize.STRING,
-  textEn: Sequelize.STRING
+  textSv: Sequelize.TEXT,
+  textEn: Sequelize.TEXT
 })
 
 module.exports = {

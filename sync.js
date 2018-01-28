@@ -1,0 +1,16 @@
+require('express')
+require('body-parser')
+require('./controllers/login')
+require('./controllers/register')
+require('./controllers/forgotpassword')
+require('./config/passport')(require('passport'))
+require('./controllers/role')
+require('./controllers/section')
+require('./controllers/checkin')
+require('./controllers/users')
+
+require('./config/database')
+  .sync()
+  .then(() => {
+    process.exit()
+  })
