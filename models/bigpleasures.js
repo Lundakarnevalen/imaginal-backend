@@ -8,7 +8,7 @@ const BigPleasures = dbc.define('BigPleasures', {
     primaryKey: true,
     type: Sequelize.INTEGER
   },
-  audition: Sequelize.STRING
+  audition: Sequelize.TEXT
 })
 
 // This adds UserId to KarnevalistInfo as foreign key

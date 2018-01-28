@@ -45,7 +45,7 @@ const KarnevalistInfo = dbc.define('KarnevalistInfo', {
   startOfStudies: Sequelize.STRING,
   pastInvolvement: Sequelize.STRING,
   groupLeader: Sequelize.BOOLEAN,
-  misc: Sequelize.STRING,
+  misc: Sequelize.TEXT,
   plenipotentiary: Sequelize.BOOLEAN,
   bff: Sequelize.STRING
 })

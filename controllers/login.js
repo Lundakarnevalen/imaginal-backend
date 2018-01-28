@@ -51,7 +51,8 @@ const loginByEmail = async (req, res, next) => {
           success: true,
           message: 'Successfully logged in',
           accessToken: req.user.token,
-          userinfo
+          userinfo,
+          user: userinfo // compability with app
         })
       })
     })(req, res, next)

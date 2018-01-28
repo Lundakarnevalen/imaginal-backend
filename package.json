@@ -20,10 +20,12 @@
   },
   "homepage": "https://github.com/Lundakarnevalen/imaginal-backend#readme",
   "dependencies": {
+    "aws-sdk": "^2.188.0",
     "bcrypt": "^1.0.3",
     "body-parser": "^1.18.2",
     "express": "^4.16.1",
     "jsonwebtoken": "^8.1.0",
+    "mustache": "^2.3.0",
     "mysql2": "^1.4.2",
     "nvm": "0.0.4",
     "passport": "^0.4.0",

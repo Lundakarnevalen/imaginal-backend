@@ -112,7 +112,8 @@ const getById = async (req, res) => {
 
   return res.json({
     success: true,
-    userinfo
+    userinfo,
+    user: userinfo // compability with app
   })
 }
 
