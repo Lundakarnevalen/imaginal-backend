@@ -6,7 +6,10 @@ const Checkin = require('../models/checkin').Checkin
 
 const setSectionPriorities = async (req, res, next) => {
   if (!req.body.sectionPriorities || !Array.isArray(req.body.sectionPriorities)) {
-    return res.status(400).json({success: false, message: 'Missing parameters'})
+    return res.status(400).json({
+      success: false,
+      message: 'Missing parameters'
+    })
   }
 
   const checkedin = await Checkin.findOne({
@@ -14,44 +17,59 @@ const setSectionPriorities = async (req, res, next) => {
   })
 
   if (!checkedin) {
-    return res.status(400).json({success: false, message: 'Check in required'})
+    return res.status(400).json({
+      success: false,
+      message: 'Check in required'
+    })
   }
 
-  SectionPriorities.setSectionPriorities(req.user, req.body.sectionPriorities, function (err, success, message) {
-    if (err) {
-      return res.status(500).json({
-        success,
-        message
-      })
-    }
-    if (success) {
-      return res.json({
-        success,
-        message
-      })
-    } else {
-      return res.status(400).json({
-        success,
-        message
-      })
-    }
+  let result = await SectionPriorities.setSectionPriorities(req.user, req.body.sectionPriorities)
+  let status = 200
+  let success = true
+  let message = 'Sections set'
+  switch (result) {
+    case SectionPriorities.OK:
+      break
+    case SectionPriorities.LATE:
+      status = 418 // I'm a teapot
+      success = false
+      message = 'Last date has passed'
+      break
+    case SectionPriorities.DUPLICATE:
+      status = 400
+      success = false
+      message = 'Cannot send duplicate values'
+      break
+    case SectionPriorities.NONUMBER:
+      status = 400
+      success = false
+      message = 'Invalid section types, must be numbers'
+      break
+    default:
+      status = 500
+      success = false
+      message = 'Failed to set section priorities'
+  }
+  res.status(status).json({
+    success,
+    message
   })
 }
 
-const getSectionPriorities = function (req, res, next) {
-  SectionPriorities.getSectionPriorities(req.user, function (err, sectionPriorities) {
-    if (err) {
-      res.status(500).json({
-        success: false,
-        message: 'Failed to get priorities',
-        err
-      })
-    }
+const getSectionPriorities = async (req, res, next) => {
+  try {
+    let sectionPriorities = await SectionPriorities.getSectionPriorities(req.user)
     res.json({
       success: true,
       sectionPriorities
     })
-  })
+  } catch (err) {
+    console.log(err)
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch section priorities'
+    })
+  }
 }
 
 const getAllSections = function (req, res, next) {
