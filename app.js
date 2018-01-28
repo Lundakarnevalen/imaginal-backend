@@ -10,6 +10,9 @@ const role = require('./controllers/role')
 const section = require('./controllers/section')
 const checkin = require('./controllers/checkin')
 const users = require('./controllers/users')
+const audition = require('./modules/auditions/auditions_controller')
+const glob = require('glob');
+const path = require('path');
 
 app.use(bodyParser.json())
 app.use(passport.initialize())
@@ -99,6 +102,11 @@ app.all('*', function (req, res) {
 })
 
 const port = process.env.PORT || 3000
+
+
+glob.sync( './modules/**/*_model.js' ).forEach( function( file ) {
+  require( path.resolve( file ) );
+});
 
 require('./config/database')
   .sync()
