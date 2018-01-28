@@ -28,19 +28,19 @@ const setSectionPriorities = async (req, res, next) => {
   let success = true
   let message = 'Sections set'
   switch (result) {
-    case 0:
+    case SectionPriorities.OK:
       break
-    case 1:
+    case SectionPriorities.LATE:
       status = 418 // I'm a teapot
       success = false
       message = 'Last date has passed'
       break
-    case 2:
+    case SectionPriorities.DUPLICATE:
       status = 400
       success = false
       message = 'Cannot send duplicate values'
       break
-    case 3:
+    case SectionPriorities.NONUMBER:
       status = 400
       success = false
       message = 'Invalid section types, must be numbers'

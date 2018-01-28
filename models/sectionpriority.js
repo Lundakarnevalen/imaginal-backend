@@ -4,6 +4,12 @@ const Sequelize = require('sequelize')
 const User = require('./users').User
 const Section = require('./section').Section
 
+const OK = 0
+const LATE = 1
+const DUPLICATE = 2
+const NONUMBER = 3
+const SERVERERROR = 4
+
 const SectionPriority = dbc.define('SectionPriority', {
   id: {
     autoIncrement: true,
@@ -36,11 +42,11 @@ Section.belongsToMany(User, {
 const setSectionPriorities = async (user, sections) => {
   const lastDate = new Date('2018-02-05T03:24:00')
   if (Date.now() > lastDate.getTime()) {
-    return 1
+    return LATE
   }
 
-  if (uniqueSections(sections)) {
-    return 2
+  if (!uniqueSections(sections)) {
+    return DUPLICATE
   }
   let invalidNumber = false
   sections.forEach((sectionid, index) => {
@@ -51,7 +57,7 @@ const setSectionPriorities = async (user, sections) => {
   })
 
   if (invalidNumber) {
-    return 3
+    return NONUMBER
   }
 
   try {
@@ -69,10 +75,10 @@ const setSectionPriorities = async (user, sections) => {
       })
     })
   } catch (err) {
-    return 4
+    return SERVERERROR
   }
 
-  return 0
+  return OK
 }
 
 const getSectionPriorities = async (user) => {
@@ -90,11 +96,16 @@ const getSectionPriorities = async (user) => {
 }
 
 const uniqueSections = function (array) {
-  return (new Set(array)).size !== array.length
+  return (new Set(array)).size === array.length
 }
 
 module.exports = {
   SectionPriority,
   getSectionPriorities,
-  setSectionPriorities
+  setSectionPriorities,
+  OK,
+  LATE,
+  DUPLICATE,
+  NONUMBER,
+  SERVERERROR
 }
