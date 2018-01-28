@@ -3,6 +3,54 @@
 const users = require('../models/users')
 const forgotPass = require('../models/forgotpassword').ForgotPassword
 const crypto = require('crypto')
+const AWS = require('aws-sdk')
+const fs = require('fs')
+const path = require('path')
+const mustache = require('mustache')
+
+const awsConfig = { 
+  "accessKeyId": process.env.AWS_ACCESS_ID,
+  "secretAccessKey": process.env.AWS_ACCESS_KEY,
+  "region": "eu-west-1"
+}
+console.log(awsConfig)
+const sender = 'noreply@lundakarnevalen.se'
+
+AWS.config.update(awsConfig)
+
+const sendEmail = (email, token) => {
+  return new Promise((resolve, reject) => {
+    const template = fs.readFileSync(path.resolve(__dirname, '../templates/resetEmail.mustache'))
+    const msg = mustache.render(template.toString(), {resetPasswordHash: token})
+    const params = {
+      Destination: { /* required */
+        ToAddresses: [ email ]
+      },
+      Message: { /* required */
+        Body: { /* required */
+          Html: {
+            Charset: "UTF-8",
+            Data: msg
+          }
+        },
+        Subject: {
+          Charset: 'UTF-8',
+          Data: 'Karnevalist - Reset password'
+        }
+      },
+      Source: sender /* required */
+    }
+
+    const ses = new AWS.SES({apiVersion: '2010-12-01'})
+    ses.sendEmail(params, (err, data) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve()
+      }
+    })
+  })
+}
 
 const checkIfExist = function (email, token) {
   return forgotPass.findOne({
@@ -10,48 +58,40 @@ const checkIfExist = function (email, token) {
   })
 }
 
-const forgotPassword = function (req, res) {
-  users.User.findOne({
+const forgotPassword = async (req, res) => {
+  const user = await users.User.findOne({
     where: {email: req.body.email}
   })
-  .then((user) => {
-    if (!user) {
+  if (!user) {
+    return res.json({
+      success: false,
+      message: 'Failed to reset password'
+    })
+  }
+
+  crypto.randomBytes(255, async (err, buf) => {
+    if (err) {
       return res.json({
         success: false,
         message: 'Failed to reset password'
       })
     }
 
-    crypto.randomBytes(255, (err, buf) => {
-      if (err) {
-        return res.json({
-          success: false,
-          message: 'Failed to reset password'
-        })
-      }
+    const token = buf.toString('hex').substr(0, 64)
 
-      const token = buf.toString('hex').substr(255)
+    const passwordToken = await forgotPass.findOne({
+      where: {email: user.email}
+    })
+    if (!passwordToken) {
+      await forgotPass.create({email: user.email, token: token})
+    } else {
+      await passwordToken.update({email: user.email, token: token})
+    }
 
-      forgotPass.findOne({
-        where: {email: user.email}
-      })
-      .then((passwordToken) => {
-        if (!passwordToken) {
-          forgotPass.create({email: user.email, token: token}).then(() => {
-            res.json({
-              success: true,
-              passwordToken: token
-            })
-          })
-        } else {
-          passwordToken.update({email: user.email, token: token}).then(() => {
-            res.json({
-              success: true,
-              passwordToken: token
-            })
-          })
-        }
-      })
+    await sendEmail(user.email, token)
+    res.json({
+      success: true,
+      message: 'Email sent'
     })
   })
 }
