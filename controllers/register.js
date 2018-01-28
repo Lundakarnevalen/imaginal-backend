@@ -51,8 +51,7 @@ const registerUser = function (req, res) {
 }
 
 const createUser = async (req, res) => {
-  const t = await sequelize.transaction()
-  await sequelize.transaction({autocommit: false})
+  const t = await sequelize.transaction({autocommit: false})
   try {
     const user = await users.User.create({
       email: req.body.email,
