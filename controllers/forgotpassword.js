@@ -8,10 +8,10 @@ const fs = require('fs')
 const path = require('path')
 const mustache = require('mustache')
 
-const awsConfig = { 
-  "accessKeyId": process.env.AWS_ACCESS_ID,
-  "secretAccessKey": process.env.AWS_ACCESS_KEY,
-  "region": "eu-west-1"
+const awsConfig = {
+  'accessKeyId': process.env.AWS_ACCESS_ID,
+  'secretAccessKey': process.env.AWS_ACCESS_KEY,
+  'region': 'eu-west-1'
 }
 
 AWS.config.update(awsConfig)
@@ -28,7 +28,7 @@ const sendEmail = (email, token) => {
       Message: {
         Body: {
           Html: {
-            Charset: "UTF-8",
+            Charset: 'UTF-8',
             Data: msg
           }
         },
