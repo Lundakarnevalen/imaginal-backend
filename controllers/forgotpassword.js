@@ -13,21 +13,20 @@ const awsConfig = {
   "secretAccessKey": process.env.AWS_ACCESS_KEY,
   "region": "eu-west-1"
 }
-console.log(awsConfig)
-const sender = 'noreply@lundakarnevalen.se'
 
 AWS.config.update(awsConfig)
+const sender = 'noreply@lundakarnevalen.se'
 
 const sendEmail = (email, token) => {
   return new Promise((resolve, reject) => {
     const template = fs.readFileSync(path.resolve(__dirname, '../templates/resetEmail.mustache'))
     const msg = mustache.render(template.toString(), {resetPasswordHash: token})
     const params = {
-      Destination: { /* required */
+      Destination: {
         ToAddresses: [ email ]
       },
-      Message: { /* required */
-        Body: { /* required */
+      Message: {
+        Body: {
           Html: {
             Charset: "UTF-8",
             Data: msg
@@ -38,7 +37,7 @@ const sendEmail = (email, token) => {
           Data: 'Karnevalist - Reset password'
         }
       },
-      Source: sender /* required */
+      Source: sender
     }
 
     const ses = new AWS.SES({apiVersion: '2010-12-01'})
