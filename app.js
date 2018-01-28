@@ -30,8 +30,7 @@ app.use(function (error, req, res, next) {
  */
 const jobsInit = require('./jobs/init')
 console.log(jobsInit)
-jobsInit.startJobs()
-
+jobsInit.startAllJobs()
 
 /**
  * Unauthorized endpoints

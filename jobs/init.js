@@ -1,7 +1,6 @@
 const schedule = require('node-schedule')
 const afCheck = require('./afCheck').afCheck
 
-
 // Cron scheduling format:
 // *    *    *    *    *    *
 // ┬    ┬    ┬    ┬    ┬    ┬
@@ -13,15 +12,22 @@ const afCheck = require('./afCheck').afCheck
 // │    └──────────────────── minute (0 - 59)
 // └───────────────────────── second (0 - 59, OPTIONAL)
 
+let jobs = {}
 
-
-function startJobs(){
+function startAllJobs () {
   // This job can be canceled by afCheckJob.cancel()
   // AF-check will run at 02:37 every night.
-  let afCheckJob = schedule.scheduleJob('37 2 * * *', afCheck);
+  let afCheckJob = schedule.scheduleJob('37 2 * * *', afCheck)
 
+  // Save all jobs in one object
+  jobs['AF_check'] = afCheckJob
+}
+
+function stopJob (job) {
+  jobs[job].cancel()
 }
 
 module.exports = {
-  startJobs
+  startAllJobs,
+  stopJob
 }
