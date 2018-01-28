@@ -49,7 +49,8 @@ const KarnevalistInfo = dbc.define('KarnevalistInfo', {
   plenipotentiary: Sequelize.BOOLEAN,
   afMember: {
     type: Sequelize.BOOLEAN,
-    default: false,
+    defaultValue: false,
+    allowNull: false,
   },
   bff: Sequelize.STRING
 })

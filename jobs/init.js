@@ -22,8 +22,6 @@ function startJobs(){
 
 }
 
-
-
 module.exports = {
   startJobs
 }
