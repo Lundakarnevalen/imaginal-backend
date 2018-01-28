@@ -23,7 +23,9 @@
     "aws-sdk": "^2.188.0",
     "bcrypt": "^1.0.3",
     "body-parser": "^1.18.2",
+    "csv-parse": "^2.0.0",
     "express": "^4.16.1",
+    "glob": "^7.1.2",
     "jsonwebtoken": "^8.1.0",
     "mustache": "^2.3.0",
     "mysql2": "^1.4.2",
@@ -32,8 +34,10 @@
     "passport-http-bearer": "^1.0.1",
     "passport-jwt": "^3.0.0",
     "passport-local": "^1.0.0",
+    "path": "^0.12.7",
     "sequelize": "^4.31.2",
-    "sequelize-cli": "^3.2.0"
+    "sequelize-cli": "^3.2.0",
+    "shuffle-array": "^1.0.1"
   },
   "devDependencies": {
     "mocha": "^4.1.0",
