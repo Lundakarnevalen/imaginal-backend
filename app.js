@@ -26,6 +26,13 @@ app.use(function (error, req, res, next) {
 })
 
 /**
+ * Scheduled jobs
+ */
+const jobsInit = require('./jobs/init')
+console.log(jobsInit)
+jobsInit.startAllJobs()
+
+/**
  * Unauthorized endpoints
  */
 app.post('/register', register.registerUser)
