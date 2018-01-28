@@ -41,7 +41,7 @@ const KarnevalistInfo = dbc.define('KarnevalistInfo', {
   driversLicense: Sequelize.STRING,
   foodPreference: Sequelize.TEXT,
   disability: Sequelize.TEXT,
-  corps: Sequelize.TEXT,
+  corps: Sequelize.STRING,
   startOfStudies: Sequelize.TEXT,
   pastInvolvement: Sequelize.TEXT,
   groupLeader: Sequelize.BOOLEAN,
