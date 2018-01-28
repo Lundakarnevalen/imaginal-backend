@@ -8,7 +8,6 @@ const Interest = require('../models/interests').Interests
 const Skills = require('../models/skills').Skills
 const SmallPleasures = require('../models/smallpleasures').SmallPleasures
 const BigPleasures = require('../models/bigpleasures').BigPleasures
-const bcrypt = require('bcrypt')
 
 const registerUser = function (req, res) {
   const error = []
@@ -55,11 +54,8 @@ const createUser = async (req, res) => {
   const t = await sequelize.transaction()
   await sequelize.transaction({autocommit: false})
   try {
-    const password = await bcrypt.hash(req.body.password, 10)
-
     const user = await users.User.create({
       email: req.body.email,
-      password,
       phoneNumber: req.body.phoneNumber || '',
       firstName: req.body.firstName || '',
       lastName: req.body.lastName || '',
@@ -121,6 +117,7 @@ const createUser = async (req, res) => {
     if (isValidArray(req.body.smallPleasures)) {
       await createFromArray(req.body.smallPleasures, SmallPleasures, 'audition')
     }
+    await users.setNewPassword(user, req.body.password)
     await t.commit()
 
     return res.json({
