@@ -83,6 +83,9 @@ const getAllSections = function (req, res, next) {
         sect['imageUrl'] = section.imageUrl
         sect['textSv'] = section.textSv
         sect['textEn'] = section.textEn
+        sect['longTextSv'] = section.longTextSv
+        sect['longTextEn'] = section.longTextEn
+
         return sect
       })
       res.json({
