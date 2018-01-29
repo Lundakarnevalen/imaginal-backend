@@ -53,6 +53,9 @@ module.exports = {
       plenipotentiary: {
         type: Sequelize.STRING
       },
+      studentNation: {
+        type: Sequelize.STRING
+      },
       createdAt: {
         type: Sequelize.DATE,
         allowNull: false

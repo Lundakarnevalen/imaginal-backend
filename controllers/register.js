@@ -51,8 +51,9 @@ const registerUser = function (req, res) {
 }
 
 const createUser = async (req, res) => {
-  const t = await sequelize.transaction({autocommit: false})
+  const t = await sequelize.transaction()
   try {
+    const token = await jwt.sign({email: req.body.email}, process.env.TOKEN_SECRET || 'secret')
     const user = await users.User.create({
       email: req.body.email,
       phoneNumber: req.body.phoneNumber || '',
@@ -63,9 +64,9 @@ const createUser = async (req, res) => {
       city: req.body.city || '',
       careOf: req.body.careOf || '',
       personalNumber: req.body.personalNumber || '',
-      shirtSize: req.body.shirtSize || ''
+      shirtSize: req.body.shirtSize || '',
+      token
     })
-    user.token = await jwt.sign({email: user.email}, process.env.TOKEN_SECRET || 'secret')
 
     await user.createKarnevalistInfo({
       language: req.body.language || '',
@@ -79,7 +80,8 @@ const createUser = async (req, res) => {
       groupLeader: req.body.groupLeader || false,
       misc: req.body.misc || '',
       plenipotentiary: req.body.plenipotentiary || false,
-      bff: req.body.bff || ''
+      bff: req.body.bff || '',
+      studentNation: req.body.studentNation || ''
     }, {t})
 
     const ourRole = await role.Role.findOne({

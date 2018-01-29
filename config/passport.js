@@ -43,7 +43,7 @@ module.exports = function (passport) {
           return done(null, false)
         }
         User.findOne({
-          attributes: ['id', 'email', 'firstName', 'lastName', 'phoneNumber', 'address', 'postNumber', 'city', 'careOf', 'personalNumber'],
+          attributes: ['id', 'email', 'firstName', 'lastName', 'phoneNumber', 'address', 'postNumber', 'city', 'careOf', 'personalNumber', 'shirtSize'],
           where: { token: token },
           include: [{model: KarnevalistInfo}]
         })

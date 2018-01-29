@@ -6,6 +6,8 @@ const register = require('./controllers/register')
 const forgotPassword = require('./controllers/forgotpassword')
 const passport = require('passport')
 require('./config/passport')(passport)
+const helmet = require('helmet')
+const cors = require('cors')
 const role = require('./controllers/role')
 const section = require('./controllers/section')
 const checkin = require('./controllers/checkin')
@@ -14,6 +16,8 @@ const users = require('./controllers/users')
 app.use(bodyParser.json())
 app.use(passport.initialize())
 app.use(passport.session())
+app.use(helmet())
+app.use(cors())
 
 app.use(function (error, req, res, next) {
   if (error.name === 'SyntaxError') {
