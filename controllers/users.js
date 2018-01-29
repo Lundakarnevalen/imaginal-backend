@@ -96,10 +96,18 @@ const getById = async (req, res) => {
 
   const karnevalistInfo = await users.KarnevalistInfo.findOne({
     where: {userId: user.id},
-    attributes: ['language', 'driversLicense', 'disability',
-      'corps', 'startOfStudies', 'pastInvolvement',
-      'groupLeader', 'misc',
-      'plenipotentiary']
+    attributes: ['language',
+      'driversLicense',
+      'foodPreference',
+      'disability',
+      'corps',
+      'startOfStudies',
+      'pastInvolvement',
+      'groupLeader',
+      'misc',
+      'plenipotentiary',
+      'bff',
+      'studentNation']
   })
 
   const userinfo = {
@@ -148,7 +156,8 @@ const setUserInfo = async (req, res) => {
     'postNumber',
     'city',
     'careOf',
-    'personalNumber'
+    'personalNumber',
+    'shirtSize'
   ]
 
   // All editable karnevalistInfo fields
@@ -157,16 +166,14 @@ const setUserInfo = async (req, res) => {
     'driversLicense',
     'foodPreference',
     'disability',
-    'audition',
-    'talent',
-    'entertainmentCategory',
     'corps',
     'startOfStudies',
     'pastInvolvement',
     'groupLeader',
-    'interests',
     'misc',
-    'plenipotentiary'
+    'plenipotentiary',
+    'bff',
+    'studentNation'
   ]
 
   const entry = user.KarnevalistInfo
