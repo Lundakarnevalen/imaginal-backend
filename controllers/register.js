@@ -80,7 +80,8 @@ const createUser = async (req, res) => {
       groupLeader: req.body.groupLeader || false,
       misc: req.body.misc || '',
       plenipotentiary: req.body.plenipotentiary || false,
-      bff: req.body.bff || ''
+      bff: req.body.bff || '',
+      studentNation: req.body.studentNation || ''
     }, {t})
 
     const ourRole = await role.Role.findOne({

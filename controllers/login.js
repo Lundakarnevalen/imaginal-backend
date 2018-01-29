@@ -33,10 +33,18 @@ const loginByEmail = async (req, res, next) => {
         const roles = await allRoles.map(role => role.toJSON())
         const karnevalistInfo = await users.KarnevalistInfo.findOne({
           where: {userId: user.id},
-          attributes: ['language', 'driversLicense', 'disability',
-            'corps', 'startOfStudies', 'pastInvolvement',
-            'groupLeader', 'misc',
-            'plenipotentiary']
+          attributes: ['language',
+            'driversLicense',
+            'foodPreference',
+            'disability',
+            'corps',
+            'startOfStudies',
+            'pastInvolvement',
+            'groupLeader',
+            'misc',
+            'plenipotentiary',
+            'bff',
+            'studentNation']
         })
 
         const userinfo = {
