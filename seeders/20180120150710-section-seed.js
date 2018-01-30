@@ -68,7 +68,7 @@ module.exports = {
     await queryInterface.bulkInsert('Sections', [{
       nameSv: 'Ekonomi',
       nameEn: 'The Economy Section',
-      imageUrl: 'https://s3.eu-central-1.amazonaws.com/imaginalkarneval/images/biljonsen.png',
+      imageUrl: 'https://s3.eu-central-1.amazonaws.com/imaginalkarneval/images/ekonomi.png',
       textSv: 'Ekonomisektionen är Lundakarnevalens egen centralbank! Vår uppgift är att hålla koll på stålarna, där bidrag, bokföring, betallösningar och kontantsäkerhet är några av våra specialområden. Som stöd till de andra sektionerna möjliggör vi allt karnevalistiskt skoj och trams som är Lundakarnevalen. Häng med oss och se till att göra alla karnevalsvårens imaginaliteter till verklighet!',
       textEn: 'The financial section is the central bank of Lundakarnevalen. Our task is to keep track of the money, where grants, bookkeeping, payment solutions and cash safety are some of our areas of expertise. To support other sections we enable all the spoofs and jinks that make up Lundakarnevalen. Join us and help realise the imaginalities the spring will bring!',
       longTextSv: 'Vi i Ekonomisektionen ser till att Lundakarnevalens vildaste fantasier kan bli till liv. För att kort\n' +
