@@ -156,7 +156,6 @@ const setUserInfo = async (req, res) => {
     'postNumber',
     'city',
     'careOf',
-    'personalNumber',
     'shirtSize'
   ]
 
