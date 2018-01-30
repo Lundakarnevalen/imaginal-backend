@@ -409,7 +409,7 @@ module.exports = {
     await queryInterface.bulkInsert('Sections', [{
       nameSv: 'Mediahuset',
       nameEn: 'Mediahuset',
-      imageUrl: 'https://s3.eu-central-1.amazonaws.com/imaginalkarneval/images/mediahuser.png',
+      imageUrl: 'https://s3.eu-central-1.amazonaws.com/imaginalkarneval/images/mediahuset.png',
       textSv: 'Mediahuset är en skön mix av radio, klipperi och foto! Radion sänder under våren och sen från en glasbur musikhjälpen-style under karnevalsdagarna. Klipperiet kommer att göra Lundakarnevalen ännu lite bättre med hjälp av rörlig bild (allt från reklamfilm till knasiga karnevalsklipp). Foto kommer att ansvara för att föreviga den magiska karnevalskänslan under våren. Låter detta amazeballs? Sök oss!',
       textEn: 'Mediahuset is a great mix of radio, film and photo! The radio team will broadcast during spring and then 24/7 during the carnival days from a glass cage. The film team will make Lundakarnevalen move, doing everything from commercials to creative carnival clips. The photo team will be responsible for catching that magic carnival feeling. Does this sound amazeballs? Join Mediahuset!',
       longTextSv: '',
