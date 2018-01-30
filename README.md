@@ -64,6 +64,8 @@ npm run apidoc
 open doc.html
 ```
 ## API codes
+```
+
 200: OK
 400: User sent bad information or missing parameters
 401: User does not have appropriate privileges
@@ -71,6 +73,7 @@ open doc.html
 409: Conflict in registration (email/pin taken)
 418: Priorities sent after last date
 500: Internal error, not caused by user
+```
 
 ## Conventions
 * [standard.js](https://github.com/standard/standard) - JavaScript Style used 
