@@ -10,7 +10,7 @@ const getAll = async (req, res) => {
   if (!isAdmin) {
     return res.status(401).json({
       success: false,
-      message: 'Unauthorized'
+      message: 'Unauthorized',
     })
   }
 
@@ -19,7 +19,7 @@ const getAll = async (req, res) => {
   if (offset < 0) {
     return res.status(500).json({
       success: false,
-      message: 'Invalid offset'
+      message: 'Invalid offset',
     })
   }
 
@@ -28,9 +28,9 @@ const getAll = async (req, res) => {
     offset: offset,
     limit: limit,
     include: [
-      {model: users.KarnevalistInfo},
-      {model: Checkin, as: 'Checkin', attributes: ['checkerId', 'createdAt']}
-    ]
+      { model: users.KarnevalistInfo },
+      { model: Checkin, as: 'Checkin', attributes: ['checkerId', 'createdAt'] },
+    ],
   })
 
   res.json({
@@ -38,7 +38,7 @@ const getAll = async (req, res) => {
     users: allUsers.map(user => user.toJSON()).map(user => {
       user.checkedIn = !!user.Checkin
       return user
-    })
+    }),
   })
 }
 
@@ -48,16 +48,22 @@ const getById = async (req, res) => {
   if (!identification) {
     return res.status(400).json({
       success: false,
-      message: 'Missing identification parameter'
+      message: 'Missing identification parameter',
     })
   }
 
   const isAdmin = await UserRoles.hasRole(req.user, 'administrator')
 
-  if (!(isAdmin || (identification === req.user.email || identification === req.user.personalNumber))) {
+  if (
+    !(
+      isAdmin ||
+      (identification === req.user.email ||
+        identification === req.user.personalNumber)
+    )
+  ) {
     return res.status(401).json({
       success: false,
-      message: 'Admin privileges required'
+      message: 'Admin privileges required',
     })
   }
 
@@ -76,27 +82,27 @@ const getById = async (req, res) => {
     */
   const user = await users.User.findOne({
     where: {
-      $or: [
-        {personalNumber: identification},
-        {email: identification}
-      ]
-    }
+      $or: [{ personalNumber: identification }, { email: identification }],
+    },
   })
 
   if (!user) {
     return res.status(400).json({
       success: false,
-      message: 'No such user'
+      message: 'No such user',
     })
   }
 
   const checkedIn = await users.isCheckedIn(user)
   const allRoles = await user.getRoles()
-  const roles = await allRoles.map(role => role.toJSON()).map(role => { return role })
+  const roles = await allRoles.map(role => role.toJSON()).map(role => {
+    return role
+  })
 
   const karnevalistInfo = await users.KarnevalistInfo.findOne({
-    where: {userId: user.id},
-    attributes: ['language',
+    where: { userId: user.id },
+    attributes: [
+      'language',
       'driversLicense',
       'foodPreference',
       'disability',
@@ -107,20 +113,21 @@ const getById = async (req, res) => {
       'misc',
       'plenipotentiary',
       'bff',
-      'studentNation']
+      'studentNation',
+    ],
   })
 
   const userinfo = {
     checkedIn,
     ...user.toJSON(),
     ...karnevalistInfo.dataValues,
-    roles: [...roles]
+    roles: [...roles],
   }
 
   return res.json({
     success: true,
     userinfo,
-    user: userinfo // compability with app
+    user: userinfo, // compability with app
   })
 }
 
@@ -131,19 +138,19 @@ const setUserInfo = async (req, res) => {
   if (!isAdmin && email !== req.user.email) {
     return res.status(401).json({
       success: false,
-      message: 'Permission denied'
+      message: 'Permission denied',
     })
   }
 
   const user = await users.User.findOne({
-    where: {email},
-    include: [{model: users.KarnevalistInfo}]
+    where: { email },
+    include: [{ model: users.KarnevalistInfo }],
   })
 
   if (!user) {
     return res.status(400).json({
       success: false,
-      message: 'No such user'
+      message: 'No such user',
     })
   }
 
@@ -156,7 +163,7 @@ const setUserInfo = async (req, res) => {
     'postNumber',
     'city',
     'careOf',
-    'shirtSize'
+    'shirtSize',
   ]
 
   // All editable karnevalistInfo fields
@@ -172,12 +179,12 @@ const setUserInfo = async (req, res) => {
     'misc',
     'plenipotentiary',
     'bff',
-    'studentNation'
+    'studentNation',
   ]
 
   const entry = user.KarnevalistInfo
 
-  fields.forEach(key => (req.user[key] = req.body[key] || req.user[key]))
+  fields.forEach(key => (user[key] = req.body[key] || user[key]))
   entryFields.forEach(key => (entry[key] = req.body[key] || entry[key]))
 
   await user.save()
@@ -185,12 +192,12 @@ const setUserInfo = async (req, res) => {
 
   return res.json({
     success: true,
-    message: 'User info updated'
+    message: 'User info updated',
   })
 }
 
 module.exports = {
   getAll,
   getById,
-  setUserInfo
+  setUserInfo,
 }
