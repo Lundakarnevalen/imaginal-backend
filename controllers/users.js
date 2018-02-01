@@ -49,7 +49,7 @@ const getAll = async (req, res) => {
 
 const getById = async (req, res) => {
   const identification = req.params.identification
-  const t = sequelize.transaction()
+  const t = await sequelize.transaction()
   try {
     if (!identification) {
       return res.status(400).json({
@@ -115,7 +115,7 @@ const getById = async (req, res) => {
     const bigPleasures = await user.getUserBigAudition({t}).map(pleasure => pleasure.toJSON().audition)
     const smallPleasures = await user.getUserSmallAudition({t}).map(pleasure => pleasure.toJSON().audition)
 
-    t.commit()
+    await t.commit()
     const userinfo = {
       checkedIn,
       ...user.toJSON(),
@@ -133,7 +133,7 @@ const getById = async (req, res) => {
       user: userinfo // compability with app
     })
   } catch (err) {
-    console.err(err)
+    console.error(err)
     t.rollback()
     res.status(500).json({
       success: false,
@@ -157,7 +157,7 @@ const setUserInfo = async (req, res) => {
 
     const user = await users.User.findOne({
       where: {email},
-      include: [{model: users.KarnevalistInfo}],
+      include: [{model: users.KarnevalistInfo}]
     }, {t})
 
     if (!user) {
@@ -235,16 +235,16 @@ const setUserInfo = async (req, res) => {
       await createFromArray(req.body.smallPleasures, SmallPleasures, 'audition')
     }
 
-    user.save({t})
-    entry.save({t})
-    t.commit()
+    await user.save({t})
+    await entry.save({t})
+    await t.commit()
 
     return res.json({
       success: true,
       message: 'User info updated'
     })
   } catch (err) {
-    console.err(err)
+    console.error(err)
     t.rollback()
     res.status(500).json({
       success: false,
