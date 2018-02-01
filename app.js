@@ -31,12 +31,10 @@ app.use(function (error, req, res, next) {
 
 require('./users/users').User.findOne({
   where: {id: 1}
-}).then((admin) => {
-  admin.getCheckin().then((checkin) => {
-    console.log(checkin)
-  })
+}).then(async (user) => {
+  await user.isCheckedIn()
+  console.log()
 })
-
 /**
  * Unauthorized endpoints
  */
