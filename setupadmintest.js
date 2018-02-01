@@ -1,11 +1,11 @@
 'use strict'
 
-const user = require('./models/users')
+const user = require('./users/users')
 
 user.User.findOne({
   where: {id: 1}
 }).then(admin => {
-  user.setNewPassword(admin, 'ADMINPASSWORDPLEASEIGNORE').then(() => {
+  admin.setNewPassword('ADMINPASSWORDPLEASEIGNORE').then(() => {
     process.exit()
   })
 }).catch(() => {

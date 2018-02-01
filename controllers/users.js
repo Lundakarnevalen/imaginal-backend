@@ -1,6 +1,6 @@
 'use strict'
 
-const users = require('../models/users')
+const users = require('../users/users')
 const Checkin = require('../models/checkin').Checkin
 const UserRoles = require('../models/userrole')
 

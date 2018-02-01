@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize')
 const dbc = require('../config/database')
-const User = require('./users').User
+const User = require('../users/users').User
 
 const Skills = dbc.define('Skills', {
   id: {

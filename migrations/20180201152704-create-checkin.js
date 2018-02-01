@@ -1,21 +1,31 @@
 'use strict'
+
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Users', {
+    return queryInterface.createTable('Checkins', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      email: {
-        type: Sequelize.STRING
+      userId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: {
+            tableName: 'Users',
+            key: 'id'
+          }
+        }
       },
-      password: {
-        type: Sequelize.STRING
-      },
-      token: {
-        type: Sequelize.STRING
+      checkerId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: {
+            tableName: 'Users',
+            key: 'id'
+          }
+        }
       },
       createdAt: {
         allowNull: false,
@@ -28,6 +38,6 @@ module.exports = {
     })
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Users')
+    return queryInterface.dropTable('Checkins')
   }
 }

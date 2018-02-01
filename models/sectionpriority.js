@@ -1,7 +1,7 @@
 'use strict'
 const dbc = require('../config/database')
 const Sequelize = require('sequelize')
-const User = require('./users').User
+const User = require('../users/users').User
 const Section = require('./section').Section
 
 const OK = 0

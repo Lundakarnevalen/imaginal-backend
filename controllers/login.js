@@ -1,6 +1,5 @@
 'use strict'
 const passport = require('passport')
-const users = require('../models/users')
 
 const loginByEmail = async (req, res, next) => {
   if (!req.body.email || !req.body.password) {
@@ -28,31 +27,7 @@ const loginByEmail = async (req, res, next) => {
           })
         }
 
-        const checkedIn = await users.isCheckedIn(user)
-        const allRoles = await user.getRoles()
-        const roles = await allRoles.map(role => role.toJSON())
-        const karnevalistInfo = await users.KarnevalistInfo.findOne({
-          where: {userId: user.id},
-          attributes: ['language',
-            'driversLicense',
-            'foodPreference',
-            'disability',
-            'corps',
-            'startOfStudies',
-            'pastInvolvement',
-            'groupLeader',
-            'misc',
-            'plenipotentiary',
-            'bff',
-            'studentNation']
-        })
-
-        const userinfo = {
-          checkedIn,
-          ...user.toJSON(),
-          ...karnevalistInfo.dataValues,
-          roles: [...roles]
-        }
+        const userinfo = user.toJSON()
 
         return res.json({
           success: true,

@@ -1,4 +1,4 @@
-const User = require('../models/users').User
+const User = require('../users/users').User
 const Role = require('../models/role').Role
 const UserRoles = require('../models/userrole')
 

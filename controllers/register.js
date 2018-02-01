@@ -1,6 +1,6 @@
 'use strict'
 
-const users = require('../models/users')
+const users = require('../users/users')
 const role = require('../models/role')
 const jwt = require('jsonwebtoken')
 const sequelize = require('../config/database')

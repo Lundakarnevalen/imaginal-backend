@@ -1,6 +1,6 @@
 'use strict'
 
-const users = require('../models/users')
+const users = require('../users/users')
 const forgotPass = require('../models/forgotpassword').ForgotPassword
 const crypto = require('crypto')
 const AWS = require('aws-sdk')

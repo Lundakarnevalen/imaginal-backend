@@ -22,15 +22,6 @@ const User = dbc.define('User', {
   shirtSize: Sequelize.STRING
 })
 
-/* toJSON is called when sending/stringifying the user (e.g. res.json(user))
- it removes sensitive data (password and access token) */
-User.prototype.toJSON = function () {
-  const usr = Object.assign({}, this.get())
-  delete usr.password
-  delete usr.token
-  return usr
-}
-
 const KarnevalistInfo = dbc.define('KarnevalistInfo', {
   id: {
     autoIncrement: true,
@@ -51,10 +42,31 @@ const KarnevalistInfo = dbc.define('KarnevalistInfo', {
   studentNation: Sequelize.STRING
 })
 
+const getKarnevalistInfo = async (user) => {
+  const karnevalistInfo = await KarnevalistInfo.findOne({
+    where: { userId: user.id },
+    attributes: [
+      'language',
+      'driversLicense',
+      'foodPreference',
+      'disability',
+      'corps',
+      'startOfStudies',
+      'pastInvolvement',
+      'groupLeader',
+      'misc',
+      'plenipotentiary',
+      'bff',
+      'studentNation'
+    ]
+  })
+  return karnevalistInfo
+}
+
 // This adds UserId to KarnevalistInfo as foreign key
 User.hasOne(KarnevalistInfo)
 
-const setNewPassword = function (user, password) {
+User.prototype.setNewPassword = function (user, password) {
   return new Promise((resolve, reject) => {
     bcrypt.hash(password, 10, (err, hash) => {
       if (err) {
@@ -70,14 +82,44 @@ const setNewPassword = function (user, password) {
   })
 }
 
-const isCheckedIn = async user => {
-  const checkIn = await user.getCheckin()
-  return !!checkIn && checkIn.userId === user.id
+User.prototype.toJSON = async () => {
+  try {
+    const user = Object.assign({}, this.get())
+    delete user.password
+    delete user.token
+    const checkedIn = await user.isCheckedIn()
+    const allRoles = await user.getRoles()
+    const roles = await allRoles.map(role => role.toJSON()).map(role => {
+      return role
+    })
+
+    const karneInfo = await getKarnevalistInfo(user)
+
+    const userinfo = {
+      checkedIn,
+      ...user.toJSON(),
+      ...karneInfo.dataValues,
+      roles: [...roles]
+    }
+
+    return userinfo
+  } catch (err) {
+    console.err(err)
+    return null
+  }
+}
+
+User.prototype.isCheckedIn = async () => {
+  try {
+    const user = Object.assign({}, this.get())
+    const checkIn = await user.getCheckin()
+    return !!checkIn && checkIn.userId === user.id
+  } catch (err) {
+    console.err(err)
+    return null
+  }
 }
 
 module.exports = {
-  User,
-  KarnevalistInfo,
-  setNewPassword,
-  isCheckedIn
+  User
 }

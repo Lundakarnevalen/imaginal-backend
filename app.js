@@ -29,7 +29,7 @@ app.use(function (error, req, res, next) {
   next()
 })
 
-require('./models/users').User.findOne({
+require('./users/users').User.findOne({
   where: {id: 1}
 }).then((admin) => {
   admin.getCheckin().then((checkin) => {

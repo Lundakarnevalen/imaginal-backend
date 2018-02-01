@@ -1,6 +1,7 @@
 const Checkin = require('../models/checkin').Checkin
-const User = require('../models/users').User
+const User = require('../users/users').User
 const UserRoles = require('../models/userrole')
+const sequelize = require('../config/database')
 
 /**
  * checkIn checks in a user with req.user.
@@ -42,7 +43,7 @@ const checkIn = async (req, res) => {
   }
 
   // Check if checkin already exists
-  const existningCheckin = await user.getCheckin()
+  const existningCheckin = await user.isCheckedIn()
   if (existningCheckin) {
     return res.status(400).json({
       success: false,
@@ -50,6 +51,7 @@ const checkIn = async (req, res) => {
     })
   }
 
+  const t = await sequelize.transaction()
   try {
     const checkIn = await Checkin.create()
 
@@ -57,14 +59,13 @@ const checkIn = async (req, res) => {
     await user.setCheckin(checkIn)
 
     // The user that checks in the other is set as the owner
-    await req.user.setCheckinOwnership(checkIn)
-    console.log(req.user)
-    await checkIn.save()
-    // Save the updated models
-    await user.save()
-    await req.user.save()
+
+    await req.user.addCheckinOwnership(checkIn)
+
+    t.commit()
   } catch (err) {
     console.error('Error when creating a checkin. Error: ', err)
+    t.rollback()
     return res.status(400).json({
       success: false,
       message: 'Error when checking in the user.'
