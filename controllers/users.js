@@ -70,7 +70,7 @@ const getById = async (req, res) => {
       where: {
         $or: [{personalNumber: identification}, {email: identification}]
       }
-    }, {t})
+    })
 
     if (!user) {
       return res.status(400).json({
@@ -146,7 +146,7 @@ const setUserInfo = async (req, res) => {
 
     const user = await users.User.findOne({
       where: {email},
-      include: [{model: users.KarnevalistInfo}],
+      include: [{model: users.KarnevalistInfo}]
     }, {t})
 
     if (!user) {
@@ -224,16 +224,16 @@ const setUserInfo = async (req, res) => {
       await createFromArray(req.body.smallPleasures, SmallPleasures, 'audition')
     }
 
-    user.save({t})
-    entry.save({t})
-    t.commit()
+    await user.save({t})
+    await entry.save({t})
+    await t.commit()
 
     return res.json({
       success: true,
       message: 'User info updated'
     })
   } catch (err) {
-    console.err(err)
+    console.error(err)
     t.rollback()
     res.status(500).json({
       success: false,
