@@ -186,8 +186,7 @@ const setUserInfo = async (req, res) => {
 
   fields.forEach(key => (user[key] = req.body[key]))
   entryFields.forEach(key => (entry[key] = req.body[key]))
-  console.log(req.body.plenipotentiary)
-  console.log(user.plenipotentiary)
+
   await user.save()
   await entry.save()
 
