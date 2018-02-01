@@ -47,11 +47,20 @@ const loginByEmail = async (req, res, next) => {
             'studentNation']
         })
 
+        const skills = await user.getUserSkill().map(skill => skill.toJSON().skill)
+        const interests = await user.getUserInterest().map(interest => interest.toJSON().interest)
+        const bigPleasures = await user.getUserBigAudition().map(pleasure => pleasure.toJSON().audition)
+        const smallPleasures = await user.getUserSmallAudition().map(pleasure => pleasure.toJSON().audition)
+
         const userinfo = {
           checkedIn,
           ...user.toJSON(),
           ...karnevalistInfo.dataValues,
-          roles: [...roles]
+          roles: [...roles],
+          skills,
+          interests,
+          bigPleasures,
+          smallPleasures
         }
 
         return res.json({
