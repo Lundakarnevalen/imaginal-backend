@@ -28,7 +28,7 @@ const getAll = async (req, res) => {
     })
   }
 
-  const allUsers = await users.User.findAll({
+  const allUsers = await users.User.findAndCountAll({
     order: ['id'],
     offset: offset,
     limit: limit,
@@ -40,10 +40,11 @@ const getAll = async (req, res) => {
 
   res.json({
     success: true,
-    users: allUsers.map(user => user.toJSON()).map(user => {
+    users: allUsers.rows.map(user => user.toJSON()).map(user => {
       user.checkedIn = !!user.Checkin
       return user
-    })
+    }),
+    count: allUsers.count
   })
 }
 
