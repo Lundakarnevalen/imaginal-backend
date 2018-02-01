@@ -171,9 +171,10 @@ const setUserInfo = async (req, res) => {
 
   const entry = user.KarnevalistInfo
 
-  fields.forEach(key => (user[key] = req.body[key] || user[key]))
-  entryFields.forEach(key => (entry[key] = req.body[key] || entry[key]))
-
+  fields.forEach(key => (user[key] = req.body[key]))
+  entryFields.forEach(key => (entry[key] = req.body[key]))
+  console.log(req.body.plenipotentiary)
+  console.log(user.plenipotentiary)
   await user.save()
   await entry.save()
 
