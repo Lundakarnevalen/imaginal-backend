@@ -42,7 +42,7 @@ const checkIn = async (req, res) => {
   }
 
   // Check if checkin already exists
-  const existningCheckin = await Checkin.findOne({where: {userId: user.id}})
+  const existningCheckin = await user.getCheckin()
   if (existningCheckin) {
     return res.status(400).json({
       success: false,
@@ -58,7 +58,8 @@ const checkIn = async (req, res) => {
 
     // The user that checks in the other is set as the owner
     await req.user.setCheckinOwnership(checkIn)
-
+    console.log(req.user)
+    await checkIn.save()
     // Save the updated models
     await user.save()
     await req.user.save()
