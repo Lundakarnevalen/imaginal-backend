@@ -24,12 +24,6 @@ mysql -u<user> -p<password>
 CREATE DATABASE karneval;
 ```
 
-Init and seed database tables
-```
-./node_modules/.bin/sequelize db:migrate
-./node_modules/.bin/sequelize db:seed:all
-```
-
 Config application parameters
 ```
 export MYSQL_USER='user'
@@ -41,17 +35,17 @@ Run server
 ```
 npm start
 ```
+
+Seed database tables
+```
+./node_modules/.bin/sequelize db:seed:all
+```
 ## Scripts
 If you have username root and no password on mysql, you can use
 ```
-sh dbinit
-```
-On mac or linux (maybe). If you don't want to make a backup, use.
-
-```
 sh noBackupinit
 ```
-
+to empty the database, create all tables, seed the data and then start the server.
 ## Running the tests
 
 ```
@@ -70,11 +64,16 @@ npm run apidoc
 open doc.html
 ```
 ## API codes
+```
+
 200: OK
 400: User sent bad information or missing parameters
 401: User does not have appropriate privileges
 404: No such end point
+409: Conflict in registration (email/pin taken)
+418: Priorities sent after last date
 500: Internal error, not caused by user
+```
 
 ## Conventions
 * [standard.js](https://github.com/standard/standard) - JavaScript Style used 
