@@ -15,7 +15,7 @@ const checkIn = async (req, res) => {
     })
   }
 
-  const isAdmin = await UserRoles.hasRole(req.user, 'administrator')
+  const isAdmin = await UserRoles.hasRole(req.user, UserRoles.ADMIN)
 
   if (!isAdmin) {
     return res.status(401).json({
@@ -90,7 +90,7 @@ const checkStatus = async (req, res) => {
     })
   }
 
-  const isAdmin = await UserRoles.hasRole(req.user, 'administrator')
+  const isAdmin = await UserRoles.hasRole(req.user, UserRoles.ADMIN)
 
   if (!isAdmin && email !== req.user.email) {
     return res.status(401).json({
@@ -131,7 +131,7 @@ const listCheckins = async (req, res) => {
     })
   }
 
-  const isAdmin = await UserRoles.hasRole(req.user, 'administrator')
+  const isAdmin = await UserRoles.hasRole(req.user, UserRoles.ADMIN)
 
   if (!isAdmin) {
     return res.status(401).json({
