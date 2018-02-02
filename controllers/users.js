@@ -187,8 +187,17 @@ const setUserInfo = async (req, res) => {
 
     const entry = user.KarnevalistInfo
 
-    fields.forEach(key => (if (req.body.hasOwnProperty(key)) { user[key] = req.body[key] }))
-    entryFields.forEach(key => (if (req.body.hasOwnProperty(key)) { entry[key] = req.body[key] }))
+    fields.forEach(key => {
+      if (req.body.hasOwnProperty(key)) {
+        user[key] = req.body[key]
+      }
+    })
+
+    entryFields.forEach(key => {
+      if (req.body.hasOwnProperty(key)) {
+        entry[key] = req.body[key]
+      }
+    })
 
     const isValidArray = (input) => {
       return input && Array.isArray(input)
