@@ -3,7 +3,6 @@
 const users = require('../models/users')
 const Checkin = require('../models/checkin').Checkin
 const UserRoles = require('../models/userrole')
-const sequelize = require('../config/database')
 const Skills = require('../models/skills').Skills
 const BigPleasures = require('../models/bigpleasures').BigPleasures
 const SmallPleasures = require('../models/smallpleasures').SmallPleasures
@@ -133,7 +132,6 @@ const getById = async (req, res) => {
 }
 
 const setUserInfo = async (req, res) => {
-  const t = await sequelize.transaction()
   try {
     const email = req.params.email
     const isAdmin = await UserRoles.hasRole(req.user, UserRoles.ADMIN)
@@ -148,7 +146,7 @@ const setUserInfo = async (req, res) => {
     const user = await users.User.findOne({
       where: {email},
       include: [{model: users.KarnevalistInfo}]
-    }, {t})
+    })
 
     if (!user) {
       return res.status(400).json({
@@ -208,35 +206,34 @@ const setUserInfo = async (req, res) => {
         await table.create({
           userId: user.dataValues.id,
           [col]: val
-        }, {t})
+        })
       }
     }
 
     /** TODO: This is the same code as in register.js, we need to refactor stuff */
 
     if (isValidArray(req.body.interests)) {
-      await Interests.destroy({where: {userId: user.id}}, {t})
+      await Interests.destroy({where: {userId: user.id}})
       await createFromArray(req.body.interests, Interests, 'interest')
     }
 
     if (isValidArray(req.body.skills)) {
-      await Skills.destroy({where: {userId: user.id}}, {t})
+      await Skills.destroy({where: {userId: user.id}})
       await createFromArray(req.body.skills, Skills, 'skill')
     }
 
     if (isValidArray(req.body.bigPleasures)) {
-      await BigPleasures.destroy({where: {userId: user.id}}, {t})
+      await BigPleasures.destroy({where: {userId: user.id}})
       await createFromArray(req.body.bigPleasures, BigPleasures, 'audition')
     }
 
     if (isValidArray(req.body.smallPleasures)) {
-      await SmallPleasures.destroy({where: {userId: user.id}}, {t})
+      await SmallPleasures.destroy({where: {userId: user.id}})
       await createFromArray(req.body.smallPleasures, SmallPleasures, 'audition')
     }
 
-    await user.save({t})
-    await entry.save({t})
-    await t.commit()
+    await user.save()
+    await entry.save()
 
     return res.json({
       success: true,
@@ -244,7 +241,6 @@ const setUserInfo = async (req, res) => {
     })
   } catch (err) {
     console.error(err)
-    t.rollback()
     res.status(500).json({
       success: false,
       message: 'Failed to update user info'
