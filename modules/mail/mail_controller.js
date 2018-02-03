@@ -25,7 +25,7 @@ const awsConfig = {
 AWS.config.update(awsConfig)
 const sender = 'noreply@lundakarnevalen.se'
 
-const sendEmail = (email, subject, template_name, data) => {
+const sendEmail = (email_list, subject, template_name, data) => {
   console.log(1,'aoeuaoeuaoeu')
   return new Promise((resolve, reject) => {
     const template = fs.readFileSync(
@@ -34,7 +34,7 @@ const sendEmail = (email, subject, template_name, data) => {
     const msg = mustache.render(template.toString(), {resetPasswordHash: data})
     const params = {
       Destination: {
-        ToAddresses: [ email ]
+        ToAddresses: email_list
       },
       Message: {
         Body: {
@@ -57,17 +57,22 @@ const sendEmail = (email, subject, template_name, data) => {
         console.log(666, err)
         reject(err)
       } else {
-        console.log(200, 'aoeu')
+        console.log(200, 'aoeu', data)
         resolve()
       }
     })
   })
 }
 
+let parsedJSON = require('./data/test.json');
+let emails = parsedJSON.data.map(d => d.email)
+console.log(emails)
+
+
 async function try_mail(){
-  await sendEmail('christopher.nille.nilsson@gmail.com', 'Hej', 'valkommen', {})
+  await sendEmail(emails, 'Upprops-information!! <3', 'infor_upprop', {})
 }
-//try_mail()
+try_mail()
 
 
 
