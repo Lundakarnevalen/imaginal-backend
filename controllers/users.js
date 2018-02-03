@@ -6,7 +6,7 @@ const UserRoles = require('../models/userrole')
 const Skills = require('../models/skills').Skills
 const BigPleasures = require('../models/bigpleasures').BigPleasures
 const SmallPleasures = require('../models/smallpleasures').SmallPleasures
-const Interests = require('../models/interests').Interests
+const Interest = require('../models/interests').Interests
 
 const getAll = async (req, res) => {
   const isAdmin = await UserRoles.hasRole(req.user, UserRoles.ADMIN)
@@ -212,9 +212,9 @@ const setUserInfo = async (req, res) => {
 
     /** TODO: This is the same code as in register.js, we need to refactor stuff */
 
-    if (isValidArray(req.body.interests)) {
-      await Interests.destroy({where: {userId: user.id}})
-      await createFromArray(req.body.interests, Interests, 'interest')
+    if (isValidArray(req.body.interest)) {
+      await Interest.destroy({where: {userId: user.id}})
+      await createFromArray(req.body.interest, Interest, 'interest')
     }
 
     if (isValidArray(req.body.skills)) {
