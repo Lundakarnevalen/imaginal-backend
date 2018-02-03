@@ -104,6 +104,9 @@ app.all('*', function (req, res) {
 const port = process.env.PORT || 3000
 
 
+glob.sync( './modules/**/*_controller.js' ).forEach( function( file ) {
+  require( path.resolve( file ) );
+});
 glob.sync( './modules/**/*_model.js' ).forEach( function( file ) {
   require( path.resolve( file ) );
 });
