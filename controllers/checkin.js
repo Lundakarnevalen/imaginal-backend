@@ -93,7 +93,7 @@ const checkStatus = async (req, res) => {
 
   const isAdmin = await UserRoles.hasRole(req.user, UserRoles.ADMIN)
 
-  if (!isAdmin && email !== req.user.email) {
+  if (!isAdmin && email.toString().toLowerCase() !== req.user.email.toString().toLowerCase()) {
     return res.status(401).json({
       success: false,
       message: 'Admin privileges required to check another user\'s status'
