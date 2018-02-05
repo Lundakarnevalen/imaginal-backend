@@ -40,7 +40,7 @@ Section.belongsToMany(User, {
 })
 
 const setSectionPriorities = async (user, sections) => {
-  const lastDate = new Date('2018-02-05T03:24:00')
+  const lastDate = new Date('2018-03-05T03:24:00')
   if (Date.now() > lastDate.getTime()) {
     return LATE
   }
