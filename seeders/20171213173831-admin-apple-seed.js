@@ -13,6 +13,7 @@ module.exports = {
       careOf: 'saknas',
       personalNumber: 'saknas',
       password: '$2a$10$HEbL5HaUXdD3ZnUDhQnMYueuW3n4v92aPs4imN.FlRD/on4DI/55e',
+      token: 'admintoken',
       createdAt: new Date().toISOString().substr(0, 10),
       updatedAt: new Date().toISOString().substr(0, 10)
     }], {})
