@@ -1,19 +1,20 @@
 'use strict'
+
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('UserRoles', {
+    return queryInterface.createTable('Sections', {
       id: {
-        allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      userId: {
-        type: Sequelize.INTEGER
-      },
-      roleId: {
-        type: Sequelize.INTEGER
-      },
+      nameSv: Sequelize.STRING,
+      nameEn: Sequelize.STRING,
+      imageUrl: Sequelize.TEXT,
+      textSv: Sequelize.TEXT,
+      textEn: Sequelize.TEXT,
+      longTextSv: Sequelize.TEXT,
+      longTextEn: Sequelize.TEXT,
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -25,6 +26,6 @@ module.exports = {
     })
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('UserRoles')
+    return queryInterface.dropTable('Sections')
   }
 }

@@ -44,7 +44,10 @@ const hasRole = function (user, role) { // (user, role) returns a boolean-promis
   })
 }
 
+const ADMIN = 'administrator'
+
 module.exports = {
   UserRole,
-  hasRole
+  hasRole,
+  ADMIN
 }

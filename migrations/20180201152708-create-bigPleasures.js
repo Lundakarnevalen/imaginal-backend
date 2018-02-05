@@ -1,23 +1,29 @@
 'use strict'
-
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Sections', {
+    return queryInterface.createTable('BigPleasures', {
       id: {
+        allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      nameSv: Sequelize.STRING,
-      nameEn: Sequelize.STRING,
-      imageUrl: Sequelize.STRING,
-      textSv: Sequelize.TEXT,
-      textEn: Sequelize.TEXT,
+      audition: {
+        type: Sequelize.TEXT,
+        allowNull: true
+      },
+      userId: {
+        type: Sequelize.INTEGER,
+        reference: {
+          model: 'Users',
+          key: 'id'
+        },
+        allowNull: true
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
       },
-
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -25,6 +31,6 @@ module.exports = {
     })
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Sections')
+    return queryInterface.dropTable('BigPleasures')
   }
 }

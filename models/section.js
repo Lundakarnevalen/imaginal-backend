@@ -11,7 +11,9 @@ const Section = dbc.define('Sections', {
   nameSv: Sequelize.STRING,
   nameEn: Sequelize.STRING,
   textSv: Sequelize.TEXT,
-  textEn: Sequelize.TEXT
+  textEn: Sequelize.TEXT,
+  longTextSv: Sequelize.TEXT,
+  longTextEn: Sequelize.TEXT
 })
 
 module.exports = {

@@ -8,10 +8,10 @@ const fs = require('fs')
 const path = require('path')
 const mustache = require('mustache')
 
-const awsConfig = { 
-  "accessKeyId": process.env.AWS_ACCESS_ID,
-  "secretAccessKey": process.env.AWS_ACCESS_KEY,
-  "region": "eu-west-1"
+const awsConfig = {
+  'accessKeyId': process.env.AWS_ACCESS_ID,
+  'secretAccessKey': process.env.AWS_ACCESS_KEY,
+  'region': 'eu-west-1'
 }
 
 AWS.config.update(awsConfig)
@@ -28,7 +28,7 @@ const sendEmail = (email, token) => {
       Message: {
         Body: {
           Html: {
-            Charset: "UTF-8",
+            Charset: 'UTF-8',
             Data: msg
           }
         },
@@ -62,15 +62,17 @@ const forgotPassword = async (req, res) => {
     where: {email: req.body.email}
   })
   if (!user) {
+    // If there is no user, pretend that there is
+    // to avoid username fishing
     return res.json({
-      success: false,
-      message: 'Failed to reset password'
+      success: true,
+      message: 'Email sent'
     })
   }
 
   crypto.randomBytes(255, async (err, buf) => {
     if (err) {
-      return res.json({
+      return res.status(500).json({
         success: false,
         message: 'Failed to reset password'
       })
@@ -87,11 +89,19 @@ const forgotPassword = async (req, res) => {
       await passwordToken.update({email: user.email, token: token})
     }
 
-    await sendEmail(user.email, token)
-    res.json({
-      success: true,
-      message: 'Email sent'
-    })
+    try {
+      await sendEmail(user.email, token)
+      res.json({
+        success: true,
+        message: 'Email sent'
+      })
+    } catch (err) {
+      console.log(err)
+      res.status(500).json({
+        success: false,
+        message: 'Failed to reset password'
+      })
+    }
   })
 }
 
