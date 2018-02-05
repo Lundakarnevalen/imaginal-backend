@@ -1,13 +1,10 @@
 'use strict'
 
 const users = require('../users/users')
+const usersService = require('../users/usersService')
 const role = require('../models/role')
 const jwt = require('jsonwebtoken')
 const sequelize = require('../config/database')
-const Interest = require('../models/interests').Interests
-const Skills = require('../models/skills').Skills
-const SmallPleasures = require('../models/smallpleasures').SmallPleasures
-const BigPleasures = require('../models/bigpleasures').BigPleasures
 
 const registerUser = function (req, res) {
   const error = []
@@ -90,34 +87,9 @@ const createUser = async (req, res) => {
 
     await user.addRole([ourRole], {t})
 
-    const isValidArray = (input) => {
-      return input && Array.isArray(input)
-    }
+    usersService.setUserSkillsAndTalents(user, req.body.interest, req.body.skills,
+      req.body.bigPleasures, req.body.smallPleasures, t)
 
-    const createFromArray = async (data, table, col) => {
-      for (let val of data) {
-        await table.create({
-          userId: user.dataValues.id,
-          [col]: val
-        }, {t})
-      }
-    }
-
-    if (isValidArray(req.body.interest)) {
-      await createFromArray(req.body.interest, Interest, 'interest')
-    }
-
-    if (isValidArray(req.body.skills)) {
-      await createFromArray(req.body.skills, Skills, 'skill')
-    }
-
-    if (isValidArray(req.body.bigPleasures)) {
-      await createFromArray(req.body.bigPleasures, BigPleasures, 'audition')
-    }
-
-    if (isValidArray(req.body.smallPleasures)) {
-      await createFromArray(req.body.smallPleasures, SmallPleasures, 'audition')
-    }
     await user.setNewPassword(req.body.password)
     await t.commit()
 
