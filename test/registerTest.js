@@ -1,28 +1,14 @@
-const should = require('chai').should()
 const supertest = require('supertest')
 const api = supertest('http://localhost:3000')
-const users = require('../models/users').User
 
-describe('API /register', function () {
-  const testUser = {
-    'email': 'test@gmail.com',
-    'personalNumber': '0123459789',
-    'password': 'password'
-  }
 
-  before(async () => {
-    await users.destroy({
-      where: {
-        $or: [{personalNumber: testUser.personalNumber}, {email: testUser.email}]
-      }
-    })
-  })
-
+module.exports = (user) => describe('API /register', function () {
   it('should create a user', done => {
     api.post('/register')
-      .send(testUser)
+      .send(user)
       .expect(200, done)
   })
+
   it('should allow only one user per email', done => {
     const user = {
       'email': 'test@gmail.com',
@@ -33,9 +19,10 @@ describe('API /register', function () {
       .send(user)
       .expect(409, done)
   })
+
   it('should allow only one user per personal number', done => {
     const user = {
-      'email': 'newEmail@',
+      'email': 'test@gmail.com',
       'personalNumber': '0123456789',
       'password': 'password'
     }
@@ -43,6 +30,7 @@ describe('API /register', function () {
       .send(user)
       .expect(409, done)
   })
+
   it('should tell if email is missing', done => {
     const user = {
       'notEmail': 'test@gmail.com',
