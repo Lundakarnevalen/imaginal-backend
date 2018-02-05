@@ -34,7 +34,7 @@ const getUser = () => {
 const getAdmin = () => {
   return {
     'email': 'admin@lundakarnevalen.se',
-    'token': 'admintoken',
+    'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGx1bmRha2FybmV2YWxlbi5zZSIsImlhdCI6MTUxNzg1NDQyNn0.ngC0lGANxmh8cGWGqHw-zcRDK4NSOAj5qnfelpOJmWg',
     'password': 'password',
     'postNumber': '123',
     'phoneNumber': 'phoneNumber',
