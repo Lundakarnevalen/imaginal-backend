@@ -35,7 +35,7 @@ const getUser = () => {
 const getAdmin = () => {
   return {
     'email': 'admin@lundakarnevalen.se',
-    'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGx1bmRha2FybmV2YWxlbi5zZSIsImlhdCI6MTUxNzg1NDQyNn0.ngC0lGANxmh8cGWGqHw-zcRDK4NSOAj5qnfelpOJmWg',
+    'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGx1bmRha2FybmV2YWxlbi5zZSIsImlhdCI6MTUxNzg2MzM0MH0.sTXMU6V2elo9kxTe-W8bd9KAT0XfR8_qFlZdBD9emMM',
     'password': 'password',
     'postNumber': '123',
     'phoneNumber': 'phoneNumber',
@@ -67,7 +67,7 @@ const getAdmin = () => {
 
 const getToken = (user) => {
 
-})
+}
 
 module.exports = {
   getToken,

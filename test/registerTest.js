@@ -1,7 +1,6 @@
 const supertest = require('supertest')
 const api = supertest('http://localhost:3000')
 
-
 module.exports = (user) => describe('API /register', function () {
   it('should create a user', done => {
     api.post('/register')
