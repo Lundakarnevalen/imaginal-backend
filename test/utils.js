@@ -1,3 +1,4 @@
+const users = require('../models/users')
 
 const getUser = () => {
   return {
@@ -64,7 +65,12 @@ const getAdmin = () => {
   }
 }
 
+const getToken = (user) => {
+
+})
+
 module.exports = {
-  getAdmin,
-  getUser
+  getToken,
+  getUser,
+  getAdmin
 }
