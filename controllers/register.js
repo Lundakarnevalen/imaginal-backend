@@ -118,7 +118,7 @@ const createUser = async (req, res) => {
     if (isValidArray(req.body.smallPleasures)) {
       await createFromArray(req.body.smallPleasures, SmallPleasures, 'audition')
     }
-    await users.setNewPassword(user, req.body.password)
+    await user.setNewPassword(req.body.password)
     await t.commit()
 
     return res.json({
@@ -128,7 +128,7 @@ const createUser = async (req, res) => {
     })
   } catch (err) {
     await t.rollback()
-    console.log(err)
+    console.error(err)
     return res.status(500).json({
       success: false,
       message: 'Failed to register'

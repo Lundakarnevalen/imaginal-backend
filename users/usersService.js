@@ -1,6 +1,6 @@
 const userToJSON = async (user) => {
   try {
-    const checkedIn = await user.isCheckedIn()
+    const checkedIn = await isCheckedIn(user)
     const allRoles = await user.getRoles()
     const roles = await allRoles.map(role => role.toJSON()).map(role => {
       return role
@@ -23,16 +23,15 @@ const userToJSON = async (user) => {
     const smallPleasures = await user.getUserSmallAudition().map(pleasure => pleasure.toJSON().audition)
 
     const userinfo = {
-      checkedIn,
-      ...user.toJSON(),
-      ...karnevalInfo.dataValues,
+      ...usr,
+        ...karnevalInfo,
       roles: [...roles],
       skills,
       interests,
       bigPleasures,
-      smallPleasures
+      smallPleasures,
+      checkedIn: checkedIn
     }
-
     return userinfo
   } catch (err) {
     console.error(err)
@@ -40,6 +39,17 @@ const userToJSON = async (user) => {
   }
 }
 
+const isCheckedIn = async (user) => {
+  try {
+    const checkIn = await user.getCheckin()
+    return !!checkIn && checkIn.userId === user.id
+  } catch (err) {
+    console.error(err)
+    return null
+  }
+}
+
 module.exports = {
-  userToJSON
+  userToJSON,
+  isCheckedIn
 }

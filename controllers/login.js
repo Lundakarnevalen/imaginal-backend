@@ -19,6 +19,7 @@ const loginByEmail = async (req, res, next) => {
           message: 'Incorrect login credentials.'
         })
       }
+
       req.logIn(user, async (err) => {
         if (err) {
           return res.json({
@@ -26,13 +27,13 @@ const loginByEmail = async (req, res, next) => {
             message: 'Incorrect login credentials.'
           })
         }
-
-        const userinfo = user.toJSON()
+        const accessToken = req.user.token
+        const userinfo = await user.toJSON()
 
         return res.json({
           success: true,
           message: 'Successfully logged in',
-          accessToken: req.user.token,
+          accessToken,
           userinfo,
           user: userinfo // compability with app
         })

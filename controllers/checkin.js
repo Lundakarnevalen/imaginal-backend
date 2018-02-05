@@ -1,5 +1,6 @@
 const Checkin = require('../models/checkin').Checkin
 const User = require('../users/users').User
+const userService = require('../users/usersService')
 const UserRoles = require('../models/userrole')
 const sequelize = require('../config/database')
 
@@ -16,7 +17,7 @@ const checkIn = async (req, res) => {
     })
   }
 
-  const isAdmin = await UserRoles.hasRole(req.user, 'administrator')
+  const isAdmin = await UserRoles.hasRole(req.user, UserRoles.ADMIN)
 
   if (!isAdmin) {
     return res.status(401).json({
@@ -43,7 +44,8 @@ const checkIn = async (req, res) => {
   }
 
   // Check if checkin already exists
-  const existningCheckin = await user.isCheckedIn()
+
+  const existningCheckin = await userService.isCheckedIn(user)
   if (existningCheckin) {
     return res.status(400).json({
       success: false,
@@ -92,9 +94,9 @@ const checkStatus = async (req, res) => {
     })
   }
 
-  const isAdmin = await UserRoles.hasRole(req.user, 'administrator')
+  const isAdmin = await UserRoles.hasRole(req.user, UserRoles.ADMIN)
 
-  if (!isAdmin && email !== req.user.email) {
+  if (!isAdmin && email.toString().toLowerCase() !== req.user.email.toString().toLowerCase()) {
     return res.status(401).json({
       success: false,
       message: 'Admin privileges required to check another user\'s status'
@@ -133,7 +135,7 @@ const listCheckins = async (req, res) => {
     })
   }
 
-  const isAdmin = await UserRoles.hasRole(req.user, 'administrator')
+  const isAdmin = await UserRoles.hasRole(req.user, UserRoles.ADMIN)
 
   if (!isAdmin) {
     return res.status(401).json({

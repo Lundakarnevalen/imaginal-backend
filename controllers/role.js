@@ -38,7 +38,7 @@ const removeRole = function (req, res) {
 const getUsers = function (req, res) {
   const roleId = req.params.roleid
 
-  UserRoles.hasRole(req.user, 'administrator').then(admin => {
+  UserRoles.hasRole(req.user, UserRoles.ADMIN).then(admin => {
     if (admin) {
       Role.findOne({
         where: {
@@ -72,7 +72,7 @@ const getUsers = function (req, res) {
 }
 
 const findUserAndRole = function (req, res, email, roleId, callback) {  // callback takes two arguments, user and role
-  UserRoles.hasRole(req.user, 'administrator').then(admin => {
+  UserRoles.hasRole(req.user, UserRoles.ADMIN).then(admin => {
     if (admin) {
       findUser(email).then(user => {
         if (!user) {

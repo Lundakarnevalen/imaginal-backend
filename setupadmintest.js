@@ -9,5 +9,5 @@ user.User.findOne({
     process.exit()
   })
 }).catch(() => {
-  console.log('Failed to set adminpassword')
+  console.error('Failed to set adminpassword')
 })

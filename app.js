@@ -29,12 +29,6 @@ app.use(function (error, req, res, next) {
   next()
 })
 
-require('./users/users').User.findOne({
-  where: {id: 1}
-}).then(async (user) => {
-  await user.isCheckedIn()
-  console.log()
-})
 /**
  * Unauthorized endpoints
  */
