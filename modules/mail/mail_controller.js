@@ -25,8 +25,7 @@ const awsConfig = {
 AWS.config.update(awsConfig)
 const sender = 'noreply@lundakarnevalen.se'
 
-const sendEmail = (email_list, subject, template_name, data) => {
-  console.log(1,'aoeuaoeuaoeu')
+const sendEmail = (email, subject, template_name, data) => {
   return new Promise((resolve, reject) => {
     const template = fs.readFileSync(
       path.resolve(__dirname, './templates/' + template_name + '.mustache')
@@ -34,7 +33,7 @@ const sendEmail = (email_list, subject, template_name, data) => {
     const msg = mustache.render(template.toString(), {resetPasswordHash: data})
     const params = {
       Destination: {
-        ToAddresses: email_list
+        ToAddresses: [email]
       },
       Message: {
         Body: {
@@ -54,25 +53,39 @@ const sendEmail = (email_list, subject, template_name, data) => {
     const ses = new AWS.SES({apiVersion: '2010-12-01'})
     ses.sendEmail(params, (err, data) => {
       if (err) {
-        console.log(666, err)
+        console.log('Invalid:', email, err)
         reject(err)
       } else {
-        console.log(200, 'aoeu', data)
+        console.log('Valid:', email, data)
         resolve()
       }
     })
   })
 }
 
-let parsedJSON = require('./data/test.json');
-let emails = parsedJSON.data.map(d => d.email)
+//let emails = require('./data/auditions.json').data.map(d => d.email.trim())
+let emails = ['christopher.nille.nilsson@gmail.com']
+
 console.log(emails)
-
-
-async function try_mail(){
-  await sendEmail(emails, 'Upprops-information!! <3', 'infor_upprop', {})
+async function try_mail(email){i
+  await sendEmail(email, 'Auditions - Bekräfta din plats', 'auditions', {})
 }
-try_mail()
+
+var i = 0
+setInterval(fun2, 2000)
+
+function fun2(){
+  for(var j = 0; j < 20; j++){
+    if(i+j >= emails.length){
+      console.log('DONEDONEDONEDONE')
+      i += 20
+      return;
+    }
+    console.log(i+j, emails[i+j])
+    //try_mail(emails[i+j])
+  }
+  i += 20
+}
 
 
 
