@@ -64,7 +64,7 @@ const getSectionPriorities = async (req, res, next) => {
       sectionPriorities
     })
   } catch (err) {
-    console.log(err)
+    console.error(err)
     res.status(500).json({
       success: false,
       message: 'Failed to fetch section priorities'

@@ -7,7 +7,7 @@ require('./config/passport')(require('passport'))
 require('./controllers/role')
 require('./controllers/section')
 require('./controllers/checkin')
-require('./controllers/users')
+require('./users/userController')
 
 require('./config/database')
   .sync()

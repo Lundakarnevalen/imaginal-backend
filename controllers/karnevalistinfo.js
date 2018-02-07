@@ -28,7 +28,7 @@ const setKarnevalistInfo = function (req, res) {
   })
 }
 
-const getKarnevalistInfo = function (req, res) {
+const getKarnevalistInfos = function (req, res) {
   karnevalistInfo.KarnevalistInfo.findOne({
     where: {user_id: req.user.id}
   }).then(info => {
@@ -40,5 +40,5 @@ const getKarnevalistInfo = function (req, res) {
 
 module.exports = {
   setKarnevalistInfo,
-  getKarnevalistInfo
+  getKarnevalistInfos
 }

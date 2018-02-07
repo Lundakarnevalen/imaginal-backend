@@ -1,5 +1,6 @@
 const Checkin = require('../models/checkin').Checkin
-const User = require('../models/users').User
+const User = require('../users/users').User
+const userService = require('../users/usersService')
 const UserRoles = require('../models/userrole')
 const sequelize = require('../config/database')
 
@@ -43,7 +44,8 @@ const checkIn = async (req, res) => {
   }
 
   // Check if checkin already exists
-  const existningCheckin = await user.getCheckin()
+
+  const existningCheckin = await userService.isCheckedIn(user)
   if (existningCheckin) {
     return res.status(400).json({
       success: false,
@@ -59,6 +61,7 @@ const checkIn = async (req, res) => {
     await user.setCheckin(checkIn)
 
     // The user that checks in the other is set as the owner
+
     await req.user.addCheckinOwnership(checkIn)
 
     t.commit()
