@@ -73,19 +73,18 @@ const getUsers = async (req, res) => {
     })
   }
 
-  const roleUsers = await role.getUsers()
-  const resp = {}
-  resp.success = true
-  resp.users = []
-  console.log(roleUsers.length)
-  for (let i = 0; i < roleUsers.length; ++i) {
-    resp.users.push({
-      email: roleUsers[i].email,
-      firstName: roleUsers[i].firstName,
-      lastName: roleUsers[i].lastName
-    })
-  }
-  res.send(resp)
+  const adminUsers = await role.getUsers().map((user) => {
+    const adminuser = {}
+    adminuser.email = user.email
+    adminuser.firstName = user.firstName
+    adminuser.lastName = user.lastName
+    return adminuser
+  })
+
+  res.send({
+    success: true,
+    users: adminUsers
+  })
 }
 
 const notAuthorized = function (res) {
