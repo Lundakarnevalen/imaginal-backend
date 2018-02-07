@@ -2,13 +2,21 @@ const supertest = require('supertest')
 const api = supertest('http://localhost:3000')
 const expect = require('chai').expect
 
-module.exports = (user, admin) => describe('API /api/users', function () {
+module.exports = (user, admin) => describe('API /api/users get all users', function () {
   it('Should return three users', done => {
     api.get('/api/users')
       .set('Authorization', 'bearer ' + admin.token)
       .end(async(err, res) => {
         await expect(res.statusCode).to.equal(200)
         await expect(res.body.users.length).to.equal(3)
+        await done()
+      })
+  })
+  it('Should fail when not admin', done => {
+    api.get('/api/users')
+      .set('Authorization', 'bearer ' + user.token)
+      .end(async(err, res) => {
+        await expect(res.statusCode).to.equal(401)
         await done()
       })
   })

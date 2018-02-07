@@ -1,5 +1,3 @@
-const users = require('../models/users')
-
 const getUser = () => {
   return {
     'email': 'test@gmail.com',
