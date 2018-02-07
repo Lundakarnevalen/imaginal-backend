@@ -92,7 +92,7 @@ const getById = async (req, res) => {
         message: 'Admin privileges required'
       })
     }
-    const user = await users.findUserByIdentification(identification)
+    const user = await users.getUserByIdentification(identification)
     if (!user) {
       return res.status(400).json({
         success: false,
@@ -127,7 +127,7 @@ const setUserInfo = async (req, res) => {
       })
     }
 
-    const user = await users.findUserByIdentification(email)
+    const user = await users.getUserByIdentification(email)
     if (!user) {
       return res.status(400).json({
         success: false,
