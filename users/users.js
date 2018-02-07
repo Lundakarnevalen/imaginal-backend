@@ -2,7 +2,7 @@ const Sequelize = require('sequelize')
 const dbc = require('../config/database')
 const bcrypt = require('bcrypt')
 const usersServce = require('./usersService')
-const Checkin = require('../models/checkin').Checkin
+const Checkin = require('../checkin/checkin').Checkin
 const Skills = require('../models/skills').Skills
 const BigPleasures = require('../models/bigpleasures').BigPleasures
 const SmallPleasures = require('../models/smallpleasures').SmallPleasures
@@ -90,7 +90,7 @@ const getAllUsersAndCount = function (inputOffset, inputLimit) {
 }
 
 /** Finds a user where identity = email or identity = personalNumber. Returns a promise */
-const findUserByIdentification = function (identity) {
+const getUserByIdentification = function (identity) {
   return User.findOne({
     where: {
       $or: [{personalNumber: identity}, {email: identity}]
@@ -102,5 +102,5 @@ module.exports = {
   User,
   KarnevalistInfo,
   getAllUsersAndCount,
-  findUserByIdentification
+  getUserByIdentification
 }

@@ -2,7 +2,7 @@
 
 const SectionPriorities = require('../models/sectionpriority')
 const Sections = require('../models/section')
-const Checkin = require('../models/checkin').Checkin
+const Checkin = require('../checkin/checkin').Checkin
 
 const setSectionPriorities = async (req, res, next) => {
   if (!req.body.sectionPriorities || !Array.isArray(req.body.sectionPriorities)) {

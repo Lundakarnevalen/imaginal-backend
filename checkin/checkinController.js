@@ -1,4 +1,4 @@
-const Checkin = require('../models/checkin').Checkin
+const Checkin = require('./checkin').Checkin
 const User = require('../users/users').User
 const userService = require('../users/usersService')
 const UserRoles = require('../models/userrole')
