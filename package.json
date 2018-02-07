@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "apidoc": "pretty-swag -i swagger.yaml",
-    "test": "standard --fix && nyc mocha test/tests.js && node setupadmintest.js && newman run ./test/Karneval.postman_collection.json",
+    "test": "standard --fix && nyc mocha -R spec test/tests.js",
+    "test-coverage": "nyc --reporter=text mocha && open",
     "start": "node app.js"
   },
   "repository": {
@@ -39,6 +40,7 @@
   },
   "devDependencies": {
     "chai": "^4.1.2",
+    "istanbul": "^1.1.0-alpha.1",
     "mocha": "^4.1.0",
     "newman": "^3.9.3",
     "nyc": "^11.4.1",

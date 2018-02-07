@@ -7,6 +7,10 @@ module.exports = (user, admin) => describe('API /api/user/ userinfo test', funct
     api.get('/api/user/' + user.email)
       .set('Authorization', 'bearer ' + user.token)
       .end(async(err, res) => {
+        if (err) {
+          console.error('Failed to run test, aborting')
+          process.exit(1)
+        }
         await expect(res.statusCode).to.equal(200)
         await expect(res.body).to.contain.keys(['userinfo'])
         await expect(res.body.userinfo.id).to.equal(3)
@@ -17,6 +21,10 @@ module.exports = (user, admin) => describe('API /api/user/ userinfo test', funct
     api.get('/api/user/' + admin.email)
       .set('Authorization', 'bearer ' + user.token)
       .end(async(err, res) => {
+        if (err) {
+          console.error('Failed to run test, aborting')
+          process.exit(1)
+        }
         await expect(res.statusCode).to.equal(401)
         await done()
       })
@@ -25,6 +33,10 @@ module.exports = (user, admin) => describe('API /api/user/ userinfo test', funct
     api.get('/api/user/' + user.email)
       .set('Authorization', 'bearer ' + admin.token)
       .end(async(err, res) => {
+        if (err) {
+          console.error('Failed to run test, aborting')
+          process.exit(1)
+        }
         await expect(res.statusCode).to.equal(200)
         await expect(res.body).to.contain.keys(['userinfo'])
         await expect(res.body.userinfo.id).to.equal(3)
@@ -35,6 +47,10 @@ module.exports = (user, admin) => describe('API /api/user/ userinfo test', funct
     api.get('/api/user/nonExistantUser')
       .set('Authorization', 'bearer ' + admin.token)
       .end(async(err, res) => {
+        if (err) {
+          console.error('Failed to run test, aborting')
+          process.exit(1)
+        }
         await expect(res.statusCode).to.equal(400)
         await done()
       })

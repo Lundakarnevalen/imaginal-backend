@@ -1,0 +1,4 @@
+mysql -u root -e "DROP DATABASE IF EXISTS karneval;CREATE DATABASE karneval CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;USE karneval;"
+node sync.js 
+./node_modules/.bin/sequelize db:seed:all
+./node_modules/.bin/istanbul cover --handle-sigint app.js

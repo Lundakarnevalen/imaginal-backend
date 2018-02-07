@@ -33,6 +33,10 @@ module.exports = (user, admin) => describe('API /api/user change user info', fun
         smallPleasures: ['School', 'Studying']
       })
       .end(async(err, res) => {
+        if (err) {
+          console.error('Failed to run test, aborting')
+          process.exit(1)
+        }
         await expect(res.statusCode).to.equal(401)
         done()
       })
@@ -67,6 +71,10 @@ module.exports = (user, admin) => describe('API /api/user change user info', fun
         smallPleasures: ['School', 'Studying']
       })
       .end(async(err, res) => {
+        if (err) {
+          console.error('Failed to run test, aborting')
+          process.exit(1)
+        }
         await expect(res.statusCode).to.equal(200)
         done()
       })
@@ -101,6 +109,10 @@ module.exports = (user, admin) => describe('API /api/user change user info', fun
         smallPleasures: ['School', 'Studying']
       })
       .end(async(err, res) => {
+        if (err) {
+          console.error('Failed to run test, aborting')
+          process.exit(1)
+        }
         await expect(res.statusCode).to.equal(200)
         done()
       })
@@ -109,6 +121,10 @@ module.exports = (user, admin) => describe('API /api/user change user info', fun
     api.get('/api/user/' + user.email)
       .set('Authorization', 'bearer ' + user.token)
       .end(async(err, res) => {
+        if (err) {
+          console.error('Failed to run test, aborting')
+          process.exit(1)
+        }
         await expect(res.statusCode).to.equal(200)
         await expect(res.body.user.firstName).to.equal('firstUserName') // The first test from the body always fails...
         await expect(res.body.user.lastName).to.equal('lastUserName')
@@ -163,6 +179,10 @@ module.exports = (user, admin) => describe('API /api/user change user info', fun
         smallPleasures: ['Going to bed']
       })
       .end(async(err, res) => {
+        if (err) {
+          console.error('Failed to run test, aborting')
+          process.exit(1)
+        }
         await expect(res.statusCode).to.equal(200)
         done()
       })
@@ -171,6 +191,10 @@ module.exports = (user, admin) => describe('API /api/user change user info', fun
     api.get('/api/user/' + user.email)
       .set('Authorization', 'bearer ' + user.token)
       .end(async(err, res) => {
+        if (err) {
+          console.error('Failed to run test, aborting')
+          process.exit(1)
+        }
         await expect(res.statusCode).to.equal(200)
         await expect(res.body.user.firstName).to.equal('firstUserName1')
         await expect(res.body.user.lastName).to.equal('lastUserName1')
