@@ -20,10 +20,44 @@ const awsConfig = {
   "region": "eu-west-1"
 }
 
-
-
 AWS.config.update(awsConfig)
-const sender = 'noreply@lundakarnevalen.se'
+const sender = 'auto-mail@lundakarnevalen.se'
+//const sender = 'gustaf.linton@lundakarnevalen.se'
+
+// Reading list of emails in txtfile
+const emails = fs.readFileSync('./modules/mail/data/aud3.data', 'utf-8').split('\n')
+
+// Reading json from sequel
+//let emails = require('./data/1_ej_sektion.json').data.map(d => d.email.trim())
+
+// Hardcoded emails for testing
+//let emails = ['christopher.nille.nilsson@gmail.com', 'gustaf.linton@lundakarnevalen.se']
+
+//console.log(emails)
+
+// Send 20 emails every 2 second
+setInterval(fun2, 2000)
+
+// Send to next 20 email-adresses
+let i = 0
+function fun2(){
+  for(var j = 0; j < 20; j++){
+    if(i+j >= emails.length){
+      console.log('DONEDONEDONEDONE')
+      i += 20;
+      return;
+    }
+    console.log(i+j, emails[i+j])
+
+    // Uncomment when ready to send email
+    //try_mail(emails[i+j])
+  }
+  i += 20
+}
+
+async function try_mail(email){i
+  await sendEmail(email, 'Karnevalsauditions! Schemaläggning färdig', 'auditions3', {})
+}
 
 const sendEmail = (email, subject, template_name, data) => {
   return new Promise((resolve, reject) => {
@@ -62,33 +96,6 @@ const sendEmail = (email, subject, template_name, data) => {
     })
   })
 }
-
-//let emails = require('./data/auditions.json').data.map(d => d.email.trim())
-let emails = ['christopher.nille.nilsson@gmail.com']
-
-console.log(emails)
-async function try_mail(email){i
-  await sendEmail(email, 'Auditions - Bekräfta din plats', 'auditions', {})
-}
-
-var i = 0
-setInterval(fun2, 2000)
-
-function fun2(){
-  for(var j = 0; j < 20; j++){
-    if(i+j >= emails.length){
-      console.log('DONEDONEDONEDONE')
-      i += 20
-      return;
-    }
-    console.log(i+j, emails[i+j])
-    //try_mail(emails[i+j])
-  }
-  i += 20
-}
-
-
-
 
 
 /*  CRUD MailTemplate

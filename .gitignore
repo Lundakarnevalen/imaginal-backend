@@ -1,3 +1,8 @@
+# ignore email-lists
+modules/mail/data/*.json
+modules/mail/data/*.data
+
+
 # Ignore vim temp files
 *.swp
 
