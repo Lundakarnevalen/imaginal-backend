@@ -13,11 +13,16 @@ const Groups = require('./groups.json')
 // a time_period intercept each other or not. 10am is equal to 600
 
 // START AUDITION BY CALLING THE audition FUNCTION
-//audition()
+// audition()
 
 async function audition(){
+
+  console.log(0, 'Get users')
+
   // Get all data of users
   users = await GetUsers()
+
+  console.log(1, 'Setup meetings')
 
   // Create meeting for each user/group pair
   let meetings = setupMeetings(users)
@@ -36,11 +41,11 @@ async function audition(){
   let user_busy = {};
   const group_names = [
     'bigDance',
-    'bigScene',
-    'bigOrchest',
     'smallDance',
+    'bigScene',
+    'bigOrchestra',
     'smallScene',
-    'smallOrchest',
+    'smallOrchestra',
   ]
   const day_names = [
     'sun',
@@ -51,13 +56,18 @@ async function audition(){
   // hours, or ignore them.
   let nice_edition = true
 
+  console.log(3, 'Starting to schedule with nice edition')
+
   // For each group and day given in arrays above, schedule meetings
   // First with nice_edition = true
   day_names.forEach(day => {
     group_names.forEach(g => {
+      console.log(3.1, `Scheduling ${day}, with group ${g}`)
       schedule(meetings, Groups[g], day, user_busy, nice_edition)
     })
   })
+
+  console.log(4, 'Starting to schedule with NO nice edition')
 
   // Schedule again, but now without nice_edition.
   nice_edition = false
@@ -67,6 +77,7 @@ async function audition(){
     })
   })
 
+  console.log('Outputing schedules')
 
   // Write the jury schedule to a csv file 
   outputJurySchedule(meetings)
@@ -98,8 +109,8 @@ function schedule(meetingList, group, day, user_busy, nice_edition){
 
     // Dance-jury will meet several auditioners at the same time. Therefor we
     // count number of iterations.
-    let count = 1;
-    while(curr_time < end ){
+      let count = 1;
+      while(curr_time < end ){
 
       // Loop through meetings until a user is available in this time slot
       for(let i = 0; i < meetings.length; i++){
@@ -157,12 +168,24 @@ function is_available(day, time, meeting_time, meeting, user_busy, nice_edition)
 
 function setupMeetings(users){
   let meetings = []
+
   for(let i = 0; i < users.length; i++){
     let usr = users[i]
   
     // Convert small-array and big-array to one category array.
-    let small = usr.small_category.map(s => "small" + s.audition)
-    let big = usr.big_category.map(s => "big" + s.audition)
+    
+    let scat = usr.small_category
+    let bcat = usr.big_category
+    if(!scat){
+      scat = [] 
+    }
+    if(!bcat){
+      bcat = [] 
+    }
+    //console.log(i, usr )
+    //console.log(usr, scat, bcat)
+    let small = scat.map(s => "small" + s.audition)
+    let big = bcat.map(s => "big" + s.audition)
     let categories = small.concat(big)
 
     categories.forEach(cat => {
@@ -207,17 +230,17 @@ function outputUserSchedule(meetings){
   file.write('Namn,Epost,Tider\n')
 
   let days = {
-    'fri': 'Fredag den 9 februari',
-    'sat': 'Lördag den 10 februari',
-    'sun': 'Söndag den 11 februari',
+    'fri': 'Fredag',
+    'sat': 'Lördag',
+    'sun': 'Söndag',
   }
   let groups = {
-    'bigOrchest': 'Orkest för Stora nöjen',
-    'bigScene': 'Scen för Stora nöjen',
-    'bigDance': 'Dans för Stora nöjen',
-    'smallOrchest': 'Orkest för Små nöjen',
-    'smallScene': 'Scen för Små nöjen',
-    'smallDance': 'Dans för Små nöjen',
+    'bigOrchestra': 'Orkest',
+    'bigScene': 'Scen',
+    'bigDance': 'Dans',
+    'smallOrchestra': 'Orkest',
+    'smallScene': 'Scen',
+    'smallDance': 'Dans',
   }
 
 
@@ -227,7 +250,7 @@ function outputUserSchedule(meetings){
     const group = groups[curr.group]
     const day = days[curr.day]
     const time = pad(parseInt(curr.time / 60), 2) + ":" + pad(curr.time % 60, 2);
-    const meeting = `${group}, ${day} kl ${time}`
+    const meeting = `${group}- ${day} kl ${time}`
 
     // Add meeting to user
     if(acc[curr.user.email]){
@@ -258,6 +281,10 @@ function outputUserSchedule(meetings){
 
 
 function parseHours(list){
+  if(!list){
+    return []
+  }
+  
   let l = list.map(x => 
     x.split('-')
       .map(i => parseInt(i) * 60 )
