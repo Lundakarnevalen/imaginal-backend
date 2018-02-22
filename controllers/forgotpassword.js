@@ -1,6 +1,6 @@
 'use strict'
 
-const users = require('../models/users')
+const users = require('../users/users')
 const forgotPass = require('../models/forgotpassword').ForgotPassword
 const crypto = require('crypto')
 const AWS = require('aws-sdk')
@@ -96,7 +96,7 @@ const forgotPassword = async (req, res) => {
         message: 'Email sent'
       })
     } catch (err) {
-      console.log(err)
+      console.error(err)
       res.status(500).json({
         success: false,
         message: 'Failed to reset password'

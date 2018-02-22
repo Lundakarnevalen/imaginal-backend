@@ -1,6 +1,5 @@
 const Sequelize = require('sequelize')
 const dbc = require('../config/database')
-const User = require('./users').User
 
 const SmallPleasures = dbc.define('SmallPleasures', {
   id: {
@@ -10,10 +9,6 @@ const SmallPleasures = dbc.define('SmallPleasures', {
   },
   audition: Sequelize.TEXT
 })
-
-// This adds UserId to KarnevalistInfo as foreign key
-
-User.hasMany(SmallPleasures, {as: 'UserSmallAudition', foreignKey: 'userId'})
 
 module.exports = {
   SmallPleasures

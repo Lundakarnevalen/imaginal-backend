@@ -1,6 +1,12 @@
 const Sequelize = require('sequelize')
 const dbc = require('../config/database')
 const bcrypt = require('bcrypt')
+const usersServce = require('./usersService')
+const Checkin = require('../models/checkin').Checkin
+const Skills = require('../models/skills').Skills
+const BigPleasures = require('../models/bigpleasures').BigPleasures
+const SmallPleasures = require('../models/smallpleasures').SmallPleasures
+const Interests = require('../models/interests').Interests
 
 const User = dbc.define('User', {
   id: {
@@ -21,15 +27,6 @@ const User = dbc.define('User', {
   personalNumber: Sequelize.STRING,
   shirtSize: Sequelize.STRING
 })
-
-/* toJSON is called when sending/stringifying the user (e.g. res.json(user))
- it removes sensitive data (password and access token) */
-User.prototype.toJSON = function () {
-  const usr = Object.assign({}, this.get())
-  delete usr.password
-  delete usr.token
-  return usr
-}
 
 const KarnevalistInfo = dbc.define('KarnevalistInfo', {
   id: {
@@ -54,15 +51,23 @@ const KarnevalistInfo = dbc.define('KarnevalistInfo', {
 // This adds UserId to KarnevalistInfo as foreign key
 User.hasOne(KarnevalistInfo)
 
-const setNewPassword = function (user, password) {
+User.hasMany(Checkin, { as: 'CheckinOwnership', foreignKey: 'checkerId' })
+User.hasOne(Checkin, { as: 'Checkin', foreignKey: 'userId' })
+
+User.hasMany(SmallPleasures, {as: 'UserSmallAudition', foreignKey: 'userId'})
+User.hasMany(Skills, {as: 'UserSkill', foreignKey: 'userId'})
+User.hasMany(Interests, {as: 'UserInterest', foreignKey: 'userId'})
+User.hasMany(BigPleasures, {as: 'UserBigAudition', foreignKey: 'userId'})
+
+User.prototype.setNewPassword = function (password) {
   return new Promise((resolve, reject) => {
     bcrypt.hash(password, 10, (err, hash) => {
       if (err) {
         reject(err)
         return
       }
-      user.password = hash
-      user
+      this.password = hash
+      this
         .save()
         .then(resolve)
         .catch(reject)
@@ -70,14 +75,32 @@ const setNewPassword = function (user, password) {
   })
 }
 
-const isCheckedIn = async user => {
-  const checkIn = await user.getCheckin()
-  return !!checkIn && checkIn.userId === user.id
+User.prototype.toJSON = function () {
+  return usersServce.userToJSON(this)
+}
+
+const getAllUsersAndCount = function (inputOffset, inputLimit) {
+  const offset = parseInt(inputOffset) || 0
+  const limit = inputLimit || 25
+  return User.findAndCountAll({
+    order: ['id'],
+    offset: offset,
+    limit: limit
+  })
+}
+
+/** Finds a user where identity = email or identity = personalNumber. Returns a promise */
+const findUserByIdentification = function (identity) {
+  return User.findOne({
+    where: {
+      $or: [{personalNumber: identity}, {email: identity}]
+    }
+  })
 }
 
 module.exports = {
   User,
   KarnevalistInfo,
-  setNewPassword,
-  isCheckedIn
+  getAllUsersAndCount,
+  findUserByIdentification
 }
