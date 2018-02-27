@@ -15,7 +15,7 @@ const awsConfig = {
 }
 
 AWS.config.update(awsConfig)
-const sender = 'noreply@lundakarnevalen.se'
+const sender = 'auto-mail@lundakarnevalen.se'
 
 const sendEmail = (email, token) => {
   return new Promise((resolve, reject) => {
