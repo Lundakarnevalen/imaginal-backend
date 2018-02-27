@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "apidoc": "pretty-swag -i swagger.yaml",
-    "test": "standard --fix && nyc mocha && node setupadmintest.js && newman run ./test/Karneval.postman_collection.json",
+    "test": "standard --fix && nyc mocha -R spec test/tests.js",
+    "test-coverage": "nyc --reporter=text mocha && open",
     "start": "node app.js"
   },
   "repository": {
@@ -38,11 +39,14 @@
     "sequelize-cli": "^3.2.0"
   },
   "devDependencies": {
+    "chai": "^4.1.2",
+    "istanbul": "^1.1.0-alpha.1",
     "mocha": "^4.1.0",
     "newman": "^3.9.3",
     "nyc": "^11.4.1",
     "pretty-swag": "^0.1.144",
-    "standard": "^10.0.3"
+    "standard": "^10.0.3",
+    "supertest": "^3.0.0"
   },
   "standard": {
     "globals": [
