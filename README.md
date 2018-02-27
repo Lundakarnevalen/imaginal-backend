@@ -54,9 +54,17 @@ sh noBackupinit
 
 ## Running the tests
 
+
+Execute
+```
+./testsetup
+```
+to setup the test environment followed by
 ```
 npm test
+
 ```
+to run the tests
 
 ## Run API test
 ```
