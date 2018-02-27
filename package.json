@@ -6,7 +6,7 @@
   "scripts": {
     "apidoc": "pretty-swag -i swagger.yaml",
     "test": "standard --fix && nyc mocha -R spec test/tests.js",
-    "test-coverage": "nyc --reporter=text mocha && open",
+    "test-coverage": "nyc --reporter=text mocha",
     "start": "node app.js"
   },
   "repository": {
