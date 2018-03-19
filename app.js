@@ -12,6 +12,7 @@ const role = require('./controllers/role')
 const section = require('./controllers/section')
 const checkin = require('./controllers/checkin')
 const users = require('./users/userController')
+const storageLocations = require('./controllers/storagelocation')
 
 app.use(bodyParser.json())
 app.use(passport.initialize())
@@ -36,6 +37,7 @@ app.post('/register', register.registerUser)
 app.post('/login/email', login.loginByEmail)
 app.post('/login/forgotpassword', forgotPassword.forgotPassword)
 app.post('/login/resetpassword', forgotPassword.setNewPassword)
+app.post('/addStorageLocation', storageLocations.addStorageLocation)
 
 app.get('/getallsections', section.getAllSections)
 
