@@ -4,8 +4,8 @@ const storageLocations = require('../models/storagelocation')
 
 const addStorageLocation = function (req, res) {
   storageLocations.StorageLocation.findAll()
-  .then((storageLocations) => {
-    storageLocations.forEach((location) => {
+  .then((locations) => {
+    locations.forEach((location) => {
       if (location.storageName === req.body.storageName) {
         return res.json({
           success: false,
