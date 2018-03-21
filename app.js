@@ -13,6 +13,7 @@ const section = require('./controllers/section')
 const checkin = require('./controllers/checkin')
 const users = require('./users/userController')
 const storageLocations = require('./controllers/storagelocation')
+const items = require('./controllers/item')
 
 app.use(bodyParser.json())
 app.use(passport.initialize())
@@ -38,6 +39,7 @@ app.post('/login/email', login.loginByEmail)
 app.post('/login/forgotpassword', forgotPassword.forgotPassword)
 app.post('/login/resetpassword', forgotPassword.setNewPassword)
 app.post('/addStorageLocation', storageLocations.addStorageLocation)
+app.post('/addItem', items.addItem)
 
 app.get('/getallsections', section.getAllSections)
 
