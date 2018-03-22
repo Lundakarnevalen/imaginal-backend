@@ -2,11 +2,12 @@
 
 const items = require('../models/item')
 
+/**
 const getAllItems = async (res, req) => {
 }
+*/
 
 const addItem = async (req, res) => {
-
   if (!req.body.itemName) {
     return res.json({ /** Status? */
       success: false,
