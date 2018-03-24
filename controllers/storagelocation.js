@@ -3,6 +3,7 @@
 const storageLocations = require('../models/storagelocation')
 
 const addStorageLocation = async (req, res) => {
+  //How to connect location to creator? "Item" should have the same problem
   const locations = await storageLocations.StorageLocation.findAll()
   const existingLocation = await locations.find(location => location.storageName === req.body.storageName)
   if (existingLocation) {
@@ -16,8 +17,8 @@ const addStorageLocation = async (req, res) => {
       message: 'Missing parameter storageName'
     })
   } else {
-    // Check if create succeeds?
     const theDescription = (req.body.description) ? req.body.description : ''
+    // Check if create succeeds?
     await storageLocations.StorageLocation.create({
       storageName: req.body.storageName,
       description: theDescription
@@ -33,7 +34,7 @@ const getStorageLocations = async (req, res) => {
   const locations = await storageLocations.StorageLocation.findAll()
   return res.json({
     success: true,
-    locations: locations
+    locations: locations //maybe less info? see userToJSON
   })
 }
 
@@ -70,6 +71,7 @@ const updateStorageLocation = async (req, res) => {
     }
     //add code for updating
     //should we return the replaced fields?
+    //How to update updatedAt?
     await theLocation.save()
     res.json({
       success: true,
