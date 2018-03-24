@@ -10,10 +10,17 @@ const addStorageLocation = async (req, res) => {
       success: false,
       message: 'Storage Location already exists'
     })
+  } else if (!req.body.storageName) {
+    res.json({
+      success: false,
+      message: 'Missing parameter storageName'
+    })
   } else {
-    // Check if create succeeds.
+    // Check if create succeeds?
+    const theDescription = (req.body.description) ? req.body.description : ''
     await storageLocations.StorageLocation.create({
-      storageName: req.body.storageName
+      storageName: req.body.storageName,
+      description: theDescription
     })
     res.json({
       success: true,
@@ -30,7 +37,7 @@ const getStorageLocations = async (req, res) => {
   })
 }
 
-const getByID = async (req, res) => { 
+const getByID = async (req, res) => {
   const locations = await storageLocations.StorageLocation.findAll()
   const theLocation = await locations.find(location => location.id === req.body.id)
   if (theLocation) {
@@ -55,8 +62,12 @@ const updateStorageLocation = async (req, res) => {
       message: 'Storage Location does not exist'
     })
   } else {
-    if(req.body.storageName)
-      theLocation.storageName = req.body.storageName
+    if (req.body.storageName) {
+      theLocation.storageName = req.body.storageName //await?
+    }
+    if (req.body.description) {
+      theLocation.description = req.body.description
+    }
     //add code for updating
     //should we return the replaced fields?
     await theLocation.save()

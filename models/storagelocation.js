@@ -7,7 +7,8 @@ const StorageLocation = dbc.define('StorageLocation', {
     primaryKey: true,
     type: Sequelize.INTEGER
   },
-  storageName: Sequelize.STRING
+  storageName: Sequelize.STRING,
+  description: Sequelize.TEXT
 })
 
 module.exports = {
