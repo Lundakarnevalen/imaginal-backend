@@ -12,6 +12,7 @@ const role = require('./controllers/role')
 const section = require('./controllers/section')
 const checkin = require('./controllers/checkin')
 const users = require('./users/userController')
+const treasureHunt = require('./treasureHunt/index')
 
 app.use(bodyParser.json())
 app.use(passport.initialize())
@@ -94,6 +95,9 @@ app.get('/api/section', section.getSectionPriorities)
 app.post('/api/role/:email/:roleid', role.addRole)
 app.delete('/api/role/:email/:roleid', role.removeRole)
 app.get('/api/role/:roleid', role.getUsers)
+
+app.post('/api/treasurehunt/start', treasureHunt.start)
+app.get('/api/treasurehunt/info', treasureHunt.info)
 
 app.all('*', function (req, res) {
   res.status(404).json({
