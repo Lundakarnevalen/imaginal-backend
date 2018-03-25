@@ -39,11 +39,11 @@ app.post('/login/email', login.loginByEmail)
 app.post('/login/forgotpassword', forgotPassword.forgotPassword)
 app.post('/login/resetpassword', forgotPassword.setNewPassword)
 app.post('/addStorageLocation', storageLocations.addStorageLocation)
-app.post('/addItem', items.addItem)
-app.post('/editItem', items.editItem)
+app.post('/addItem', items.addItem) /** For testing */
+app.post('/editItem', items.editItem) /** For testing */
 
 app.get('/getallsections', section.getAllSections)
-app.get('/getAllItems', items.getAllItems)
+app.get('/getAllItems', items.getAllItems) /** For testing */
 
 /**
  * Authenticate tokens
