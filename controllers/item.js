@@ -9,7 +9,7 @@ const getAllItems = async (req, res) => {
     return list
   })
   return res.json({
-    sucess: true,
+    success: true,
     message: itemList
   })
 }
@@ -26,12 +26,12 @@ const addItem = async (req, res) => {
   const itemExists = await allItems.filter(item => item.itemName === req.body.itemName)
   if (itemExists.length > 0) {
     return res.json({
-      sucess: false,
+      success: false,
       message: 'Item already exists'
     })
-  }
-  else {
+  } else {
     createItem(req, res)
+    /** Update quantity */
   }
 }
 
@@ -44,10 +44,11 @@ const createItem = function (req, res) {
     salesPrice: req.body.salesPrice || '',
     description: req.body.description || '',
     articleNumber: req.body.articleNumber || '',
-    supplier: req.body.supplier || ''
+    supplier: req.body.supplier || '',
+    note: req.body.note || ''
   })
   res.json({
-    sucess: true,
+    success: true,
     message: 'Item added'
   })
 }
@@ -58,11 +59,10 @@ const editItem = async (req, res) => {
   })
   if (!findItem) {
     return res.json({
-      sucess: false,
+      success: false,
       message: 'The item does not exist'
     })
-  }
-  else {
+  } else {
     if (req.body.imageUrl) findItem.imageUrl = req.body.imageUrl
     if (req.body.unit) findItem.unit = req.body.unit
     if (req.body.purchasePrice) findItem.purchasePrice = req.body.purchasePrice
@@ -72,7 +72,7 @@ const editItem = async (req, res) => {
     if (req.body.supplier) findItem.supplier = req.body.supplier
     await findItem.save()
     return res.json({
-      sucess: true,
+      success: true,
       message: 'Item updated'
     })
   }

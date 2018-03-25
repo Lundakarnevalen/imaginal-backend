@@ -14,7 +14,8 @@ const Item = dbc.define('Item', {
   salesPrice: Sequelize.DOUBLE,
   description: Sequelize.STRING,
   articleNumber: Sequelize.INTEGER,
-  supplier: Sequelize.STRING
+  supplier: Sequelize.STRING,
+  note: Sequelize.STRING
 })
 
 module.exports = {
