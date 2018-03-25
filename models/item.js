@@ -10,14 +10,11 @@ const Item = dbc.define('Item', {
   itemName: Sequelize.STRING,
   imageUrl: Sequelize.TEXT,
   unit: Sequelize.STRING,
-  amount: Sequelize.INTEGER,
-  pricePerUnit: Sequelize.FLOAT, /** OR other nbr type? */
-  storageLocation: Sequelize.STRING, /** OR Storage Location ID? */
+  purchasePrice: Sequelize.DOUBLE,
+  salesPrice: Sequelize.DOUBLE,
   description: Sequelize.STRING,
-  creator: Sequelize.INTEGER, /** Or by email/name? */
-  weight: Sequelize.STRING,
-  measurements: Sequelize.STRING,
-  category: Sequelize.STRING
+  articleNumber: Sequelize.INTEGER,
+  supplier: Sequelize.STRING
 })
 
 module.exports = {
