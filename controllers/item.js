@@ -1,6 +1,8 @@
 'use strict'
 
 const items = require('../models/item')
+const contents = require('../models/storageContents')
+// const locations = require('../models/storageLocation')
 
 const getAllItems = async (req, res) => {
   const itemList = await items.Item.findAll().map(oneItem => {
@@ -16,15 +18,18 @@ const getAllItems = async (req, res) => {
 
 const addItem = async (req, res) => {
   if (!req.body.itemName) {
-    return res.json({ /** Status? */
+    return res.json({
       success: false,
       message: 'Invalid parameter'
     })
   }
 
-  const allItems = await items.Item.findAll()
-  const itemExists = await allItems.filter(item => item.itemName === req.body.itemName)
-  if (itemExists.length > 0) {
+  const allItems = await items.Item.findAll({
+    where: {
+      $or: [ {itemName: req.body.itemName}, {articleNumber: req.body.articleNumber} ]
+    }
+  })
+  if (allItems.length > 0) {
     return res.json({
       success: false,
       message: 'Item already exists'
@@ -51,6 +56,36 @@ const createItem = function (req, res) {
     success: true,
     message: 'Item added'
   })
+}
+
+const addQuantity = async function (req, res) {
+  /** Kolla att locationID, itemID och addedQuantity != null/0 */
+  const getStorage = await contents.StorageContent.findOne({
+    where: {
+      locationID: req.body.locationID,
+      itemID: req.body.itemID
+    }
+  })
+  if (!getStorage) {
+    /** Add Item to Location */
+    await contents.StorageContent.create({
+      locationID: req.body.locationID,
+      itemID: req.body.itemID,
+      quantity: req.body.addedQuantity
+    })
+    return res.json({
+      success: true,
+      message: 'Item(s) added to storage location'
+    })
+  } else {
+    /** Update quantity */
+    getStorage.quantity += req.body.addedQuantity
+    await getStorage.save()
+    return res.json({
+      success: true,
+      message: 'Storage location updated'
+    })
+  }
 }
 
 const editItem = async (req, res) => {
@@ -81,5 +116,6 @@ const editItem = async (req, res) => {
 module.exports = {
   addItem,
   getAllItems,
-  editItem
+  editItem,
+  addQuantity
 }

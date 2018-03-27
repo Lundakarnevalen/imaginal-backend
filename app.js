@@ -41,6 +41,7 @@ app.post('/login/resetpassword', forgotPassword.setNewPassword)
 app.post('/addStorageLocation', storageLocations.addStorageLocation)
 app.post('/addItem', items.addItem) /** For testing */
 app.post('/editItem', items.editItem) /** For testing */
+app.post('/product/new', items.addQuantity) /** For testing */
 
 app.get('/getallsections', section.getAllSections)
 app.get('/getAllItems', items.getAllItems) /** For testing */
