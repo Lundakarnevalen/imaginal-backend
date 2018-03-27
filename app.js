@@ -45,6 +45,7 @@ app.post('/product/new', items.addQuantity) /** For testing */
 
 app.get('/getallsections', section.getAllSections)
 app.get('/getAllItems', items.getAllItems) /** For testing */
+app.get('/product/:articleId', items.getItemByArticleId)
 
 /**
  * Authenticate tokens

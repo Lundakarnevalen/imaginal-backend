@@ -5,11 +5,7 @@ const contents = require('../models/storageContents')
 // const locations = require('../models/storageLocation')
 
 const getAllItems = async (req, res) => {
-  const itemList = await items.Item.findAll().map(oneItem => {
-    const list = {}
-    list['itemName'] = oneItem.itemName
-    return list
-  })
+  const itemList = await items.Item.findAll()
   return res.json({
     success: true,
     message: itemList
@@ -113,9 +109,31 @@ const editItem = async (req, res) => {
   }
 }
 
+const getItemByArticleId = async (req, res) => {
+  const item = req.params.articleId
+  const findItem = await items.Item.findOne({
+    where: { articleNumber: item }
+  })
+  // return res.json({ /** For testing */
+  //   message: item
+  // })
+  if (!findItem) {
+    return res.json({
+      success: false,
+      message: 'No item with that article number exists'
+    })
+  } else {
+    return res.json({
+      success: true,
+      message: findItem
+    })
+  }
+}
+
 module.exports = {
   addItem,
   getAllItems,
   editItem,
-  addQuantity
+  addQuantity,
+  getItemByArticleId
 }
