@@ -114,9 +114,6 @@ const getItemByArticleId = async (req, res) => {
   const findItem = await items.Item.findOne({
     where: { articleNumber: item }
   })
-  // return res.json({ /** For testing */
-  //   message: item
-  // })
   if (!findItem) {
     return res.json({
       success: false,
