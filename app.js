@@ -38,12 +38,15 @@ app.post('/register', register.registerUser)
 app.post('/login/email', login.loginByEmail)
 app.post('/login/forgotpassword', forgotPassword.forgotPassword)
 app.post('/login/resetpassword', forgotPassword.setNewPassword)
-app.post('/addStorageLocation', storageLocations.addStorageLocation)
+app.post('/warehouse/addLocation', storageLocations.addStorageLocation)
+app.post('/warehouse/getLocationByID', storageLocations.getByID)
 app.post('/addItem', items.addItem) /** For testing */
 app.post('/editItem', items.editItem) /** For testing */
 
 app.get('/getallsections', section.getAllSections)
 app.get('/getAllItems', items.getAllItems) /** For testing */
+app.get('/warehouse/getLocations', storageLocations.getStorageLocations)
+
 
 /**
  * Authenticate tokens
