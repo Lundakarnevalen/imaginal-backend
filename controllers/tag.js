@@ -2,7 +2,7 @@
 
 const tags = require('../models/tag')
 
-const getAlltags = async (req, res) => {
+const getAllTags = async (req, res) => {
   const tagList = await tags.Tag.findAll().map(oneTag => {
     const list = {}
     list['name'] = oneItem.name
@@ -16,7 +16,7 @@ const getAlltags = async (req, res) => {
 
 const addTag = async (req, res) => {
   if (!req.body.name) {
-    return res.json({ /** Status? */
+    return res.json({ 
       success: false,
       message: 'Invalid parameter'
     })
@@ -31,10 +31,8 @@ const addTag = async (req, res) => {
     })
   } else {
     createTag(req, res)
-    /** Update quantity */
   }
-}  password: Sequelize.STRING,
-
+}
 
 const createTag = function (req, res) {
   tags.Tag.create({
@@ -45,7 +43,6 @@ const createTag = function (req, res) {
     message: 'Tag added'
   })
 }
-
 
 module.exports = {
   addItem,
