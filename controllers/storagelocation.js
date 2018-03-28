@@ -3,7 +3,6 @@
 const storageLocations = require('../models/storagelocation')
 
 const addStorageLocation = async (req, res) => {
-  //How to connect location to creator? "Item" should have the same problem
   const locations = await storageLocations.StorageLocation.findAll()
   const existingLocation = await locations.find(location => location.storageName === req.body.storageName)
   if (existingLocation) {
