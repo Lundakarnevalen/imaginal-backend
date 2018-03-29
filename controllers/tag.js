@@ -45,6 +45,6 @@ const createTag = function (req, res) {
 }
 
 module.exports = {
-  addItem,
-  getAllItems,
+  addTag,
+  getAllTags,
 }
