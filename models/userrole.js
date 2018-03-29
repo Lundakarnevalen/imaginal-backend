@@ -46,7 +46,7 @@ const hasRole = function (user, role) { // (user, role) returns a boolean-promis
 
 const ADMIN = 'administrator'
 const CUSTOMER = 'warehouse customer'
-const WOKRER = 'warehouse worker'
+const WORKER = 'warehouse worker'
 const MANAGER = 'warehouse manager'
 
 module.exports = {
