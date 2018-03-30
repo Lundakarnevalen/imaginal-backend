@@ -109,12 +109,11 @@ const Treasurehunt = require('./treasurehunt/treasurehuntModel').TreasureHunt
 Treasurehunt.create({}).then(async(treasurehunt) => {
   'use strict'
   let checkpoint = await Checkpoint.create({})
+  let checkpoint2 = await Checkpoint.create({})
   let userCheckpoints = await UserCheckpoints.create({})
-  checkpoint.setAsdasd([treasurehunt])
-  //treasurehunt.addTreasureCheckpoint([checkpoint])
-  //checkpoint.setTreasureCheckpoint([treasurehunt])
-  //heckpoint.addTreasureHunt([treasurehunt])
-  console.log('\nasdasdasdasd\n')
+  await treasurehunt.addCheckpoints([checkpoint, checkpoint2])
+  let asd = await treasurehunt.getCheckpoints().map(treasure => treasure.id)
+  console.log(asd)
 })
 
 app.all('*', function (req, res) {

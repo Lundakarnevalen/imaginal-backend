@@ -12,7 +12,7 @@ const Checkpoint = dbc.define('Checkpoints', {
 })
 
 TreasureHunt.hasMany(Checkpoint, {
-  as: 'Asdasd'
+  as: 'Checkpoints'
 })
 
 /*
