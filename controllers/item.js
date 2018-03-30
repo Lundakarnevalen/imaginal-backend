@@ -2,7 +2,7 @@
 
 const items = require('../models/item')
 const contents = require('../models/storageContents')
-// const locations = require('../models/storageLocation')
+const locations = require('../models/storageLocation')
 
 const getAllItems = async (req, res) => {
   const itemList = await items.Item.findAll()
@@ -22,7 +22,7 @@ const addItem = async (req, res) => {
 
   const allItems = await items.Item.findAll({
     where: {
-      $or: [ {itemName: req.body.itemName}, {articleNumber: req.body.articleNumber} ]
+      $or: [{ itemName: req.body.itemName }, { articleNumber: req.body.articleNumber, supplier: req.body.supplier }]
     }
   })
   if (allItems.length > 0) {
@@ -32,7 +32,6 @@ const addItem = async (req, res) => {
     })
   } else {
     createItem(req, res)
-    /** Update quantity */
   }
 }
 
@@ -55,7 +54,33 @@ const createItem = function (req, res) {
 }
 
 const addQuantity = async function (req, res) {
-  /** Kolla att locationID, itemID och addedQuantity != null/0 */
+  /** Check locationID, itemID, addedQuantity != null */
+  if (!req.body.locationID || !req.body.itemID || !req.body.addedQuantity) {
+    return res.json({
+      success: false,
+      message: 'Invalid parameter'
+    })
+  }
+  /** Check if locationID and itemID exist */
+  const findLocation = await locations.StorageLocation.findOne({
+    where: { id: req.body.locationID }
+  })
+  if (!findLocation) {
+    return res.json({
+      success: false,
+      message: 'No such location'
+    })
+  }
+  const findItem = await items.Item.findOne({
+    where: { id: req.body.itemID }
+  })
+  if (!findItem) {
+    return res.json({
+      success: false,
+      message: 'No such item'
+    })
+  }
+
   const getStorage = await contents.StorageContent.findOne({
     where: {
       locationID: req.body.locationID,
@@ -111,18 +136,18 @@ const editItem = async (req, res) => {
 
 const getItemByArticleId = async (req, res) => {
   const item = req.params.articleId
-  const findItem = await items.Item.findOne({
+  const findItem = await items.Item.findAll({
     where: { articleNumber: item }
   })
-  if (!findItem) {
-    return res.json({
-      success: false,
-      message: 'No item with that article number exists'
-    })
-  } else {
+  if (findItem.length > 0) {
     return res.json({
       success: true,
       message: findItem
+    })
+  } else {
+    return res.json({
+      success: false,
+      message: 'No item with that article number exists'
     })
   }
 }
