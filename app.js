@@ -12,6 +12,7 @@ const role = require('./controllers/role')
 const section = require('./controllers/section')
 const checkin = require('./controllers/checkin')
 const users = require('./users/userController')
+const treasure = require('./treasurehunt/controller')
 
 app.use(bodyParser.json())
 app.use(passport.initialize())
@@ -68,6 +69,9 @@ app.all(/(\/)?api\/.*/, function (req, res, next) {
   })(req, res, next)
 })
 
+app.get('/treasurehunt', treasure.getCheckpoint)
+app.get('/treasure/:id', treasure.getTreasureHuntInfo)
+
 /**
  * Authorized endpoints
  */
@@ -94,6 +98,24 @@ app.get('/api/section', section.getSectionPriorities)
 app.post('/api/role/:email/:roleid', role.addRole)
 app.delete('/api/role/:email/:roleid', role.removeRole)
 app.get('/api/role/:roleid', role.getUsers)
+
+
+
+
+const UserCheckpoints = require('./treasurehunt/UserCheckpoints').UserCheckpoints
+const Checkpoint = require('./treasurehunt/checkpointModel').Checkpoint
+const Treasurehunt = require('./treasurehunt/treasurehuntModel').TreasureHunt
+
+Treasurehunt.create({}).then(async(treasurehunt) => {
+  'use strict'
+  let checkpoint = await Checkpoint.create({})
+  let userCheckpoints = await UserCheckpoints.create({})
+  checkpoint.setAsdasd([treasurehunt])
+  //treasurehunt.addTreasureCheckpoint([checkpoint])
+  //checkpoint.setTreasureCheckpoint([treasurehunt])
+  //heckpoint.addTreasureHunt([treasurehunt])
+  console.log('\nasdasdasdasd\n')
+})
 
 app.all('*', function (req, res) {
   res.status(404).json({
