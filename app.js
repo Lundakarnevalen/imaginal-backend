@@ -39,11 +39,14 @@ app.post('/login/email', login.loginByEmail)
 app.post('/login/forgotpassword', forgotPassword.forgotPassword)
 app.post('/login/resetpassword', forgotPassword.setNewPassword)
 app.post('/warehouse/addLocation', storageLocations.addStorageLocation)
+
+app.post('/warehouse/getLocationByID', storageLocations.getByID)
 app.post('/warehouse/product/new', items.addItem)
 app.post('/warehouse/product/edit', items.editItem)
 app.post('/warehouse/product/addQuantity', items.addQuantity) /** For testing */
 
 app.get('/getallsections', section.getAllSections)
+app.get('/warehouse/getLocations', storageLocations.getStorageLocations)
 app.get('/warehouse/product/getAllItems', items.getAllItems) /** For testing */
 app.get('/warehouse/product/:articleId', items.getItemByArticleId)
 
