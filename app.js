@@ -41,11 +41,12 @@ app.post('/login/resetpassword', forgotPassword.setNewPassword)
 app.post('/warehouse/addLocation', storageLocations.addStorageLocation)
 app.post('/warehouse/product/new', items.addItem)
 app.post('/warehouse/product/edit', items.editItem)
-app.post('/warehouse/product/addQuantity', items.addQuantity) /** For testing */
+app.post('/warehouse/product/addquantity', items.addQuantity) /** For testing */
 
 app.get('/getallsections', section.getAllSections)
-app.get('/warehouse/product/getAllItems', items.getAllItems) /** For testing */
-app.get('/warehouse/product/:articleId', items.getItemByArticleId)
+app.get('/warehouse/product/getallitems', items.getAllItems)
+app.get('/warehouse/product/:articleid', items.getItemByArticleId)
+app.get('/warehouse/:locationid', storageLocations.getItemsInStorageLocation)
 
 /**
  * Authenticate tokens
