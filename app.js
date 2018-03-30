@@ -33,7 +33,7 @@ app.use(function (error, req, res, next) {
 /**
  * Unauthorized endpoints
  */
-app.get('/api/user/:personalnumber', users.getSectionByPersonalNumber)
+app.get('/api/medcheck/:personalnumber', users.getSectionByPersonalNumber)
 app.post('/register', register.registerUser)
 app.post('/login/email', login.loginByEmail)
 app.post('/login/forgotpassword', forgotPassword.forgotPassword)
