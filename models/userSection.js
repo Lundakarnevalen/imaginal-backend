@@ -47,7 +47,7 @@ const findSectionsOfUser = async function(user){
   })
   
   // Convert the usersection-objects to the sectionid.
-  sectionIds = usersections.map(s => s.sectionId)
+  const sectionIds = usersections.map(s => s.sectionId)
   
   // Find all sections
   // Op.or is the OR operator for sequelize. Read more at:

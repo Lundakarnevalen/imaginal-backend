@@ -2,7 +2,6 @@
 
 const SectionPriorities = require('../models/sectionpriority')
 const Sections = require('../models/section')
-const Users = require('../users/users')
 const Checkin = require('../models/checkin').Checkin
 
 const setSectionPriorities = async (req, res, next) => {
@@ -72,8 +71,6 @@ const getSectionPriorities = async (req, res, next) => {
     })
   }
 }
-
-
 
 const getAllSections = function (req, res, next) {
   Sections.Section.findAll()
