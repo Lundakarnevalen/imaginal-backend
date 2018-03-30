@@ -2,15 +2,15 @@ const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
 const login = require('./controllers/login')
-const register = require('./controllers/register')
+const register = require('./register/register')
 const forgotPassword = require('./controllers/forgotpassword')
 const passport = require('passport')
 require('./config/passport')(passport)
 const helmet = require('helmet')
 const cors = require('cors')
-const role = require('./controllers/role')
+const role = require('./role/roleController')
 const section = require('./controllers/section')
-const checkin = require('./controllers/checkin')
+const checkin = require('./checkin/checkinController')
 const users = require('./users/userController')
 
 app.use(bodyParser.json())
@@ -32,6 +32,7 @@ app.use(function (error, req, res, next) {
 /**
  * Unauthorized endpoints
  */
+app.get('/api/medcheck/:personalnumber', users.getSectionByPersonalNumber)
 app.post('/register', register.registerUser)
 app.post('/login/email', login.loginByEmail)
 app.post('/login/forgotpassword', forgotPassword.forgotPassword)

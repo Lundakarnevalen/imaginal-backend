@@ -2,6 +2,7 @@
 
 const users = require('./users')
 const UserRoles = require('../models/userrole')
+const UserSection = require('../models/usersection')
 const userService = require('./usersService')
 
 const getAll = async (req, res) => {
@@ -32,6 +33,47 @@ const getAll = async (req, res) => {
   })
 }
 
+/** From a social security number - fetch all sections for the user. */
+const getSectionByPersonalNumber = async (req, res) => {
+
+  // ssn - Social Security Number
+  const ssn = req.params.personalnumber 
+
+  if (!ssn) { // If no ssn is given, return bad request.
+    return res.status(400).json({
+      success: false,
+      message: 'Missing personalNumber parameter'
+    })
+  }
+
+  // To catch errors when using async-await.
+  try {
+    // Fetch user from db using the ssn.
+    const user = await users.findUserByIdentification(ssn)
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: 'Not a karnevalist'
+      })
+    }
+
+    // Fetch sections of user from db.
+    const sections = await UserSection.findSectionsOfUser(user)
+    return res.json({
+      success: true,
+      sections,
+    })
+  } catch (err) {
+    // On error, log and return success false.
+    console.error(err)
+    res.status(500).json({
+      success: false,
+      message: 'Failed to get sections of user.'
+    })
+  }
+}
+
+
 const getById = async (req, res) => {
   const identification = req.params.identification
   try {
@@ -50,7 +92,7 @@ const getById = async (req, res) => {
         message: 'Admin privileges required'
       })
     }
-    const user = await users.findUserByIdentification(identification)
+    const user = await users.getUserByIdentification(identification)
     if (!user) {
       return res.status(400).json({
         success: false,
@@ -85,7 +127,7 @@ const setUserInfo = async (req, res) => {
       })
     }
 
-    const user = await users.findUserByIdentification(email)
+    const user = await users.getUserByIdentification(email)
     if (!user) {
       return res.status(400).json({
         success: false,
@@ -113,5 +155,6 @@ const setUserInfo = async (req, res) => {
 module.exports = {
   getAll,
   getById,
-  setUserInfo
+  setUserInfo,
+  getSectionByPersonalNumber
 }
