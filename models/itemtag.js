@@ -23,7 +23,7 @@ Item.belongsToMany(Tag, {
     model: ItemTag,
     unique: false
   },
-  foreignKey: 'userId',
+  foreignKey: 'itemId',
   constraints: false
 })
 

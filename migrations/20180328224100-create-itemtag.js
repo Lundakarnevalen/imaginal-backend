@@ -2,14 +2,14 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('ItemTags', {
-      userid: {
+      itemId: {
         type: Sequelize.INTEGER,
         references: {
           model: 'Items',
           key: 'id'
         }
       },
-      roleid: {
+      tagId: {
         type: Sequelize.INTEGER,
         references: {
           model: 'Tags',
