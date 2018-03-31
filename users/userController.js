@@ -49,7 +49,7 @@ const getSectionByPersonalNumber = async (req, res) => {
   // To catch errors when using async-await.
   try {
     // Fetch user from db using the ssn.
-    const user = await users.findUserByIdentification(ssn)
+    const user = await users.getUserByIdentification(ssn)
     if (!user) {
       return res.status(400).json({
         success: false,
