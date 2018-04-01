@@ -8,6 +8,27 @@ module.exports = {
       createdAt: new Date().toISOString().substr(0, 10),
       updatedAt: new Date().toISOString().substr(0, 10)
     }], {})
+
+    await queryInterface.bulkInsert('UserRoles', [{
+      roleId: 2,
+      userId: 3,
+      createdAt: new Date().toISOString().substr(0, 10),
+      updatedAt: new Date().toISOString().substr(0, 10)
+    }], {})
+
+    await queryInterface.bulkInsert('UserRoles', [{
+      roleId: 3,
+      userId: 4,
+      createdAt: new Date().toISOString().substr(0, 10),
+      updatedAt: new Date().toISOString().substr(0, 10)
+    }], {})
+
+    await queryInterface.bulkInsert('UserRoles', [{
+      roleId: 4,
+      userId: 5,
+      createdAt: new Date().toISOString().substr(0, 10),
+      updatedAt: new Date().toISOString().substr(0, 10)
+    }], {})
     /*
       Add altering commands here.
       Return a promise to correctly handle asynchronicity.

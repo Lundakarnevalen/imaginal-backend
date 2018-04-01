@@ -1,41 +1,59 @@
 'use strict'
 
-const tags = require('../models/tag')
-
-const getAllTags = async (req, res) => {
-  const tagList = await tags.Tag.findAll().map(oneTag => {
-    const list = {}
-    list['name'] = oneItem.name
-    return list
-  })
-  return res.json({
-    success: true,
-    message: tagList
-  })
-}
+const Tags = require('../models/tag')
+const UserRoles = require('../models/userrole')
 
 const addTag = async (req, res) => {
   if (!req.body.name) {
-    return res.json({ 
+    return res.status(400).json({ 
       success: false,
       message: 'Invalid parameter'
     })
   }
 
-  const allTags = await tags.Item.findAll()
-  const tagExists = await allTags.filter(tags => tags.name === req.body.name)
-  if (tagExists.length > 0) {
-    return res.json({
-      success: false,
-      message: 'Tag already exists'
+  const isAdmin = await UserRoles.hasRole(req.user, UserRoles.ADMIN)
+  const isWarehouseManager = await UserRoles.hasRole(req.user, UserRoles.MANAGER)
+  
+  if (isAdmin || isWarehouseManager)  {
+    const tag = await Tags.Tag.findOne({
+      where: {
+        name: req.body.name,
+      }
     })
-  } else {
-    createTag(req, res)
+
+    if (tag) {
+      return res.status(400).json({
+        success: false,
+        message: 'Tag already exist'
+      })
+    }
+    else {
+      createTag(req, res)
+    }
+  }
+  else {
+   return res.status(401).json({
+     success: false,
+     message: 'Go away!'
+   }) 
   }
 }
 
+const removeTag = function (req, res) {
+  const name = req.body.name
+
+  findUserAndRole(req, res, email, roleId, function (user, role) {
+    user.removeRole([role]).then(() => {
+      return res.json({
+        success: true,
+        message: 'tag removed'
+      })
+    })
+  })
+}
+
 const createTag = function (req, res) {
-  tags.Tag.create({
+  Tags.Tag.create({
     name: req.body.name,
   })
   res.json({
@@ -46,5 +64,4 @@ const createTag = function (req, res) {
 
 module.exports = {
   addTag,
-  getAllTags,
 }

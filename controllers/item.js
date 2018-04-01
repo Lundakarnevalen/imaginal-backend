@@ -1,6 +1,8 @@
 'use strict'
 
 const items = require('../models/item')
+const ItemTags = require('../models/itemtag')
+
 
 const getAllItems = async (req, res) => {
   const itemList = await items.Item.findAll().map(oneItem => {
@@ -12,6 +14,30 @@ const getAllItems = async (req, res) => {
     success: true,
     message: itemList
   })
+}
+
+const getItemOnTags = async (req, res) => {
+  const tags = req.body.tags
+  let list = []
+  tags.map(oneTag => {
+    list.push.apply(list, findItemWithTag(oneTag))
+  })
+  // Remove duplicates
+  let uniqueList = list.filter(function(elem, index, self)  {
+    return index == self.indexOfname(elem)
+  });
+  if (uniqueList) {
+    return res.json({
+      success: true,
+      message
+    })
+ 
+  } else {
+    return res.status(401).json({
+      success: false,
+      message: "Found no items with that tag"
+    })
+  }
 }
 
 const addItem = async (req, res) => {
@@ -78,8 +104,15 @@ const editItem = async (req, res) => {
   }
 }
 
+const findItemWithTag = function (tag) {
+  return ItemTags.findAll({
+    where: { name: tag.name }
+  }) 
+}
+
 module.exports = {
   addItem,
   getAllItems,
-  editItem
+  editItem,
+  findItemWithTags
 }

@@ -15,6 +15,7 @@ const users = require('./users/userController')
 const storageLocations = require('./controllers/storagelocation')
 const items = require('./controllers/item')
 const tags = require('./controllers/tag')
+const Tag = require('./models/tag')
 
 
 app.use(bodyParser.json())
@@ -106,12 +107,10 @@ app.post('/api/role/:email/:roleid', role.addRole)
 app.delete('/api/role/:email/:roleid', role.removeRole)
 app.get('/api/role/:roleid', role.getUsers)
 
-app.post('/api/role/:email/:roleid', role.addRole)
-app.delete('/api/role/:email/:roleid', role.removeRole)
-app.get('/api/role/:roleid', role.getUsers)
+app.post('/api/warehouse/tag/new', tags.addTag)
+app.delete('/api/warehouse/tag/delete', tags.removetag)
+app.get('/api/warehouse/tag/list', Tag.getAllTags)
 
-app.post('/api/warehouse/tag/:name', tags.addTag)
-app.get('/api/warehouse/tag/list', tags.getAllTags)
 
 app.all('*', function (req, res) {
   res.status(404).json({

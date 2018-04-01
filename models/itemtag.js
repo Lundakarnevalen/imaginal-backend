@@ -36,6 +36,18 @@ Tag.belongsToMany(Item, {
   constraints: false
 })
 
+const hasItem = function (tag) {
+  return Tag.findAll({
+    where: {tag: name}
+  })
+}
+
+const hasTag = function (item)  {
+  return Item.findAll({
+    where: {item: itemName}
+  })
+}
+
 
 module.exports = {
   ItemTag,
