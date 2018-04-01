@@ -7,7 +7,9 @@ const TreasureHunt = dbc.define('TreasureHunt', {
     primaryKey: true,
     type: Sequelize.INTEGER
   },
-  description: Sequelize.TEXT
+  description: Sequelize.TEXT,
+  open: Sequelize.INTEGER,
+  closes: Sequelize.INTEGER
 })
 
 module.exports = {

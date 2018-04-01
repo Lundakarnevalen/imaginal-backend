@@ -2,7 +2,7 @@
 
 const users = require('./users')
 const UserRoles = require('../models/userrole')
-const UserSection = require('../models/usersection')
+const UserSection = require('../models/userSection')
 const userService = require('./usersService')
 
 const getAll = async (req, res) => {

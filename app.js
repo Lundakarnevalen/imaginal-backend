@@ -71,8 +71,8 @@ app.all(/(\/)?api\/.*/, function (req, res, next) {
 })
 
 app.get('/treasurehunt', treasure.getCheckpoint)
-app.get('/treasure/:id', treasure.getTreasureHuntInfo)
-
+app.get('/treasurehunt/:id', treasure.getTreasureHuntInfo)
+app.post('/treasurehunt/checkin', treasure.checkingCheckpoint)
 /**
  * Authorized endpoints
  */
@@ -103,15 +103,15 @@ app.get('/api/role/:roleid', role.getUsers)
 
 
 
-const UserCheckpoints = require('./treasurehunt/UserCheckpoints').UserCheckpoints
+const UserCheckpoints = require('./treasurehunt/userCheckpoints').UserCheckpoints.sync()
 const Checkpoint = require('./treasurehunt/checkpointModel').Checkpoint
 const Treasurehunt = require('./treasurehunt/treasurehuntModel').TreasureHunt
 
 Treasurehunt.create({}).then(async(treasurehunt) => {
   'use strict'
-  let checkpoint = await Checkpoint.create({})
-  let checkpoint2 = await Checkpoint.create({})
-  let userCheckpoints = await UserCheckpoints.create({})
+  let checkpoint = await Checkpoint.create({location: 'asd'})
+  let checkpoint2 = await Checkpoint.create({location: 'asdasd'})
+//  let userCheckpoints = await UserCheckpoints.create({})
   await treasurehunt.addCheckpoints([checkpoint, checkpoint2])
   let asd = await treasurehunt.getCheckpoints().map(treasure => treasure.id)
   console.log(asd)
@@ -130,6 +130,7 @@ require('./config/database')
   .sync()
   .then(() => {
     app.listen(port, function () {
+      console.log('asdasdasdasdas')
       console.log('Listening on port', port)
     })
   })

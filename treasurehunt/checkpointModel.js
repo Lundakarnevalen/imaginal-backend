@@ -8,23 +8,18 @@ const Checkpoint = dbc.define('Checkpoints', {
     primaryKey: true,
     type: Sequelize.INTEGER
   },
-  location: Sequelize.TEXT
+  location: Sequelize.TEXT,
+  TreasureHuntId: Sequelize.INTEGER
 })
 
 TreasureHunt.hasMany(Checkpoint, {
   as: 'Checkpoints'
 })
 
-/*
-Checkpoint.belongsToMany(TreasureHunt, {
-  through: {
-    model: Checkpoint,
-    unique: false
-  },
-  foreignKey: 'id',
-  as: 'TreasureCheckpoint',
-  constraints: false
-})*/
+Checkpoint.belongsTo(TreasureHunt, {
+  as: 'TreasureHunt',
+  foreignKey: 'TreasureHuntId'
+})
 
 module.exports = {
   Checkpoint
