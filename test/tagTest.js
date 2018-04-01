@@ -141,7 +141,7 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
       })
   })
 
-  it('Authorized deleteTag, role: administrator', done => {
+  it('Authorized deleteTag, role: warehouse manager', done => {
     api.delete('/api/warehouse/tag/delete')
       .set('Authorization', 'bearer ' + WarehouseManager.token)
       .end(async(err, res) => {
@@ -167,7 +167,7 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
       })
   })
 
-  it('Unauthorized getTag, role: administrator', done => {
+  it('Unauthorized getTag, role: iser', done => {
     api.get('/api/warehouse/tag/list')
       .set('Authorization', 'bearer ' + user.token)
       .end(async(err, res) => {
