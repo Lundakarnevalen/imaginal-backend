@@ -14,6 +14,7 @@ const checkin = require('./controllers/checkin')
 const users = require('./users/userController')
 const storageLocations = require('./controllers/storagelocation')
 const items = require('./controllers/item')
+const orders = require('./controllers/order')
 
 app.use(bodyParser.json())
 app.use(passport.initialize())
