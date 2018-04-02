@@ -3,26 +3,55 @@
 const storageLocations = require('../models/storagelocation')
 const storageContents = require('../models/storagecontents')
 
-const addStorageLocation = function (req, res) {
-  storageLocations.StorageLocation.findAll()
-  .then((locations) => {
-    locations.forEach((location) => {
-      if (location.storageName === req.body.storageName) {
-        return res.json({
-          success: false,
-          message: 'Location already exists'
-        })
-      }
+const addStorageLocation = async (req, res) => {
+  const locations = await storageLocations.StorageLocation.findAll()
+  const existingLocation = await locations.find(location => location.storageName === req.body.storageName)
+  if (existingLocation) {
+    res.json({
+      success: false,
+      message: 'Storage Location already exists'
     })
-    storageLocations.StorageLocation.create({
-      storageName: req.body.storageName
-    }).then(() => {
-      res.json({
-        success: true,
-        message: 'Storage Location added'
-      })
+  } else if (!req.body.storageName) {
+    res.json({
+      success: false,
+      message: 'Missing parameter storageName'
     })
+  } else {
+    const theDescription = (req.body.description) ? req.body.description : ''
+    // Check if create succeeds?
+    await storageLocations.StorageLocation.create({
+      storageName: req.body.storageName,
+      description: theDescription
+    })
+    res.json({
+      success: true,
+      message: 'Storage Location added'
+    })
+  }
+}
+
+const getStorageLocations = async (req, res) => {
+  const locations = await storageLocations.StorageLocation.findAll()
+  return res.json({
+    success: true,
+    locations: locations
   })
+}
+
+const getByID = async (req, res) => {
+  const locations = await storageLocations.StorageLocation.findAll()
+  const theLocation = await locations.find(location => location.id === req.body.id)
+  if (theLocation) {
+    res.json({
+      success: true,
+      location: theLocation
+    })
+  } else {
+    res.json({
+      success: false,
+      message: 'No such ID'
+    })
+  }
 }
 
 const getItemsInStorageLocation = async (req, res) => {
@@ -44,5 +73,7 @@ const getItemsInStorageLocation = async (req, res) => {
 
 module.exports = {
   addStorageLocation,
+  getStorageLocations,
+  getByID,
   getItemsInStorageLocation
 }

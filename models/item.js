@@ -18,6 +18,13 @@ const Item = dbc.define('Item', {
   note: Sequelize.STRING
 })
 
+const findUniqueItem = (itemName, articleNumber, supplier) => Item.findAll({
+  where: {
+    $or: [{ itemName: itemName }, { articleNumber: articleNumber, supplier: supplier }]
+  }
+})
+
 module.exports = {
-  Item
+  Item,
+  findUniqueItem
 }
