@@ -1,32 +1,31 @@
 'use strict'
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Orders', {
+    await queryInterface.createTable('OrderLines', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      creationDate: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-      storageLocationID: {
+      orderID: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'StorageLocation',
+          model: 'Orders',
           key: 'id'
         }
       },
-      deliveryDate: Sequelize.DATE,
-      returnDate: Sequelize.DATE,
-      delivered: Sequelize.BOOLEAN,
-      return: Sequelize.BOOLEAN
+      itemID: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Items',
+          key: 'id'
+        }
+      },
+      quantity: Sequelize.INTEGER
     })
-
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Orders')
+    await queryInterface.dropTable('OrderLines')
   }
 }

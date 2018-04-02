@@ -19,7 +19,7 @@ const Order = dbc.define('Order', {
   return: Sequelize.BOOLEAN
 })
 
-Order.hasOne(Location, { as: 'StorageLocation', foreignKey: 'StorageLocationId' })
+Order.belongsTo(Location, { as: 'StorageLocation', foreignKey: 'storageLocationID' })
 //hasOne warehouseuserId
 
 module.exports = {
