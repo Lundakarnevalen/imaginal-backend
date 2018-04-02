@@ -14,17 +14,14 @@ const getAllItems = async (req, res) => {
 
 const addItem = async (req, res) => {
   if (!req.body.itemName) {
-    return res.json({
+    return res.status(400).json({
       success: false,
       message: 'Invalid parameter'
     })
   }
 
-  const allItems = await items.Item.findAll({
-    where: {
-      $or: [{ itemName: req.body.itemName }, { articleNumber: req.body.articleNumber, supplier: req.body.supplier }]
-    }
-  })
+  const allItems = await items.getAllItems()
+
   if (allItems.length > 0) {
     return res.json({
       success: false,
@@ -56,7 +53,7 @@ const createItem = function (req, res) {
 const addQuantity = async function (req, res) {
   /** Check locationID, itemID, addedQuantity != null */
   if (!req.body.locationID || !req.body.itemID || !req.body.addedQuantity) {
-    return res.json({
+    return res.status(400).json({
       success: false,
       message: 'Invalid parameter'
     })
@@ -66,7 +63,7 @@ const addQuantity = async function (req, res) {
     where: { id: req.body.locationID }
   })
   if (!findLocation) {
-    return res.json({
+    return res.status(400).json({
       success: false,
       message: 'No such location'
     })
@@ -75,7 +72,7 @@ const addQuantity = async function (req, res) {
     where: { id: req.body.itemID }
   })
   if (!findItem) {
-    return res.json({
+    return res.status(400).json({
       success: false,
       message: 'No such item'
     })
@@ -145,7 +142,7 @@ const getItemByArticleId = async (req, res) => {
       message: findItem
     })
   } else {
-    return res.json({
+    return res.status(400).json({
       success: false,
       message: 'No item with that article number exists'
     })
