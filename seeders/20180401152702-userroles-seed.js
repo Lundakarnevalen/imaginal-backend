@@ -3,12 +3,25 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.bulkInsert('UserRoles', [{
-      roleId: 1,
-      userId: 1,
+      roleId: 3,
+      userId: 15000,
       createdAt: new Date().toISOString().substr(0, 10),
       updatedAt: new Date().toISOString().substr(0, 10)
     }], {})
 
+    await queryInterface.bulkInsert('UserRoles', [{
+      roleId: 4,
+      userId: 15001,
+      createdAt: new Date().toISOString().substr(0, 10),
+      updatedAt: new Date().toISOString().substr(0, 10)
+    }], {})
+
+    await queryInterface.bulkInsert('UserRoles', [{
+      roleId: 5,
+      userId: 15002,
+      createdAt: new Date().toISOString().substr(0, 10),
+      updatedAt: new Date().toISOString().substr(0, 10)
+    }], {})
     /*
       Add altering commands here.
       Return a promise to correctly handle asynchronicity.
