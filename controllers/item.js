@@ -13,16 +13,17 @@ const getAllItems = async (req, res) => {
 }
 
 const addItem = async (req, res) => {
-  if (!req.body.itemName) {
+  if (!req.body.name) {
     return res.status(400).json({
       success: false,
       message: 'Invalid parameter'
     })
   }
 
-  const allItems = await items.getAllItems()
+  const item = await items.findUniqueItem(
+    req.body.name, req.body.articleNumber, req.body.supplier)
 
-  if (allItems.length > 0) {
+  if (item.length > 0) {
     return res.json({
       success: false,
       message: 'Item already exists'
@@ -34,11 +35,11 @@ const addItem = async (req, res) => {
 
 const createItem = function (req, res) {
   items.Item.create({
-    itemName: req.body.itemName,
+    itemName: req.body.name,
     imageUrl: req.body.imageUrl || '',
     unit: req.body.unit || '',
     purchasePrice: req.body.purchasePrice || '',
-    salesPrice: req.body.salesPrice || '',
+    salesPrice: req.body.retailPrice || '',
     description: req.body.description || '',
     articleNumber: req.body.articleNumber || '',
     supplier: req.body.supplier || '',
@@ -108,7 +109,7 @@ const addQuantity = async function (req, res) {
 
 const editItem = async (req, res) => {
   const findItem = await items.Item.findOne({
-    where: { itemName: req.body.itemName }
+    where: { itemName: req.body.name }
   })
   if (!findItem) {
     return res.json({
@@ -119,7 +120,7 @@ const editItem = async (req, res) => {
     if (req.body.imageUrl) findItem.imageUrl = req.body.imageUrl
     if (req.body.unit) findItem.unit = req.body.unit
     if (req.body.purchasePrice) findItem.purchasePrice = req.body.purchasePrice
-    if (req.body.salesPrice) findItem.salesPrice = req.body.salesPrice
+    if (req.body.retailPrice) findItem.salesPrice = req.body.retailPrice
     if (req.body.description) findItem.description = req.body.description
     if (req.body.articleNumber) findItem.articleNumber = req.body.articleNumber
     if (req.body.supplier) findItem.supplier = req.body.supplier

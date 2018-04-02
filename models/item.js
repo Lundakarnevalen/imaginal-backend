@@ -18,7 +18,7 @@ const Item = dbc.define('Item', {
   note: Sequelize.STRING
 })
 
-const getAllItems = (itemName, articleNumber, supplier) => Item.findAll({
+const findUniqueItem = (itemName, articleNumber, supplier) => Item.findAll({
   where: {
     $or: [{ itemName: itemName }, { articleNumber: articleNumber, supplier: supplier }]
   }
@@ -26,5 +26,5 @@ const getAllItems = (itemName, articleNumber, supplier) => Item.findAll({
 
 module.exports = {
   Item,
-  getAllItems
+  findUniqueItem
 }
