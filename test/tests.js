@@ -1,6 +1,6 @@
 // TODO: Run seed and this in npm test
 // TODO: Drop test database.
-// TODO: Seeda in en token på adminen och avänd.
+// TODO: Seeda in en token på adminen och använd.
 
 const utils = require('./utils')
 const register = require('./registerTest')
@@ -11,7 +11,12 @@ const role = require('./roleTest')
 const userInfo = require('./userInfoTest')
 const user = utils.getUser()
 const admin = utils.getAdmin()
+const warehouseCustomer = utils.getWarehouseCustomer()
+const warehouseWorker = utils.getWarehouseWorker()
+const WarehouseManager= utils.getWarehouseManager()
 const checkin = require('./checkinTest')
+const tag = require('./tagTest')
+const tag = utils.getTag()
 
 register(user)
 login(user)
@@ -20,3 +25,5 @@ role(user, admin)
 getAllUsers(user, admin)
 userChangeInfo(user, admin)
 checkin(user, admin)
+tagTest(user, admin, warehouseCustomer, warehouseWorker, WarehouseManager)
+

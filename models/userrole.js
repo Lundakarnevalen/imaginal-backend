@@ -44,10 +44,26 @@ const hasRole = function (user, role) { // (user, role) returns a boolean-promis
   })
 }
 
+const hasWarehouseRole = function (user)  {
+  const warehouseAccesses = [CUSTOMER, WORKER, MANAGER]
+  warehouseAccesses.map(warehouseAccess => {
+    if (user.hasRole(warehouseAccess))  {
+      return true
+    }
+  })
+  return false
+}
+
 const ADMIN = 'administrator'
+const CUSTOMER = 'warehouse customer'
+const WORKER = 'warehouse worker'
+const MANAGER = 'warehouse manager'
 
 module.exports = {
   UserRole,
   hasRole,
-  ADMIN
+  ADMIN,
+  CUSTOMER,
+  WORKER,
+  MANAGER
 }
