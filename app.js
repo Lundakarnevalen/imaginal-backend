@@ -39,15 +39,8 @@ app.post('/register', register.registerUser)
 app.post('/login/email', login.loginByEmail)
 app.post('/login/forgotpassword', forgotPassword.forgotPassword)
 app.post('/login/resetpassword', forgotPassword.setNewPassword)
-app.post('/warehouse/addLocation', storageLocations.addStorageLocation)
-app.post('/warehouse/getLocationByID', storageLocations.getByID)
-app.post('/addItem', items.addItem) /** For testing */
-app.post('/editItem', items.editItem) /** For testing */
 
 app.get('/getallsections', section.getAllSections)
-app.get('/getAllItems', items.getAllItems) /** For testing */
-app.get('/warehouse/getLocations', storageLocations.getStorageLocations)
-
 
 /**
  * Authenticate tokens
@@ -104,6 +97,17 @@ app.get('/api/section', section.getSectionPriorities)
 app.post('/api/role/:email/:roleid', role.addRole)
 app.delete('/api/role/:email/:roleid', role.removeRole)
 app.get('/api/role/:roleid', role.getUsers)
+
+app.post('/api/warehouse/product/new', items.addItem)
+app.post('/api/warehouse/product/edit', items.editItem)
+app.get('/api/warehouse/product/:articleId', items.getItemByArticleId)
+
+app.post('/api/warehouse/location/new', storageLocations.addStorageLocation)
+app.get('/api/warehouse/location/list', storageLocations.getStorageLocations)
+
+app.post('/warehouse/getLocationByID', storageLocations.getByID) /* For testing */
+app.post('/warehouse/product/addQuantity', items.addQuantity) /** For testing */
+app.get('/warehouse/product/getAllItems', items.getAllItems) /** For testing */
 
 app.all('*', function (req, res) {
   res.status(404).json({
