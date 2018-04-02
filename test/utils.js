@@ -129,9 +129,9 @@ const getWarehouseWorker = () => {
   }
 }
 
-const getWarehouseadmin = () => {
+const getWarehouseManager = () => {
   return {
-    'email': 'warehouseadmin@lundakarnevalen.se',
+    'email': 'warehousemanager@lundakarnevalen.se',
     'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGx1bmRha2FybmV2YWxlbi5zZSIsImlhdCI6MTUxNzg2MzM0MH0.sTXMU6V2elo9kxTe-W8bd9KAT0XfR8_qFlZdBD9emMM',
     'password': 'password',
     'postNumber': '123',
@@ -162,7 +162,6 @@ const getWarehouseadmin = () => {
   }
 }
 
-
 const getToken = (user) => {
 
 }
@@ -176,5 +175,9 @@ const getTag = () => {
 module.exports = {
   getToken,
   getUser,
-  getAdmin
+  getAdmin,
+  getWarehouseCustomer,
+  getWarehouseWorker,
+  getWarehouseManager,
+  getTag
 }

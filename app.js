@@ -12,11 +12,9 @@ const role = require('./controllers/role')
 const section = require('./controllers/section')
 const checkin = require('./controllers/checkin')
 const users = require('./users/userController')
-const storageLocations = require('./controllers/storagelocation')
+const storageLocations = require('./controllers/storageLocation')
 const items = require('./controllers/item')
 const tags = require('./controllers/tag')
-const Tag = require('./models/tag')
-
 
 app.use(bodyParser.json())
 app.use(passport.initialize())
@@ -101,8 +99,8 @@ app.delete('/api/role/:email/:roleid', role.removeRole)
 app.get('/api/role/:roleid', role.getUsers)
 
 app.post('/api/warehouse/tag/new', tags.addTag)
-app.delete('/api/warehouse/tag/delete', tags.removetag)
-app.get('/api/warehouse/tag/list', Tag.getAllTags)
+app.delete('/api/warehouse/tag/delete', tags.removeTag)
+app.get('/api/warehouse/tag/list', tags.getAllTags)
 
 app.post('/api/warehouse/product/new', items.addItem)
 app.post('/api/warehouse/product/edit', items.editItem)

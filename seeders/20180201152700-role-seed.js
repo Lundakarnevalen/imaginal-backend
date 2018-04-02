@@ -8,30 +8,12 @@ module.exports = {
       updatedAt: new Date().toISOString().substr(0, 10)
     }], {})
 
-    await queryInterface.bulkInsert('Roles', [{
-      description: 'warehouse customer',
-      createdAt: new Date().toISOString().substr(0, 10),
-      updatedAt: new Date().toISOString().substr(0, 10)
-    }], {})
-
-    await queryInterface.bulkInsert('Roles', [{
-      description: 'warehouse worker',
-      createdAt: new Date().toISOString().substr(0, 10),
-      updatedAt: new Date().toISOString().substr(0, 10)
-    }], {})
-
-    await queryInterface.bulkInsert('Roles', [{
-      description: 'warehouse manager',
-      createdAt: new Date().toISOString().substr(0, 10),
-      updatedAt: new Date().toISOString().substr(0, 10)
-    }], {})
-
     return queryInterface.bulkInsert('Roles', [{
       description: 'karnevalist',
       createdAt: new Date().toISOString().substr(0, 10),
       updatedAt: new Date().toISOString().substr(0, 10)
     }], {})
-    
+
     /*
       Add altering commands here.
       Return a promise to correctly handle asynchronicity.

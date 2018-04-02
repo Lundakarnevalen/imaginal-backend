@@ -44,14 +44,20 @@ const hasRole = function (user, role) { // (user, role) returns a boolean-promis
   })
 }
 
-const hasWarehouseRole = function (user)  {
-  const warehouseAccesses = [CUSTOMER, WORKER, MANAGER]
-  warehouseAccesses.map(warehouseAccess => {
-    if (user.hasRole(warehouseAccess))  {
-      return true
-    }
-  })
-  return false
+const hasWarehouseCustomerAccess = function (req) {
+  const isUser = UserRole.hasRole(req.user, UserRole.CUSTOMER)
+  return (isUser || hasWarehouseWorkerAccess(req) || hasWarehouseAdminAccess(req))
+}
+
+const hasWarehouseWorkerAccess = function (req) {
+  const isWorker = UserRole.hasRole(req.user, UserRole.WORKER)
+  return (isWorker || hasWarehouseAdminAccess(req))
+}
+
+const hasWarehouseAdminAccess = function (req) {
+  const isAdmin = UserRole.hasRole(req.user, UserRole.ADMIN)
+  const isWarehouseManager = UserRole.hasRole(req.user, UserRole.MANAGER)
+  return (isAdmin || isWarehouseManager)
 }
 
 const ADMIN = 'administrator'
@@ -65,5 +71,8 @@ module.exports = {
   ADMIN,
   CUSTOMER,
   WORKER,
-  MANAGER
+  MANAGER,
+  hasWarehouseCustomerAccess,
+  hasWarehouseWorkerAccess,
+  hasWarehouseAdminAccess
 }

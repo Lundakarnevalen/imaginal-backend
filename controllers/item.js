@@ -2,7 +2,6 @@
 
 const items = require('../models/item')
 const itemTags = require('../models/itemtag')
-const tags = require('../models/tag')
 const contents = require('../models/storageContents')
 const locations = require('../models/storageLocation')
 
@@ -12,31 +11,6 @@ const getAllItems = async (req, res) => {
     success: true,
     message: itemList
   })
-}
-
-
-const getItemsOnTags = async (req, res) => {
-  const tags = req.body.tags
-  let list = []
-  tags.map(oneTag => {
-    list.push.apply(list, findItemWithTag(oneTag))
-  })
-  // Remove duplicates
-  let uniqueList = list.filter(function(elem, index, self)  {
-    return index == self.indexOfname(elem)
-  });
-  if (uniqueList) {
-    return res.json({
-      success: true,
-      message
-    })
- 
-  } else {
-    return res.status(401).json({
-      success: false,
-      message: "Found no items with that tag"
-    })
-  }
 }
 
 const addItem = async (req, res) => {
@@ -78,7 +52,7 @@ const createItem = function (req, res) {
   })
 }
 
-const addQuantity = async function (req, rereturns) {
+const addQuantity = async function (req, res) {
   /** Check locationID, itemID, addedQuantity != null */
   if (!req.body.locationID || !req.body.itemID || !req.body.addedQuantity) {
     return res.status(400).json({
@@ -115,7 +89,7 @@ const addQuantity = async function (req, rereturns) {
   if (!getStorage) {
     /** Add Item to Location */
     await contents.StorageContent.create({
-      locationID: req.body.locationID,return
+      locationID: req.body.locationID,
       itemID: req.body.itemID,
       quantity: req.body.addedQuantity
     })
@@ -159,10 +133,34 @@ const editItem = async (req, res) => {
   }
 }
 
-const findItemsWithTag = function (tag) {
-  return tags.Tag.findOne({
-    where: { name: tag.name }
-  }) 
+const getItemsOnTags = async (req, res) => {
+  const tags = req.body.tags
+  let list = []
+
+  tags.map(oneTag => {
+    const itemList = itemTags.ItemTag.findAll({
+      where: { name: oneTag.name }
+    })
+    if (itemList) {
+      list.push.apply(list, itemList)
+    }
+  })
+  // Remove duplicates
+  let uniqueList = list.filter(function (elem, index, self) {
+    return index === self.indexOfname(elem)
+  })
+  if (uniqueList) {
+    return res.json({
+      success: true,
+      message: uniqueList
+    })
+  } else {
+    return res.status(401).json({
+      success: false,
+      message: 'Found no items with that tag'
+    })
+  }
+}
 
 const getItemByArticleId = async (req, res) => {
   const item = req.params.articleId
@@ -186,7 +184,7 @@ module.exports = {
   addItem,
   getAllItems,
   editItem,
-  findItemWithTags,
   addQuantity,
-  getItemByArticleId
+  getItemByArticleId,
+  getItemsOnTags
 }

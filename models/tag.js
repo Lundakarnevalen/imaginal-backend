@@ -7,24 +7,10 @@ const Tag = dbc.define('Tag', {
     primaryKey: true,
     type: Sequelize.INTEGER
   },
-  name: Sequelize.STRING,
+  name: Sequelize.STRING
 
 })
 
-const getAllTags = async (req, res) => {
-  const isUser = await UserRoles.hasRole(req.user, UserRoles.ADMIN)
-  const tagList = await tags.Tag.findAll().map(oneTag => {
-    const list = {}
-    list['name'] = oneTag.name
-    return list
-  })
-  return res.json({
-    success: true,
-    message: tagList
-  })
-}
-
 module.exports = {
-  Tag,
-  getAllTags
+  Tag
 }

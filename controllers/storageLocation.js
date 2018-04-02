@@ -1,6 +1,6 @@
 'use strict'
 
-const storageLocations = require('../models/storagelocation')
+const storageLocations = require('../models/storageLocation')
 
 const addStorageLocation = async (req, res) => {
   const locations = await storageLocations.StorageLocation.findAll()

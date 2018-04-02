@@ -3,21 +3,21 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.bulkInsert('UserRoles', [{
-      roleId: 3,
+      roleId: 100,
       userId: 15000,
       createdAt: new Date().toISOString().substr(0, 10),
       updatedAt: new Date().toISOString().substr(0, 10)
     }], {})
 
     await queryInterface.bulkInsert('UserRoles', [{
-      roleId: 4,
+      roleId: 101,
       userId: 15001,
       createdAt: new Date().toISOString().substr(0, 10),
       updatedAt: new Date().toISOString().substr(0, 10)
     }], {})
 
     await queryInterface.bulkInsert('UserRoles', [{
-      roleId: 5,
+      roleId: 102,
       userId: 15002,
       createdAt: new Date().toISOString().substr(0, 10),
       updatedAt: new Date().toISOString().substr(0, 10)

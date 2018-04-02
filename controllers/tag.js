@@ -1,23 +1,20 @@
 'use strict'
 
-const Tags = require('../models/tag')
-const UserRoles = require('../models/userrole')
+const tags = require('../models/tag')
+const userRoles = require('../models/userrole')
 
 const addTag = async (req, res) => {
   if (!req.body.name) {
-    return res.status(400).json({ 
+    return res.status(400).json({
       success: false,
       message: 'Invalid parameter'
     })
   }
 
-  const isAdmin = await UserRoles.hasRole(req.user, UserRoles.ADMIN)
-  const isWarehouseManager = await UserRoles.hasRole(req.user, UserRoles.MANAGER)
-  
-  if (isAdmin || isWarehouseManager)  {
-    const tag = await Tags.Tag.findOne({
+  if (userRoles.hasWarehouseAdminAccess(req)) {
+    const tag = await tags.Tag.findOne({
       where: {
-        name: req.body.name,
+        name: req.body.name
       }
     })
 
@@ -26,35 +23,61 @@ const addTag = async (req, res) => {
         success: false,
         message: 'Tag already exist'
       })
-    }
-    else {
+    } else {
       createTag(req, res)
     }
+  } else {
+    return res.status(401).json({
+      success: false,
+      message: 'Go away!'
+    })
   }
-  else {
-   return res.status(401).json({
-     success: false,
-     message: 'Go away!'
-   }) 
+}
+
+const getAllTags = async (req, res) => {
+  if (userRoles.hasWarehouseCustomerAccess(req)) {
+    const tagList = await tags.Tag.findAll()
+    return res.json({
+      success: true,
+      message: tagList
+    })
+  } else {
+    return res.status(401).json({
+      success: false,
+      message: 'Go away!'
+    })
   }
 }
 
 const removeTag = function (req, res) {
-  const name = req.body.name
-
-  findUserAndRole(req, res, email, roleId, function (user, role) {
-    user.removeRole([role]).then(() => {
+  if (userRoles.hasWarehouseAdminAccess(req)) {
+    const tag = tags.Tag.findOne({
+      where: {name: req.body.name}
+    })
+    const result = tags.Tag.destroy(tag)
+    if (result) {
       return res.json({
         success: true,
-        message: 'tag removed'
+        message: 'Tag deleted'
       })
+    } else {
+      return res.status(400).json({
+        success: false,
+        message: 'Tag not found'
+      })
+    }
+  } else {
+    return res.status(401).json({
+      success: false,
+      message: 'Go away!'
     })
-  })
+  }
 }
 
+// Private method
 const createTag = function (req, res) {
-  Tags.Tag.create({
-    name: req.body.name,
+  tags.Tag.create({
+    name: req.body.name
   })
   res.json({
     success: true,
@@ -64,4 +87,6 @@ const createTag = function (req, res) {
 
 module.exports = {
   addTag,
+  getAllTags,
+  removeTag
 }
