@@ -43,7 +43,8 @@ const createItem = function (req, res) {
     description: req.body.description || '',
     articleNumber: req.body.articleNumber || '',
     supplier: req.body.supplier || '',
-    note: req.body.note || ''
+    note: req.body.note || '',
+    warningAmount: req.body.warningAmount || ''
   })
   res.json({
     success: true,
@@ -108,8 +109,11 @@ const addQuantity = async function (req, res) {
 }
 
 const editItem = async (req, res) => {
-  const findItem = await items.Item.findOne({
+  /** const findItem = await items.Item.findOne({
     where: { itemName: req.body.name }
+  }) */
+  const findItem = await items.Item.findOne({
+    where: { id: req.body.articleId}
   })
   if (!findItem) {
     return res.status(400).json({
@@ -117,6 +121,7 @@ const editItem = async (req, res) => {
       message: 'The item does not exist'
     })
   } else {
+    if (req.body.name) findItem.itemName = req.body.name
     if (req.body.imageUrl) findItem.imageUrl = req.body.imageUrl
     if (req.body.unit) findItem.unit = req.body.unit
     if (req.body.purchasePrice) findItem.purchasePrice = req.body.purchasePrice
@@ -134,8 +139,11 @@ const editItem = async (req, res) => {
 
 const getItemByArticleId = async (req, res) => {
   const item = req.params.articleId
-  const findItem = await items.Item.findAll({
+  /** const findItem = await items.Item.findAll({
     where: { articleNumber: item }
+  }) */
+  const findItem = await items.Item.findOne({
+    where: { id: item}
   })
   if (findItem.length > 0) {
     return res.json({
