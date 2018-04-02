@@ -26,7 +26,7 @@ const addItem = async (req, res) => {
     }
   })
   if (allItems.length > 0) {
-    return res.json({
+    return res.status(409).json({ /** Right status? */
       success: false,
       message: 'Item already exists'
     })
@@ -114,7 +114,7 @@ const editItem = async (req, res) => {
     where: { itemName: req.body.itemName }
   })
   if (!findItem) {
-    return res.json({
+    return res.status(400).json({
       success: false,
       message: 'The item does not exist'
     })
