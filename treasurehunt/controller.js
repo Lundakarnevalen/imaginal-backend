@@ -3,12 +3,13 @@ require('./userCheckpoints').UserCheckpoints.sync()
 const Users = require('../users/users.js').User
 const Checkpoints = require('./checkpointModel').Checkpoint
 const UserCheckpoints = require('./userCheckpoints').UserCheckpoints
+const treasureHunt = require('./treasurehuntModel')
 const service = require('./service')
 
 const getCheckpoint = async (req, res) => {
   await require('./treasurehuntModel').TreasureHunt.sync()
   await require('./checkpointModel').Checkpoint.sync()
-  await require('./UserCheckpoints').UserCheckpoints.sync()
+  await require('./userCheckpoints').UserCheckpoints.sync()
   res.status(200).send()
 }
 const getTreasureHuntInfo = async (req, res) => {
@@ -29,7 +30,6 @@ const getTreasureHuntInfo = async (req, res) => {
   const asd = await treasure.getCheckpoints()
 
   const length = asd.length
-  console.log(asd.length)
   res.status(200).json({
     length
   })
@@ -79,8 +79,19 @@ const checkingCheckpoint = async (req, res) => {
   }
 }
 
+const getAllTreasuresInfo = async (req, res) => {
+  const treasurehunts = await treasureHunt.getAllTreasureHunts()
+  res.json(treasurehunts)
+}
+
+const createNewTH = async (req, req) => {
+  
+}
+
 module.exports = {
   getCheckpoint,
   getTreasureHuntInfo,
+  getAllTreasuresInfo,
+  createNewTH,
   checkingCheckpoint
 }

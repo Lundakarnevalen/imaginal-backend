@@ -70,9 +70,11 @@ app.all(/(\/)?api\/.*/, function (req, res, next) {
   })(req, res, next)
 })
 
-app.get('/treasurehunt', treasure.getCheckpoint)
+app.get('/treasurehunt', treasure.getAllTreasuresInfo)
+//app.get('/treasurehunt', treasure.getCheckpoint)
 app.get('/treasurehunt/:id', treasure.getTreasureHuntInfo)
 app.post('/treasurehunt/checkin', treasure.checkingCheckpoint)
+app.post('treasurehunt/newhunt', treasure.createNewTH)
 /**
  * Authorized endpoints
  */
@@ -130,7 +132,6 @@ require('./config/database')
   .sync()
   .then(() => {
     app.listen(port, function () {
-      console.log('asdasdasdasdas')
       console.log('Listening on port', port)
     })
   })
