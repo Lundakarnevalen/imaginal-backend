@@ -2,7 +2,7 @@
 const Sequelize = require('sequelize')
 const dbc = require('../config/database')
 const User = require('../users/users').User
-const Role = require('./role').Role
+const Role = require('../role/role').Role
 
 const UserRole = dbc.define('UserRole', {
   id: {

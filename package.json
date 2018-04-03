@@ -6,7 +6,7 @@
   "scripts": {
     "apidoc": "pretty-swag -i swagger.yaml",
     "test": "standard --fix && nyc mocha -R spec test/tests.js",
-    "test-coverage": "nyc --reporter=text mocha && open",
+    "test-coverage": "nyc --reporter=text mocha",
     "start": "node app.js"
   },
   "repository": {
@@ -22,7 +22,7 @@
   "homepage": "https://github.com/Lundakarnevalen/imaginal-backend#readme",
   "dependencies": {
     "aws-sdk": "^2.188.0",
-    "bcrypt": "^1.0.3",
+    "bcrypt": "1.0.3",
     "body-parser": "^1.18.2",
     "cors": "^2.8.4",
     "express": "^4.16.1",
