@@ -84,6 +84,62 @@ open doc.html
 404: No such end point
 500: Internal error, not caused by user
 
+## Docker
+
+Docker is a packaging tool that is very useful and uses the concept of 
+"containers". It creates a virtual container from your code and can run 
+everywhere.
+
+The Dockerfile is used to describe how to create a image-file for the project.
+We use a pre-created image made for node version 8.9 as a base. You can think 
+of it as a virtual machine with npm pre-installed. 
+
+We can expect that the project will run identical on whatever machine you are 
+on (mac, linux or windows) if you use a docker container. 
+
+The docker-compose file is a bit more woaw. Here we instruct docker that we
+want three containers that we call; db, api. And they point to 
+the imagefile of a mysql-server and the 
+dockerfile of imaginal-backend.  
+
+You could also just manually start three containers for db, api 
+by using the Dockerfiles and connecting them, but docker-compose makes it a
+lot easier!
+
+### Use docker
+
+The first step is to install docker (Community edition):
+[https://docs.docker.com/install/]{https://docs.docker.com/install/}
+
+Then in the terminal when in the folder of the project run;
+```
+# This will download the base-images and create images for the database and
+# backend.
+docker-compose build
+
+#When everything is built, you can start db and backend by running
+docker-compose up -d # -d means in detached mode. 
+
+# To see logs run;
+docker-compose logs
+```
+
+You can now rebuild and update images for specific project like;
+```
+docker-compose build api
+
+docker-compose up api
+```
+
+If you want to see which containers are running you can use the command `ps`
+```
+docker-compose ps
+>   Name             Command             State                Ports              
+> -----------------------------------------------------------------------------
+> api_1        npm start          Up      0.0.0.0:3000->3000/tcp, 8081/tcp
+> db_1         docker.sh mysqld   Up      0.0.0.0:8999->3306/tcp          
+```
+
 ## Conventions
 * [standard.js](https://github.com/standard/standard) - JavaScript Style used 
 
