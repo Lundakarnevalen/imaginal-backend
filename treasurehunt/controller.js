@@ -1,11 +1,11 @@
-require('./userCheckpoints')
-require('./userCheckpoints').UserCheckpoints.sync()
+//require('./userCheckpoints')
+//require('./userCheckpoints').UserCheckpoints.sync()
 const Users = require('../users/users.js').User
 const Checkpoints = require('./checkpointModel').Checkpoint
-const UserCheckpoints = require('./userCheckpoints').UserCheckpoints
+//const UserCheckpoints = require('./userCheckpoints').UserCheckpoints
 const treasureHunt = require('./treasurehuntModel')
-const service = require('./service')
-
+//const service = require('./service')
+/*
 const getCheckpoint = async (req, res) => {
   await require('./treasurehuntModel').TreasureHunt.sync()
   await require('./checkpointModel').Checkpoint.sync()
@@ -77,21 +77,50 @@ const checkingCheckpoint = async (req, res) => {
       })
       break
   }
-}
+}*/
 
 const getAllTreasuresInfo = async (req, res) => {
   const treasurehunts = await treasureHunt.getAllTreasureHunts()
   res.json(treasurehunts)
 }
 
-const createNewTH = async (req, req) => {
-  
+const createNewTH = async (req, res) => {
+  const isValidArray = (input) => {
+    return input && Array.isArray(input)
+  }
+
+  const checkpoints = req.body.checkpoints
+  const treasureName = req.body.treasurename
+
+  if (!isValidArray(checkpoints)) {
+    return res.status(400).json({ success: false,
+      message: 'Invalid checkpoint input'
+    })
+  }
+
+  checkpoints.filter(x => !isValidArray(x))
+
+  if (checkpoints.length === 0)  {
+    return res.status(400).json({ success: false,
+      message: 'Invalid checkpoint input'
+    })
+  }
+
+  const newth = await treasureHunt.TreasureHunt.create({ description: treasureName })
+
+  checkpoints.forEach(async (x) => {
+    let newc = await Checkpoints.create({ locationX: x.locationX,
+      locationY: x.locationY})
+    await newth.addCheckpoints([newc])
+  })
+
+  res.json({ success: true })
 }
 
 module.exports = {
-  getCheckpoint,
-  getTreasureHuntInfo,
+ // getCheckpoint,
+ // getTreasureHuntInfo,
   getAllTreasuresInfo,
-  createNewTH,
-  checkingCheckpoint
+  createNewTH
+ // checkingCheckpoint
 }

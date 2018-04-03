@@ -70,11 +70,16 @@ app.all(/(\/)?api\/.*/, function (req, res, next) {
   })(req, res, next)
 })
 
+app.post('/treasurehunt/newhunt', treasure.createNewTH)
+app.get('/treasurehunt/newhunt', treasure.createNewTH)
+//app.post('treasurehunt/newhunt', treasure.createNewTH)
+//app.get('treasurehunt/newhunt', treasure.createNewTH)
+
+/*
 app.get('/treasurehunt', treasure.getAllTreasuresInfo)
 //app.get('/treasurehunt', treasure.getCheckpoint)
 app.get('/treasurehunt/:id', treasure.getTreasureHuntInfo)
 app.post('/treasurehunt/checkin', treasure.checkingCheckpoint)
-app.post('treasurehunt/newhunt', treasure.createNewTH)
 /**
  * Authorized endpoints
  */
@@ -104,11 +109,12 @@ app.get('/api/role/:roleid', role.getUsers)
 
 
 
-
+/*
 const UserCheckpoints = require('./treasurehunt/userCheckpoints').UserCheckpoints.sync()
 const Checkpoint = require('./treasurehunt/checkpointModel').Checkpoint
 const Treasurehunt = require('./treasurehunt/treasurehuntModel').TreasureHunt
-
+*/
+/*
 Treasurehunt.create({}).then(async(treasurehunt) => {
   'use strict'
   let checkpoint = await Checkpoint.create({location: 'asd'})
@@ -118,7 +124,7 @@ Treasurehunt.create({}).then(async(treasurehunt) => {
   let asd = await treasurehunt.getCheckpoints().map(treasure => treasure.id)
   console.log(asd)
 })
-
+*/
 app.all('*', function (req, res) {
   res.status(404).json({
     success: false,

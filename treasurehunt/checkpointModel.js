@@ -8,7 +8,8 @@ const Checkpoint = dbc.define('Checkpoints', {
     primaryKey: true,
     type: Sequelize.INTEGER
   },
-  location: Sequelize.TEXT,
+  locationX: Sequelize.TEXT,
+  locationY: Sequelize.TEXT,
   TreasureHuntId: Sequelize.INTEGER
 })
 

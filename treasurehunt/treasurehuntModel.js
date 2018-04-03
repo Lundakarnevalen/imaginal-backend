@@ -26,8 +26,10 @@ const getAllTreasureHunts = async () => {
     const result = await Promise.all(rows)
     return result
   } catch (e) {
-    return { success: false,
-    message: 'Failed to list TreasureHunts'
+    return {
+      success: false,
+      message: 'Failed to list TreasureHunts'
+    }
   }
 }
 
