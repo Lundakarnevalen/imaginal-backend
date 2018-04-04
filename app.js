@@ -71,11 +71,9 @@ app.all(/(\/)?api\/.*/, function (req, res, next) {
 })
 
 app.post('/treasurehunt/newhunt', treasure.createNewTH)
-app.get('/treasurehunt/newhunt', treasure.createNewTH)
-//app.post('treasurehunt/newhunt', treasure.createNewTH)
-//app.get('treasurehunt/newhunt', treasure.createNewTH)
+app.get('treasurehunt/newhunt', treasure.createNewTH)
 
-/*
+
 app.get('/treasurehunt', treasure.getAllTreasuresInfo)
 //app.get('/treasurehunt', treasure.getCheckpoint)
 app.get('/treasurehunt/:id', treasure.getTreasureHuntInfo)
