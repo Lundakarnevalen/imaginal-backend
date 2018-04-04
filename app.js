@@ -105,8 +105,8 @@ app.get('/api/warehouse/product/:id', items.getItemById)
 app.post('/api/warehouse/location/new', storageLocations.addStorageLocation)
 app.get('/api/warehouse/location/list', storageLocations.getStorageLocations)
 
-app.post('/api/warehouse/location/additems', items.addItemsToLocation) /** Right endpoint? */
-app.get('/api/warehouse/location/getallitems/:locationid', storageLocations.getItemsInStorageLocation) /** Right endpoint? */
+app.post('/api/warehouse/location/additems', items.addItemsToLocation)
+app.get('/api/warehouse/location/getallitems/:locationid', storageLocations.getItemsInStorageLocation)
 
 app.post('/warehouse/getLocationByID', storageLocations.getByID) /* For testing */
 

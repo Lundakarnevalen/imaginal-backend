@@ -68,17 +68,10 @@ const getItemsInStorageLocation = async (req, res) => {
   const storage = await storageContents.StorageContent.findAll({
     where: { locationID: req.params.locationid }
   })
-  if (storage.length > 0) {
-    return res.json({
-      success: true,
-      message: storage
-    })
-  } else {
-    return res.status(400).json({ /** Right status? */
-      success: false,
-      message: 'No items in storage location'
-    })
-  }
+  return res.json({
+    success: true,
+    message: storage
+  })
 }
 
 module.exports = {

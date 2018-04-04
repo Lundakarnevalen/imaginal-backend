@@ -1,7 +1,7 @@
 'use strict'
 
 const items = require('../models/item')
-const contents = require('../models/storagecontents')
+const contents = require('../models/storageContents')
 const locations = require('../models/storagelocation')
 
 const getAllItems = async (req, res) => {
@@ -39,11 +39,10 @@ const createItem = function (req, res) {
     itemName: req.body.name,
     imageUrl: req.body.imageUrl || '',
     unit: req.body.unit || '',
-    purchasePrice: req.body.purchasePrice, /** What should the default value be for INTEGER? */
-    salesPrice: req.body.retailPrice, /** What should the default value be for INTEGER? */
+    purchasePrice: req.body.purchasePrice || null,
+    salesPrice: req.body.retailPrice || null,
     description: req.body.description || '',
-    articleNumber: req.body.articleNumber, /** What should the default value be for INTEGER? */
-    supplier: req.body.supplier || '',
+    articleNumber: req.body.articleNumber || null,
     note: req.body.note || '',
     warningAmount: req.body.warningAmount || 1
   })
