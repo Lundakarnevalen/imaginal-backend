@@ -43,6 +43,7 @@ const createItem = function (req, res) {
     salesPrice: req.body.retailPrice || null,
     description: req.body.description || '',
     articleNumber: req.body.articleNumber || null,
+    supplier: req.body.supplier || '',
     note: req.body.note || '',
     warningAmount: req.body.warningAmount || 1
   })

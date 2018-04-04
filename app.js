@@ -99,7 +99,7 @@ app.get('/api/role/:roleid', role.getUsers)
 
 app.post('/api/warehouse/product/new', items.addItem)
 app.post('/api/warehouse/product/edit', items.editItem)
-app.get('/api/warehouse/product/getall', items.getAllItems)
+app.get('/api/warehouse/product/all', items.getAllItems)
 app.get('/api/warehouse/product/:id', items.getItemById)
 
 app.post('/api/warehouse/location/new', storageLocations.addStorageLocation)
