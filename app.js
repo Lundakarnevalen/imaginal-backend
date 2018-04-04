@@ -110,7 +110,6 @@ app.get('/api/warehouse/location/getallitems/:locationid', storageLocations.getI
 
 app.post('/warehouse/getLocationByID', storageLocations.getByID) /* For testing */
 
-
 app.all('*', function (req, res) {
   res.status(404).json({
     success: false,

@@ -34,7 +34,7 @@ const addItem = async (req, res) => {
   }
 }
 
-const createItem = function (req, res) { 
+const createItem = function (req, res) {
   items.Item.create({
     itemName: req.body.name,
     imageUrl: req.body.imageUrl || '',

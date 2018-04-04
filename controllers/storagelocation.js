@@ -55,9 +55,8 @@ const getByID = async (req, res) => {
 }
 
 const getItemsInStorageLocation = async (req, res) => {
-
   const locationExists = await storageLocations.StorageLocation.findOne({
-    where: { id: req.params.locationid}
+    where: { id: req.params.locationid }
   })
   if (!locationExists) {
     return res.status(400).json({
