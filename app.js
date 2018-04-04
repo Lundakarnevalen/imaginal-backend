@@ -12,6 +12,7 @@ const role = require('./role/roleController')
 const section = require('./controllers/section')
 const checkin = require('./checkin/checkinController')
 const users = require('./users/userController')
+const jodel = require('./jodel/controller')
 
 app.use(bodyParser.json())
 app.use(passport.initialize())
@@ -32,6 +33,9 @@ app.use(function (error, req, res, next) {
 /**
  * Unauthorized endpoints
  */
+app.post('/jodel/newpost', jodel.newPost) 
+app.get('/jodel/newpost', jodel.newPost) 
+
 app.get('/api/medcheck/:personalnumber', users.getSectionByPersonalNumber)
 app.post('/register', register.registerUser)
 app.post('/login/email', login.loginByEmail)
