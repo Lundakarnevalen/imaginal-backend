@@ -35,9 +35,8 @@ const getAll = async (req, res) => {
 
 /** From a social security number - fetch all sections for the user. */
 const getSectionByPersonalNumber = async (req, res) => {
-
   // ssn - Social Security Number
-  const ssn = req.params.personalnumber 
+  const ssn = req.params.personalnumber
 
   if (!ssn) { // If no ssn is given, return bad request.
     return res.status(400).json({
@@ -61,7 +60,7 @@ const getSectionByPersonalNumber = async (req, res) => {
     const sections = await UserSection.findSectionsOfUser(user)
     return res.json({
       success: true,
-      sections,
+      sections
     })
   } catch (err) {
     // On error, log and return success false.
@@ -72,7 +71,6 @@ const getSectionByPersonalNumber = async (req, res) => {
     })
   }
 }
-
 
 const getById = async (req, res) => {
   const identification = req.params.identification

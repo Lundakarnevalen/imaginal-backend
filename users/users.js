@@ -49,8 +49,8 @@ const KarnevalistInfo = dbc.define('KarnevalistInfo', {
 })
 
 // This adds UserId to KarnevalistInfo as foreign key
-User.hasOne(KarnevalistInfo)
 
+User.hasOne(KarnevalistInfo)
 User.hasMany(Checkin, { as: 'CheckinOwnership', foreignKey: 'checkerId' })
 User.hasOne(Checkin, { as: 'Checkin', foreignKey: 'userId' })
 
