@@ -44,23 +44,28 @@ const hasRole = function (user, role) { // (user, role) returns a boolean-promis
   })
 }
 
-const hasWarehouseCustomerAccess = function (req) {
-  const isUser = hasRole(req.user, CUSTOMER)
+/* Put the async stuff in a try/catch block */
+const hasWarehouseCustomerAccess = async (req) => {
+  const isUser = await hasRole(req.user, CUSTOMER)
+  const hasWarehouseAccess = await hasWarehouseWorkerAccess(req)
   console.log(isUser)
   console.log('----------------------------------')
-  return (isUser || hasWarehouseWorkerAccess(req))
+  return (isUser || hasWarehouseAccess)
 }
 
-const hasWarehouseWorkerAccess = function (req) {
-  const isWorker = hasRole(req.user, WORKER)
+/* Put the async stuff in a try/catch block */
+const hasWarehouseWorkerAccess = async (req) => {
+  const isWorker = await hasRole(req.user, WORKER)
+  const isWarehouseAdmin = await hasWarehouseAdminAccess(req)
   console.log(isWorker)
   console.log('----------------------------------')
-  return (isWorker || hasWarehouseAdminAccess(req))
+  return (isWorker || isWarehouseAdmin)
 }
 
-const hasWarehouseAdminAccess = function (req) {
-  const isAdmin = hasRole(req.user, ADMIN)
-  const isWarehouseManager = hasRole(req.user, MANAGER)
+/* Put the async stuff in a try/catch block */
+const hasWarehouseAdminAccess = async (req) => {
+  const isAdmin = await hasRole(req.user, ADMIN)
+  const isWarehouseManager = await hasRole(req.user, MANAGER)
   console.log(isWarehouseManager)
   console.log(isAdmin)
   console.log('----------------------------------')
