@@ -45,18 +45,25 @@ const hasRole = function (user, role) { // (user, role) returns a boolean-promis
 }
 
 const hasWarehouseCustomerAccess = function (req) {
-  const isUser = UserRole.hasRole(req.user, UserRole.CUSTOMER)
-  return (isUser || hasWarehouseWorkerAccess(req) || hasWarehouseAdminAccess(req))
+  const isUser = hasRole(req.user, CUSTOMER)
+  console.log(isUser)
+  console.log('----------------------------------')
+  return (isUser || hasWarehouseWorkerAccess(req))
 }
 
 const hasWarehouseWorkerAccess = function (req) {
-  const isWorker = UserRole.hasRole(req.user, UserRole.WORKER)
+  const isWorker = hasRole(req.user, WORKER)
+  console.log(isWorker)
+  console.log('----------------------------------')
   return (isWorker || hasWarehouseAdminAccess(req))
 }
 
 const hasWarehouseAdminAccess = function (req) {
-  const isAdmin = UserRole.hasRole(req.user, UserRole.ADMIN)
-  const isWarehouseManager = UserRole.hasRole(req.user, UserRole.MANAGER)
+  const isAdmin = hasRole(req.user, ADMIN)
+  const isWarehouseManager = hasRole(req.user, MANAGER)
+  console.log(isWarehouseManager)
+  console.log(isAdmin)
+  console.log('----------------------------------')
   return (isAdmin || isWarehouseManager)
 }
 

@@ -66,7 +66,7 @@ const getAdmin = () => {
 const getWarehouseCustomer = () => {
   return {
     'email': 'warehousecustomer@lundakarnevalen.se',
-    'token': '3yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGx1bmRha2FybmV2YWxlbi5zZSIsImlhdCI6MTUxNzg2MzM0MH0.sTXMU6V2elo9kxTe-W8bd9KAT0XfR8_qFlZdBD9emMM',
+    'token': '1yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGx1bmRha2FybmV2YWxlbi5zZSIsImlhdCI6MTUxNzg2MzM0MH0.sTXMU6V2elo9kxTe-W8bd9KAT0XfR8_qFlZdBD9emMM',
     'password': 'password',
     'postNumber': '123',
     'phoneNumber': 'phoneNumber',
@@ -132,7 +132,7 @@ const getWarehouseWorker = () => {
 const getWarehouseManager = () => {
   return {
     'email': 'warehousemanager@lundakarnevalen.se',
-    'token': '1yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGx1bmRha2FybmV2YWxlbi5zZSIsImlhdCI6MTUxNzg2MzM0MH0.sTXMU6V2elo9kxTe-W8bd9KAT0XfR8_qFlZdBD9emMM',
+    'token': '3yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGx1bmRha2FybmV2YWxlbi5zZSIsImlhdCI6MTUxNzg2MzM0MH0.sTXMU6V2elo9kxTe-W8bd9KAT0XfR8_qFlZdBD9emMM',
     'password': 'password',
     'postNumber': '123',
     'phoneNumber': 'phoneNumber',

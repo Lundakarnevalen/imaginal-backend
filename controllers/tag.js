@@ -33,11 +33,10 @@ const addTag = async (req, res) => {
         message: 'Go away!'
       })
     }
-}
-  catch (err) {
+  } catch (err) {
     return res.status(500).json({
       success: false,
-      message: "Failed to add tag"
+      message: 'Failed to add tag'
     })
   }
 }
