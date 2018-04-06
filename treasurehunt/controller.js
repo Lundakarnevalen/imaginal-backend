@@ -8,16 +8,18 @@ const service = require('./service')
 
 const getNextCheckpoint = async (req, res) => {
   const treasueid = req.params.id
-  const treasure = treasureHunt.findOne({where: {id: treasueid}})
+  const treasure = await treasureHunt.TreasureHunt.findOne({where: {id: treasueid}})
+  console.log(treasure)
   if (!treasure) {
-    res.status(400).json({
+    return res.status(400).json({
       success: false,
       message: 'Invalid treasurehunt id'
     })
   }
+  console.log(treasure)
 
   let nextCheck = await service.getNextCheckpoint(req.user, treasure)
-  res.json({
+  return res.json({
     success: true,
     nextCheck
   })
@@ -27,63 +29,50 @@ const getTreasureHuntInfo = async (req, res) => {
   const id = req.params.id
 
   if (!id || id < 0) {
-    return res.status(400).send()
+    return res.status(400).send({
+      success: false,
+      message: 'Invalid treasurehunt id'
+    })
   }
-  const treasure = await require('./treasurehuntModel').TreasureHunt.findOne({ // Add to model file
+  const treasure = await treasureHunt.TreasureHunt.findOne({ // Add to model file
     where: {id: id}
   })
   if (!treasure) {
-    return res.status(400).send()
+    return res.status(400).json({
+      success: false,
+      message: 'Invalid treasurehunt id'
+    })
   }
 
-  const th = treasureHunt.getTreasureHuntInfo(treasure)
+  const th = await treasureHunt.getTreasureHuntIfnfo(treasure)
   res.status(200).json({
-    th
+    treasurehunt: th
   })
 }
 
 const checkingCheckpoint = async (req, res) => {
   const id = req.body.checkpointId
   const check = await Checkpoints.findOne({where: {id: id}})
+  if (!check) {
+    return res.status(400).json({
+      success: false,
+      message: 'Invalid checkpoint'
+    })
+  }
   const treasure = await check.getTreasureHunt()
   let nextCheck = await service.getNextCheckpoint(req.user, treasure)
-  if (nextCheck !== service.FINAL_CHECKPOINT && nextCheck !== service.SYSTEM_ERROR) {
+  console.log(nextCheck)
+  if (nextCheck > 0 && id === nextCheck) {
     await req.user.addUserCheckpoint([check])
-    return res.status(400).json({
+    return res.status(200).json({
       success: true,
       message: 'Checked in!'
     })
-  }
-
-  switch (nextCheck) {
-    case service.FINAL_CHECKPOINT:
-      res.json({
-        success: true,
-        message: 'Treasurehunt is complete',
-        nextCheck: ''
-      })
-      break
-    case service.INVALID_CHECKPOINT:
-      res.status(400).json({
-        success: false,
-        message: 'Invalid checkpoint',
-        nextCheck: ''
-      })
-      break
-    case service.SYSTEM_ERROR:
-      res.status(500).json({
-        success: false,
-        message: 'Failed, system error',
-        nextCheck: ''
-      })
-      break
-    default:
-      res.json({
-        success: true,
-        message: 'You are now checked in',
-        nextCheck: nextCheck
-      })
-      break
+  } else {
+    return res.status(400).json({
+      success: false,
+      message: 'Not the correct checkpoint'
+    })
   }
 }
 

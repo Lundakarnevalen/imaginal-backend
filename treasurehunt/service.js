@@ -6,6 +6,9 @@ const INVALID_CHECKPOINT = -1
 
 const getNextCheckpoint = async (user, treasure) => {
   try {
+    if (!treasure) {
+      return INVALID_CHECKPOINT
+    }
     const checks = await treasure.getCheckpoints().map(ch => ch.id)
     const userCheckpoints = await user.getUserCheckpoint().map(th => th.id)
     const checksLeft = await checks.filter( (el) => !userCheckpoints.includes(el))
