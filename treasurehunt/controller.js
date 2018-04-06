@@ -16,12 +16,20 @@ const getNextCheckpoint = async (req, res) => {
       message: 'Invalid treasurehunt id'
     })
   }
-  console.log(treasure)
 
   let nextCheck = await service.getNextCheckpoint(req.user, treasure)
+  const checkpoint = await Checkpoints.findOne({where: {id: nextCheck}})
+  if (!checkpoint) {
+    return res.status(400).json({
+      success: false,
+      message: 'Failed to find checkpoint'
+    })
+  }
   return res.json({
     success: true,
-    nextCheck
+    id: nextCheck,
+    locationX: checkpoint.locationX,
+    locationY: checkpoint.locationY
   })
 }
 
