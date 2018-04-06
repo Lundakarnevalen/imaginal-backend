@@ -70,14 +70,7 @@ app.all(/(\/)?api\/.*/, function (req, res, next) {
   })(req, res, next)
 })
 
-app.post('/treasurehunt/newhunt', treasure.createNewTH)
-app.get('treasurehunt/newhunt', treasure.createNewTH)
 
-
-app.get('/treasurehunt', treasure.getAllTreasuresInfo)
-//app.get('/treasurehunt', treasure.getCheckpoint)
-app.get('/treasurehunt/:id', treasure.getTreasureHuntInfo)
-app.post('/treasurehunt/checkin', treasure.checkingCheckpoint)
 /**
  * Authorized endpoints
  */
@@ -105,24 +98,12 @@ app.post('/api/role/:email/:roleid', role.addRole)
 app.delete('/api/role/:email/:roleid', role.removeRole)
 app.get('/api/role/:roleid', role.getUsers)
 
+app.post('/api/treasurehunt/newhunt', treasure.createNewTH)
+app.get('/api/treasurehunt', treasure.getAllTreasuresInfo)
+app.get('/api/treasurehunt/nextcheckpoint/:id', treasure.getNextCheckpoint())
+app.get('/api/treasurehunt/:id', treasure.getTreasureHuntInfo)
+app.post('/api/treasurehunt/checkin', treasure.checkingCheckpoint)
 
-
-/*
-const UserCheckpoints = require('./treasurehunt/userCheckpoints').UserCheckpoints.sync()
-const Checkpoint = require('./treasurehunt/checkpointModel').Checkpoint
-const Treasurehunt = require('./treasurehunt/treasurehuntModel').TreasureHunt
-*/
-/*
-Treasurehunt.create({}).then(async(treasurehunt) => {
-  'use strict'
-  let checkpoint = await Checkpoint.create({location: 'asd'})
-  let checkpoint2 = await Checkpoint.create({location: 'asdasd'})
-//  let userCheckpoints = await UserCheckpoints.create({})
-  await treasurehunt.addCheckpoints([checkpoint, checkpoint2])
-  let asd = await treasurehunt.getCheckpoints().map(treasure => treasure.id)
-  console.log(asd)
-})
-*/
 app.all('*', function (req, res) {
   res.status(404).json({
     success: false,

@@ -6,6 +6,23 @@ const UserCheckpoints = require('./userCheckpoints').UserCheckpoints
 const treasureHunt = require('./treasurehuntModel')
 const service = require('./service')
 
+const getNextCheckpoint = async (req, res) => {
+  const treasueid = req.params.id
+  const treasure = treasureHunt.findOne({where: {id: treasueid}})
+  if (!treasure) {
+    res.status(400).json({
+      success: false,
+      message: 'Invalid treasurehunt id'
+    })
+  }
+
+  let nextCheck = await service.getNextCheckpoint(req.user, treasure)
+  res.json({
+    success: true,
+    nextCheck
+  })
+}
+
 const getTreasureHuntInfo = async (req, res) => {
   const id = req.params.id
 
@@ -28,16 +45,15 @@ const getTreasureHuntInfo = async (req, res) => {
 const checkingCheckpoint = async (req, res) => {
   const id = req.body.checkpointId
   const check = await Checkpoints.findOne({where: {id: id}})
-  const us = await Users.findOne({where: {id: 1}})
-
-  //us.addUserCheckpoint([check])
-
-  let nextCheck = await service.getNextCheckpoint(us, check)
-  if (nextCheck !== service.FINAL_CHECKPOINT || nextCheck !== service.INVALID_CHECKPOINT ) {
+  const treasure = await check.getTreasureHunt()
+  let nextCheck = await service.getNextCheckpoint(req.user, treasure)
+  if (nextCheck !== service.FINAL_CHECKPOINT && nextCheck !== service.SYSTEM_ERROR) {
     await req.user.addUserCheckpoint([check])
+    return res.status(400).json({
+      success: true,
+      message: 'Checked in!'
+    })
   }
-  nextCheck = await service.getNextCheckpoint(us, check) //It's ugly, but it works for now
-  console.log('Next checkpoint: ' + nextCheck)
 
   switch (nextCheck) {
     case service.FINAL_CHECKPOINT:
@@ -117,5 +133,6 @@ module.exports = {
   getTreasureHuntInfo,
   getAllTreasuresInfo,
   createNewTH,
-  checkingCheckpoint
+  checkingCheckpoint,
+  getNextCheckpoint
 }

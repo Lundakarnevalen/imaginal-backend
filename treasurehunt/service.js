@@ -17,7 +17,7 @@ const getNextCheckpoint = async (user, treasure) => {
     }
   } catch (e) {
     console.error(e)
-    return INVALID_CHECKPOINT
+    return SYSTEM_ERROR
   }
 }
 
