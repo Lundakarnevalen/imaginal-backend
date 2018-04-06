@@ -100,7 +100,7 @@ app.get('/api/role/:roleid', role.getUsers)
 
 app.post('/api/treasurehunt/newhunt', treasure.createNewTH)
 app.get('/api/treasurehunt', treasure.getAllTreasuresInfo)
-app.get('/api/treasurehunt/nextcheckpoint/:id', treasure.getNextCheckpoint())
+app.get('/api/treasurehunt/nextcheckpoint/:id', treasure.getNextCheckpoint)
 app.get('/api/treasurehunt/:id', treasure.getTreasureHuntInfo)
 app.post('/api/treasurehunt/checkin', treasure.checkingCheckpoint)
 
