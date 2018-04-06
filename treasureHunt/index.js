@@ -1,17 +1,30 @@
-const info = function (req, res) {
-  res.json({
-    players: 1200,
-    winnersLeft: 28
-  })
-}
+const treasureModel = require("./model");
 
-const start = function (req, res) {
+const info = async (req, res) => {
+  const info = await treasureModel.info();
+  if (info) {
+    return res.json(info);
+  }
+
   res.json({
-    message: 'Game started for ' + req.user.email
-  })
-}
+    message: "Failed to get treasurehunt info, make sure hunt exists"
+  });
+};
+
+const start = async (req, res) => {
+  await treasureModel.enroll(req.user);
+
+  return res.json({
+    message: "Game started for " + req.user.email
+  });
+};
+
+const exists = (req, res) => {
+  res.json({ exists: Math.random() > 0.5 });
+};
 
 module.exports = {
   info,
-  start
-}
+  start,
+  exists
+};

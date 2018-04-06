@@ -8,6 +8,7 @@ require('./controllers/role')
 require('./controllers/section')
 require('./controllers/checkin')
 require('./users/userController')
+require('./treasureHunt/model')
 
 require('./config/database')
   .sync()

@@ -97,6 +97,7 @@ app.delete('/api/role/:email/:roleid', role.removeRole)
 app.get('/api/role/:roleid', role.getUsers)
 
 app.post('/api/treasurehunt/start', treasureHunt.start)
+app.get('/api/treasurehunt/exists', treasureHunt.exists)
 app.get('/api/treasurehunt/info', treasureHunt.info)
 
 app.all('*', function (req, res) {
