@@ -8,19 +8,14 @@ const TreasureHunt = dbc.define('TreasureHunt', {
     type: Sequelize.INTEGER
   },
   description: Sequelize.TEXT,
-  open: Sequelize.INTEGER,
-  closes: Sequelize.INTEGER
+  isRunning: Sequelize.BOOLEAN
 })
 
 const getAllTreasureHunts = async () => {
   try {
     const allTH = await TreasureHunt.findAndCountAll()
-    const rows = allTH['rows'].map(async (th)  => {
-      const checkpoints = await th.getCheckpoints().map(cp => cp.id)
-      const info = {
-        TreasureHunt: th.id,
-        checkpoints
-      }
+    const rows = allTH['rows'].map(async (th) => {
+      const info = await getTreasureHuntInfo(th)
       return info
     })
     const result = await Promise.all(rows)
@@ -33,7 +28,19 @@ const getAllTreasureHunts = async () => {
   }
 }
 
+const getTreasureHuntInfo = async (treasure) => {
+  'use strict'
+  const checkpoints = await treasure.getCheckpoints().map(cp => cp.id)
+  const info = {
+    TreasureHunt: treasure.id,
+    isRunning: treasure.isRunning,
+    checkpoints
+  }
+  return info
+}
+
 module.exports = {
   TreasureHunt,
+  getTreasureHuntInfo,
   getAllTreasureHunts
 }

@@ -13,8 +13,6 @@ const UserCheckpoints = dbc.define('UserCheckpoints', {
   }
 })
 
-console.log(Checkpoint)
-
 User.belongsToMany(Checkpoint, {
   through: {
     model: UserCheckpoints,
@@ -24,15 +22,14 @@ User.belongsToMany(Checkpoint, {
   constraints: false
 })
 
-/*
-Checkpoint.belongsToMany(, {
+Checkpoint.belongsToMany(User, {
   through: {
     model: UserCheckpoints,
     unique: false
   },
   as: 'CheckpointAsd',
   constraints: false
-})*/
+})
 
 module.exports = {
   UserCheckpoints
