@@ -9,17 +9,17 @@ const Order = dbc.define('Order', {
     primaryKey: true,
     type: Sequelize.INTEGER
   },
-  creationDate: {
-    allowNull: false,
-    type: Sequelize.DATE
-  },
   deliveryDate: Sequelize.DATE,
   returnDate: Sequelize.DATE,
   delivered: Sequelize.BOOLEAN,
-  return: Sequelize.BOOLEAN
+  return: Sequelize.BOOLEAN,
 })
 
-Order.belongsTo(Location, { as: 'StorageLocation', foreignKey: 'storageLocationID' })
+Order.belongsTo(Location, { 
+  as: 'StorageLocation', 
+  foreignKey: 'storageLocationID',
+  constraints: false
+})
 //hasOne warehouseuserId
 
 module.exports = {

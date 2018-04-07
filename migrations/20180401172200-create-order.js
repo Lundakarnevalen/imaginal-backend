@@ -8,23 +8,26 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      creationDate: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
       storageLocationID: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'StorageLocation',
+          model: 'StorageLocations',
           key: 'id'
         }
       },
       deliveryDate: Sequelize.DATE,
       returnDate: Sequelize.DATE,
       delivered: Sequelize.BOOLEAN,
-      return: Sequelize.BOOLEAN
+      return: Sequelize.BOOLEAN,
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      }
     })
-
   },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('Orders')

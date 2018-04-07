@@ -22,7 +22,15 @@ module.exports = {
           key: 'id'
         }
       },
-      quantity: Sequelize.INTEGER
+      quantity: Sequelize.INTEGER,
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      }
     })
   },
   down: async (queryInterface, Sequelize) => {

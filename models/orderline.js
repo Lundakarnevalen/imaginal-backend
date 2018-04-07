@@ -19,7 +19,7 @@ Order.belongsToMany(Item, {
     unique: false
   },
   foreignKey: 'orderID',
-  constrains: false
+  constraints: false
 })
 
 Item.belongsToMany(Order, {
@@ -28,7 +28,7 @@ Item.belongsToMany(Order, {
     unique: false
   },
   foreignKey: 'itemID',
-  constrains: false
+  constraints: false
 })
 
 module.exports = {

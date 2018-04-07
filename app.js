@@ -39,8 +39,12 @@ app.post('/register', register.registerUser)
 app.post('/login/email', login.loginByEmail)
 app.post('/login/forgotpassword', forgotPassword.forgotPassword)
 app.post('/login/resetpassword', forgotPassword.setNewPassword)
+app.post('/order/createOrder', orders.createOrder)
+app.post('/order/editOrder', orders.editOrder)
+app.post('/order/removeOrder', orders.removeOrder)
 
 app.get('/getallsections', section.getAllSections)
+app.get('/order/getAllOrders', orders.getAllOrders)
 
 /**
  * Authenticate tokens
