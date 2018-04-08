@@ -7,6 +7,7 @@ const Skills = require('../models/skills').Skills
 const BigPleasures = require('../models/bigpleasures').BigPleasures
 const SmallPleasures = require('../models/smallpleasures').SmallPleasures
 const Interests = require('../models/interests').Interests
+const WarehouseUser = require('../models/warehouseuser').WarehouseUser
 
 const User = dbc.define('User', {
   id: {
@@ -58,6 +59,8 @@ User.hasMany(SmallPleasures, {as: 'UserSmallAudition', foreignKey: 'userId'})
 User.hasMany(Skills, {as: 'UserSkill', foreignKey: 'userId'})
 User.hasMany(Interests, {as: 'UserInterest', foreignKey: 'userId'})
 User.hasMany(BigPleasures, {as: 'UserBigAudition', foreignKey: 'userId'})
+
+User.hasOne(WarehouseUser, {as: 'WarehouseUser', foreignKey: 'userId'})
 
 User.prototype.setNewPassword = function (password) {
   return new Promise((resolve, reject) => {
