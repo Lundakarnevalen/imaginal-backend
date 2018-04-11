@@ -3,13 +3,13 @@
 const items = require('../models/item')
 const itemTags = require('../models/itemtag')
 const contents = require('../models/storageContents')
-const locations = require('../models/storageLocation')
+const locations = require('../models/storagelocation')
 
 const getAllItems = async (req, res) => {
   const itemList = await items.Item.findAll()
   return res.json({
     success: true,
-    message: itemList
+    data: itemList
   })
 }
 
@@ -21,6 +21,7 @@ const addItem = async (req, res) => {
     })
   }
 
+  /** To do: Control that req.body.articleNumber and supplier are not empty! */
   const item = await items.findUniqueItem(
     req.body.name, req.body.articleNumber, req.body.supplier)
 
@@ -39,12 +40,13 @@ const createItem = function (req, res) {
     itemName: req.body.name,
     imageUrl: req.body.imageUrl || '',
     unit: req.body.unit || '',
-    purchasePrice: req.body.purchasePrice || '',
-    salesPrice: req.body.retailPrice || '',
+    purchasePrice: req.body.purchasePrice || null,
+    salesPrice: req.body.retailPrice || null,
     description: req.body.description || '',
-    articleNumber: req.body.articleNumber || '',
+    articleNumber: req.body.articleNumber || null,
     supplier: req.body.supplier || '',
-    note: req.body.note || ''
+    note: req.body.note || '',
+    warningAmount: req.body.warningAmount || 1
   })
   res.json({
     success: true,
@@ -52,7 +54,7 @@ const createItem = function (req, res) {
   })
 }
 
-const addQuantity = async function (req, res) {
+const addItemsToLocation = async function (req, res) {
   /** Check locationID, itemID, addedQuantity != null */
   if (!req.body.locationID || !req.body.itemID || !req.body.addedQuantity) {
     return res.status(400).json({
@@ -110,14 +112,15 @@ const addQuantity = async function (req, res) {
 
 const editItem = async (req, res) => {
   const findItem = await items.Item.findOne({
-    where: { itemName: req.body.name }
+    where: { id: req.body.id }
   })
   if (!findItem) {
-    return res.json({
+    return res.status(400).json({
       success: false,
       message: 'The item does not exist'
     })
   } else {
+    if (req.body.name) findItem.itemName = req.body.name
     if (req.body.imageUrl) findItem.imageUrl = req.body.imageUrl
     if (req.body.unit) findItem.unit = req.body.unit
     if (req.body.purchasePrice) findItem.purchasePrice = req.body.purchasePrice
@@ -125,6 +128,8 @@ const editItem = async (req, res) => {
     if (req.body.description) findItem.description = req.body.description
     if (req.body.articleNumber) findItem.articleNumber = req.body.articleNumber
     if (req.body.supplier) findItem.supplier = req.body.supplier
+    if (req.body.note) findItem.note = req.body.note
+    if (req.body.warningAmount) findItem.warningAmount = req.body.warningAmount
     await findItem.save()
     return res.json({
       success: true,
@@ -133,6 +138,7 @@ const editItem = async (req, res) => {
   }
 }
 
+<<<<<<< HEAD
 const getItemsOnTags = async (req, res) => {
   const tags = req.body.tags
   let list = []
@@ -162,20 +168,19 @@ const getItemsOnTags = async (req, res) => {
   }
 }
 
-const getItemByArticleId = async (req, res) => {
-  const item = req.params.articleId
-  const findItem = await items.Item.findAll({
-    where: { articleNumber: item }
+const getItemById = async (req, res) => {
+  const findItem = await items.Item.findOne({
+    where: { id: req.params.id }
   })
-  if (findItem.length > 0) {
+  if (!findItem) {
+    return res.status(400).json({
+      success: false,
+      message: 'No item with that id exists'
+    })
+  } else {
     return res.json({
       success: true,
       message: findItem
-    })
-  } else {
-    return res.status(400).json({
-      success: false,
-      message: 'No item with that article number exists'
     })
   }
 }
@@ -186,5 +191,7 @@ module.exports = {
   editItem,
   addQuantity,
   getItemByArticleId,
-  getItemsOnTags
+  getItemsOnTags,
+  addItemsToLocation,
+  getItemById
 }
