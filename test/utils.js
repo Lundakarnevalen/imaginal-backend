@@ -166,6 +166,22 @@ const getToken = (user) => {
 
 }
 
+const getItem = () => {
+  return {
+    'name': 'cider',
+    'imageUrl': 'hej.se',
+    'unit': 'burk',
+    'purchasePrice': 20,
+    'salesPrice': 30,
+    'description': 'det är en cider',
+    'articleNumber': '1723255',
+    'supplier': 'FINN',
+    'note': 'Detta är ju kalas',
+    'warningAmount': '100',
+    'vat': 15
+  }
+}
+
 const getTag = () => {
   return {
     'name': 'beer'
@@ -179,5 +195,6 @@ module.exports = {
   getWarehouseCustomer,
   getWarehouseWorker,
   getWarehouseManager,
-  getTag
+  getTag,
+  getItem
 }
