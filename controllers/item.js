@@ -1,37 +1,55 @@
 'use strict'
 
+const tags = require('../models/tag')
 const items = require('../models/item')
 const itemTags = require('../models/itemtag')
 const contents = require('../models/storageContents')
 const locations = require('../models/storageLocation')
+const userRoles = require('..models/userRoles')
 
 const getAllItems = async (req, res) => {
-  const itemList = await items.Item.findAll()
-  return res.json({
-    success: true,
-    data: itemList
-  })
+  const hasAccess = await userRoles.hasWarehouseCustomerAccess()
+  if (hasAccess) {
+    const itemList = await items.Item.findAll()
+    return res.json({
+      success: true,
+      data: itemList
+    })
+  } else {
+    return res.status(401).json({
+      success: false,
+      message: 'Go away!'
+    })
+  }
 }
 
 const addItem = async (req, res) => {
-  if (!req.body.name) {
-    return res.status(400).json({
-      success: false,
-      message: 'Invalid parameter'
-    })
-  }
+  const hasAccess = await userRoles.hasWarehouseAdminAccess()
+  if (hasAccess) {
+    if (!req.body.name) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid parameter'
+      })
+    }
 
-  /** To do: Control that req.body.articleNumber and supplier are not empty! */
-  const item = await items.findUniqueItem(
-    req.body.name, req.body.articleNumber, req.body.supplier)
+    /** To do: Control that req.body.articleNumber and supplier are not empty! */
+    const item = await items.findUniqueItem(
+      req.body.name, req.body.articleNumber, req.body.supplier)
 
-  if (item.length > 0) {
-    return res.json({
-      success: false,
-      message: 'Item already exists'
-    })
+    if (item.length > 0) {
+      return res.json({
+        success: false,
+        message: 'Item already exists'
+      })
+    } else {
+      createItem(req, res)
+    }
   } else {
-    createItem(req, res)
+    return res.status(401).json({
+      success: false,
+      message: 'Go away!'
+    })
   }
 }
 
@@ -64,61 +82,72 @@ const createItem = function (req, res) {
 
 const addItemsToLocation = async function (req, res) {
   /** Check locationID, itemID, addedQuantity != null */
-  if (!req.body.locationID || !req.body.itemID || !req.body.addedQuantity) {
-    return res.status(400).json({
-      success: false,
-      message: 'Invalid parameter'
-    })
-  }
-  /** Check if locationID and itemID exist */
-  const findLocation = await locations.StorageLocation.findOne({
-    where: { id: req.body.locationID }
-  })
-  if (!findLocation) {
-    return res.status(400).json({
-      success: false,
-      message: 'No such location'
-    })
-  }
-  const findItem = await items.Item.findOne({
-    where: { id: req.body.itemID }
-  })
-  if (!findItem) {
-    return res.status(400).json({
-      success: false,
-      message: 'No such item'
-    })
-  }
+  const hasAccess = await userRoles.hasWarehouseWorkerAccess()
+  if (hasAccess) {
 
-  const getStorage = await contents.StorageContent.findOne({
-    where: {
-      locationID: req.body.locationID,
-      itemID: req.body.itemID
+    if (!req.body.locationID || !req.body.itemID || !req.body.addedQuantity) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid parameter'
+      })
     }
-  })
-  if (!getStorage) {
-    /** Add Item to Location */
-    await contents.StorageContent.create({
-      locationID: req.body.locationID,
-      itemID: req.body.itemID,
-      quantity: req.body.addedQuantity
+    /** Check if locationID and itemID exist */
+    const findLocation = await locations.StorageLocation.findOne({
+      where: { id: req.body.locationID }
     })
-    return res.json({
-      success: true,
-      message: 'Item(s) added to storage location'
+    if (!findLocation) {
+      return res.status(400).json({
+        success: false,
+        message: 'No such location'
+      })
+    }
+    const findItem = await items.Item.findOne({
+      where: { id: req.body.itemID }
     })
+    if (!findItem) {
+      return res.status(400).json({
+        success: false,
+        message: 'No such item'
+      })
+    }
+
+    const getStorage = await contents.StorageContent.findOne({
+      where: {
+        locationID: req.body.locationID,
+        itemID: req.body.itemID
+      }
+    })
+    if (!getStorage) {
+      /** Add Item to Location */
+      await contents.StorageContent.create({
+        locationID: req.body.locationID,
+        itemID: req.body.itemID,
+        quantity: req.body.addedQuantity
+      })
+      return res.json({
+        success: true,
+        message: 'Item(s) added to storage location'
+      })
+    } else {
+      /** Update quantity */
+      getStorage.quantity += req.body.addedQuantity
+      await getStorage.save()
+      return res.json({
+        success: true,
+        message: 'Storage location updated'
+      })
+    }
   } else {
-    /** Update quantity */
-    getStorage.quantity += req.body.addedQuantity
-    await getStorage.save()
-    return res.json({
-      success: true,
-      message: 'Storage location updated'
-    })
-  }
+  return res.status(401).json({
+    success: false,
+    message: 'Go away!'
+  })
+}
 }
 
 const editItem = async (req, res) => {
+  const hasAccess = await userRoles.hasWarehouseAdminAccess()
+  if (hasAccess) {
   const findItem = await items.Item.findOne({
     where: { id: req.body.id }
   })
@@ -144,9 +173,17 @@ const editItem = async (req, res) => {
       message: 'Item updated'
     })
   }
+} else {
+  return res.status(401).json({
+    success: false,
+    message: 'Go away!'
+  })
+}
 }
 
 const getItemsOnTags = async (req, res) => {
+  const hasAccess = await userRoles.hasWarehouseCustomerAccess()
+  if (hasAccess) {
   const tags = req.body.tags
   let list = []
 
@@ -173,28 +210,57 @@ const getItemsOnTags = async (req, res) => {
       message: 'Found no items with that tag'
     })
   }
+} else {
+  return res.status(401).json({
+    success: false,
+    message: 'Go away!'
+  })
+}
 }
 
 const getItemById = async (req, res) => {
-  const findItem = await items.Item.findOne({
+  const hasAccess = await userRoles.hasWarehouseCustomerAccess()
+  if (hasAccess) {
+    const findItem = await items.Item.findOne({
     where: { id: req.params.id }
   })
+
   if (!findItem) {
     return res.status(400).json({
       success: false,
       message: 'No item with that id exists'
     })
   } else {
-    const findTags = await itemTags.ItemTag.findAll({
+    const findItemTag = await itemTags.ItemTag.findAll({
       where: {itemId: findItem.id}
     })
-    findItem.dataValues.tags = findTags
-    console.log(findItem)
+    let tagsList = []
+
+    findItemTag.map(itemTag => {
+      console.log(itemTag)
+      console.log(itemTag.tagId)
+      const findTag =  tags.Tag.findOne({
+      where: { id: itemTag.tagId }
+      })
+      console.log(findTag)
+      console.log("VARFÖR FUNKAR INTE DETTA....")
+      if (findTag)  {
+        tagsList.push(findTag)
+      }
+    })
+
+    findItem.dataValues.tags = tagsList
     return res.json({
       success: true,
       data: findItem
     })
   }
+} else {
+  return res.status(401).json({
+    success: false,
+    message: 'Go away!'
+  })
+}
 }
 
 module.exports = {
