@@ -8,7 +8,7 @@ const getAllItems = async (req, res) => {
   const itemList = await items.Item.findAll()
   return res.json({
     success: true,
-    message: itemList
+    data: itemList
   })
 }
 
