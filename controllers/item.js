@@ -5,10 +5,13 @@ const contents = require('../models/storageContents')
 const locations = require('../models/storagelocation')
 
 const getAllItems = async (req, res) => {
-  const itemList = await items.Item.findAll()
+  let itemList = await items.Item.findAll()
+
+  itemList = itemList.map(({ dataValues }) => ({ ...dataValues, name: dataValues.itemName }))
+
   return res.json({
     success: true,
-    message: itemList
+    products: itemList
   })
 }
 
