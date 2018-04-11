@@ -16,7 +16,8 @@ const Item = dbc.define('Item', {
   articleNumber: Sequelize.INTEGER,
   supplier: Sequelize.STRING,
   note: Sequelize.STRING,
-  warningAmount: Sequelize.INTEGER
+  warningAmount: Sequelize.INTEGER,
+  vat: Sequelize.DOUBLE
 })
 
 const findUniqueItem = (itemName, articleNumber, supplier) => Item.findAll({
