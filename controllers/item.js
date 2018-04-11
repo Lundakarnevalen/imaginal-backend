@@ -3,7 +3,7 @@
 const items = require('../models/item')
 const itemTags = require('../models/itemtag')
 const contents = require('../models/storageContents')
-const locations = require('../models/storagelocation')
+const locations = require('../models/storageLocation')
 
 const getAllItems = async (req, res) => {
   const itemList = await items.Item.findAll()
@@ -138,7 +138,6 @@ const editItem = async (req, res) => {
   }
 }
 
-<<<<<<< HEAD
 const getItemsOnTags = async (req, res) => {
   const tags = req.body.tags
   let list = []
