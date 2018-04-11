@@ -48,8 +48,6 @@ const hasRole = function (user, role) { // (user, role) returns a boolean-promis
 const hasWarehouseCustomerAccess = async (req) => {
   const isUser = await hasRole(req.user, CUSTOMER)
   const hasWarehouseAccess = await hasWarehouseWorkerAccess(req)
-  console.log(isUser)
-  console.log('----------------------------------')
   return (isUser || hasWarehouseAccess)
 }
 
@@ -57,8 +55,6 @@ const hasWarehouseCustomerAccess = async (req) => {
 const hasWarehouseWorkerAccess = async (req) => {
   const isWorker = await hasRole(req.user, WORKER)
   const isWarehouseAdmin = await hasWarehouseAdminAccess(req)
-  console.log(isWorker)
-  console.log('----------------------------------')
   return (isWorker || isWarehouseAdmin)
 }
 
@@ -66,9 +62,6 @@ const hasWarehouseWorkerAccess = async (req) => {
 const hasWarehouseAdminAccess = async (req) => {
   const isAdmin = await hasRole(req.user, ADMIN)
   const isWarehouseManager = await hasRole(req.user, MANAGER)
-  console.log(isWarehouseManager)
-  console.log(isAdmin)
-  console.log('----------------------------------')
   return (isAdmin || isWarehouseManager)
 }
 

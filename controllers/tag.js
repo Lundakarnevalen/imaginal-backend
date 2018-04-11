@@ -11,8 +11,8 @@ const addTag = async (req, res) => {
         message: 'Invalid parameter'
       })
     }
-
-    if (userRoles.hasWarehouseAdminAccess(req)) {
+    const hasAccess = await userRoles.hasWarehouseAdminAccess(req)
+    if (hasAccess) {
       const tag = await tags.Tag.findOne({
         where: {
           name: req.body.name
@@ -42,41 +42,57 @@ const addTag = async (req, res) => {
 }
 
 const getAllTags = async (req, res) => {
-  if (userRoles.hasWarehouseCustomerAccess(req)) {
-    const tagList = await tags.Tag.findAll()
-    return res.json({
-      success: true,
-      message: tagList
-    })
-  } else {
-    return res.status(401).json({
+  try {
+    const hasAccess = await userRoles.hasWarehouseCustomerAccess(req)
+    if (hasAccess) {
+      const tagList = await tags.Tag.findAll()
+      return res.json({
+        success: true,
+        data: tagList
+      })
+    } else {
+      return res.status(401).json({
+        success: false,
+        message: 'Go away!'
+      })
+    }
+  } catch (err) {
+    return res.status(500).json({
       success: false,
-      message: 'Go away!'
+      message: 'Failed to add tag'
     })
   }
 }
 
-const removeTag = function (req, res) {
-  if (userRoles.hasWarehouseAdminAccess(req)) {
-    const tag = tags.Tag.findOne({
-      where: {name: req.body.name}
-    })
-    const result = tags.Tag.destroy(tag)
-    if (result) {
-      return res.json({
-        success: true,
-        message: 'Tag deleted'
+const removeTag = async (req, res) => {
+  try {
+    const hasAccess = await userRoles.hasWarehouseAdminAccess(req)
+    if (hasAccess) {
+      const tag = tags.Tag.findOne({
+        where: {name: req.body.name}
       })
+      const result = tags.Tag.destroy(tag)
+      if (result) {
+        return res.json({
+          success: true,
+          message: 'Tag deleted'
+        })
+      } else {
+        return res.status(400).json({
+          success: false,
+          message: 'Tag not found'
+        })
+      }
     } else {
-      return res.status(400).json({
+      return res.status(401).json({
         success: false,
-        message: 'Tag not found'
+        message: 'Go away!'
       })
     }
-  } else {
-    return res.status(401).json({
+  } catch (err) {
+    return res.status(500).json({
       success: false,
-      message: 'Go away!'
+      message: 'Failed to add tag'
     })
   }
 }

@@ -4,7 +4,6 @@ const users = require('./users')
 const UserRoles = require('../models/userrole')
 const UserSection = require('../models/userSection')
 const userService = require('./usersService')
-
 const getAll = async (req, res) => {
   const isAdmin = await UserRoles.hasRole(req.user, UserRoles.ADMIN)
 
@@ -117,7 +116,8 @@ const setUserInfo = async (req, res) => {
   try {
     const email = req.params.email
     const isAdmin = await UserRoles.hasRole(req.user, UserRoles.ADMIN)
-
+    console.log(isAdmin)
+    console.log('Kommer den hit???')
     if (!isAdmin && email !== req.user.email) {
       return res.status(401).json({
         success: false,

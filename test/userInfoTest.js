@@ -13,7 +13,7 @@ module.exports = (user, admin) => describe('API /api/user/ userinfo test', funct
         }
         await expect(res.statusCode).to.equal(200)
         await expect(res.body).to.contain.keys(['userinfo'])
-        await expect(res.body.userinfo.id).to.equal(3)
+        await expect(res.body.userinfo.id).to.equal(6)
         done()
       })
   })
@@ -52,7 +52,7 @@ module.exports = (user, admin) => describe('API /api/user/ userinfo test', funct
         }
         await expect(res.statusCode).to.equal(200)
         await expect(res.body).to.contain.keys(['userinfo'])
-        await expect(res.body.userinfo.id).to.equal(3)
+        await expect(res.body.userinfo.id).to.equal(6)
         await done()
       })
   })
