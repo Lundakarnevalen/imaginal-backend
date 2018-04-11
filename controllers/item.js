@@ -46,8 +46,16 @@ const createItem = function (req, res) {
     articleNumber: req.body.articleNumber || null,
     supplier: req.body.supplier || '',
     note: req.body.note || '',
-    warningAmount: req.body.warningAmount || 1
+    warningAmount: req.body.warningAmount || 1,
+    VAT: req.body.vat || 0,
   })
+  
+  req.body.tags.map(tag => {
+    itemTags.ItemTag.create({
+      name: tag.name
+    })
+  })
+
   res.json({
     success: true,
     message: 'Item added'
@@ -138,7 +146,6 @@ const editItem = async (req, res) => {
   }
 }
 
-<<<<<<< HEAD
 const getItemsOnTags = async (req, res) => {
   const tags = req.body.tags
   let list = []
@@ -178,9 +185,14 @@ const getItemById = async (req, res) => {
       message: 'No item with that id exists'
     })
   } else {
+    const findTags = await itemTags.ItemTag.findAll({
+      where: {itemId: findItem.id}
+    })
+    findItem.tags = findTags
+
     return res.json({
       success: true,
-      message: findItem
+      data: findItem
     })
   }
 }
