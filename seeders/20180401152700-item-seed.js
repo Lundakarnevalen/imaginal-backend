@@ -13,7 +13,8 @@ module.exports = {
       supplier: 'systemet',
       note: 'hoppas på detta',
       createdAt: new Date().toISOString().substr(0, 10),
-      updatedAt: new Date().toISOString().substr(0, 10)
+      updatedAt: new Date().toISOString().substr(0, 10),
+      vat: 0.0
     }], {})
 
     /*
