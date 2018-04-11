@@ -20,6 +20,8 @@ module.exports = {
       articleNumber: Sequelize.INTEGER,
       supplier: Sequelize.STRING,
       note: Sequelize.STRING,
+      warningAmount: Sequelize.INTEGER,
+      vat: Sequelize.DOUBLE,
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

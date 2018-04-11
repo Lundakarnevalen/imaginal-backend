@@ -3,7 +3,7 @@
 const items = require('../models/item')
 const itemTags = require('../models/itemtag')
 const contents = require('../models/storageContents')
-const locations = require('../models/storagelocation')
+const locations = require('../models/storageLocation')
 
 const getAllItems = async (req, res) => {
   const itemList = await items.Item.findAll()
@@ -49,7 +49,7 @@ const createItem = function (req, res) {
     warningAmount: req.body.warningAmount || 1,
     VAT: req.body.vat || 0,
   })
-  
+
   req.body.tags.map(tag => {
     itemTags.ItemTag.create({
       name: tag.name
@@ -188,8 +188,8 @@ const getItemById = async (req, res) => {
     const findTags = await itemTags.ItemTag.findAll({
       where: {itemId: findItem.id}
     })
-    findItem.tags = findTags
-
+    findItem.dataValues.tags = findTags
+    console.log(findItem)
     return res.json({
       success: true,
       data: findItem
@@ -201,8 +201,6 @@ module.exports = {
   addItem,
   getAllItems,
   editItem,
-  addQuantity,
-  getItemByArticleId,
   getItemsOnTags,
   addItemsToLocation,
   getItemById
