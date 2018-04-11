@@ -29,6 +29,19 @@ module.exports = (user, admin) => describe('API /api/user/ userinfo test', funct
         await done()
       })
   })
+  it('Login admin', done => {
+    api.post('/login/email')
+      .send({email: admin.email, password: admin.password})
+      .end(async(err, res) => {
+        if (err) {
+          console.error('Failed to run test, aborting')
+          process.exit(1)
+        }
+        admin.token = res.body.accessToken
+        await expect(res.statusCode).to.equal(200)
+        await done()
+      })
+  })
   it('Admin can get other userinfo', done => {
     api.get('/api/user/' + user.email)
       .set('Authorization', 'bearer ' + admin.token)

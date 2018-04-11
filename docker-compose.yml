@@ -1,0 +1,26 @@
+version: "2"
+services:
+  db:
+    image: mysql:5.7
+    volumes:
+       - dbdata:/var/lib/mysql
+    restart: always
+    ports:
+      -  "8999:3306" # This is to enable login via terminal through port 8999
+    environment: 
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=karneval
+  api:
+    build: ./
+    user: "node"
+    environment:
+      - NODE_ENV=production
+      - MYSQL_HOST=db
+      - MYSQL_USER=root
+      - MYSQL_PASS=root
+      - RDS_DB_NAME=karneval
+    ports:
+      - "8081:3000"
+
+volumes:
+  dbdata:
