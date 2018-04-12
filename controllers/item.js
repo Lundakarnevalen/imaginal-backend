@@ -36,7 +36,7 @@ const addItem = async (req, res) => {
 
 const createItem = function (req, res) {
   items.Item.create({
-    itemName: req.body.name,
+    name: req.body.name,
     imageUrl: req.body.imageUrl || '',
     unit: req.body.unit || '',
     purchasePrice: req.body.purchasePrice || null,
@@ -45,7 +45,8 @@ const createItem = function (req, res) {
     articleNumber: req.body.articleNumber || null,
     supplier: req.body.supplier || '',
     note: req.body.note || '',
-    warningAmount: req.body.warningAmount || 1
+    warningAmount: req.body.warningAmount || 1,
+    vat: req.body.vat || 0
   })
   res.json({
     success: true,
@@ -119,7 +120,7 @@ const editItem = async (req, res) => {
       message: 'The item does not exist'
     })
   } else {
-    if (req.body.name) findItem.itemName = req.body.name
+    if (req.body.name) findItem.name = req.body.name
     if (req.body.imageUrl) findItem.imageUrl = req.body.imageUrl
     if (req.body.unit) findItem.unit = req.body.unit
     if (req.body.purchasePrice) findItem.purchasePrice = req.body.purchasePrice
@@ -129,6 +130,7 @@ const editItem = async (req, res) => {
     if (req.body.supplier) findItem.supplier = req.body.supplier
     if (req.body.note) findItem.note = req.body.note
     if (req.body.warningAmount) findItem.warningAmount = req.body.warningAmount
+    if (req.body.vat) findItem.vat = req.body.vat
     await findItem.save()
     return res.json({
       success: true,
@@ -149,7 +151,7 @@ const getItemById = async (req, res) => {
   } else {
     return res.json({
       success: true,
-      message: findItem
+      data: findItem
     })
   }
 }
