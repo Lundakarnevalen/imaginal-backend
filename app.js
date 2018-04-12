@@ -33,8 +33,14 @@ app.use(function (error, req, res, next) {
 /**
  * Unauthorized endpoints
  */
-app.post('/jodel/newpost', jodel.newPost) 
-app.get('/jodel/newpost', jodel.newPost) 
+app.post('/jodel/newpost', jodel.newPost)
+app.post('/jodel/newcomment', jodel.addJodelComment)
+app.post('/jodel/vote', jodel.addJodelVote)
+app.get('/jodel/:id', jodel.getJodelPost)
+app.get('/jodel/all/:offset', jodel.getAllPosts)
+
+
+
 
 app.get('/api/medcheck/:personalnumber', users.getSectionByPersonalNumber)
 app.post('/register', register.registerUser)
