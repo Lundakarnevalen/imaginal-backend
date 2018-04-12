@@ -100,7 +100,7 @@ app.delete('/api/role/:email/:roleid', role.removeRole)
 app.get('/api/role/:roleid', role.getUsers)
 
 app.post('/api/warehouse/tag/new', tags.addTag)
-app.delete('/api/warehouse/tag/delete', tags.removeTag)
+app.delete('/api/warehouse/tag/delete/:tagid', tags.removeTag)
 app.get('/api/warehouse/tag/list', tags.getAllTags)
 
 app.post('/api/warehouse/product/new', items.addItem)

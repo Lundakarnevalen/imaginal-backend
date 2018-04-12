@@ -68,21 +68,21 @@ const removeTag = async (req, res) => {
   try {
     const hasAccess = await userRoles.hasWarehouseAdminAccess(req)
     if (hasAccess) {
-      const tag = tags.Tag.findOne({
-        where: {name: req.body.name}
+      const tagId = req.params.tagid
+      const tag = await tags.Tag.findOne({
+        where: {id: tagId}
       })
-      const result = tags.Tag.destroy(tag)
-      if (result) {
-        return res.json({
-          success: true,
-          message: 'Tag deleted'
-        })
-      } else {
+      if (!tag) {
         return res.status(400).json({
           success: false,
           message: 'Tag not found'
         })
       }
+      await tag.destroy()
+      return res.json({
+        success: true,
+        message: 'Tag deleted'
+      })
     } else {
       return res.status(401).json({
         success: false,
@@ -90,9 +90,10 @@ const removeTag = async (req, res) => {
       })
     }
   } catch (err) {
+    console.log(err)
     return res.status(500).json({
       success: false,
-      message: 'Failed to add tag'
+      message: 'Failed to delete tag'
     })
   }
 }
