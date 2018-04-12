@@ -63,7 +63,7 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
     it('Unauthorized editItem, role: random user', done => {
       api.post('/api/warehouse/product/edit')
       .set('Authorization', 'bearer ' + user.token)
-      .send({ 
+      .send({
         'name': 'cider2',
         'imageUrl': 'hej.se',
         'unit': 'burk',
@@ -75,7 +75,7 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
         'note': 'Detta är ju kalas',
         'warningAmount': '100',
         'vat': 15
-       })
+      })
       .end(async(err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
@@ -89,7 +89,7 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
     it('Unauthorized editItem, role: warehouse customer', done => {
       api.post('/api/warehouse/product/edit')
       .set('Authorization', 'bearer ' + warehouseCustomer.token)
-      .send({ 
+      .send({
         'name': 'cider2',
         'imageUrl': 'hej.se',
         'unit': 'burk',
@@ -101,7 +101,7 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
         'note': 'Detta är ju kalas',
         'warningAmount': '100',
         'vat': 15
-       })      .end(async(err, res) => {
+      }).end(async(err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
@@ -114,7 +114,7 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
     it('Unauthorized editItem, role: warehouse worker', done => {
       api.post('/api/warehouse/product/edit')
       .set('Authorization', 'bearer ' + warehouseWorker.token)
-      .send({ 
+      .send({
         'name': 'cider2',
         'imageUrl': 'hej.se',
         'unit': 'burk',
@@ -126,7 +126,7 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
         'note': 'Detta är ju kalas',
         'warningAmount': '100',
         'vat': 15
-       })      .end(async(err, res) => {
+      }).end(async(err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
@@ -139,7 +139,7 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
     it('Authorized editItem, role: warehouse manager', done => {
       api.post('/api/warehouse/product/edit')
       .set('Authorization', 'bearer ' + warehouseManager.token)
-      .send({ 
+      .send({
         'name': 'cider2',
         'imageUrl': 'hej.se',
         'unit': 'burk',
@@ -151,7 +151,7 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
         'note': 'Detta är ju kalas',
         'warningAmount': '100',
         'vat': 15
-        })      .end(async(err, res) => {
+      }).end(async(err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
@@ -165,7 +165,7 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
     it('Authorized editItem, role: admin', done => {
       api.post('/api/warehouse/product/edit')
       .set('Authorization', 'bearer ' + admin.token)
-      .send({ 
+      .send({
         'name': 'cider',
         'imageUrl': 'hej.se',
         'unit': 'burk',
@@ -177,7 +177,7 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
         'note': 'Detta är ju kalas',
         'warningAmount': '100',
         'vat': 15
-       })      .end(async(err, res) => {
+      }).end(async(err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
@@ -200,7 +200,7 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
         done()
       })
     })
-    
+
     it('Authorized getAllItems, role: warehouse customer', done => {
       api.get('/api/warehouse/product/all')
       .set('Authorization', 'bearer ' + warehouseCustomer.token)
@@ -341,10 +341,4 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
     })
 
     // SAKNAR getItemsOnTags
-})
-
-
-
-
-
-    
+  })

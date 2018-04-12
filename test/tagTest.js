@@ -56,7 +56,7 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
       api.post('/api/warehouse/tag/new')
       .set('Authorization', 'bearer ' + admin.token)
       .send({
-        name: 'hej'
+        name: 'hej2'
       })
       .end(async(err, res) => {
         if (err) {
@@ -107,62 +107,6 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
         }
         await expect(res.statusCode).to.equal(200)
         await expect(res.body.data[0].name).to.equal('öl')
-        done()
-      })
-    })
-
-    it('Unauthorized deleteTag, role: None', done => {
-      api.delete('/api/warehouse/tag/delete')
-      .set('Authorization', 'bearer ' + user.token)
-      .send({tag})
-      .end(async(err, res) => {
-        if (err) {
-          console.error('Failed to run test, aborting')
-          process.exit(1)
-        }
-        await expect(res.statusCode).to.equal(401)
-        done()
-      })
-    })
-
-    it('Unauthorized deleteTag, role: warehouse customer', done => {
-      api.delete('/api/warehouse/tag/delete')
-      .set('Authorization', 'bearer ' + warehouseCustomer.token)
-      .send({tag})
-      .end(async(err, res) => {
-        if (err) {
-          console.error('Failed to run test, aborting')
-          process.exit(1)
-        }
-        await expect(res.statusCode).to.equal(401)
-        done()
-      })
-    })
-
-    it('Unauthorized deleteTag, role: warehouse worker', done => {
-      api.delete('/api/warehouse/tag/delete')
-      .set('Authorization', 'bearer ' + warehouseWorker.token)
-      .send({tag})
-      .end(async(err, res) => {
-        if (err) {
-          console.error('Failed to run test, aborting')
-          process.exit(1)
-        }
-        await expect(res.statusCode).to.equal(401)
-        done()
-      })
-    })
-
-    it('Authorized deleteTag, role: warehouse manager', done => {
-      api.delete('/api/warehouse/tag/delete')
-      .set('Authorization', 'bearer ' + admin.token)
-      .send({tag})
-      .end(async(err, res) => {
-        if (err) {
-          console.error('Failed to run test, aborting')
-          process.exit(1)
-        }
-        await expect(res.statusCode).to.equal(200)
         done()
       })
     })

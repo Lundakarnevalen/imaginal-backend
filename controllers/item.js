@@ -5,7 +5,7 @@ const items = require('../models/item')
 const itemTags = require('../models/itemtag')
 const contents = require('../models/storageContents')
 const locations = require('../models/storageLocation')
-const userRoles = require('..models/userRoles')
+const userRoles = require('../models/userrole')
 
 const getAllItems = async (req, res) => {
   const hasAccess = await userRoles.hasWarehouseCustomerAccess()
@@ -65,7 +65,7 @@ const createItem = function (req, res) {
     supplier: req.body.supplier || '',
     note: req.body.note || '',
     warningAmount: req.body.warningAmount || 1,
-    VAT: req.body.vat || 0,
+    VAT: req.body.vat || 0
   })
 
   req.body.tags.map(tag => {
@@ -84,7 +84,6 @@ const addItemsToLocation = async function (req, res) {
   /** Check locationID, itemID, addedQuantity != null */
   const hasAccess = await userRoles.hasWarehouseWorkerAccess()
   if (hasAccess) {
-
     if (!req.body.locationID || !req.body.itemID || !req.body.addedQuantity) {
       return res.status(400).json({
         success: false,
@@ -138,129 +137,129 @@ const addItemsToLocation = async function (req, res) {
       })
     }
   } else {
-  return res.status(401).json({
-    success: false,
-    message: 'Go away!'
-  })
-}
+    return res.status(401).json({
+      success: false,
+      message: 'Go away!'
+    })
+  }
 }
 
 const editItem = async (req, res) => {
   const hasAccess = await userRoles.hasWarehouseAdminAccess()
   if (hasAccess) {
-  const findItem = await items.Item.findOne({
-    where: { id: req.body.id }
-  })
-  if (!findItem) {
-    return res.status(400).json({
-      success: false,
-      message: 'The item does not exist'
+    const findItem = await items.Item.findOne({
+      where: { id: req.body.id }
     })
+    if (!findItem) {
+      return res.status(400).json({
+        success: false,
+        message: 'The item does not exist'
+      })
+    } else {
+      if (req.body.name) findItem.itemName = req.body.name
+      if (req.body.imageUrl) findItem.imageUrl = req.body.imageUrl
+      if (req.body.unit) findItem.unit = req.body.unit
+      if (req.body.purchasePrice) findItem.purchasePrice = req.body.purchasePrice
+      if (req.body.retailPrice) findItem.salesPrice = req.body.retailPrice
+      if (req.body.description) findItem.description = req.body.description
+      if (req.body.articleNumber) findItem.articleNumber = req.body.articleNumber
+      if (req.body.supplier) findItem.supplier = req.body.supplier
+      if (req.body.note) findItem.note = req.body.note
+      if (req.body.warningAmount) findItem.warningAmount = req.body.warningAmount
+      await findItem.save()
+      return res.json({
+        success: true,
+        message: 'Item updated'
+      })
+    }
   } else {
-    if (req.body.name) findItem.itemName = req.body.name
-    if (req.body.imageUrl) findItem.imageUrl = req.body.imageUrl
-    if (req.body.unit) findItem.unit = req.body.unit
-    if (req.body.purchasePrice) findItem.purchasePrice = req.body.purchasePrice
-    if (req.body.retailPrice) findItem.salesPrice = req.body.retailPrice
-    if (req.body.description) findItem.description = req.body.description
-    if (req.body.articleNumber) findItem.articleNumber = req.body.articleNumber
-    if (req.body.supplier) findItem.supplier = req.body.supplier
-    if (req.body.note) findItem.note = req.body.note
-    if (req.body.warningAmount) findItem.warningAmount = req.body.warningAmount
-    await findItem.save()
-    return res.json({
-      success: true,
-      message: 'Item updated'
+    return res.status(401).json({
+      success: false,
+      message: 'Go away!'
     })
   }
-} else {
-  return res.status(401).json({
-    success: false,
-    message: 'Go away!'
-  })
-}
 }
 
 const getItemsOnTags = async (req, res) => {
   const hasAccess = await userRoles.hasWarehouseCustomerAccess()
   if (hasAccess) {
-  const tags = req.body.tags
-  let list = []
+    const tags = req.body.tags
+    let list = []
 
-  tags.map(oneTag => {
-    const itemList = itemTags.ItemTag.findAll({
-      where: { name: oneTag.name }
+    tags.map(oneTag => {
+      const itemList = itemTags.ItemTag.findAll({
+        where: { name: oneTag.name }
+      })
+      if (itemList) {
+        list.push.apply(list, itemList)
+      }
     })
-    if (itemList) {
-      list.push.apply(list, itemList)
-    }
-  })
   // Remove duplicates
-  let uniqueList = list.filter(function (elem, index, self) {
-    return index === self.indexOfname(elem)
-  })
-  if (uniqueList) {
-    return res.json({
-      success: true,
-      message: uniqueList
+    let uniqueList = list.filter(function (elem, index, self) {
+      return index === self.indexOfname(elem)
     })
+    if (uniqueList) {
+      return res.json({
+        success: true,
+        message: uniqueList
+      })
+    } else {
+      return res.status(401).json({
+        success: false,
+        message: 'Found no items with that tag'
+      })
+    }
   } else {
     return res.status(401).json({
       success: false,
-      message: 'Found no items with that tag'
+      message: 'Go away!'
     })
   }
-} else {
-  return res.status(401).json({
-    success: false,
-    message: 'Go away!'
-  })
-}
 }
 
 const getItemById = async (req, res) => {
   const hasAccess = await userRoles.hasWarehouseCustomerAccess()
   if (hasAccess) {
     const findItem = await items.Item.findOne({
-    where: { id: req.params.id }
-  })
-
-  if (!findItem) {
-    return res.status(400).json({
-      success: false,
-      message: 'No item with that id exists'
+      where: { id: req.params.id }
     })
-  } else {
-    const findItemTag = await itemTags.ItemTag.findAll({
-      where: {itemId: findItem.id}
-    })
-    let tagsList = []
 
-    findItemTag.map(itemTag => {
-      console.log(itemTag)
-      console.log(itemTag.tagId)
-      const findTag =  tags.Tag.findOne({
-      where: { id: itemTag.tagId }
+    if (!findItem) {
+      return res.status(400).json({
+        success: false,
+        message: 'No item with that id exists'
       })
-      console.log(findTag)
-      console.log("VARFÖR FUNKAR INTE DETTA....")
-      if (findTag)  {
-        tagsList.push(findTag)
-      }
-    })
+    } else {
+      const findItemTag = await itemTags.ItemTag.findAll({
+        where: {itemId: findItem.id}
+      })
+      let tagsList = []
 
-    findItem.dataValues.tags = tagsList
-    return res.json({
-      success: true,
-      data: findItem
+      findItemTag.map(itemTag => {
+        console.log(itemTag)
+        console.log(itemTag.tagId)
+        const findTag = tags.Tag.findOne({
+          where: { id: itemTag.tagId }
+        })
+        console.log(findTag)
+        console.log('VARFÖR FUNKAR INTE DETTA....')
+        if (findTag) {
+          tagsList.push(findTag)
+        }
+      })
+
+      findItem.dataValues.tags = tagsList
+      return res.json({
+        success: true,
+        data: findItem
+      })
+    }
+  } else {
+    return res.status(401).json({
+      success: false,
+      message: 'Go away!'
     })
   }
-} else {
-  return res.status(401).json({
-    success: false,
-    message: 'Go away!'
-  })
-}
 }
 
 module.exports = {
