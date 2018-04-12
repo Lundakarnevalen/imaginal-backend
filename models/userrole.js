@@ -62,8 +62,6 @@ const hasWarehouseWorkerAccess = async (req) => {
 const hasWarehouseAdminAccess = async (req) => {
   const isAdmin = await hasRole(req.user, ADMIN)
   const isWarehouseManager = await hasRole(req.user, MANAGER)
-  console.log(req.user)
-  console.log(isWarehouseManager)
   return (isAdmin || isWarehouseManager)
 }
 

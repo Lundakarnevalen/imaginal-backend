@@ -3,11 +3,11 @@ const api = supertest('http://localhost:3000')
 const expect = require('chai').expect
 
 module.exports = (user, admin, warehouseCustomer, warehouseWorker,
-  warehouseManager, item) => describe('API /api/warehouse/product/new item tests', function () {
+  warehouseManager, itemOne, itemTwo, tag) => describe('API /api/warehouse/product/new item tests', function () {
     it('Unauthorized addItem, role: random user', done => {
       api.post('/api/warehouse/product/new')
       .set('Authorization', 'bearer ' + user.token)
-      .send({ item })
+      .send(itemOne)
       .end(async(err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
@@ -17,10 +17,11 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
         done()
       })
     })
+
     it('Unauthorized addItem, role: warehouse customer', done => {
       api.post('/api/warehouse/product/new')
       .set('Authorization', 'bearer ' + warehouseCustomer.token)
-      .send({ item })
+      .send(itemOne)
       .end(async(err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
@@ -34,7 +35,7 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
     it('Unauthorized addItem, role: warehouse worker', done => {
       api.post('/api/warehouse/product/new')
       .set('Authorization', 'bearer ' + warehouseWorker.token)
-      .send({ item })
+      .send(itemOne)
       .end(async(err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
@@ -48,7 +49,22 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
     it('Authorized addItem, role: warehouse manager', done => {
       api.post('/api/warehouse/product/new')
       .set('Authorization', 'bearer ' + warehouseManager.token)
-      .send({ item })
+      .send(itemOne)
+      .end(async(err, res) => {
+        if (err) {
+          console.error('Failed to run test, aborting')
+          process.exit(1)
+        }
+        await expect(res.statusCode).to.equal(200)
+        // LÄGGA TILL DE ANDRA CHECKSEN HÄR ATT RÄTT SAKER KOMMER MED
+        done()
+      })
+    })
+
+    it('Authorized addItem, role: warehouse manager', done => {
+      api.post('/api/warehouse/product/new')
+      .set('Authorization', 'bearer ' + admin.token)
+      .send(itemTwo)
       .end(async(err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
@@ -64,6 +80,7 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
       api.post('/api/warehouse/product/edit')
       .set('Authorization', 'bearer ' + user.token)
       .send({
+        'id': '2',
         'name': 'cider2',
         'imageUrl': 'hej.se',
         'unit': 'burk',
@@ -90,6 +107,7 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
       api.post('/api/warehouse/product/edit')
       .set('Authorization', 'bearer ' + warehouseCustomer.token)
       .send({
+        'id': '2',
         'name': 'cider2',
         'imageUrl': 'hej.se',
         'unit': 'burk',
@@ -115,6 +133,7 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
       api.post('/api/warehouse/product/edit')
       .set('Authorization', 'bearer ' + warehouseWorker.token)
       .send({
+        'id': '2',
         'name': 'cider2',
         'imageUrl': 'hej.se',
         'unit': 'burk',
@@ -140,6 +159,7 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
       api.post('/api/warehouse/product/edit')
       .set('Authorization', 'bearer ' + warehouseManager.token)
       .send({
+        'id': '2',
         'name': 'cider2',
         'imageUrl': 'hej.se',
         'unit': 'burk',
@@ -157,7 +177,7 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
           process.exit(1)
         }
         await expect(res.statusCode).to.equal(200)
-        await expect(res.body.name).to.equal('cider2')
+        await expect(res.body.message).to.equal('Item updated')
         done()
       })
     })
@@ -166,6 +186,7 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
       api.post('/api/warehouse/product/edit')
       .set('Authorization', 'bearer ' + admin.token)
       .send({
+        'id': '2',
         'name': 'cider',
         'imageUrl': 'hej.se',
         'unit': 'burk',
@@ -183,7 +204,7 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
           process.exit(1)
         }
         await expect(res.statusCode).to.equal(200)
-        await expect(res.body.name).to.equal('cider')
+        await expect(res.body.message).to.equal('Item updated')
         done()
       })
     })
@@ -210,8 +231,8 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
           process.exit(1)
         }
         await expect(res.statusCode).to.equal(200)
-        await expect(res.body.item[0].name).to.equal('cider')
-        await expect(res.body.item[0].imageUrl).to.equal('hej.se')
+        await expect(res.body.data[0].name).to.equal('karnevöl')
+        await expect(res.body.data[0].imageUrl).to.equal('hej.se')
         done()
       })
     })
@@ -225,8 +246,8 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
           process.exit(1)
         }
         await expect(res.statusCode).to.equal(200)
-        await expect(res.body.item[0].name).to.equal('cider')
-        await expect(res.body.item[0].imageUrl).to.equal('hej.se')
+        await expect(res.body.data[0].name).to.equal('karnevöl')
+        await expect(res.body.data[0].imageUrl).to.equal('hej.se')
         done()
       })
     })
@@ -240,8 +261,8 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
           process.exit(1)
         }
         await expect(res.statusCode).to.equal(200)
-        await expect(res.body.item[0].name).to.equal('cider')
-        await expect(res.body.item[0].imageUrl).to.equal('hej.se')
+        await expect(res.body.data[0].name).to.equal('karnevöl')
+        await expect(res.body.data[0].imageUrl).to.equal('hej.se')
         done()
       })
     })
@@ -255,16 +276,15 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
           process.exit(1)
         }
         await expect(res.statusCode).to.equal(200)
-        await expect(res.body.item[0].name).to.equal('cider')
-        await expect(res.body.item[0].imageUrl).to.equal('hej.se')
+        await expect(res.body.data[0].name).to.equal('karnevöl')
+        await expect(res.body.data[0].imageUrl).to.equal('hej.se')
         done()
       })
     })
 
-    it('Authorized getItemById, role: user', done => {
-      api.get('/api/warehouse/product/1')
+    it('Unauthorized getItemById, role: user', done => {
+      api.get('/api/warehouse/product/2')
       .set('Authorization', 'bearer ' + user.token)
-      .send({ item })
       .end(async(err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
@@ -277,68 +297,151 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
     })
 
     it('Authorized getItemById, role: warehouse customer', done => {
-      api.get('/api/warehouse/product/1')
+      api.get('/api/warehouse/product/2')
       .set('Authorization', 'bearer ' + warehouseCustomer.token)
-      .send({ item })
       .end(async(err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
         }
         await expect(res.statusCode).to.equal(200)
-        await expect(res.body.item.name).to.equal('cider')
-        await expect(res.body.item.imageUrl).to.equal('hej.se')
+        await expect(res.body.data.name).to.equal('cider')
+        await expect(res.body.data.imageUrl).to.equal('hej.se')
         done()
       })
     })
 
     it('Authorized getItemById, role: warehouse worker', done => {
-      api.get('/api/warehouse/product/1')
+      api.get('/api/warehouse/product/2')
       .set('Authorization', 'bearer ' + warehouseWorker.token)
-      .send({ item })
       .end(async(err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
         }
         await expect(res.statusCode).to.equal(200)
-        await expect(res.body.item.name).to.equal('cider')
-        await expect(res.body.item.imageUrl).to.equal('hej.se')
+        await expect(res.body.data.name).to.equal('cider')
+        await expect(res.body.data.imageUrl).to.equal('hej.se')
         done()
       })
     })
 
     it('Authorized getItemById, role: warehouse manager', done => {
-      api.get('/api/warehouse/product/1')
+      api.get('/api/warehouse/product/2')
       .set('Authorization', 'bearer ' + warehouseManager.token)
-      .send({ item })
       .end(async(err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
         }
         await expect(res.statusCode).to.equal(200)
-        await expect(res.body.item.name).to.equal('cider')
-        await expect(res.body.item.imageUrl).to.equal('hej.se')
+        await expect(res.body.data.name).to.equal('cider')
+        await expect(res.body.data.imageUrl).to.equal('hej.se')
         done()
       })
     })
 
     it('Authorized getItemById, role: admin', done => {
-      api.get('/api/warehouse/product/1')
+      api.get('/api/warehouse/product/2')
       .set('Authorization', 'bearer ' + admin.token)
-      .send({ item })
       .end(async(err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
         }
         await expect(res.statusCode).to.equal(200)
-        await expect(res.body.item.name).to.equal('cider')
-        await expect(res.body.item.imageUrl).to.equal('hej.se')
+        await expect(res.body.data.name).to.equal('cider')
+        await expect(res.body.data.imageUrl).to.equal('hej.se')
         done()
       })
     })
 
-    // SAKNAR getItemsOnTags
+    it('Unauthorized getItemsOnTags, role: user', done => {
+      api.post('/api/warehouse/product/itemontags')
+      .set('Authorization', 'bearer ' + user.token)
+      .send({
+        'tags': [1]
+      })
+      .end(async(err, res) => {
+        if (err) {
+          console.error('Failed to run test, aborting')
+          process.exit(1)
+        }
+        await expect(res.statusCode).to.equal(401)
+
+        done()
+      })
+    })
+
+    it('Authorized getItemsOnTags, role: warehouse customer', done => {
+      api.post('/api/warehouse/product/itemontags')
+      .set('Authorization', 'bearer ' + warehouseCustomer.token)
+      .send({
+        'tags': [1]
+      })
+      .end(async(err, res) => {
+        if (err) {
+          console.error('Failed to run test, aborting')
+          process.exit(1)
+        }
+        await expect(res.statusCode).to.equal(200)
+        await expect(res.body.data[0].name).to.equal('karnevöl')
+        await expect(res.body.data[0].imageUrl).to.equal('hej.se')
+        done()
+      })
+    })
+
+    it('Authorized getItemsOnTags, role: warehouse worker', done => {
+      api.post('/api/warehouse/product/itemontags')
+      .set('Authorization', 'bearer ' + warehouseWorker.token)
+      .send({
+        'tags': [1]
+      })
+      .end(async(err, res) => {
+        if (err) {
+          console.error('Failed to run test, aborting')
+          process.exit(1)
+        }
+        await expect(res.statusCode).to.equal(200)
+        await expect(res.body.data[0].name).to.equal('karnevöl')
+        await expect(res.body.data[0].imageUrl).to.equal('hej.se')
+        done()
+      })
+    })
+
+    it('Authorized getItemsOnTags, role: warehouse manager', done => {
+      api.post('/api/warehouse/product/itemontags')
+      .set('Authorization', 'bearer ' + warehouseManager.token)
+      .send({
+        'tags': [1]
+      })
+      .end(async(err, res) => {
+        if (err) {
+          console.error('Failed to run test, aborting')
+          process.exit(1)
+        }
+        await expect(res.statusCode).to.equal(200)
+        await expect(res.body.data[0].name).to.equal('karnevöl')
+        await expect(res.body.data[0].imageUrl).to.equal('hej.se')
+        done()
+      })
+    })
+
+    it('Authorized getItemsOnTags, role: admin', done => {
+      api.post('/api/warehouse/product/itemontags')
+      .set('Authorization', 'bearer ' + admin.token)
+      .send({
+        'tags': [1]
+      })
+      .end(async(err, res) => {
+        if (err) {
+          console.error('Failed to run test, aborting')
+          process.exit(1)
+        }
+        await expect(res.statusCode).to.equal(200)
+        await expect(res.body.data[0].name).to.equal('karnevöl')
+        await expect(res.body.data[0].imageUrl).to.equal('hej.se')
+        done()
+      })
+    })
   })
