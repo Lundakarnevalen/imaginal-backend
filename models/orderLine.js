@@ -10,7 +10,8 @@ const OrderLine = dbc.define('OrderLine', {
     primaryKey: true,
     type: Sequelize.INTEGER
   },
-  quantity: Sequelize.INTEGER
+  quantityOrderd: Sequelize.INTEGER,
+  quantityDelivered: Sequelize.INTEGER
 })
 
 Order.belongsToMany(Item, {
