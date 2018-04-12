@@ -115,92 +115,58 @@ const createItem = async (req, res) => {
   })
 }
 
-const addItemsToLocation = async function (req, res) {
+const addQuantity = async function (req, res) {
   /** Check locationID, itemID, addedQuantity != null */
-  try {
-    if (!req.body.locationID || !req.body.itemID || !req.body.addedQuantity) {
-      return res.status(400).json({
-        success: false,
-        message: 'Invalid parameter'
-      })
-    }
-    /** Check if locationID and itemID exist */
-    const findLocation = await storageLocations.StorageLocation.findOne({
-      where: { id: req.body.locationID }
-    })
-    if (!findLocation) {
-      return res.status(400).json({
-        success: false,
-        message: 'No such location'
-      })
-    }
-    const findItem = await items.Item.findOne({
-      where: { id: req.body.itemID }
-    })
-    if (!findItem) {
-      return res.status(400).json({
-        success: false,
-        message: 'No such item'
-      })
-    }
-
-    const getStorage = await storageContents.StorageContent.findOne({
-      where: {
-        locationID: req.body.locationID,
-        itemID: req.body.itemID
-      }
-    })
-    if (!getStorage) {
-      /** Add Item to Location */
-      await storageContents.StorageContent.create({
-        locationID: req.body.locationID,
-        itemID: req.body.itemID,
-        quantity: req.body.addedQuantity
-      })
-      if (!findItem) {
-        return res.status(400).json({
-          success: false,
-          message: 'No such item'
-        })
-      }
-
-      const getStorage = await storageContents.StorageContent.findOne({
-        where: {
-          locationID: req.body.locationID,
-          itemID: req.body.itemID
-        }
-      })
-      if (!getStorage) {
-        /** Add Item to Location */
-        await storageContents.StorageContent.create({
-          locationID: req.body.locationID,
-          itemID: req.body.itemID,
-          quantity: req.body.addedQuantity
-        })
-        return res.json({
-          success: true,
-          message: 'Item(s) added to storage location'
-        })
-      } else {
-        /** Update quantity */
-        getStorage.quantity += req.body.addedQuantity
-        await getStorage.save()
-        return res.json({
-          success: true,
-          message: 'Storage location updated'
-        })
-      }
-    } else {
-      return res.status(401).json({
-        success: false,
-        message: 'Go away!'
-      })
-    }
-  } catch (err) {
-    console.log(err)
-    return res.status(500).json({
+  if (!req.body.locationID || !req.body.itemID || !req.body.addedQuantity) {
+    return res.status(400).json({
       success: false,
-      message: 'Failed to retrive items'
+      message: 'Invalid parameter'
+    })
+  }
+  /** Check if locationID and itemID exist */
+  const findLocation = await locations.StorageLocation.findOne({
+    where: { id: req.body.locationID }
+  })
+  if (!findLocation) {
+    return res.status(400).json({
+      success: false,
+      message: 'No such location'
+    })
+  }
+  const findItem = await items.Item.findOne({
+    where: { id: req.body.itemID }
+  })
+  if (!findItem) {
+    return res.status(400).json({
+      success: false,
+      message: 'No such item'
+    })
+  }
+
+  const getStorage = await contents.StorageContent.findOne({
+    where: {
+      locationID: req.body.locationID,
+      itemID: req.body.itemID
+    }
+  })
+  if (!getStorage) {
+    /** Add Item to Location */
+    await contents.StorageContent.create({
+      locationID: req.body.locationID,
+      itemID: req.body.itemID,
+      quantity: req.body.addedQuantity
+    })
+    return res.json({
+      success: true,
+      message: 'Item(s) added to storage location'
+    })
+  } else {
+    /** Update quantity */
+    getStorage.quantity += req.body.addedQuantity
+    await getStorage.save()
+    return res.json({
+      success: true,
+      message: 'Storage location updated'
     })
   }
 }
@@ -336,11 +302,30 @@ const getItemById = async (req, res) => {
   }
 }
 
+const getItemByArticleId = async (req, res) => {
+  const item = req.params.articleId
+  const findItem = await items.Item.findAll({
+    where: { articleNumber: item }
+  })
+  if (findItem.length > 0) {
+    return res.json({
+      success: true,
+      message: findItem
+    })
+  } else {
+    return res.status(400).json({
+      success: false,
+      message: 'No item with that article number exists'
+    })
+  }
+}
+
 module.exports = {
   addItem,
   getAllItems,
   editItem,
   getItemsOnTags,
-  addItemsToLocation,
-  getItemById
+  getItemById,
+  addQuantity,
+  getItemByArticleId
 }

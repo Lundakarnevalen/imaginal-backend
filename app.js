@@ -14,7 +14,11 @@ const checkin = require('./checkin/checkinController')
 const users = require('./users/userController')
 const storageLocations = require('./controllers/storageLocation')
 const items = require('./controllers/item')
+<<<<<<< HEAD
 const tags = require('./controllers/tag')
+=======
+const orders = require('./controllers/order')
+>>>>>>> e6961fd11737eaca89fa1f8544a41bbaaeafe7ce
 
 app.use(bodyParser.json())
 app.use(passport.initialize())
@@ -40,8 +44,17 @@ app.post('/register', register.registerUser)
 app.post('/login/email', login.loginByEmail)
 app.post('/login/forgotpassword', forgotPassword.forgotPassword)
 app.post('/login/resetpassword', forgotPassword.setNewPassword)
+<<<<<<< HEAD
 
 app.get('/getallsections', section.getAllSections)
+=======
+app.post('/order/createOrder', orders.createOrder)
+app.post('/order/editOrder', orders.editOrder)
+app.post('/order/removeOrder', orders.removeOrder)
+
+app.get('/getallsections', section.getAllSections)
+app.get('/order/getAllOrders', orders.getAllOrders)
+>>>>>>> e6961fd11737eaca89fa1f8544a41bbaaeafe7ce
 
 /**
  * Authenticate tokens
@@ -112,10 +125,10 @@ app.post('/api/warehouse/product/itemontags', items.getItemsOnTags)
 app.post('/api/warehouse/location/new', storageLocations.addStorageLocation)
 app.get('/api/warehouse/location/list', storageLocations.getStorageLocations)
 
-app.post('/api/warehouse/location/additems', items.addItemsToLocation)
-app.get('/api/warehouse/location/getallitems/:locationid', storageLocations.getItemsInStorageLocation)
-
 app.post('/api/warehouse/getLocationByID', storageLocations.getByID) /* For testing */
+app.post('/api/warehouse/product/addQuantity', items.addQuantity) /** For testing */
+app.get('/api/warehouse/product/getAllItems', items.getAllItems) /** For testing */
+app.get('/api/warehouse/product/inventory', items.getInventory)
 
 app.all('*', function (req, res) {
   res.status(404).json({

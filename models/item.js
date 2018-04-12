@@ -26,6 +26,12 @@ const findUniqueItem = (name, articleNumber, supplier) => Item.findAll({
   }
 })
 
+const findUniqueItem = (itemName, articleNumber, supplier) => Item.findAll({
+  where: {
+    $or: [{ itemName: itemName }, { articleNumber: articleNumber, supplier: supplier }]
+  }
+})
+
 module.exports = {
   Item,
   findUniqueItem
