@@ -188,8 +188,6 @@ module.exports = {
   addItem,
   getAllItems,
   editItem,
-  addQuantity,
-  getItemByArticleId,
   getItemsOnTags,
   addItemsToLocation,
   getItemById

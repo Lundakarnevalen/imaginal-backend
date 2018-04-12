@@ -14,7 +14,7 @@ module.exports = {
       careOf: 'saknas',
       personalNumber: 'saknas',
       password: '$2a$10$HEbL5HaUXdD3ZnUDhQnMYueuW3n4v92aPs4imN.FlRD/on4DI/55e',
-      token: '1yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGx1bmRha2FybmV2YWxlbi5zZSIsImlhdCI6MTUxNzg2MzM0MH0.sTXMU6V2elo9kxTe-W8bd9KAT0XfR8_qFlZdBD9emMM',
+      token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IndhcmVob3VzZWN1c3RvbWVyQGx1bmRha2FybmV2YWxlbi5zZSIsImlhdCI6MTUyMzUyNzc2NH0.ZgVPSR3INKYLuIde1UfB7TfZ_6b1vYMdIu2q1xhVpF0',
       createdAt: new Date().toISOString().substr(0, 10),
       updatedAt: new Date().toISOString().substr(0, 10)
     }], {})
@@ -35,7 +35,7 @@ module.exports = {
       careOf: 'saknas',
       personalNumber: 'saknas',
       password: '$2a$10$HEbL5HaUXdD3ZnUDhQnMYueuW3n4v92aPs4imN.FlRD/on4DI/55e',
-      token: '2yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGx1bmRha2FybmV2YWxlbi5zZSIsImlhdCI6MTUxNzg2MzM0MH0.sTXMU6V2elo9kxTe-W8bd9KAT0XfR8_qFlZdBD9emMM',
+      token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IndhcmVob3VzZXdvcmtlckBsdW5kYWthcm5ldmFsZW4uc2UiLCJpYXQiOjE1MjM1Mjc4MTJ9.sXerQusL9Go8_JjcvdxaPcrS2nw6ZKpvjt8CEBi-y_o',
       createdAt: new Date().toISOString().substr(0, 10),
       updatedAt: new Date().toISOString().substr(0, 10)
     }], {})
@@ -56,7 +56,7 @@ module.exports = {
       careOf: 'saknas',
       personalNumber: 'saknas',
       password: '$2a$10$HEbL5HaUXdD3ZnUDhQnMYueuW3n4v92aPs4imN.FlRD/on4DI/55e',
-      token: '3yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGx1bmRha2FybmV2YWxlbi5zZSIsImlhdCI6MTUxNzg2MzM0MH0.sTXMU6V2elo9kxTe-W8bd9KAT0XfR8_qFlZdBD9emMM',
+      token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IndhcmVob3VzZW1hbmFnZXJAbHVuZGFrYXJuZXZhbGVuLnNlIiwiaWF0IjoxNTIzNTI3ODYxfQ.X8k0QgVQcFmyDQCT0fdT55tZUZdV_P0Eh4RiZmcCgBk',
       createdAt: new Date().toISOString().substr(0, 10),
       updatedAt: new Date().toISOString().substr(0, 10)
     }], {})
