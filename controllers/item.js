@@ -1,6 +1,7 @@
 'use strict'
 
 const items = require('../models/item')
+const tags = require('../models/tag')
 const itemTags = require('../models/itemtag')
 const storageContents = require('../models/storageContents')
 const storageLocations = require('../models/storageLocation')
@@ -140,31 +141,31 @@ const editItem = async (req, res) => {
 
 // Gest list of Ids to get items from
 const getItemsOnTags = async (req, res) => {
-  const tags = req.body.tags
-
-  itemTags.ItemTag.findAll({
-    where: { tagId: tags }
-  }).then((itemTags) => {
-    itemTags.map(itemTag => {
-      const itemList = items.Item.findAll({
-        where: { id: itemTag.itemId }
+  try {
+    const tagsIds = req.body.tags
+    const itemList = await tags.Tag.findOne({
+      include: [{ 
+        model: items.Item,
+        through: {
+          where: { tagId: tagsIds }
+        }
+        }]
+    })
+    if (itemList.Items.length > 0) {
+      return res.json({
+        success: true,
+        data: itemList.Items
       })
-    })
-  })
-  
-  // Remove duplicates
-  const uniqueList = itemList.filter(function (elem, index, self) {
-    return index === self.indexOfname(elem)
-  })
-  if (itemList) {
-    return res.json({
-      success: true,
-      data: itemList
-    })
-  } else {
-    return res.status(401).json({
+    } else {
+      return res.status(401).json({
+        success: false,
+        message: 'Found no items with that tag'
+      })
+    }
+  } catch (err) {
+    return json.status(500).json({
       success: false,
-      message: 'Found no items with that tag'
+      message: "Failed to retrive items"
     })
   }
 }

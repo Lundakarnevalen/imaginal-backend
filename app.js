@@ -105,7 +105,7 @@ app.get('/api/warehouse/tag/list', tags.getAllTags)
 
 app.post('/api/warehouse/product/new', items.addItem)
 app.post('/api/warehouse/product/edit', items.editItem)
-app.post('/warehouse/product/getAllItems', items.getItemsOnTags)
+app.post('/api/warehouse/product/itemontags', items.getItemsOnTags)
 app.get('/api/warehouse/product/all', items.getAllItems)
 app.get('/api/warehouse/product/:id', items.getItemById)
 

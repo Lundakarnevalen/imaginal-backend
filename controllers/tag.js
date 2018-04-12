@@ -100,7 +100,7 @@ const removeTag = async (req, res) => {
 
 // Private method
 const createTag = function (req, res) {
-  tags.Tag.create({
+  await tags.Tag.create({
     name: req.body.name
   })
   res.json({
