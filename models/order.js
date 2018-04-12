@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize')
 const dbc = require('../config/database')
-const Location = require('./storagelocation').StorageLocation
+const StorageLocation = require('./storagelocation').StorageLocation
 
 
 const Order = dbc.define('Order', {
@@ -15,9 +15,10 @@ const Order = dbc.define('Order', {
   return: Sequelize.BOOLEAN,
 })
 
-Order.belongsTo(Location, { 
+Order.hasOne(StorageLocation, { as: 'StorageLocation', foreignKey: 'storageLocationId' })
+Order.hasOne(, { 
   as: 'StorageLocation', 
-  foreignKey: 'storageLocationID',
+  foreignKey: 'storageLocationId',
   constraints: false
 })
 //hasOne warehouseuserId
