@@ -2,8 +2,8 @@
 
 const items = require('../models/item')
 const itemTags = require('../models/itemtag')
-const contents = require('../models/storageContents')
-const locations = require('../models/storageLocation')
+const storageContents = require('../models/storageContents')
+const storageLocations = require('../models/storageLocation')
 
 const getAllItems = async (req, res) => {
   const itemList = await items.Item.findAll()
@@ -63,7 +63,7 @@ const addItemsToLocation = async function (req, res) {
     })
   }
   /** Check if locationID and itemID exist */
-  const findLocation = await locations.StorageLocation.findOne({
+  const findLocation = await storageLocations.StorageLocation.findOne({
     where: { id: req.body.locationID }
   })
   if (!findLocation) {
@@ -82,7 +82,7 @@ const addItemsToLocation = async function (req, res) {
     })
   }
 
-  const getStorage = await contents.StorageContent.findOne({
+  const getStorage = await storageContents.StorageContent.findOne({
     where: {
       locationID: req.body.locationID,
       itemID: req.body.itemID
@@ -90,7 +90,7 @@ const addItemsToLocation = async function (req, res) {
   })
   if (!getStorage) {
     /** Add Item to Location */
-    await contents.StorageContent.create({
+    await storageContents.StorageContent.create({
       locationID: req.body.locationID,
       itemID: req.body.itemID,
       quantity: req.body.addedQuantity
@@ -138,26 +138,28 @@ const editItem = async (req, res) => {
   }
 }
 
+// Gest list of Ids to get items from
 const getItemsOnTags = async (req, res) => {
   const tags = req.body.tags
-  let list = []
 
-  tags.map(oneTag => {
-    const itemList = itemTags.ItemTag.findAll({
-      where: { name: oneTag.name }
+  itemTags.ItemTag.findAll({
+    where: { tagId: tags }
+  }).then((itemTags) => {
+    itemTags.map(itemTag => {
+      const itemList = items.Item.findAll({
+        where: { id: itemTag.itemId }
+      })
     })
-    if (itemList) {
-      list.push.apply(list, itemList)
-    }
   })
+  
   // Remove duplicates
-  let uniqueList = list.filter(function (elem, index, self) {
+  const uniqueList = itemList.filter(function (elem, index, self) {
     return index === self.indexOfname(elem)
   })
-  if (uniqueList) {
+  if (itemList) {
     return res.json({
       success: true,
-      message: uniqueList
+      data: itemList
     })
   } else {
     return res.status(401).json({
@@ -179,7 +181,7 @@ const getItemById = async (req, res) => {
   } else {
     return res.json({
       success: true,
-      message: findItem
+      data: findItem
     })
   }
 }
