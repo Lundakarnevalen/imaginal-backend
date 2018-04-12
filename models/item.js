@@ -7,7 +7,7 @@ const Item = dbc.define('Item', {
     primaryKey: true,
     type: Sequelize.INTEGER
   },
-  itemName: Sequelize.STRING,
+  name: Sequelize.STRING,
   imageUrl: Sequelize.TEXT,
   unit: Sequelize.STRING,
   purchasePrice: Sequelize.DOUBLE,
@@ -18,11 +18,12 @@ const Item = dbc.define('Item', {
   note: Sequelize.STRING,
   warningAmount: Sequelize.INTEGER,
   vat: Sequelize.DOUBLE
+  
 })
 
-const findUniqueItem = (itemName, articleNumber, supplier) => Item.findAll({
+const findUniqueItem = (name, articleNumber, supplier) => Item.findAll({
   where: {
-    $or: [{ itemName: itemName }, { articleNumber: articleNumber, supplier: supplier }]
+    $or: [{ name: name }, { articleNumber: articleNumber, supplier: supplier }]
   }
 })
 
