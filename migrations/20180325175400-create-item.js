@@ -8,7 +8,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      itemName: {
+      name: {
         allowNull: false,
         type: Sequelize.STRING
       },
@@ -20,6 +20,9 @@ module.exports = {
       articleNumber: Sequelize.INTEGER,
       supplier: Sequelize.STRING,
       note: Sequelize.STRING,
+      warningAmount: Sequelize.INTEGER,
+      vat: Sequelize.DOUBLE,
+
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
