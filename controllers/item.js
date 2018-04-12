@@ -70,20 +70,6 @@ const addItem = async (req, res) => {
 }
 
 const createItem = async (req, res) => {
-  const itemExists = await items.Item.find({
-    where: {
-      name: req.body.name,
-      articleNumber: req.body.articleNumber || null,
-      supplier: req.body.supplier || ''
-    }
-  })
-  if (itemExists) {
-    return res.status(400).json({
-      success: false,
-      message: 'Item already exists'
-    })
-  }
-
   const item = await items.Item.findCreateFind({
     where: {
       name: req.body.name,
@@ -157,12 +143,6 @@ const addItemsToLocation = async function (req, res) {
         itemID: req.body.itemID,
         quantity: req.body.addedQuantity
       })
-      if (!findItem) {
-        return res.status(400).json({
-          success: false,
-          message: 'No such item'
-        })
-      }
 
       const getStorage = await storageContents.StorageContent.findOne({
         where: {
