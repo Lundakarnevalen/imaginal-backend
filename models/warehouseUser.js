@@ -10,9 +10,6 @@ const WarehouseUser = dbc.define('WarehouseUser', {
   },
   userId: {
     type: Sequelize.INTEGER
-  },
-  costBearerId: {
-    type: Sequelize.INTEGER
   }
 })
 
@@ -27,7 +24,8 @@ const CostBearer = dbc.define('CostBearer', {
   }
 })
 
-WarehouseUser.hasOne(User, { as: 'User', foreignKey: 'userId' })
+WarehouseUser.hasOne(User, { as: 'Users', foreignKey: 'userId' })
+
 WarehouseUser.hasOne(CostBearer)
 
 const getWarehouseUsers = async(req, res) =>  {
