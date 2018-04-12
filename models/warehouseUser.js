@@ -27,23 +27,8 @@ const CostBearer = dbc.define('CostBearer', {
   }
 })
 
-User.hasOne(CostBearer, {
-  through: {
-    model: WarehouseUser,
-    unique: false
-  },
-  foreignKey: 'userId',
-  constrains: false
-})
-
-CostBearer.hasMany(User, {
-  through: {
-    model: WarehouseUser,
-    unique: false
-  },
-  foreignKey: 'costBearerId',
-  constraints: false
-})
+WarehouseUser.hasOne(User, { as: 'User', foreignKey: 'userId' })
+WarehouseUser.hasOne(CostBearer)
 
 module.exports = {
   WarehouseUser,

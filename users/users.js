@@ -7,7 +7,7 @@ const Skills = require('../models/skills').Skills
 const BigPleasures = require('../models/bigpleasures').BigPleasures
 const SmallPleasures = require('../models/smallpleasures').SmallPleasures
 const Interests = require('../models/interests').Interests
-const WarehouseUser = require('../models/warehouseuser').WarehouseUser
+const WarehouseUser = require('../models/warehouseUser').WarehouseUser
 
 const User = dbc.define('User', {
   id: {
