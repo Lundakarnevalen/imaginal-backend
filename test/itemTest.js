@@ -56,7 +56,6 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
           process.exit(1)
         }
         await expect(res.statusCode).to.equal(200)
-        // LÄGGA TILL DE ANDRA CHECKSEN HÄR ATT RÄTT SAKER KOMMER MED
         done()
       })
     })
@@ -71,7 +70,6 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
           process.exit(1)
         }
         await expect(res.statusCode).to.equal(200)
-        // LÄGGA TILL DE ANDRA CHECKSEN HÄR ATT RÄTT SAKER KOMMER MED
         done()
       })
     })
