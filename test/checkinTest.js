@@ -82,7 +82,7 @@ module.exports = (user, admin) => describe('API /api/user/checkin Checkin user',
         }
         await expect(res.statusCode).to.equal(200)
         await expect(res.body.checkInInfo.checkerId).to.equal(1)
-        await expect(res.body.checkInInfo.userId).to.equal(3)
+        await expect(res.body.checkInInfo.userId).to.equal(15003)
         await done()
       })
   })
@@ -97,7 +97,7 @@ module.exports = (user, admin) => describe('API /api/user/checkin Checkin user',
         }
         await expect(res.statusCode).to.equal(200)
         await expect(res.body.checkInInfo.checkerId).to.equal(1)
-        await expect(res.body.checkInInfo.userId).to.equal(3)
+        await expect(res.body.checkInInfo.userId).to.equal(15003)
         await done()
       })
   })
@@ -139,7 +139,7 @@ module.exports = (user, admin) => describe('API /api/user/checkin Checkin user',
         await expect(res.statusCode).to.equal(200)
         await expect(res.body).to.contain.keys(['checkIns'])
         const checkIns = res.body.checkIns
-        await expect(checkIns[0].userId).to.equal(3)
+        await expect(checkIns[0].userId).to.equal(15003)
         await expect(checkIns[1].userId).to.equal(1)
         await expect(res.body.checkIns.length).to.equal(2)
         await done()

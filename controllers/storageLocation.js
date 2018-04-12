@@ -1,6 +1,7 @@
 'use strict'
 
-const storageLocations = require('../models/storagelocation')
+const storageLocations = require('../models/storageLocation')
+const storageContents = require('../models/storageContents')
 
 const addStorageLocation = async (req, res) => {
   const locations = await storageLocations.StorageLocation.findAll()
@@ -53,8 +54,29 @@ const getByID = async (req, res) => {
   }
 }
 
+const getItemsInStorageLocation = async (req, res) => {
+  const locationExists = await storageLocations.StorageLocation.findOne({
+    where: { id: req.params.locationid }
+  })
+  if (!locationExists) {
+    return res.status(400).json({
+      success: false,
+      message: 'Location does not exist'
+    })
+  }
+
+  const storage = await storageContents.StorageContent.findAll({
+    where: { locationID: req.params.locationid }
+  })
+  return res.json({
+    success: true,
+    data: storage
+  })
+}
+
 module.exports = {
   addStorageLocation,
   getStorageLocations,
-  getByID
+  getByID,
+  getItemsInStorageLocation
 }

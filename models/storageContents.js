@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize')
 const dbc = require('../config/database')
-const Location = require('./storagelocation').StorageLocation
+const Location = require('./storageLocation').StorageLocation
 const Item = require('./item').Item
 
 const StorageContent = dbc.define('StorageContent', {

@@ -1,14 +1,15 @@
 'use strict'
 
 const items = require('../models/item')
-const contents = require('../models/storageContents')
-const locations = require('../models/storageLocation')
+const tags = require('../models/tag')
+const storageContents = require('../models/storageContents')
+const storageLocations = require('../models/storageLocation')
 
 const getAllItems = async (req, res) => {
   const itemList = await items.Item.findAll()
   return res.json({
     success: true,
-    message: itemList
+    data: itemList
   })
 }
 
@@ -20,6 +21,7 @@ const addItem = async (req, res) => {
     })
   }
 
+  /** To do: Control that req.body.articleNumber and supplier are not empty! */
   const item = await items.findUniqueItem(
     req.body.name, req.body.articleNumber, req.body.supplier)
 
@@ -35,15 +37,17 @@ const addItem = async (req, res) => {
 
 const createItem = function (req, res) {
   items.Item.create({
-    itemName: req.body.name,
+    name: req.body.name,
     imageUrl: req.body.imageUrl || '',
     unit: req.body.unit || '',
-    purchasePrice: req.body.purchasePrice || '',
-    salesPrice: req.body.retailPrice || '',
+    purchasePrice: req.body.purchasePrice || null,
+    salesPrice: req.body.retailPrice || null,
     description: req.body.description || '',
-    articleNumber: req.body.articleNumber || '',
+    articleNumber: req.body.articleNumber || null,
     supplier: req.body.supplier || '',
-    note: req.body.note || ''
+    note: req.body.note || '',
+    warningAmount: req.body.warningAmount || 1,
+    vat: req.body.vat || 0
   })
   res.json({
     success: true,
@@ -51,7 +55,7 @@ const createItem = function (req, res) {
   })
 }
 
-const addQuantity = async function (req, res) {
+const addItemsToLocation = async function (req, res) {
   /** Check locationID, itemID, addedQuantity != null */
   if (!req.body.locationID || !req.body.itemID || !req.body.addedQuantity) {
     return res.status(400).json({
@@ -60,7 +64,7 @@ const addQuantity = async function (req, res) {
     })
   }
   /** Check if locationID and itemID exist */
-  const findLocation = await locations.StorageLocation.findOne({
+  const findLocation = await storageLocations.StorageLocation.findOne({
     where: { id: req.body.locationID }
   })
   if (!findLocation) {
@@ -79,7 +83,7 @@ const addQuantity = async function (req, res) {
     })
   }
 
-  const getStorage = await contents.StorageContent.findOne({
+  const getStorage = await storageContents.StorageContent.findOne({
     where: {
       locationID: req.body.locationID,
       itemID: req.body.itemID
@@ -87,7 +91,7 @@ const addQuantity = async function (req, res) {
   })
   if (!getStorage) {
     /** Add Item to Location */
-    await contents.StorageContent.create({
+    await storageContents.StorageContent.create({
       locationID: req.body.locationID,
       itemID: req.body.itemID,
       quantity: req.body.addedQuantity
@@ -109,14 +113,15 @@ const addQuantity = async function (req, res) {
 
 const editItem = async (req, res) => {
   const findItem = await items.Item.findOne({
-    where: { itemName: req.body.name }
+    where: { id: req.body.id }
   })
   if (!findItem) {
-    return res.json({
+    return res.status(400).json({
       success: false,
       message: 'The item does not exist'
     })
   } else {
+    if (req.body.name) findItem.name = req.body.name
     if (req.body.imageUrl) findItem.imageUrl = req.body.imageUrl
     if (req.body.unit) findItem.unit = req.body.unit
     if (req.body.purchasePrice) findItem.purchasePrice = req.body.purchasePrice
@@ -124,6 +129,9 @@ const editItem = async (req, res) => {
     if (req.body.description) findItem.description = req.body.description
     if (req.body.articleNumber) findItem.articleNumber = req.body.articleNumber
     if (req.body.supplier) findItem.supplier = req.body.supplier
+    if (req.body.note) findItem.note = req.body.note
+    if (req.body.warningAmount) findItem.warningAmount = req.body.warningAmount
+    if (req.body.vat) findItem.vat = req.body.vat
     await findItem.save()
     return res.json({
       success: true,
@@ -132,20 +140,50 @@ const editItem = async (req, res) => {
   }
 }
 
-const getItemByArticleId = async (req, res) => {
-  const item = req.params.articleId
-  const findItem = await items.Item.findAll({
-    where: { articleNumber: item }
-  })
-  if (findItem.length > 0) {
-    return res.json({
-      success: true,
-      message: findItem
+// Gest list of Ids to get items from
+const getItemsOnTags = async (req, res) => {
+  try {
+    const tagsIds = req.body.tags
+    const itemList = await tags.Tag.findOne({
+      include: [{
+        model: items.Item,
+        through: {
+          where: { tagId: tagsIds }
+        }
+      }]
     })
-  } else {
+    if (itemList.Items.length > 0) {
+      return res.json({
+        success: true,
+        data: itemList.Items
+      })
+    } else {
+      return res.status(401).json({
+        success: false,
+        message: 'Found no items with that tag'
+      })
+    }
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to retrive items'
+    })
+  }
+}
+
+const getItemById = async (req, res) => {
+  const findItem = await items.Item.findOne({
+    where: { id: req.params.id }
+  })
+  if (!findItem) {
     return res.status(400).json({
       success: false,
-      message: 'No item with that article number exists'
+      message: 'No item with that id exists'
+    })
+  } else {
+    return res.json({
+      success: true,
+      data: findItem
     })
   }
 }
@@ -154,6 +192,7 @@ module.exports = {
   addItem,
   getAllItems,
   editItem,
-  addQuantity,
-  getItemByArticleId
+  getItemsOnTags,
+  addItemsToLocation,
+  getItemById
 }
