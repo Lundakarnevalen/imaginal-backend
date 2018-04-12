@@ -12,7 +12,7 @@ module.exports = (user, admin) => describe('API /api/users get all users', funct
           process.exit(1)
         }
         await expect(res.statusCode).to.equal(200)
-        await expect(res.body.users.length).to.equal(3)
+        await expect(res.body.users.length).to.equal(6)
         await done()
       })
   })
@@ -28,7 +28,7 @@ module.exports = (user, admin) => describe('API /api/users get all users', funct
         await done()
       })
   })
-  it('Should return two users, offset 1', done => {
+  it('Should return five users, offset 1', done => {
     api.get('/api/users?offset=1')
       .set('Authorization', 'bearer ' + admin.token)
       .end(async (err, res) => {
@@ -37,7 +37,7 @@ module.exports = (user, admin) => describe('API /api/users get all users', funct
           process.exit(1)
         }
         await expect(res.statusCode).to.equal(200)
-        await expect(res.body.users.length).to.equal(2)
+        await expect(res.body.users.length).to.equal(5)
         await done()
       })
   })
@@ -50,7 +50,7 @@ module.exports = (user, admin) => describe('API /api/users get all users', funct
           process.exit(1)
         }
         await expect(res.statusCode).to.equal(200)
-        await expect(res.body.users.length).to.equal(3)
+        await expect(res.body.users.length).to.equal(6)
         await done()
       })
   })

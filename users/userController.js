@@ -4,7 +4,6 @@ const users = require('./users')
 const UserRoles = require('../models/userrole')
 const UserSection = require('../models/userSection')
 const userService = require('./usersService')
-
 const getAll = async (req, res) => {
   const isAdmin = await UserRoles.hasRole(req.user, UserRoles.ADMIN)
 
@@ -35,9 +34,8 @@ const getAll = async (req, res) => {
 
 /** From a social security number - fetch all sections for the user. */
 const getSectionByPersonalNumber = async (req, res) => {
-
   // ssn - Social Security Number
-  const ssn = req.params.personalnumber 
+  const ssn = req.params.personalnumber
 
   if (!ssn) { // If no ssn is given, return bad request.
     return res.status(400).json({
@@ -61,7 +59,7 @@ const getSectionByPersonalNumber = async (req, res) => {
     const sections = await UserSection.findSectionsOfUser(user)
     return res.json({
       success: true,
-      sections,
+      sections
     })
   } catch (err) {
     // On error, log and return success false.
@@ -72,7 +70,6 @@ const getSectionByPersonalNumber = async (req, res) => {
     })
   }
 }
-
 
 const getById = async (req, res) => {
   const identification = req.params.identification
@@ -119,7 +116,6 @@ const setUserInfo = async (req, res) => {
   try {
     const email = req.params.email
     const isAdmin = await UserRoles.hasRole(req.user, UserRoles.ADMIN)
-
     if (!isAdmin && email !== req.user.email) {
       return res.status(401).json({
         success: false,

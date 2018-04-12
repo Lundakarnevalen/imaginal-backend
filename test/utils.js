@@ -63,12 +63,128 @@ const getAdmin = () => {
   }
 }
 
+const getWarehouseCustomer = () => {
+  return {
+    'email': 'warehousecustomer@lundakarnevalen.se',
+    'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IndhcmVob3VzZWN1c3RvbWVyQGx1bmRha2FybmV2YWxlbi5zZSIsImlhdCI6MTUyMzUyNzc2NH0.ZgVPSR3INKYLuIde1UfB7TfZ_6b1vYMdIu2q1xhVpF0',
+    'password': 'password',
+    'postNumber': '123',
+    'phoneNumber': 'phoneNumber',
+    'firstName': 'firstName',
+    'lastName': 'lastName',
+    'address': 'address',
+    'city': 'karlsstad',
+    'careOf': 'careOf',
+    'language': 'language',
+    'driversLicense': 'driversLicense',
+    'foodPreference': 'foodPreference',
+    'disability': 'disability',
+    'corps': 'corps',
+    'startOfStudies': 'startOfStudies',
+    'pastInvolvement': 'pastInvolvement',
+    'groupLeader': true,
+    'interests': 'interests',
+    'misc': 'misc',
+    'shirtSize': 'm',
+    'plenipotentiary': false,
+    'personalNumber': '0123456789',
+    'studentNation': 'lunds',
+    'interest': ['Skriv', 'dina', 'interest'],
+    'skills': ['att', 'supa'],
+    'bigPleasures': ['oh', 'yes'],
+    'smallPleasures': ['no', 'thanks', 'for', 'asking']
+  }
+}
+
+const getWarehouseWorker = () => {
+  return {
+    'email': 'warehouseworker@lundakarnevalen.se',
+    'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IndhcmVob3VzZXdvcmtlckBsdW5kYWthcm5ldmFsZW4uc2UiLCJpYXQiOjE1MjM1Mjc4MTJ9.sXerQusL9Go8_JjcvdxaPcrS2nw6ZKpvjt8CEBi-y_o',
+    'password': 'password',
+    'postNumber': '123',
+    'phoneNumber': 'phoneNumber',
+    'firstName': 'firstName',
+    'lastName': 'lastName',
+    'address': 'address',
+    'city': 'karlsstad',
+    'careOf': 'careOf',
+    'language': 'language',
+    'driversLicense': 'driversLicense',
+    'foodPreference': 'foodPreference',
+    'disability': 'disability',
+    'corps': 'corps',
+    'startOfStudies': 'startOfStudies',
+    'pastInvolvement': 'pastInvolvement',
+    'groupLeader': true,
+    'interests': 'interests',
+    'misc': 'misc',
+    'shirtSize': 'm',
+    'plenipotentiary': false,
+    'personalNumber': '0123456789',
+    'studentNation': 'lunds',
+    'interest': ['Skriv', 'dina', 'interest'],
+    'skills': ['att', 'supa'],
+    'bigPleasures': ['oh', 'yes'],
+    'smallPleasures': ['no', 'thanks', 'for', 'asking']
+  }
+}
+
+const getWarehouseManager = () => {
+  return {
+    'email': 'warehousemanager@lundakarnevalen.se',
+    'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IndhcmVob3VzZW1hbmFnZXJAbHVuZGFrYXJuZXZhbGVuLnNlIiwiaWF0IjoxNTIzNTI3ODYxfQ.X8k0QgVQcFmyDQCT0fdT55tZUZdV_P0Eh4RiZmcCgBk',
+    'password': 'password',
+    'postNumber': '123',
+    'phoneNumber': 'phoneNumber',
+    'firstName': 'firstName',
+    'lastName': 'lastName',
+    'address': 'address',
+    'city': 'karlsstad',
+    'careOf': 'careOf',
+    'language': 'language',
+    'driversLicense': 'driversLicense',
+    'foodPreference': 'foodPreference',
+    'disability': 'disability',
+    'corps': 'corps',
+    'startOfStudies': 'startOfStudies',
+    'pastInvolvement': 'pastInvolvement',
+    'groupLeader': true,
+    'interests': 'interests',
+    'misc': 'misc',
+    'shirtSize': 'm',
+    'plenipotentiary': false,
+    'personalNumber': '0123456789',
+    'studentNation': 'lunds',
+    'interest': ['Skriv', 'dina', 'interest'],
+    'skills': ['att', 'supa'],
+    'bigPleasures': ['oh', 'yes'],
+    'smallPleasures': ['no', 'thanks', 'for', 'asking']
+  }
+}
+
 const getToken = (user) => {
 
+}
+
+const getTagOne = () => {
+  return {
+    'name': 'tagOne'
+  }
+}
+
+const getTagTwo = () => {
+  return {
+    'name': 'tagTwo'
+  }
 }
 
 module.exports = {
   getToken,
   getUser,
-  getAdmin
+  getAdmin,
+  getWarehouseCustomer,
+  getWarehouseWorker,
+  getWarehouseManager,
+  getTagOne,
+  getTagTwo
 }

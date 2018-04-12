@@ -12,8 +12,9 @@ const role = require('./role/roleController')
 const section = require('./controllers/section')
 const checkin = require('./checkin/checkinController')
 const users = require('./users/userController')
-const storageLocations = require('./controllers/storagelocation')
+const storageLocations = require('./controllers/storageLocation')
 const items = require('./controllers/item')
+const tags = require('./controllers/tag')
 
 app.use(bodyParser.json())
 app.use(passport.initialize())
@@ -98,8 +99,13 @@ app.post('/api/role/:email/:roleid', role.addRole)
 app.delete('/api/role/:email/:roleid', role.removeRole)
 app.get('/api/role/:roleid', role.getUsers)
 
+app.post('/api/warehouse/tag/new', tags.addTag)
+app.delete('/api/warehouse/tag/delete/:tagid', tags.removeTag)
+app.get('/api/warehouse/tag/list', tags.getAllTags)
+
 app.post('/api/warehouse/product/new', items.addItem)
 app.post('/api/warehouse/product/edit', items.editItem)
+app.post('/api/warehouse/product/itemontags', items.getItemsOnTags)
 app.get('/api/warehouse/product/all', items.getAllItems)
 app.get('/api/warehouse/product/:id', items.getItemById)
 
@@ -109,7 +115,7 @@ app.get('/api/warehouse/location/list', storageLocations.getStorageLocations)
 app.post('/api/warehouse/location/additems', items.addItemsToLocation)
 app.get('/api/warehouse/location/getallitems/:locationid', storageLocations.getItemsInStorageLocation)
 
-app.post('/warehouse/getLocationByID', storageLocations.getByID) /* For testing */
+app.post('/api/warehouse/getLocationByID', storageLocations.getByID) /* For testing */
 
 app.all('*', function (req, res) {
   res.status(404).json({
