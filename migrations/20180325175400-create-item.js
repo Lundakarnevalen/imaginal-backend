@@ -22,7 +22,6 @@ module.exports = {
       note: Sequelize.STRING,
       warningAmount: Sequelize.INTEGER,
       vat: Sequelize.DOUBLE,
-
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

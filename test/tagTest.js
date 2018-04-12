@@ -218,7 +218,7 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
       })
     })
 
-    it('Authorized deleteTag, role: warehouse manager', done => {
+    it('Authorized deleteTag, role: admin', done => {
       api.delete('/api/warehouse/tag/delete/3')
       .set('Authorization', 'bearer ' + admin.token)
       .end(async(err, res) => {

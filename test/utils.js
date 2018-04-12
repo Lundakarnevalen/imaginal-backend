@@ -166,6 +166,38 @@ const getToken = (user) => {
 
 }
 
+const getItemOne = () => {
+  return {
+    'name': 'cider1',
+    'imageUrl': 'hej.se',
+    'unit': 'burk',
+    'purchasePrice': 20,
+    'salesPrice': 30,
+    'description': 'det är en cider',
+    'articleNumber': '1723251',
+    'supplier': 'FINN',
+    'note': 'Detta är ju kalas',
+    'warningAmount': '100',
+    'vat': 15
+  }
+}
+
+const getItemTwo = () => {
+  return {
+    'name': 'cider2',
+    'imageUrl': 'hej.se',
+    'unit': 'burk',
+    'purchasePrice': 20,
+    'salesPrice': 30,
+    'description': 'det är en cider',
+    'articleNumber': '1723252',
+    'supplier': 'FINN',
+    'note': 'Detta är ju kalas',
+    'warningAmount': '100',
+    'vat': 15
+  }
+}
+
 const getTagOne = () => {
   return {
     'name': 'tagOne'
@@ -185,6 +217,8 @@ module.exports = {
   getWarehouseCustomer,
   getWarehouseWorker,
   getWarehouseManager,
+  getItemOne,
+  getItemTwo,
   getTagOne,
   getTagTwo
 }
