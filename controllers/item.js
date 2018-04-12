@@ -2,7 +2,6 @@
 
 const items = require('../models/item')
 const tags = require('../models/tag')
-const itemTags = require('../models/itemtag')
 const storageContents = require('../models/storageContents')
 const storageLocations = require('../models/storageLocation')
 
@@ -146,12 +145,12 @@ const getItemsOnTags = async (req, res) => {
   try {
     const tagsIds = req.body.tags
     const itemList = await tags.Tag.findOne({
-      include: [{ 
+      include: [{
         model: items.Item,
         through: {
           where: { tagId: tagsIds }
         }
-        }]
+      }]
     })
     if (itemList.Items.length > 0) {
       return res.json({
@@ -165,9 +164,9 @@ const getItemsOnTags = async (req, res) => {
       })
     }
   } catch (err) {
-    return json.status(500).json({
+    return res.status(500).json({
       success: false,
-      message: "Failed to retrive items"
+      message: 'Failed to retrive items'
     })
   }
 }
