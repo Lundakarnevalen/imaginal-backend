@@ -1,7 +1,7 @@
 'use strict'
 module.exports = {
     up: async (quereryInterface, Sequelize) => {
-        await quereryInterface.createTable('CostBearer', {
+        await quereryInterface.createTable('CostBearers', {
             id: {
                 allowNull: false,
                 autoIncrement: true,
@@ -22,6 +22,6 @@ module.exports = {
         })
     },
     down: async (quereryInterface, Sequelize) => {
-        await quereryInterface.dropTable('CostBearer')
+        await quereryInterface.dropTable('CostBearers')
     }
 }

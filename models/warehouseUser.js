@@ -30,7 +30,11 @@ const CostBearer = dbc.define('CostBearer', {
 WarehouseUser.hasOne(User, { as: 'User', foreignKey: 'userId' })
 WarehouseUser.hasOne(CostBearer)
 
+const getWarehouseUsers = async(req, res) =>  {
+  return WarehouseUser.findAll()
+}
 module.exports = {
   WarehouseUser,
-  CostBearer
+  CostBearer,
+  getWarehouseUsers
 }
