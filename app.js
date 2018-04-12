@@ -100,11 +100,12 @@ app.delete('/api/role/:email/:roleid', role.removeRole)
 app.get('/api/role/:roleid', role.getUsers)
 
 app.post('/api/warehouse/tag/new', tags.addTag)
-app.delete('/api/warehouse/tag/delete', tags.removeTag)
+app.delete('/api/warehouse/tag/delete/:tagid', tags.removeTag)
 app.get('/api/warehouse/tag/list', tags.getAllTags)
 
 app.post('/api/warehouse/product/new', items.addItem)
 app.post('/api/warehouse/product/edit', items.editItem)
+app.post('/api/warehouse/product/itemontags', items.getItemsOnTags)
 app.get('/api/warehouse/product/all', items.getAllItems)
 app.get('/api/warehouse/product/:id', items.getItemById)
 app.post('/warehouse/product/getAllItems', items.getItemsOnTags)
@@ -115,7 +116,7 @@ app.get('/api/warehouse/location/list', storageLocations.getStorageLocations)
 app.post('/api/warehouse/location/additems', items.addItemsToLocation)
 app.get('/api/warehouse/location/getallitems/:locationid', storageLocations.getItemsInStorageLocation)
 
-app.post('/warehouse/getLocationByID', storageLocations.getByID) /* For testing */
+app.post('/api/warehouse/getLocationByID', storageLocations.getByID) /* For testing */
 
 app.all('*', function (req, res) {
   res.status(404).json({

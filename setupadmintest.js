@@ -5,7 +5,7 @@ const user = require('./users/users')
 user.User.findOne({
   where: {id: 1}
 }).then(async(admin) => {
-  await admin.setNewPassword('Hejsan12').then(() => {
+  await admin.setNewPassword('ADMINPASSWORDPLEASEIGNORE').then(() => {
     process.exit()
   })
 }).catch(() => {

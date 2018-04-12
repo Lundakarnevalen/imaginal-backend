@@ -66,7 +66,7 @@ const getAdmin = () => {
 const getWarehouseCustomer = () => {
   return {
     'email': 'warehousecustomer@lundakarnevalen.se',
-    'token': '1yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGx1bmRha2FybmV2YWxlbi5zZSIsImlhdCI6MTUxNzg2MzM0MH0.sTXMU6V2elo9kxTe-W8bd9KAT0XfR8_qFlZdBD9emMM',
+    'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IndhcmVob3VzZWN1c3RvbWVyQGx1bmRha2FybmV2YWxlbi5zZSIsImlhdCI6MTUyMzUyNzc2NH0.ZgVPSR3INKYLuIde1UfB7TfZ_6b1vYMdIu2q1xhVpF0',
     'password': 'password',
     'postNumber': '123',
     'phoneNumber': 'phoneNumber',
@@ -99,7 +99,7 @@ const getWarehouseCustomer = () => {
 const getWarehouseWorker = () => {
   return {
     'email': 'warehouseworker@lundakarnevalen.se',
-    'token': '2yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGx1bmRha2FybmV2YWxlbi5zZSIsImlhdCI6MTUxNzg2MzM0MH0.sTXMU6V2elo9kxTe-W8bd9KAT0XfR8_qFlZdBD9emMM',
+    'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IndhcmVob3VzZXdvcmtlckBsdW5kYWthcm5ldmFsZW4uc2UiLCJpYXQiOjE1MjM1Mjc4MTJ9.sXerQusL9Go8_JjcvdxaPcrS2nw6ZKpvjt8CEBi-y_o',
     'password': 'password',
     'postNumber': '123',
     'phoneNumber': 'phoneNumber',
@@ -132,7 +132,7 @@ const getWarehouseWorker = () => {
 const getWarehouseManager = () => {
   return {
     'email': 'warehousemanager@lundakarnevalen.se',
-    'token': '3yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGx1bmRha2FybmV2YWxlbi5zZSIsImlhdCI6MTUxNzg2MzM0MH0.sTXMU6V2elo9kxTe-W8bd9KAT0XfR8_qFlZdBD9emMM',
+    'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IndhcmVob3VzZW1hbmFnZXJAbHVuZGFrYXJuZXZhbGVuLnNlIiwiaWF0IjoxNTIzNTI3ODYxfQ.X8k0QgVQcFmyDQCT0fdT55tZUZdV_P0Eh4RiZmcCgBk',
     'password': 'password',
     'postNumber': '123',
     'phoneNumber': 'phoneNumber',
@@ -182,9 +182,15 @@ const getItem = () => {
   }
 }
 
-const getTag = () => {
+const getTagOne = () => {
   return {
-    'name': 'beer'
+    'name': 'tagOne'
+  }
+}
+
+const getTagTwo = () => {
+  return {
+    'name': 'tagTwo'
   }
 }
 
@@ -195,6 +201,7 @@ module.exports = {
   getWarehouseCustomer,
   getWarehouseWorker,
   getWarehouseManager,
-  getTag,
-  getItem
+  getItem,
+  getTagOne,
+  getTagTwo
 }

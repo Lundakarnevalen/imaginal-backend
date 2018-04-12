@@ -3,9 +3,9 @@
 const tags = require('../models/tag')
 const items = require('../models/item')
 const itemTags = require('../models/itemtag')
-const contents = require('../models/storageContents')
-const locations = require('../models/storageLocation')
 const userRoles = require('../models/userrole')
+const storageContents = require('../models/storageContents')
+const storageLocations = require('../models/storageLocation')
 
 const getAllItems = async (req, res) => {
   const hasAccess = await userRoles.hasWarehouseCustomerAccess()
@@ -55,7 +55,7 @@ const addItem = async (req, res) => {
 
 const createItem = function (req, res) {
   items.Item.create({
-    itemName: req.body.name,
+    name: req.body.name,
     imageUrl: req.body.imageUrl || '',
     unit: req.body.unit || '',
     purchasePrice: req.body.purchasePrice || null,
@@ -65,7 +65,7 @@ const createItem = function (req, res) {
     supplier: req.body.supplier || '',
     note: req.body.note || '',
     warningAmount: req.body.warningAmount || 1,
-    VAT: req.body.vat || 0
+    vat: req.body.vat || 0
   })
 
   req.body.tags.map(tag => {
@@ -82,26 +82,44 @@ const createItem = function (req, res) {
 
 const addItemsToLocation = async function (req, res) {
   /** Check locationID, itemID, addedQuantity != null */
-  const hasAccess = await userRoles.hasWarehouseWorkerAccess()
-  if (hasAccess) {
-    if (!req.body.locationID || !req.body.itemID || !req.body.addedQuantity) {
-      return res.status(400).json({
-        success: false,
-        message: 'Invalid parameter'
-      })
-    }
-    /** Check if locationID and itemID exist */
-    const findLocation = await locations.StorageLocation.findOne({
-      where: { id: req.body.locationID }
+  if (!req.body.locationID || !req.body.itemID || !req.body.addedQuantity) {
+    return res.status(400).json({
+      success: false,
+      message: 'Invalid parameter'
     })
-    if (!findLocation) {
-      return res.status(400).json({
-        success: false,
-        message: 'No such location'
-      })
+  }
+  /** Check if locationID and itemID exist */
+  const findLocation = await storageLocations.StorageLocation.findOne({
+    where: { id: req.body.locationID }
+  })
+  if (!findLocation) {
+    return res.status(400).json({
+      success: false,
+      message: 'No such location'
+    })
+  }
+  const findItem = await items.Item.findOne({
+    where: { id: req.body.itemID }
+  })
+  if (!findItem) {
+    return res.status(400).json({
+      success: false,
+      message: 'No such item'
+    })
+  }
+
+  const getStorage = await storageContents.StorageContent.findOne({
+    where: {
+      locationID: req.body.locationID,
+      itemID: req.body.itemID
     }
-    const findItem = await items.Item.findOne({
-      where: { id: req.body.itemID }
+  })
+  if (!getStorage) {
+    /** Add Item to Location */
+    await storageContents.StorageContent.create({
+      locationID: req.body.locationID,
+      itemID: req.body.itemID,
+      quantity: req.body.addedQuantity
     })
     if (!findItem) {
       return res.status(400).json({
@@ -166,6 +184,7 @@ const editItem = async (req, res) => {
       if (req.body.supplier) findItem.supplier = req.body.supplier
       if (req.body.note) findItem.note = req.body.note
       if (req.body.warningAmount) findItem.warningAmount = req.body.warningAmount
+      if (req.body.vat) findItem.vat = req.body.vat
       await findItem.save()
       return res.json({
         success: true,
@@ -180,28 +199,22 @@ const editItem = async (req, res) => {
   }
 }
 
+// Gest list of Ids to get items from
 const getItemsOnTags = async (req, res) => {
-  const hasAccess = await userRoles.hasWarehouseCustomerAccess()
-  if (hasAccess) {
-    const tags = req.body.tags
-    let list = []
-
-    tags.map(oneTag => {
-      const itemList = itemTags.ItemTag.findAll({
-        where: { name: oneTag.name }
-      })
-      if (itemList) {
-        list.push.apply(list, itemList)
-      }
+  try {
+    const tagsIds = req.body.tags
+    const itemList = await tags.Tag.findOne({
+      include: [{
+        model: items.Item,
+        through: {
+          where: { tagId: tagsIds }
+        }
+      }]
     })
-  // Remove duplicates
-    let uniqueList = list.filter(function (elem, index, self) {
-      return index === self.indexOfname(elem)
-    })
-    if (uniqueList) {
+    if (itemList.Items.length > 0) {
       return res.json({
         success: true,
-        message: uniqueList
+        data: itemList.Items
       })
     } else {
       return res.status(401).json({
@@ -209,10 +222,10 @@ const getItemsOnTags = async (req, res) => {
         message: 'Found no items with that tag'
       })
     }
-  } else {
-    return res.status(401).json({
+  } catch (err) {
+    return res.status(500).json({
       success: false,
-      message: 'Go away!'
+      message: 'Failed to retrive items'
     })
   }
 }
