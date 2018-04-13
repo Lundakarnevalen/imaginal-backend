@@ -134,7 +134,7 @@ app.post('/api/warehouse/order/new', order.createOrder)
 app.post('/api/warehouse/order/edit', order.editOrder)
 app.get('/api/warehouse/order/list', order.getAllOrders)
 app.get('/api/warehouse/order/list/:userId', order.getOrderOnUser)
-
+app.delete('/api/warehouse/tag/delete/:orderId', tags.removeTag)
 
 
 app.all('*', function (req, res) {

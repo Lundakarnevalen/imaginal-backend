@@ -210,6 +210,32 @@ const getTagTwo = () => {
   }
 }
 
+const getOrderOne = () =>  {
+  return {
+    // FYlla i detta
+  }
+}
+
+
+const getOrderTwo = () =>  {
+  return {
+    // FYlla i detta
+  }
+}
+
+const getOrderLineOne = () =>  {
+  return {
+    // FYlla i detta
+  }
+}
+
+const getOrderLineTwo = () =>  {
+  return {
+    // FYlla i detta
+  }
+}
+
+
 module.exports = {
   getToken,
   getUser,
@@ -220,5 +246,9 @@ module.exports = {
   getItemOne,
   getItemTwo,
   getTagOne,
-  getTagTwo
+  getTagTwo,
+  getOrderOne,
+  getOrderTwo,
+  getOrderLineOne,
+  getOrderLineTwo
 }
