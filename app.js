@@ -14,11 +14,9 @@ const checkin = require('./checkin/checkinController')
 const users = require('./users/userController')
 const storageLocations = require('./controllers/storageLocation')
 const items = require('./controllers/item')
-<<<<<<< HEAD
 const tags = require('./controllers/tag')
-=======
 const orders = require('./controllers/order')
->>>>>>> e6961fd11737eaca89fa1f8544a41bbaaeafe7ce
+const warehouseUser = require('./controllers/warehouseUser')
 
 app.use(bodyParser.json())
 app.use(passport.initialize())
@@ -128,6 +126,11 @@ app.get('/api/warehouse/order/removeOrder/:orderId', orders.removeOrder)
 app.get('/api/warehouse/order/list/:userId', order.getOrderOnUser)
 app.delete('/api/warehouse/tag/delete/:orderId', tags.removeTag)
 
+
+app.get('/api/warehouse/user/list', warehouseUser.getAllWarehouseUsers)
+app.get('/api/warehouse/user/', warehouseUser.getWarehouseUserById)
+app.get('/api/warehouse/user/costbearer/list', warehouseUser.getAllCostBearers)
+app.get('/api/warehouse/user/costbearer/:costBearerId', warehouseUser.getWarehouseUserByCostBearer)
 
 app.all('*', function (req, res) {
   res.status(404).json({

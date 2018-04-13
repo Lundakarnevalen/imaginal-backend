@@ -13,6 +13,7 @@ const checkin = require('./checkinTest')
 const tagTest = require('./tagTest')
 const itemTest = require('./itemTest')
 const orderTest = require('./orderTest')
+const warehouseUserTest = require('./warehouseUserTest')
 
 const user = utils.getUser()
 const admin = utils.getAdmin()
@@ -27,6 +28,8 @@ const orderOne = utils.getOrderOne()
 const orderTwo = utils.getOrderTwo()
 const orderLineOne = utils.getOrderLineOne()
 const orderLineTwo = utils.getOrderTwoOne()
+const costBearer = utils.getCostBearer()
+const warehouseUser = utils.getWarehouseUser()
 
 register(user)
 login(user)
@@ -39,3 +42,4 @@ tagTest(user, admin, warehouseCustomer, warehouseWorker, warehouseManager, tagOn
 itemTest(user, admin, warehouseCustomer, warehouseWorker, warehouseManager, itemOne, itemTwo, tagOne)
 orderTest(user, admin, warehouseCustomer, warehouseWorker, warehouseManager, 
     itemOne, itemTwo, orderOne, orderTwo, orderLineOne, orderLineTwo)
+warehouseUserTest(user, admin, warehouseCustomer, warehouseWorker, warehouseManager, costBearer, warehouseUser)
