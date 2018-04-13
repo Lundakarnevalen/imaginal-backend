@@ -4,13 +4,14 @@ const userRoles = require('../models/userrole')
 const costBearer = require('../models/costBearer')
 const warehouseUser = require('../models/warehouseUser')
 
-
-const getAllWarehouseUsers = async(req, res) =>  {
+const getAllWarehouseUsers = async(req, res) => {
   try {
     const hasAccess = await userRoles.hasWarehouseCustomerAccess(req)
-    
+
     if (hasAccess) {
-      const warehouseUsers = await WarehouseUser.WarehouseUser.findAll()
+      console.log('-------------------')
+      const warehouseUsers = await warehouseUser.WarehouseUser.findAll()
+      console.log(warehouseUsers)
       return res.json({
         success: true,
         data: warehouseUsers
@@ -22,24 +23,32 @@ const getAllWarehouseUsers = async(req, res) =>  {
       })
     }
   } catch (err) {
-  return res.status(500).json({
-    success: false,
-    message: 'Failed to add tag'
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to retrieve warehouseUsers'
     })
   }
 }
 
-const getWarehouseUserById = async(req, res) =>  {
+const getWarehouseUserById = async(req, res) => {
   try {
     const hasAccess = await userRoles.hasWarehouseCustomerAccess(req)
     if (hasAccess) {
-      const warehouseUsers = await WarehouseUser.WarehouseUser.findOne({
-        where: {id: req.body.id}
+      const userId = req.user.id
+      const warehouseUsers = await warehouseUser.WarehouseUser.findOne({
+        where: {userId: userId}
       })
-      return res.json({
-        success: true,
-        data: warehouseUsers
-      })
+      if (warehouseUsers) {
+        return res.json({
+          success: true,
+          data: warehouseUsers
+        })
+      } else {
+        return res.status(400).json({
+          success: false,
+          message: 'Cant find warehouseuser connected to this user'
+        })
+      }
     } else {
       return res.status(401).json({
         success: false,
@@ -47,18 +56,18 @@ const getWarehouseUserById = async(req, res) =>  {
       })
     }
   } catch (err) {
-  return res.status(500).json({
-    success: false,
-    message: 'Failed to add tag'
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to retrieve warehouseUser'
     })
   }
 }
 
-const getWarehouseUserByCostBearer= async(req, res) =>  {
+const getWarehouseUserByCostBearer = async(req, res) => {
   try {
     const hasAccess = await userRoles.hasWarehouseManagerAccess(req)
     if (hasAccess) {
-      const warehouseUsers = await WarehouseUser.WarehouseUser.findAll({
+      const warehouseUsers = await warehouseUser.WarehouseUser.findAll({
         where: { costBearerId: req.body.id }
       })
       return res.json({
@@ -72,18 +81,18 @@ const getWarehouseUserByCostBearer= async(req, res) =>  {
       })
     }
   } catch (err) {
-  return res.status(500).json({
-    success: false,
-    message: 'Failed to add tag'
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to add tag'
     })
   }
 }
 
-const getAllCostBearers = async(req, res) =>  {
+const getAllCostBearers = async(req, res) => {
   try {
     const hasAccess = await userRoles.hasWarehouseManagerAccess(req)
     if (hasAccess) {
-      const costBearers = await WarehouseUser.CostBearer.findAll()
+      const costBearers = await costBearer.CostBearer.findAll()
       return res.json({
         success: true,
         data: costBearers
@@ -95,9 +104,9 @@ const getAllCostBearers = async(req, res) =>  {
       })
     }
   } catch (err) {
-  return res.status(500).json({
-    success: false,
-    message: 'Failed to add tag'
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to add tag'
     })
   }
 }
