@@ -130,6 +130,13 @@ app.post('/api/warehouse/product/addQuantity', items.addQuantity) /** For testin
 app.get('/api/warehouse/product/getAllItems', items.getAllItems) /** For testing */
 app.get('/api/warehouse/product/inventory', items.getInventory)
 
+app.post('/api/warehouse/order/new', order.createOrder)
+app.post('/api/warehouse/order/edit', order.editOrder)
+app.get('/api/warehouse/order/list', order.getAllOrders)
+app.get('/api/warehouse/order/list/:userId', order.getOrderOnUser)
+
+
+
 app.all('*', function (req, res) {
   res.status(404).json({
     success: false,
