@@ -2,6 +2,7 @@
 
 const orders = require('../models/order')
 const orderlines = require('../models/orderline')
+const warehouseUser = require('../models/warehouseUser')
 
 const createOrder = async (req, res) => {
   try {
@@ -13,13 +14,18 @@ const createOrder = async (req, res) => {
           message: "Missing parameters"
         })
       }
-      const order = await orders.Order.create({
-        storageLocationID: req.body.storageLocationID,
-        userId: req.user.id,
-        delivered: false,
-        return: req.body.return || false
+      const findWarehouseUser = warehouseUser.WarehouseUser.findOne({
+        where: {userId: req.user.id}
       })
-      await req.body.orderlines.forEach(body => createOrderLine(order, body))
+      const order = await orders.Order.create({
+        storageLocationId: req.body.storageLocationId,
+        userId: req.user.id,
+        deliveryDate: req.body.deliveryDate,
+        delivered: false,
+        return: req.body.return || false,
+        WarehouseUserId: findWarehouseUser.id
+      })
+      await req.body.orderLines.forEach(orderLine => createOrderLine(order, body))
       return res.json({
         success: true,
         message: "Order created"
@@ -39,7 +45,7 @@ const createOrder = async (req, res) => {
   } catch (err) {
     return res.status(500).json({
       success: false,
-      message: 'Failed to add tag'
+      message: 'Failed to create order'
     })
   }
 }
@@ -51,8 +57,8 @@ const createOrderLine = (order, body) => {
     /*else*/ {
     orderlines.OrderLine.create({
       quantity: body.quantity,
-      orderID: order.id,
-      itemID: body.itemID
+      orderId: order.id,
+      itemId: body.itemI
     })
   }
 }
@@ -76,8 +82,6 @@ const removeOrder = async (req, res) => {
         })
       //check if destroy is successful?
       const order = orders.Order.findOne({ where: { id: req.body.orderId } })
-      console.log("-----------------------")
-      console.log(order)
 
       await orderlines.OrderLine.destroy({ where: { orderID: req.body.orderId, } })
       await orders.Order.destroy({ where: { id: req.body.orderId } })
@@ -94,7 +98,7 @@ const removeOrder = async (req, res) => {
   } catch (err) {
     return res.status(500).json({
       success: false,
-      message: 'Failed to add tag'
+      message: 'Failed to remove order'
     })
   }
 }
@@ -146,7 +150,7 @@ const editOrder = async (req, res) => {
   } catch (err) {
     return res.status(500).json({
       success: false,
-      message: 'Failed to add tag'
+      message: 'Failed to edit order'
     })
   }
 }
@@ -169,14 +173,11 @@ const getAllOrders = async (req, res) => {
   } catch (err) {
     return res.status(500).json({
       success: false,
-      message: 'Failed to add tag'
+      message: 'Failed to get all orders'
     })
   }
 }
 
-const getOrdersOnSection = async (req, res) => {
-
-}
 
 module.exports = {
   createOrder,
