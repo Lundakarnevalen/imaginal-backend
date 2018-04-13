@@ -135,190 +135,190 @@ const addQuantity = async function (req, res) {
         quantity: req.body.addedQuantity
       })
 
-  const getStorage = await contents.StorageContent.findOne({
-    where: {
-      locationID: req.body.locationID,
-      itemID: req.body.itemID
-    }
-  })
-  if (!getStorage) {
-    /** Add Item to Location */
-    await contents.StorageContent.create({
-      locationID: req.body.locationID,
-      itemID: req.body.itemID,
-      quantity: req.body.addedQuantity
-    })
-    return res.json({
-      success: true,
-      message: 'Item(s) added to storage location'
-    })
-  } else {
-    /** Update quantity */
-    getStorage.quantity += req.body.addedQuantity
-    await getStorage.save()
-    return res.json({
-      success: true,
-      message: 'Storage location updated'
-    })
-  }
-}
-
-const editItem = async (req, res) => {
-  try {
-    const hasAccess = await userRoles.hasWarehouseAdminAccess(req)
-    if (hasAccess) {
-      const findItem = await items.Item.findOne({
-        where: { id: req.body.id }
-      })
-      if (!findItem) {
-        return res.status(400).json({
-          success: false,
-          message: 'The item does not exist'
-        })
-      } else {
-        if (req.body.name) findItem.name = req.body.name
-        if (req.body.imageUrl) findItem.imageUrl = req.body.imageUrl
-        if (req.body.unit) findItem.unit = req.body.unit
-        if (req.body.purchasePrice) findItem.purchasePrice = req.body.purchasePrice
-        if (req.body.retailPrice) findItem.salesPrice = req.body.retailPrice
-        if (req.body.description) findItem.description = req.body.description
-        if (req.body.articleNumber) findItem.articleNumber = req.body.articleNumber
-        if (req.body.supplier) findItem.supplier = req.body.supplier
-        if (req.body.note) findItem.note = req.body.note
-        if (req.body.warningAmount) findItem.warningAmount = req.body.warningAmount
-        if (req.body.vat) findItem.vat = req.body.vat
-        await findItem.save()
-        return res.json({
-          success: true,
-          message: 'Item updated'
-        })
-      }
-    } else {
-      return res.status(401).json({
-        success: false,
-        message: 'Go away!'
-      })
-    }
-  } catch (err) {
-    console.log(err)
-    return res.status(500).json({
-      success: false,
-      message: 'Failed to retrive items'
-    })
-  }
-}
-
-// Gest list of Ids to get items from
-const getItemsOnTags = async (req, res) => {
-  try {
-    const hasAccess = await userRoles.hasWarehouseCustomerAccess(req)
-    if (hasAccess) {
-      const reqTags = req.body.tags
-      const tagIds = reqTags.map(tag => tag.id)
-      const itemList = await tags.Tag.findOne({
-        include: [{
-          model: items.Item,
-          through: {
-            where: { tagId: tagIds }
-          }
-        }]
-      })
-      if (itemList.Items.length > 0) {
-        return res.json({
-          success: true,
-          data: itemList.Items
-        })
-      } else {
-        return res.status(401).json({
-          success: false,
-          message: 'Found no items with that tag'
-        })
-      }
-    } else {
-      return res.status(401).json({
-        success: false,
-        message: 'Go away!'
-      })
-    }
-  } catch (err) {
-    console.log(err)
-    return res.status(500).json({
-      success: false,
-      message: 'Failed to retrive items'
-    })
-  }
-}
-
-const getItemById = async (req, res) => {
-  try {
-    const hasAccess = await userRoles.hasWarehouseCustomerAccess(req)
-    if (hasAccess) {
-      const findItem = await items.Item.findOne({
-        where: { id: req.params.id }
-      })
-
-      if (!findItem) {
-        return res.status(400).json({
-          success: false,
-          message: 'No item with that id exists'
-        })
-      } else {
-        const itemList = await items.Item.findOne({
-          include: [{
-            model: tags.Tag,
-            through: {
-              where: { itemId: findItem.id }
-            }
-          }]
-        })
-
-        if (itemList.Tags.length > 0) {
-          findItem.dataValues.tags = itemList.Tags
+      const getStorage = await contents.StorageContent.findOne({
+        where: {
+          locationID: req.body.locationID,
+          itemID: req.body.itemID
         }
+      })
+      if (!getStorage) {
+        /** Add Item to Location */
+        await contents.StorageContent.create({
+          locationID: req.body.locationID,
+          itemID: req.body.itemID,
+          quantity: req.body.addedQuantity
+        })
         return res.json({
           success: true,
-          data: findItem
+          message: 'Item(s) added to storage location'
+        })
+      } else {
+        /** Update quantity */
+        getStorage.quantity += req.body.addedQuantity
+        await getStorage.save()
+        return res.json({
+          success: true,
+          message: 'Storage location updated'
         })
       }
-    } else {
-      return res.status(401).json({
-        success: false,
-        message: 'Go away!'
-      })
     }
-  } catch (err) {
-    console.log(err)
-    return res.status(500).json({
-      success: false,
-      message: 'Failed to retrive items'
-    })
-  }
-}
 
-const getItemByArticleId = async (req, res) => {
-  const item = req.params.articleId
-  const findItem = await items.Item.findAll({
-    where: { articleNumber: item }
-  })
-  if (findItem.length > 0) {
-    return res.json({
-      success: true,
-      message: findItem
-    })
-  } else {
-    return res.status(400).json({
-      success: false,
-      message: 'No item with that article number exists'
-    })
-  }
-}
+    const editItem = async (req, res) => {
+      try {
+        const hasAccess = await userRoles.hasWarehouseAdminAccess(req)
+        if (hasAccess) {
+          const findItem = await items.Item.findOne({
+            where: { id: req.body.id }
+          })
+          if (!findItem) {
+            return res.status(400).json({
+              success: false,
+              message: 'The item does not exist'
+            })
+          } else {
+            if (req.body.name) findItem.name = req.body.name
+            if (req.body.imageUrl) findItem.imageUrl = req.body.imageUrl
+            if (req.body.unit) findItem.unit = req.body.unit
+            if (req.body.purchasePrice) findItem.purchasePrice = req.body.purchasePrice
+            if (req.body.retailPrice) findItem.salesPrice = req.body.retailPrice
+            if (req.body.description) findItem.description = req.body.description
+            if (req.body.articleNumber) findItem.articleNumber = req.body.articleNumber
+            if (req.body.supplier) findItem.supplier = req.body.supplier
+            if (req.body.note) findItem.note = req.body.note
+            if (req.body.warningAmount) findItem.warningAmount = req.body.warningAmount
+            if (req.body.vat) findItem.vat = req.body.vat
+            await findItem.save()
+            return res.json({
+              success: true,
+              message: 'Item updated'
+            })
+          }
+        } else {
+          return res.status(401).json({
+            success: false,
+            message: 'Go away!'
+          })
+        }
+      } catch (err) {
+        console.log(err)
+        return res.status(500).json({
+          success: false,
+          message: 'Failed to retrive items'
+        })
+      }
+    }
 
-module.exports = {
-  addItem,
-  getAllItems,
-  editItem,
-  getItemsOnTags,
-  getItemById,
-  addQuantity,
-  getItemByArticleId
-}
+    // Gest list of Ids to get items from
+    const getItemsOnTags = async (req, res) => {
+      try {
+        const hasAccess = await userRoles.hasWarehouseCustomerAccess(req)
+        if (hasAccess) {
+          const reqTags = req.body.tags
+          const tagIds = reqTags.map(tag => tag.id)
+          const itemList = await tags.Tag.findOne({
+            include: [{
+              model: items.Item,
+              through: {
+                where: { tagId: tagIds }
+              }
+            }]
+          })
+          if (itemList.Items.length > 0) {
+            return res.json({
+              success: true,
+              data: itemList.Items
+            })
+          } else {
+            return res.status(401).json({
+              success: false,
+              message: 'Found no items with that tag'
+            })
+          }
+        } else {
+          return res.status(401).json({
+            success: false,
+            message: 'Go away!'
+          })
+        }
+      } catch (err) {
+        console.log(err)
+        return res.status(500).json({
+          success: false,
+          message: 'Failed to retrive items'
+        })
+      }
+    }
+
+    const getItemById = async (req, res) => {
+      try {
+        const hasAccess = await userRoles.hasWarehouseCustomerAccess(req)
+        if (hasAccess) {
+          const findItem = await items.Item.findOne({
+            where: { id: req.params.id }
+          })
+
+          if (!findItem) {
+            return res.status(400).json({
+              success: false,
+              message: 'No item with that id exists'
+            })
+          } else {
+            const itemList = await items.Item.findOne({
+              include: [{
+                model: tags.Tag,
+                through: {
+                  where: { itemId: findItem.id }
+                }
+              }]
+            })
+
+            if (itemList.Tags.length > 0) {
+              findItem.dataValues.tags = itemList.Tags
+            }
+            return res.json({
+              success: true,
+              data: findItem
+            })
+          }
+        } else {
+          return res.status(401).json({
+            success: false,
+            message: 'Go away!'
+          })
+        }
+      } catch (err) {
+        console.log(err)
+        return res.status(500).json({
+          success: false,
+          message: 'Failed to retrive items'
+        })
+      }
+    }
+
+    const getItemByArticleId = async (req, res) => {
+      const item = req.params.articleId
+      const findItem = await items.Item.findAll({
+        where: { articleNumber: item }
+      })
+      if (findItem.length > 0) {
+        return res.json({
+          success: true,
+          message: findItem
+        })
+      } else {
+        return res.status(400).json({
+          success: false,
+          message: 'No item with that article number exists'
+        })
+      }
+    }
+
+    module.exports = {
+      addItem,
+      getAllItems,
+      editItem,
+      getItemsOnTags,
+      getItemById,
+      addQuantity,
+      getItemByArticleId
+    }

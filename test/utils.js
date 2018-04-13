@@ -210,26 +210,26 @@ const getTagTwo = () => {
   }
 }
 
-const getOrderOne = () =>  {
+const getOrderOne = () => {
   return {
     // FYlla i detta
   }
 }
 
 
-const getOrderTwo = () =>  {
+const getOrderTwo = () => {
   return {
     // FYlla i detta
   }
 }
 
-const getOrderLineOne = () =>  {
+const getOrderLineOne = () => {
   return {
     // FYlla i detta
   }
 }
 
-const getOrderLineTwo = () =>  {
+const getOrderLineTwo = () => {
   return {
     // FYlla i detta
   }

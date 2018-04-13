@@ -40,6 +40,6 @@ userChangeInfo(user, admin)
 checkin(user, admin)
 tagTest(user, admin, warehouseCustomer, warehouseWorker, warehouseManager, tagOne, tagTwo)
 itemTest(user, admin, warehouseCustomer, warehouseWorker, warehouseManager, itemOne, itemTwo, tagOne)
-orderTest(user, admin, warehouseCustomer, warehouseWorker, warehouseManager, 
-    itemOne, itemTwo, orderOne, orderTwo, orderLineOne, orderLineTwo)
+orderTest(user, admin, warehouseCustomer, warehouseWorker, warehouseManager,
+  itemOne, itemTwo, orderOne, orderTwo, orderLineOne, orderLineTwo)
 warehouseUserTest(user, admin, warehouseCustomer, warehouseWorker, warehouseManager, costBearer, warehouseUser)

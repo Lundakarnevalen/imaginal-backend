@@ -13,7 +13,7 @@ const setSectionPriorities = async (req, res, next) => {
   }
 
   const checkedin = await Checkin.findOne({
-    where: {userId: req.user.id}
+    where: { userId: req.user.id }
   })
 
   if (!checkedin) {
