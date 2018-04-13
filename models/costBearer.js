@@ -15,7 +15,6 @@ const CostBearer = dbc.define('CostBearer', {
 
 CostBearer.hasOne(WarehouseUser.WarehouseUser, {as: 'WarehouseUsers', foreignKey: 'costBearerId'})
 
-
 module.exports = {
   CostBearer
 }

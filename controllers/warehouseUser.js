@@ -1,6 +1,7 @@
 'use strict'
 
 const userRoles = require('../models/userrole')
+const costBearer = require('../models/costBearer')
 const warehouseUser = require('../models/warehouseUser')
 
 
