@@ -70,20 +70,6 @@ const addItem = async (req, res) => {
 }
 
 const createItem = async (req, res) => {
-  const itemExists = await items.Item.find({
-    where: {
-      name: req.body.name,
-      articleNumber: req.body.articleNumber || null,
-      supplier: req.body.supplier || ''
-    }
-  })
-  if (itemExists) {
-    return res.status(400).json({
-      success: false,
-      message: 'Item already exists'
-    })
-  }
-
   const item = await items.Item.findCreateFind({
     where: {
       name: req.body.name,
@@ -141,7 +127,13 @@ const addQuantity = async function (req, res) {
       success: false,
       message: 'No such item'
     })
-  }
+    if (!getStorage) {
+      /** Add Item to Location */
+      await storageContents.StorageContent.create({
+        locationID: req.body.locationID,
+        itemID: req.body.itemID,
+        quantity: req.body.addedQuantity
+      })
 
   const getStorage = await contents.StorageContent.findOne({
     where: {
@@ -221,12 +213,13 @@ const getItemsOnTags = async (req, res) => {
   try {
     const hasAccess = await userRoles.hasWarehouseCustomerAccess(req)
     if (hasAccess) {
-      const tagsIds = req.body.tags
+      const reqTags = req.body.tags
+      const tagIds = reqTags.map(tag => tag.id)
       const itemList = await tags.Tag.findOne({
         include: [{
           model: items.Item,
           through: {
-            where: { tagId: tagsIds }
+            where: { tagId: tagIds }
           }
         }]
       })

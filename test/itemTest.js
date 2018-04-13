@@ -358,7 +358,10 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
       api.post('/api/warehouse/product/itemontags')
       .set('Authorization', 'bearer ' + user.token)
       .send({
-        'tags': [1]
+        'tags': [{
+          'id': 1,
+          'name': 'öl'
+        }]
       })
       .end(async(err, res) => {
         if (err) {
@@ -375,7 +378,10 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
       api.post('/api/warehouse/product/itemontags')
       .set('Authorization', 'bearer ' + warehouseCustomer.token)
       .send({
-        'tags': [1]
+        'tags': [{
+          'id': 1,
+          'name': 'öl'
+        }]
       })
       .end(async(err, res) => {
         if (err) {
@@ -393,7 +399,10 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
       api.post('/api/warehouse/product/itemontags')
       .set('Authorization', 'bearer ' + warehouseWorker.token)
       .send({
-        'tags': [1]
+        'tags': [{
+          'id': 1,
+          'name': 'öl'
+        }]
       })
       .end(async(err, res) => {
         if (err) {
@@ -411,7 +420,10 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
       api.post('/api/warehouse/product/itemontags')
       .set('Authorization', 'bearer ' + warehouseManager.token)
       .send({
-        'tags': [1]
+        'tags': [{
+          'id': 1,
+          'name': 'öl'
+        }]
       })
       .end(async(err, res) => {
         if (err) {
@@ -429,7 +441,10 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
       api.post('/api/warehouse/product/itemontags')
       .set('Authorization', 'bearer ' + admin.token)
       .send({
-        'tags': [1]
+        'tags': [{
+          'id': 1,
+          'name': 'öl'
+        }]
       })
       .end(async(err, res) => {
         if (err) {
