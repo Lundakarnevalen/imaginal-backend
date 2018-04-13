@@ -44,17 +44,7 @@ app.post('/register', register.registerUser)
 app.post('/login/email', login.loginByEmail)
 app.post('/login/forgotpassword', forgotPassword.forgotPassword)
 app.post('/login/resetpassword', forgotPassword.setNewPassword)
-<<<<<<< HEAD
-
 app.get('/getallsections', section.getAllSections)
-=======
-app.post('/order/createOrder', orders.createOrder)
-app.post('/order/editOrder', orders.editOrder)
-app.post('/order/removeOrder', orders.removeOrder)
-
-app.get('/getallsections', section.getAllSections)
-app.get('/order/getAllOrders', orders.getAllOrders)
->>>>>>> e6961fd11737eaca89fa1f8544a41bbaaeafe7ce
 
 /**
  * Authenticate tokens
@@ -133,6 +123,8 @@ app.get('/api/warehouse/product/inventory', items.getInventory)
 app.post('/api/warehouse/order/new', order.createOrder)
 app.post('/api/warehouse/order/edit', order.editOrder)
 app.get('/api/warehouse/order/list', order.getAllOrders)
+app.get('/api/warehouse/order/removeOrder/:orderId', orders.removeOrder)
+
 app.get('/api/warehouse/order/list/:userId', order.getOrderOnUser)
 app.delete('/api/warehouse/tag/delete/:orderId', tags.removeTag)
 
