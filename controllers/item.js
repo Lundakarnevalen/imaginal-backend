@@ -235,7 +235,11 @@ const getItemsOnTags = async (req, res) => {
   try {
     const hasAccess = await userRoles.hasWarehouseCustomerAccess(req)
     if (hasAccess) {
-      const tagsIds = req.body.tags
+      const reqTags = req.body.tags
+      const tagsIds = []
+      reqTags.map(tag => {
+        tagsIds.push(tag.id)
+      })
       const itemList = await tags.Tag.findOne({
         include: [{
           model: items.Item,
