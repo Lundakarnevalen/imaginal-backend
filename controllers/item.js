@@ -235,12 +235,13 @@ const getItemsOnTags = async (req, res) => {
   try {
     const hasAccess = await userRoles.hasWarehouseCustomerAccess(req)
     if (hasAccess) {
-      const tagsIds = req.body.tags
+      const reqTags = req.body.tags
+      const tagIds = reqTags.map(tag => tag.id)
       const itemList = await tags.Tag.findOne({
         include: [{
           model: items.Item,
           through: {
-            where: { tagId: tagsIds }
+            where: { tagId: tagIds }
           }
         }]
       })
