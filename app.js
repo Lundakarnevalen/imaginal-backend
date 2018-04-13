@@ -120,8 +120,8 @@ app.post('/api/warehouse/getLocationByID', storageLocations.getByID) /* For test
 
 app.get('/api/warehouse/user/list', warehouseUser.getAllWarehouseUsers)
 app.get('/api/warehouse/user/', warehouseUser.getWarehouseUserById)
-app.get('/api/warehouse/user/costbearer/:costBearerId', warehouseUser.getWarehouseUserByCostBearer)
 app.get('/api/warehouse/user/costbearer/list', warehouseUser.getAllCostBearers)
+app.get('/api/warehouse/user/costbearer/:costBearerId', warehouseUser.getWarehouseUserByCostBearer)
 
 app.all('*', function (req, res) {
   res.status(404).json({

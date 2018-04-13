@@ -9,9 +9,7 @@ const getAllWarehouseUsers = async(req, res) => {
     const hasAccess = await userRoles.hasWarehouseCustomerAccess(req)
 
     if (hasAccess) {
-      console.log('-------------------')
       const warehouseUsers = await warehouseUser.WarehouseUser.findAll()
-      console.log(warehouseUsers)
       return res.json({
         success: true,
         data: warehouseUsers
@@ -65,10 +63,10 @@ const getWarehouseUserById = async(req, res) => {
 
 const getWarehouseUserByCostBearer = async(req, res) => {
   try {
-    const hasAccess = await userRoles.hasWarehouseManagerAccess(req)
+    const hasAccess = await userRoles.hasWarehouseCustomerAccess(req)
     if (hasAccess) {
       const warehouseUsers = await warehouseUser.WarehouseUser.findAll({
-        where: { costBearerId: req.body.id }
+        where: { costBearerId: req.params.costBearerId }
       })
       return res.json({
         success: true,
@@ -83,14 +81,14 @@ const getWarehouseUserByCostBearer = async(req, res) => {
   } catch (err) {
     return res.status(500).json({
       success: false,
-      message: 'Failed to add tag'
+      message: 'Failed to get warehouseUser'
     })
   }
 }
 
 const getAllCostBearers = async(req, res) => {
   try {
-    const hasAccess = await userRoles.hasWarehouseManagerAccess(req)
+    const hasAccess = await userRoles.hasWarehouseCustomerAccess(req)
     if (hasAccess) {
       const costBearers = await costBearer.CostBearer.findAll()
       return res.json({
