@@ -78,7 +78,7 @@ const getWarehouseUserByCostBearer= async(req, res) =>  {
   }
 }
 
-const getAllCostbearers = async(req, res) =>  {
+const getAllCostBearers = async(req, res) =>  {
   try {
     const hasAccess = await userRoles.hasWarehouseManagerAccess(req)
     if (hasAccess) {
@@ -105,5 +105,5 @@ module.exports = {
   getAllWarehouseUsers,
   getWarehouseUserById,
   getWarehouseUserByCostBearer,
-  getAllCostbearers
+  getAllCostBearers
 }
