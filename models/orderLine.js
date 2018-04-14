@@ -10,7 +10,7 @@ const OrderLine = dbc.define('OrderLine', {
     primaryKey: true,
     type: Sequelize.INTEGER
   },
-  quantityOrderd: Sequelize.INTEGER,
+  quantityOrdered: Sequelize.INTEGER,
   quantityDelivered: Sequelize.INTEGER
 })
 

@@ -22,7 +22,8 @@ module.exports = {
           key: 'id'
         }
       },
-      quantity: Sequelize.INTEGER,
+      quantityOrdered: Sequelize.INTEGER,
+      quantityDelivered: Sequelize.INTEGER,
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

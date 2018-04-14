@@ -4,7 +4,7 @@ const orders = require('../models/order')
 const orderlines = require('../models/orderline')
 
 const createOrder = async (req, res) => {
-    if ((!req.body.storageLocationID /*|| !req.body.userID*/ || !req.body.orderlines)
+    if ((!req.body.storageLocationID || !req.body.warehouseUserID || !req.body.orderlines)
         || !(await req.body.orderlines.every(body => body.itemID && body.quantity)))
         return res.json({
             success: false,
@@ -13,7 +13,7 @@ const createOrder = async (req, res) => {
     else {
         const order = await orders.Order.create({
             storageLocationID: req.body.storageLocationID,
-            //userID: req.body.userID,
+            warehouseUserID: req.body.warehouseUserID,
             delivered: false,
             return: req.body.return || false
         })
@@ -28,12 +28,12 @@ const createOrder = async (req, res) => {
 
 const createOrderLine = (order, body) => {
     orderlines.OrderLine.create({
-        quantity: body.quantity,
+        quantityOrdered: body.quantity,
+        quantityDelivered: 0,
         orderID: order.id,
         itemID: body.itemID
     })
 }
-
 
 const removeOrder = async (req, res) => {
     if (!req.body.id) {
@@ -78,12 +78,12 @@ const editOrder = async (req, res) => {
             message: "No such orderID exists"
         })
     else {
-        //can only set delivered from false to true
+        //can only set delivered from false to true?
         if (req.body.delivered) {
             theOrder.delivered = req.body.delivered
             theOrder.deliveryDate = new Date()
         }
-        //can only set return from false to true
+        //can only set return from false to true?
         if (req.body.return)
             theOrder.return = req.body.return
         await theOrder.save()

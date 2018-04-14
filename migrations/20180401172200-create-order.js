@@ -15,6 +15,13 @@ module.exports = {
           key: 'id'
         }
       },
+      warehouseUserID: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'WarehouseUser',
+          key: 'id'
+        }
+      },
       deliveryDate: Sequelize.DATE,
       returnDate: Sequelize.DATE,
       delivered: Sequelize.BOOLEAN,
