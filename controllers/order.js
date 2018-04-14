@@ -78,13 +78,11 @@ const editOrder = async (req, res) => {
             message: "No such orderID exists"
         })
     else {
-        //can only set delivered from false to true?
-        if (req.body.delivered) {
+        if (req.body.delivered != null) {
             theOrder.delivered = req.body.delivered
-            theOrder.deliveryDate = new Date()
+            theOrder.deliveryDate = (req.body.delivered) ? new Date() : null         
         }
-        //can only set return from false to true?
-        if (req.body.return)
+        if (req.body.return != null)
             theOrder.return = req.body.return
         await theOrder.save()
         return res.json({
