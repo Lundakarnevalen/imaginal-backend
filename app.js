@@ -109,9 +109,17 @@ app.get('/api/warehouse/product/:articleId', items.getItemByArticleId)
 app.post('/api/warehouse/location/new', storageLocations.addStorageLocation)
 app.get('/api/warehouse/location/list', storageLocations.getStorageLocations)
 
-app.post('/warehouse/getLocationByID', storageLocations.getByID) /* For testing */
-app.post('/warehouse/product/addQuantity', items.addQuantity) /** For testing */
-app.get('/warehouse/product/getAllItems', items.getAllItems) /** For testing */
+app.post('/api/warehouse/getLocationByID', storageLocations.getByID) /* For testing */
+app.post('/api/warehouse/product/addQuantity', items.addQuantity) /** For testing */
+app.get('/api/warehouse/product/getAllItems', items.getAllItems) /** For testing */
+app.get('/api/warehouse/product/inventory', items.getInventory)
+
+app.post('/api/warehouse/order/new', order.createOrder)
+app.post('/api/warehouse/order/edit', order.editOrder)
+app.get('/api/warehouse/order/list', order.getAllOrders)
+app.get('/api/warehouse/order/list/:userId', order.getOrderOnUser)
+
+
 
 app.all('*', function (req, res) {
   res.status(404).json({
