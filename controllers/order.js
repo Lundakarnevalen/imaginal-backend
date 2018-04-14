@@ -100,8 +100,36 @@ const getAllOrders = async (req, res) => {
     })
 }
 
-const getOrdersOnSection = async (req, res) => {
+const getOrdersOnUser = async (req, res) => {
+    const theOrders = await orders.Order.findAll({
+        where: {warehouseUserID: req.body.warehouseUserID}
+    })
+    if(theOrders.length > 0)
+    return res.json({
+        success: true,
+        theOrders
+    })
+    else
+    return res.json({
+        success: false,
+        message: "No orders on that user"
+    })
+}
 
+const getOrdersOnSection = async (req, res) => {
+    const theOrders = await orders.Order.findAll({
+        where: {storageLocationID: req.body.storageLocationID}
+    })
+    if(theOrders.length > 0)
+    return res.json({
+        success: true,
+        theOrders
+    })
+    else
+    return res.json({
+        success: false,
+        message: "No orders on that section"
+    })
 }
 
 module.exports = {
