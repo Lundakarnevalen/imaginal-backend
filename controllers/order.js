@@ -4,7 +4,8 @@ const orders = require('../models/order')
 const orderlines = require('../models/orderline')
 
 const createOrder = async (req, res) => {
-    if (!req.body.storageLocationID /*|| !req.body.userID*/ || !req.body.orderlines)
+    if ((!req.body.storageLocationID /*|| !req.body.userID*/ || !req.body.orderlines)
+        || !(await req.body.orderlines.every(body => body.itemID && body.quantity)))
         return res.json({
             success: false,
             message: "Missing parameters"
@@ -21,25 +22,16 @@ const createOrder = async (req, res) => {
             success: true,
             message: "Order created"
         })
-        //throw error from createOrderLine?
-        return res.json({
-            success: false,
-            message: "Failed to create orderlines"
-        })
+
     }
 }
 
 const createOrderLine = (order, body) => {
-    //if (!body.quantity || body.itemID)
-        //throw error
-        //const error = true
-    /*else*/ {
-        orderlines.OrderLine.create({
-            quantity: body.quantity,
-            orderID: order.id,
-            itemID: body.itemID
-        })
-    }
+    orderlines.OrderLine.create({
+        quantity: body.quantity,
+        orderID: order.id,
+        itemID: body.itemID
+    })
 }
 
 
@@ -58,8 +50,8 @@ const removeOrder = async (req, res) => {
         })
     else {
         //check if destroy is successful?
-        await orderlines.OrderLine.destroy({ where: {orderID: req.body.id}})
-        await orders.Order.destroy({ where: {id: req.body.id} })
+        await orderlines.OrderLine.destroy({ where: { orderID: req.body.id } })
+        await orders.Order.destroy({ where: { id: req.body.id } })
         return res.json({
             success: true,
             message: "Order removed"
