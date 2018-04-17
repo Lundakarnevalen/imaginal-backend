@@ -212,29 +212,37 @@ const getTagTwo = () => {
 
 const getOrderOne = () => {
   return {
-    // FYlla i detta
+    'id': 1,
+    'userId': 15000,
+    'deliveryDate': '2018-04-13 00:00:00',
+    'storageLocationId': 1,
+    'OrderLines': [getOrderLineOne, getOrderLineTwo]
   }
 }
 
-
 const getOrderTwo = () => {
   return {
-    // FYlla i detta
+    'id': 2,
+    'userId': 15001,
+    'deliveryDate': '2018-04-15 00:00:00',
+    'storageLocationId': 1,
+    'OrderLines': [getOrderLineTwo]
   }
 }
 
 const getOrderLineOne = () => {
   return {
-    // FYlla i detta
+    'itemId': 1,
+    'quantity': 20
   }
 }
 
 const getOrderLineTwo = () => {
   return {
-    // FYlla i detta
+    'itemId': 2,
+    'quantity': 10
   }
 }
-
 
 const getCostBearer = () => {
   return {
@@ -248,6 +256,16 @@ const getWarehouseUser = () => {
     'id': 1,
     'userId': 15000,
     'costBearerId': 1
+  }
+}
+
+const getOrderOne = () => {
+  return {
+    'id': 1,
+    'deliveryDate': '2018-04-13 00:00:00',
+    'storageLocationId': 1,
+    'OrderLines': [getOrderLineOne, getOrderLineTwo]
+
   }
 }
 

@@ -8,14 +8,14 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      locationID: {
+      StorageLocationId: {
         type: Sequelize.INTEGER,
         references: {
           model: 'StorageLocations',
           key: 'id'
         }
       },
-      itemID: {
+      itemId: {
         type: Sequelize.INTEGER,
         references: {
           model: 'Items',
