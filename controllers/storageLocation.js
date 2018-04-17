@@ -74,7 +74,6 @@ const getItemsInStorageLocation = async (req, res) => {
   })
 }
 
-
 module.exports = {
   addStorageLocation,
   getStorageLocations,

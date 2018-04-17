@@ -321,22 +321,18 @@ const getInventory = async (req, res) => {
     const hasAccess = await userRoles.hasWarehouseCustomerAccess(req)
     if (hasAccess) {
       const storageLocationId = req.body.storageLocationId
-      if (storageLocationId)  {
-        const inventory = await storageLocations.StorageLocation.findAll({
-          include: [{
-            model: items.Item,
-            through: {
-              where: { locationID: storageLocationId }
-            }
-          }]
-        })
-      } else {
-        const inventory = await storageLocations.StorageLocation.findAll({
-          include: [{
-            model: items.Item
-          }]
-        })
-    } 
+      const inventory = await storageLocations.StorageLocation.findAll({
+        include: [{
+          model: items.Item,
+          through: {
+            where: { locationID: storageLocationId }
+          }
+        }]
+      })
+      return res.json({
+        success: true,
+        inventory
+      })
     } else {
       return res.status(401).json({
         success: false,
@@ -349,8 +345,8 @@ const getInventory = async (req, res) => {
       success: false,
       message: 'Failed to retrive items'
     })
+  }
 }
-
 
 module.exports = {
   addItem,
@@ -358,5 +354,6 @@ module.exports = {
   editItem,
   getItemsOnTags,
   addItemsToLocation,
-  getItemById
+  getItemById,
+  getInventory
 }
