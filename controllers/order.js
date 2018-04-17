@@ -10,7 +10,7 @@ const createOrder = async (req, res) => {
     if (hasAccess) {
       if ((!req.body.storageLocationID || !req.body.warehouseUserID || !req.body.orderlines)
         || !(await req.body.orderlines.every(body => body.itemID && body.quantity))) {
-        return res.json({
+        return res.status(400).json({
           success: false,
           message: "Missing parameters"
         })
@@ -109,6 +109,14 @@ const removeOrder = async (req, res) => {
 const findOrder = (orderID) => {
   return orders.Order.findById(orderID)
   //return orderlines associated with order?
+}
+
+const getOrderLinesFromOrderId = (orderID) => {
+    return orderlines.OrderLine.findAll({
+        where: {
+            orderId: orderID
+        }
+    })
 }
 
 const editOrder = async (req, res) => {
