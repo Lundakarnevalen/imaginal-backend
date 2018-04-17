@@ -8,6 +8,7 @@ const Posts = dbc.define('JodelPosts', {
     type: Sequelize.INTEGER
   },
   text: Sequelize.TEXT
+  //color: Sequelize.STRING
 })
 
 User.hasMany(Posts, {
@@ -21,8 +22,12 @@ Posts.belongsTo(User, {
 })
 
 Posts.prototype.toJSON = async (post) => {
-
-  const votes = await post.getJodelVote().map(x => x.value)
+  let voted = false
+  const votes = await post.getJodelVote().map(x => {
+    console.log(x)
+    if (x.userId === post.userId) {voted = true}
+    return x.value
+  })
   let result
   if (votes.length > 0) {
     result = votes.reduce((acc, curval) => acc + curval)
@@ -33,7 +38,8 @@ Posts.prototype.toJSON = async (post) => {
     votes: result,
     comments: comments.length,
     text: post.text,
-    createdAt: post.createdAt
+    createdAt: post.createdAt,
+    voted
   }
   return posts
 }

@@ -11,8 +11,9 @@ JodelVote.sync()
 
 const User = require('../users/users').User
 
-const MAX_LENGTH = 200
+const MAX_LENGTH = 240
 const MIN_LENGTH = 1
+const COMMENT_MAX_LENGTH = 140
 
 const newPost = async (req, res) => {
   const message = req.body.message
@@ -40,7 +41,7 @@ const newPost = async (req, res) => {
 const addJodelComment = async (req, res) => {
   'use strict'
   const message = req.body.message
-  if (!message || message.length > MAX_LENGTH || message.length < MIN_LENGTH) {
+  if (!message || message.length > COMMENT.MAX_LENGTH || message.length < MIN_LENGTH) {
     return res.status(400).json({
       success: false,
       message: 'Message too long or too short'
