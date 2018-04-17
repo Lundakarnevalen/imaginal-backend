@@ -37,12 +37,33 @@ Posts.prototype.toJSON = async (post) => {
   return posts
 }
 
+const getPostByVotes = function (inputOffset, inputLimit) {
+  const offset = parseInt(inputOffset) || 0
+  const limit = inputLimit || 25
+  const date = Date.now() - 1000*60*60*24*5
+  console.log(date)
+  return Posts.findAndCountAll({
+    include: [{
+      model: Votes,
+      as: votes
+    }],
+    where: {
+      createdAt: {gte: date} //Move this to the part where you get a users posts, votes etc
+    },
+    order: ['id'],
+    offset: offset,
+    limit: limit
+  })
+}
+
 const getAllPostsAndCount = function (inputOffset, inputLimit) {
   const offset = parseInt(inputOffset) || 0
   const limit = inputLimit || 25
+  const date = Date.now() - 1000*60*60*24*5
+  console.log(date)
   return Posts.findAndCountAll({
     where: {
-      createdAt: {gte: Date.UTC(2015,01,05,15,40)}
+      createdAt: {gte: date} //Move this to the part where you get a users posts, votes etc
     },
     order: ['id'],
     offset: offset,
@@ -52,5 +73,6 @@ const getAllPostsAndCount = function (inputOffset, inputLimit) {
 
 module.exports = {
   Posts,
-  getAllPostsAndCount
+  getAllPostsAndCount,
+  getPostByVotes
 }

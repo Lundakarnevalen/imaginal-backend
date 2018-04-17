@@ -38,6 +38,7 @@ app.post('/jodel/newcomment', jodel.addJodelComment)
 app.post('/jodel/vote', jodel.addJodelVote)
 app.get('/jodel/:id', jodel.getJodelPost)
 app.get('/jodel/all/:offset', jodel.getAllPosts)
+app.get('/jodel/allVotes/:offset', jodel.getAllPostsByVotes)
 
 
 

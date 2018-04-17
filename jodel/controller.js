@@ -1,5 +1,6 @@
 const JodelPost = require('./jodelPost').Posts
 const jodelposts = require('./jodelPost')
+const Sequelize = require('sequelize')
 
 JodelPost.sync()
 const JodelComments = require('./jodelComments').Comments
@@ -181,10 +182,37 @@ const getAllPosts = async (req, res) => {
   })
 }
 
+const getAllPostsByVotes = async (req, res) => {
+  const offset = parseInt(req.params.offset) || 0
+  const limit = 12
+  if (offset < 0) {
+    return res.status(500).json({
+      success: false,
+      message: 'Invalid offset'
+      })
+    }
+  /*const as = await JodelVote.findAll({
+    attributes: [[
+      Sequelize.fn(`SUM`, Sequelize.col('value')), 'votes'
+    ]],
+    group: ['postId'],
+  }*/
+  const as = await JodelVote.findAll({
+    order: [Sequelize.fn(`SUM`, Sequelize.col('value'))],
+    group: ['postId']
+  })
+  console.log(as)
+  res.json({
+    success: true,
+  })
+
+}
+
 module.exports = {
   newPost,
   addJodelComment,
   addJodelVote,
   getJodelPost,
-  getAllPosts
+  getAllPosts,
+  getAllPostsByVotes
 }
