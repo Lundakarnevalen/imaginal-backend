@@ -3,8 +3,8 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.bulkInsert('StorageContents', [{
-      storageLocationId: 1,
-      itemId: 1,
+      locationID: 1,
+      itemID: 1,
       quantity: 200,
       createdAt: new Date().toISOString().substr(0, 10),
       updatedAt: new Date().toISOString().substr(0, 10)
