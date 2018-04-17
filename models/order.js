@@ -16,8 +16,8 @@ const Order = dbc.define('Order', {
   return: Sequelize.BOOLEAN,
 })
 
-Order.hasOne(StorageLocation, { as: 'StorageLocation', foreignKey: 'storageLocationID' })
-Order.hasOne(WarehouseUser, { as: 'WarehouseUser', foreignKey: 'warehouseUserID' })
+Order.hasOne(StorageLocation, { as: 'StorageLocation', foreignKey: 'storageLocationId' })
+Order.hasOne(WarehouseUser, { as: 'WarehouseUser', foreignKey: 'warehouseUserId' })
 
 module.exports = {
   Order

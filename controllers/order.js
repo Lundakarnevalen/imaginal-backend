@@ -8,7 +8,7 @@ const createOrder = async (req, res) => {
   try {
     const hasAccess = await userRoles.hasWarehouseCustomerAccess(req)
     if (hasAccess) {
-      if ((!req.body.storageLocationID || !req.body.warehouseUserId || !req.body.orderlines)
+      if ((!req.body.storageLocationId || !req.body.warehouseUserId || !req.body.orderlines)
         || !(await req.body.orderlines.every(body => body.itemId && body.quantity))) {
         return res.status(400).json({
           success: false,
@@ -52,7 +52,7 @@ const createOrder = async (req, res) => {
 }
 
 const createOrderLine = (order, body) => {
-    //if (!body.quantity || body.itemID)
+    //if (!body.quantity || body.itemId)
         //throw error
         //const error = true
     /*else*/ {
@@ -79,9 +79,9 @@ const removeOrder = async (req, res) => {
       if (!theOrder)
         return res.status(400).json({
           success: false,
-          message: "No such orderID exists"
+          message: "No such orderId exists"
         })
-      await orderlines.OrderLine.destroy({ where: { orderID: req.body.orderId, } })
+      await orderlines.OrderLine.destroy({ where: { orderId: req.body.orderId, } })
       await orders.Order.destroy({ where: { id: req.body.orderId } })
       return res.status(200).json({
         success: true,
@@ -101,14 +101,14 @@ const removeOrder = async (req, res) => {
   }
 }
 
-const findOrder = async (orderID) => {
-  return orders.Order.findById(orderID)
+const findOrder = async (orderId) => {
+  return orders.Order.findById(orderId)
 }
 
-const getOrderLinesFromOrderId = async (orderID) => {
+const getOrderLinesFromOrderId = async (orderId) => {
   return orderlines.OrderLine.findAll({
     where: {
-      orderId: orderID
+      orderId: orderId
     }
   })
 }
@@ -127,7 +127,7 @@ const editOrder = async (req, res) => {
       if (!theOrder)
         return res.status(400).json({
           success: false,
-          message: "No such orderID exists"
+          message: "No such orderId exists"
         })
       else {
         if (req.body.delivered != null)
@@ -185,7 +185,7 @@ const getOrdersOnUser = async (req, res) => {
     const hasAccess = await userRoles.hasWarehouseCustomerAccess(req)
     if (hasAccess) {
       const theOrders = await orders.Order.findAll({
-        where: { warehouseUserID: req.body.warehouseUserID }
+        where: { warehouseUserId: req.body.warehouseUserId }
       })
       if (theOrders.length > 0) {
         theOrders.forEach(
@@ -220,7 +220,7 @@ const getOrdersOnSection = async (req, res) => {
     const hasAccess = await userRoles.hasWarehouseCustomerAccess(req)
     if (hasAccess) {
       const theOrders = await orders.Order.findAll({
-        where: { storageLocationID: req.body.storageLocationID }
+        where: { storageLocationId: req.body.storageLocationId }
       })
       if (theOrders.length > 0) {
         theOrders.forEach(

@@ -113,7 +113,7 @@ app.post('/api/warehouse/product/itemontags', items.getItemsOnTags)
 app.post('/api/warehouse/location/new', storageLocations.addStorageLocation)
 app.get('/api/warehouse/location/list', storageLocations.getStorageLocations)
 
-app.post('/api/warehouse/getLocationByID', storageLocations.getByID) /* For testing */
+app.post('/api/warehouse/getLocationById', storageLocations.getById) /* For testing */
 app.post('/api/warehouse/product/addQuantity', items.addQuantity) /** For testing */
 app.get('/api/warehouse/product/getAllItems', items.getAllItems) /** For testing */
 

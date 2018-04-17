@@ -103,7 +103,7 @@ const createItem = async (req, res) => {
 
 const addQuantity = async function (req, res) {
   /** Check locationID, itemID, addedQuantity != null */
-  if (!req.body.locationID || !req.body.itemID || !req.body.addedQuantity) {
+  if (!req.body.locationId || !req.body.itemId || !req.body.addedQuantity) {
     return res.status(400).json({
       success: false,
       message: 'Invalid parameter'
@@ -111,7 +111,7 @@ const addQuantity = async function (req, res) {
   }
   /** Check if locationID and itemID exist */
   const findLocation = await locations.StorageLocation.findOne({
-    where: { id: req.body.locationID }
+    where: { id: req.body.locationId }
   })
   if (!findLocation) {
     return res.status(400).json({
@@ -120,7 +120,7 @@ const addQuantity = async function (req, res) {
     })
   }
   const findItem = await items.Item.findOne({
-    where: { id: req.body.itemID }
+    where: { id: req.body.itemId }
   })
   if (!findItem) {
     return res.status(400).json({
@@ -130,22 +130,22 @@ const addQuantity = async function (req, res) {
     if (!getStorage) {
       /** Add Item to Location */
       await storageContents.StorageContent.create({
-        locationID: req.body.locationID,
-        itemID: req.body.itemID,
+        locationId: req.body.locationId,
+        itemId: req.body.itemId,
         quantity: req.body.addedQuantity
       })
 
       const getStorage = await contents.StorageContent.findOne({
         where: {
-          locationID: req.body.locationID,
-          itemID: req.body.itemID
+          locationId: req.body.locationId,
+          itemId: req.body.itemId
         }
       })
       if (!getStorage) {
         /** Add Item to Location */
         await contents.StorageContent.create({
-          locationID: req.body.locationID,
-          itemID: req.body.itemID,
+          locationId: req.body.locationId,
+          itemId: req.body.itemId,
           quantity: req.body.addedQuantity
         })
         return res.json({
