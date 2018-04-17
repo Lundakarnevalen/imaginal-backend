@@ -23,19 +23,13 @@ const newPost = async (req, res) => {
     })
   }
 
-  const user = await User.findOne({
-    where: {id: 1}
-  })
+  const user = req.user
   const newjp = await JodelPost.create({
     text: message
   })
   await user.addJodels([newjp])
-  console.log('Jodel!')
-  console.log(user.firstName)
   let jodel = await JodelPost.findOne({where: {id: 1}})
-  await console.log('-----------Hämtar ut user---------')
   jodel = await jodel.getJodelUser()
-  console.log(jodel.firstName)
   res.json({
     success: true,
     message: 'Jodel posted',
@@ -46,16 +40,13 @@ const newPost = async (req, res) => {
 const addJodelComment = async (req, res) => {
   'use strict'
   const message = req.body.message
-  console.log(message)
   if (!message || message.length > MAX_LENGTH || message.length < MIN_LENGTH) {
     return res.status(400).json({
       success: false,
       message: 'Message too long or too short'
     })
   }
-  const user = await User.findOne({
-    where: {id: 1}
-  })
+  const user = req.user
 
   const jp = await JodelPost.findOne({
     where: {id: req.body.id}
@@ -79,7 +70,6 @@ const hasVoted = async (post, user) => {
   const votes = await post.getJodelVote()
   for (let i = 0, len = votes.length; i < len; i++) {
     if (votes[i].userId === user.id) {
-      console.log('--------')
       return true
     }
   }
@@ -94,9 +84,7 @@ const addJodelVote = async (req, res) => {
   if (value !== 1) {
     value = -1
   }
-  const user = await User.findOne({
-    where: {id: 1}
-  })
+  const user = req.user
 
   const jp = await JodelPost.findOne({
     where: {id: postid}
@@ -110,7 +98,6 @@ const addJodelVote = async (req, res) => {
   }
 
   const voted = await hasVoted(jp, user)
-  console.log(voted)
   if (voted) {
     return res.status(401).json({
       success: false,
@@ -177,7 +164,6 @@ const getAllPosts = async (req, res) => {
   const allPostsJSON = await Promise.all(allPosts.rows.map(async (post) => {
     return await post.toJSON(post)
   }))
-  console.log(allPostsJSON)
   res.json({
     success: true,
     posts: allPostsJSON,
@@ -200,15 +186,12 @@ const getAllPostsByVotes = async (req, res) => {
     order: [Sequelize.fn(`SUM`, Sequelize.col('value'))],
     group: ['postId']
   })
-  console.log(as)
   const listedPosts = []
   for (let i = as.length-1; i >= 0; i--) {
     const asd = await as[i].Votes.toJSON(as[i].Votes)
-    console.log(asd)
     listedPosts.push(asd)
   }
   await Promise.all(listedPosts)
-    console.log('+++++++')
   res.json({
     posts: listedPosts,
     success: true,
@@ -231,15 +214,12 @@ const getAllPostsByComments = async (req, res) => {
     order: [Sequelize.fn(`COUNT`, Sequelize.col('postId'))],
     group: ['postId']
   })
-  console.log(as)
   const listedPosts = []
   for (let i = as.length-1; i >= 0; i--) {
     const asd = await as[i].Comments.toJSON(as[i].Comments)
-    console.log(asd)
     listedPosts.push(asd)
   }
   await Promise.all(listedPosts)
-    console.log('+++++++')
   res.json({
     posts: listedPosts,
     success: true,
@@ -247,10 +227,7 @@ const getAllPostsByComments = async (req, res) => {
 
 }
 const getAllUserPostsByComments = async (req, res) => {
-  const user = await User.findOne({
-    where: {id: 1}
-  })
-
+  const user = req.user 
   const offset = parseInt(req.params.offset) || 0
   const limit = 12
   if (offset < 0) {
@@ -264,15 +241,12 @@ const getAllUserPostsByComments = async (req, res) => {
     order: [Sequelize.fn(`COUNT`, Sequelize.col('postId'))],
     group: ['postId']
   })
-  console.log(as)
   const listedPosts = []
   for (let i = as.length-1; i >= 0; i--) {
     const asd = await as[i].Comments.toJSON(as[i].Comments)
-    console.log(asd)
     listedPosts.push(asd)
   }
   await Promise.all(listedPosts)
-    console.log('+++++++')
   res.json({
     posts: listedPosts,
     success: true,
@@ -281,10 +255,8 @@ const getAllUserPostsByComments = async (req, res) => {
 }
 
 const getAllUserPostsByVotes = async (req, res) => {
- const user = await User.findOne({
-    where: {id: 1}
-  })
-const offset = parseInt(req.params.offset) || 0
+ const user = req.user
+ const offset = parseInt(req.params.offset) || 0
   const limit = 12
   if (offset < 0) {
     return res.status(500).json({
@@ -298,15 +270,12 @@ const offset = parseInt(req.params.offset) || 0
     order: [Sequelize.fn(`SUM`, Sequelize.col('value'))],
     group: ['postId']
   })
-  console.log(as)
   const listedPosts = []
   for (let i = as.length-1; i >= 0; i--) {
     const asd = await as[i].Votes.toJSON(as[i].Votes)
-    console.log(asd)
     listedPosts.push(asd)
   }
   await Promise.all(listedPosts)
-    console.log('+++++++')
   res.json({
     posts: listedPosts,
     success: true,
