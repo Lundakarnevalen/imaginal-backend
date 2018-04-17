@@ -1,3 +1,4 @@
+const TIME_LIMIT_FOR_TRENDING = Date.now() - 1000 * 60 * 60 *24 *10 //10 days old or newer
 const JodelPost = require('./jodelPost').Posts
 const jodelposts = require('./jodelPost')
 const Sequelize = require('sequelize')
@@ -45,6 +46,7 @@ const newPost = async (req, res) => {
 const addJodelComment = async (req, res) => {
   'use strict'
   const message = req.body.message
+  console.log(message)
   if (!message || message.length > MAX_LENGTH || message.length < MIN_LENGTH) {
     return res.status(400).json({
       success: false,
@@ -149,7 +151,8 @@ const getJodelPost = async (req, res) => {
     const isOp = x.userId === opId
     const info = {
       text: x.text,
-      isOp
+      isOp,
+      createdAt: x.createdAt
     }
     return info
   })
@@ -191,22 +194,127 @@ const getAllPostsByVotes = async (req, res) => {
       message: 'Invalid offset'
       })
     }
-  /*const as = await JodelVote.findAll({
-    attributes: [[
-      Sequelize.fn(`SUM`, Sequelize.col('value')), 'votes'
-    ]],
-    group: ['postId'],
-  }*/
   const as = await JodelVote.findAll({
+    where: {createdAt: {gte: TIME_LIMIT_FOR_TRENDING}},
+	  include: [{model: JodelPost, as: 'Votes'}],
     order: [Sequelize.fn(`SUM`, Sequelize.col('value'))],
     group: ['postId']
   })
   console.log(as)
+  const listedPosts = []
+  for (let i = as.length-1; i >= 0; i--) {
+    const asd = await as[i].Votes.toJSON(as[i].Votes)
+    console.log(asd)
+    listedPosts.push(asd)
+  }
+  await Promise.all(listedPosts)
+    console.log('+++++++')
   res.json({
+    posts: listedPosts,
     success: true,
   })
 
 }
+
+const getAllPostsByComments = async (req, res) => {
+  const offset = parseInt(req.params.offset) || 0
+  const limit = 12
+  if (offset < 0) {
+    return res.status(500).json({
+      success: false,
+      message: 'Invalid offset'
+      })
+    }
+  const as = await JodelComments.findAll({
+    where: {createdAt: {gte: TIME_LIMIT_FOR_TRENDING}},
+	  include: [{model: JodelPost, as: 'Comments'}],
+    order: [Sequelize.fn(`COUNT`, Sequelize.col('postId'))],
+    group: ['postId']
+  })
+  console.log(as)
+  const listedPosts = []
+  for (let i = as.length-1; i >= 0; i--) {
+    const asd = await as[i].Comments.toJSON(as[i].Comments)
+    console.log(asd)
+    listedPosts.push(asd)
+  }
+  await Promise.all(listedPosts)
+    console.log('+++++++')
+  res.json({
+    posts: listedPosts,
+    success: true,
+  })
+
+}
+const getAllUserPostsByComments = async (req, res) => {
+  const user = await User.findOne({
+    where: {id: 1}
+  })
+
+  const offset = parseInt(req.params.offset) || 0
+  const limit = 12
+  if (offset < 0) {
+    return res.status(500).json({
+      success: false,
+      message: 'Invalid offset'
+      })
+    }
+  const as = await user.getJodelComments({
+    include: [{model: JodelPost, as: 'Comments'}],
+    order: [Sequelize.fn(`COUNT`, Sequelize.col('postId'))],
+    group: ['postId']
+  })
+  console.log(as)
+  const listedPosts = []
+  for (let i = as.length-1; i >= 0; i--) {
+    const asd = await as[i].Comments.toJSON(as[i].Comments)
+    console.log(asd)
+    listedPosts.push(asd)
+  }
+  await Promise.all(listedPosts)
+    console.log('+++++++')
+  res.json({
+    posts: listedPosts,
+    success: true,
+  })
+
+}
+
+const getAllUserPostsByVotes = async (req, res) => {
+ const user = await User.findOne({
+    where: {id: 1}
+  })
+const offset = parseInt(req.params.offset) || 0
+  const limit = 12
+  if (offset < 0) {
+    return res.status(500).json({
+      success: false,
+      message: 'Invalid offset'
+      })
+    }
+  const as = await user.JodelVotes({
+    where: {createdAt: {gte: TIME_LIMIT_FOR_TRENDING}},
+	  include: [{model: JodelPost, as: 'Votes'}],
+    order: [Sequelize.fn(`SUM`, Sequelize.col('value'))],
+    group: ['postId']
+  })
+  console.log(as)
+  const listedPosts = []
+  for (let i = as.length-1; i >= 0; i--) {
+    const asd = await as[i].Votes.toJSON(as[i].Votes)
+    console.log(asd)
+    listedPosts.push(asd)
+  }
+  await Promise.all(listedPosts)
+    console.log('+++++++')
+  res.json({
+    posts: listedPosts,
+    success: true,
+  })
+
+}
+
+
 
 module.exports = {
   newPost,
@@ -214,5 +322,8 @@ module.exports = {
   addJodelVote,
   getJodelPost,
   getAllPosts,
-  getAllPostsByVotes
+  getAllPostsByVotes,
+  getAllPostsByComments,
+  getAllUserPostsByComments,
+  getAllUserPostsByVotes 
 }

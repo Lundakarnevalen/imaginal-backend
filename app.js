@@ -31,17 +31,8 @@ app.use(function (error, req, res, next) {
 })
 
 /**
- * Unauthorized endpoints
+ * Unauthorized endpoints <----Why is this here?
  */
-app.post('/jodel/newpost', jodel.newPost)
-app.post('/jodel/newcomment', jodel.addJodelComment)
-app.post('/jodel/vote', jodel.addJodelVote)
-app.get('/jodel/:id', jodel.getJodelPost)
-app.get('/jodel/all/:offset', jodel.getAllPosts)
-app.get('/jodel/allVotes/:offset', jodel.getAllPostsByVotes)
-
-
-
 
 app.get('/api/medcheck/:personalnumber', users.getSectionByPersonalNumber)
 app.post('/register', register.registerUser)
@@ -106,6 +97,16 @@ app.get('/api/section', section.getSectionPriorities)
 app.post('/api/role/:email/:roleid', role.addRole)
 app.delete('/api/role/:email/:roleid', role.removeRole)
 app.get('/api/role/:roleid', role.getUsers)
+
+app.post('/api//jodel/newpost', jodel.newPost)
+app.post('/api//jodel/newcomment', jodel.addJodelComment)
+app.post('/api//jodel/vote', jodel.addJodelVote)
+app.get('/api/jodel/:id', jodel.getJodelPost)
+app.get('/api/jodel/all/:offset', jodel.getAllPosts)
+app.get('/api/jodel/allVotes/:offset', jodel.getAllPostsByVotes)
+app.get('/api/jodel/allComments/:offset', jodel.getAllPostsByComments)
+app.get('/api/jodel/user/allComments/:offset', jodel.getAllPostsByComments)
+app.get('/api/jodel/user/allVotes/:offset', jodel.getAllPostsByVotes)
 
 app.all('*', function (req, res) {
   res.status(404).json({

@@ -32,7 +32,8 @@ Posts.prototype.toJSON = async (post) => {
     id: post.id,
     votes: result,
     comments: comments.length,
-    text: post.text
+    text: post.text,
+    createdAt: post.createdAt
   }
   return posts
 }
@@ -60,7 +61,6 @@ const getAllPostsAndCount = function (inputOffset, inputLimit) {
   const offset = parseInt(inputOffset) || 0
   const limit = inputLimit || 25
   const date = Date.now() - 1000*60*60*24*5
-  console.log(date)
   return Posts.findAndCountAll({
     where: {
       createdAt: {gte: date} //Move this to the part where you get a users posts, votes etc
