@@ -41,6 +41,9 @@ const getAllPostsAndCount = function (inputOffset, inputLimit) {
   const offset = parseInt(inputOffset) || 0
   const limit = inputLimit || 25
   return Posts.findAndCountAll({
+    where: {
+      createdAt: {gte: Date.UTC(2015,01,05,15,40)}
+    },
     order: ['id'],
     offset: offset,
     limit: limit
