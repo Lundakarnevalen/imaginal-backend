@@ -80,7 +80,6 @@ const hasVoted = async (post, user) => {
       return true
     }
   }
-  
 
   return false
 }
@@ -144,10 +143,12 @@ const getJodelPost = async (req, res) => {
     })
   }
   const post = await jp.toJSON(jp)
+  const opId = jp.userId
   const comments = await jp.getJodelComments().map(x => {
+    const isOp = x.userId === opId
     const info = {
       text: x.text,
-      userId: x.userId
+      isOp
     }
     return info
   })
@@ -170,9 +171,9 @@ const getAllPosts = async (req, res) => {
   }
   const allPosts = await jodelposts.getAllPostsAndCount(offset, limit)
   const allPostsJSON = await Promise.all(allPosts.rows.map(async (post) => {
-      post.toJSON(postd)
-    }
-  ))
+    return await post.toJSON(post)
+  }))
+  console.log(allPostsJSON)
   res.json({
     success: true,
     posts: allPostsJSON,

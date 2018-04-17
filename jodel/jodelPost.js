@@ -27,10 +27,12 @@ Posts.prototype.toJSON = async (post) => {
   if (votes.length > 0) {
     result = votes.reduce((acc, curval) => acc + curval)
   } else { result = 0 }
+  const comments = await post.getJodelComments()
   const posts = {
+    id: post.id,
     votes: result,
-    text: post.text,
-    userId: post.userId
+    comments: comments.length,
+    text: post.text
   }
   return posts
 }
