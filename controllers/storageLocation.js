@@ -2,6 +2,8 @@
 
 const storageLocations = require('../models/storageLocation')
 const storageContents = require('../models/storageContents')
+const userRoles = require('../models/userrole')
+const items = require('../models/item')
 
 const addStorageLocation = async (req, res) => {
   const locations = await storageLocations.StorageLocation.findAll()
@@ -54,29 +56,50 @@ const getByID = async (req, res) => {
   }
 }
 
-const getItemsInStorageLocation = async (req, res) => {
-  const locationExists = await storageLocations.StorageLocation.findOne({
-    where: { id: req.params.locationid }
-  })
-  if (!locationExists) {
-    return res.status(400).json({
+const getInventory = async (req, res) => {
+  try {
+    const hasAccess = await userRoles.hasWarehouseCustomerAccess(req)
+    if (hasAccess) {
+      const storageLocationId = req.body.storageLocationId
+      const locationExists = await storageLocations.StorageLocation.findOne({
+        where: { id: storageLocationId }
+      })
+      if (!locationExists) {
+        return res.status(400).json({
+          success: false,
+          message: 'Location does not exist'
+        })
+      }
+      const storage = await storageContents.StorageContent.findAll({
+        include: [{
+          model: items.Item,
+          through: {
+            where: { locationID: storageLocationId }
+          }
+        }]
+      })
+      return res.json({
+        success: true,
+        data: storage
+      })
+    } else {
+      return res.status(401).json({
+        success: false,
+        message: 'Go away!'
+      })
+    }
+  } catch (err) {
+    console.log(err)
+    return res.status(500).json({
       success: false,
-      message: 'Location does not exist'
+      message: 'Failed to retrive items'
     })
   }
-
-  const storage = await storageContents.StorageContent.findAll({
-    where: { locationID: req.params.locationid }
-  })
-  return res.json({
-    success: true,
-    data: storage
-  })
 }
 
 module.exports = {
   addStorageLocation,
   getStorageLocations,
   getByID,
-  getItemsInStorageLocation
+  getInventory
 }
