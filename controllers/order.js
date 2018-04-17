@@ -101,18 +101,16 @@ const removeOrder = async (req, res) => {
   }
 }
 
-
-
 const findOrder = (orderID) => {
   return orders.Order.findById(orderID)
 }
 
 const getOrderLinesFromOrderId = (orderID) => {
-    return orderlines.OrderLine.findAll({
-        where: {
-            orderId: orderID
-        }
-    })
+  return orderlines.OrderLine.findAll({
+    where: {
+      orderId: orderID
+    }
+  })
 }
 
 const editOrder = async (req, res) => {
@@ -162,6 +160,8 @@ const getAllOrders = async (req, res) => {
     const hasAccess = await userRoles.hasWarehouseAdminAccess(req)
     if (hasAccess) {
       const allOrders = await orders.Order.findAll()
+      allOrders.forEach(
+        order => order.orderlines = await getOrderLinesFromOrderId(order.id))
       return res.status(200).json({
         success: true,
         data: allOrders
@@ -188,6 +188,8 @@ const getOrdersOnUser = async (req, res) => {
         where: { warehouseUserID: req.body.warehouseUserID }
       })
       if (theOrders.length > 0) {
+        theOrders.forEach(
+          order => order.orderlines = await getOrderLinesFromOrderId(order.id))
         return res.status(200).json({
           success: true,
           data: theOrders
@@ -220,11 +222,14 @@ const getOrdersOnSection = async (req, res) => {
       const theOrders = await orders.Order.findAll({
         where: { storageLocationID: req.body.storageLocationID }
       })
-      if (theOrders.length > 0)
+      if (theOrders.length > 0) {
+        theOrders.forEach(
+          order => order.orderlines = await getOrderLinesFromOrderId(order.id))
         return res.status(200).json({
           success: true,
           data: theOrders
         })
+      }
       else {
         return res.status(400).json({
           success: false,
