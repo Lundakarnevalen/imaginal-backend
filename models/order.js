@@ -9,16 +9,15 @@ const Order = dbc.define('Order', {
     primaryKey: true,
     type: Sequelize.INTEGER
   },
-  deliveryDate: Sequelize.DATE,
+  orderDeliveryDate: Sequelize.DATE,
   returnDate: Sequelize.DATE,
   delivered: Sequelize.BOOLEAN,
+  deliveredDate: Sequelize.DATE,
   return: Sequelize.BOOLEAN,
 })
 
-Order.hasOne(StorageLocation, { as: 'StorageLocation', foreignKey: 'storageLocationId' })
-Order.hasOne(WarehouseUser, { as: 'WarehouseUser', foreignKey: 'WarehouseUserId' })
-
-//hasOne warehouseuserId
+Order.hasOne(StorageLocation, { as: 'StorageLocation', foreignKey: 'storageLocationID' })
+Order.hasOne(WarehouseUser, { as: 'WarehouseUser', foreignKey: 'warehouseUserID' })
 
 module.exports = {
   Order

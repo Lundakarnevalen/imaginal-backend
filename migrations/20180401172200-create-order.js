@@ -8,17 +8,25 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      storageLocationID: {
+      storageLocationId: {
         type: Sequelize.INTEGER,
         references: {
           model: 'StorageLocations',
           key: 'id'
         }
       },
+      warehouseUserId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'WarehouseUser',
+          key: 'id'
+        }
+      },
       deliveryDate: Sequelize.DATE,
-      returnDate: Sequelize.DATE,
       delivered: Sequelize.BOOLEAN,
+      checkedOutDate: Sequelize.DATE,
       return: Sequelize.BOOLEAN,
+      returnDate: Sequelize.DATE,
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

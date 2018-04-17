@@ -10,7 +10,7 @@ const OrderLine = dbc.define('OrderLine', {
     primaryKey: true,
     type: Sequelize.INTEGER
   },
-  quantityOrderd: Sequelize.INTEGER,
+  quantityOrdered: Sequelize.INTEGER,
   quantityDelivered: Sequelize.INTEGER
 })
 
@@ -19,7 +19,7 @@ Order.belongsToMany(Item, {
     model: OrderLine,
     unique: false
   },
-  foreignKey: 'orderID',
+  foreignKey: 'orderId',
   constraints: false
 })
 
@@ -28,7 +28,7 @@ Item.belongsToMany(Order, {
     model: OrderLine,
     unique: false
   },
-  foreignKey: 'itemID',
+  foreignKey: 'itemId',
   constraints: false
 })
 

@@ -8,14 +8,15 @@ const createOrder = async (req, res) => {
   try {
     const hasAccess = await userRoles.hasWarehouseCustomerAccess(req)
     if (hasAccess) {
-      if (!req.body.storageLocationID || !req.body.deliveryDate || !req.body.orderlines) {
+      if ((!req.body.storageLocationID || !req.body.warehouseUserID || !req.body.orderlines)
+        || !(await req.body.orderlines.every(body => body.itemID && body.quantity))) {
         return res.json({
           success: false,
           message: "Missing parameters"
         })
       }
       const findWarehouseUser = warehouseUser.WarehouseUser.findOne({
-        where: {userId: req.user.id}
+        where: { userId: req.user.id }
       })
       const order = await orders.Order.create({
         storageLocationId: req.body.storageLocationId,
@@ -57,12 +58,12 @@ const createOrderLine = (order, body) => {
     /*else*/ {
     orderlines.OrderLine.create({
       quantity: body.quantity,
+      quantityDelivered: 0,
       orderId: order.id,
-      itemId: body.itemI
+      itemId: body.itemId
     })
   }
 }
-
 
 const removeOrder = async (req, res) => {
   try {
@@ -127,20 +128,17 @@ const editOrder = async (req, res) => {
           message: "No such orderID exists"
         })
       else {
-        //can only set delivered from false to true
-        if (req.body.delivered) {
+        if (req.body.delivered != null)
           theOrder.delivered = req.body.delivered
-          theOrder.deliveryDate = new Date()
-        }
-        //can only set return from false to true
-        if (req.body.return)
-          theOrder.return = req.body.return
-        await theOrder.save()
-        return res.json({
-          success: true,
-          message: "Order edited"
-        })
+        theOrder.deliveryDate = (req.body.delivered) ? new Date() : null
       }
+      if (req.body.return != null)
+        theOrder.return = req.body.return
+      await theOrder.save()
+      return res.json({
+        success: true,
+        message: "Order edited"
+      })
     } else {
       return res.status(401).json({
         success: false,
@@ -178,10 +176,76 @@ const getAllOrders = async (req, res) => {
   }
 }
 
+const getOrdersOnUser = async (req, res) => {
+  try {
+    const hasAccess = await userRoles.hasWarehouseCustomerAccess(req)
+    if (hasAccess) {
+      const theOrders = await orders.Order.findAll({
+        where: { warehouseUserID: req.body.warehouseUserID }
+      })
+      if (theOrders.length > 0) {
+        return res.json({
+          success: true,
+          theOrders
+        })
+      }
+      else {
+        return res.json({
+          success: false,
+          message: "No orders on that user"
+        })
+      }
+    } else {
+      return res.status(401).json({
+        success: false,
+        message: 'Go away!'
+      })
+    }
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to get all orders'
+    })
+  }
+}
+
+const getOrdersOnSection = async (req, res) => {
+  try {
+    const hasAccess = await userRoles.hasWarehouseCustomerAccess(req)
+    if (hasAccess) {
+      const theOrders = await orders.Order.findAll({
+        where: { storageLocationID: req.body.storageLocationID }
+      })
+      if (theOrders.length > 0)
+        return res.json({
+          success: true,
+          theOrders
+        })
+      else {
+        return res.json({
+          success: false,
+          message: "No orders on that section"
+        })
+      }
+    } else {
+      return res.status(401).json({
+        success: false,
+        message: 'Go away!'
+      })
+    }
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to get all orders'
+    })
+  }
+}
 
 module.exports = {
   createOrder,
-  getAllOrders,
+  removeOrder,
   editOrder,
-  removeOrder
+  getAllOrders,
+  getOrdersOnSection,
+  getOrdersOnUser
 }
