@@ -1,15 +1,15 @@
 'use strict'
 
 const orders = require('../models/order')
-const orderlines = require('../models/orderline')
+const orderlines = require('../models/orderLine')
 const warehouseUser = require('../models/warehouseUser')
 
 const createOrder = async (req, res) => {
   try {
     const hasAccess = await userRoles.hasWarehouseCustomerAccess(req)
     if (hasAccess) {
-      if ((!req.body.storageLocationID || !req.body.warehouseUserID || !req.body.orderlines)
-        || !(await req.body.orderlines.every(body => body.itemID && body.quantity))) {
+      if ((!req.body.storageLocationID || !req.body.warehouseUserId || !req.body.orderlines)
+        || !(await req.body.orderlines.every(body => body.itemId && body.quantity))) {
         return res.status(400).json({
           success: false,
           message: "Missing parameters"
@@ -101,11 +101,11 @@ const removeOrder = async (req, res) => {
   }
 }
 
-const findOrder = (orderID) => {
+const findOrder = async (orderID) => {
   return orders.Order.findById(orderID)
 }
 
-const getOrderLinesFromOrderId = (orderID) => {
+const getOrderLinesFromOrderId = async (orderID) => {
   return orderlines.OrderLine.findAll({
     where: {
       orderId: orderID
@@ -161,7 +161,7 @@ const getAllOrders = async (req, res) => {
     if (hasAccess) {
       const allOrders = await orders.Order.findAll()
       allOrders.forEach(
-        order => order.orderlines = await getOrderLinesFromOrderId(order.id))
+        order => (order.orderlines = getOrderLinesFromOrderId(order.id)))
       return res.status(200).json({
         success: true,
         data: allOrders
@@ -189,7 +189,7 @@ const getOrdersOnUser = async (req, res) => {
       })
       if (theOrders.length > 0) {
         theOrders.forEach(
-          order => order.orderlines = await getOrderLinesFromOrderId(order.id))
+          order => order.orderlines = getOrderLinesFromOrderId(order.id))
         return res.status(200).json({
           success: true,
           data: theOrders
@@ -224,7 +224,7 @@ const getOrdersOnSection = async (req, res) => {
       })
       if (theOrders.length > 0) {
         theOrders.forEach(
-          order => order.orderlines = await getOrderLinesFromOrderId(order.id))
+          order => order.orderlines = getOrderLinesFromOrderId(order.id))
         return res.status(200).json({
           success: true,
           data: theOrders

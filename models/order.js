@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize')
 const dbc = require('../config/database')
-const StorageLocation = require('./storagelocation').StorageLocation
-const 
+const StorageLocation = require('./storageLocation').StorageLocation
+const WarehouseUser = require('./warehouseUser').WarehouseUser
 
 const Order = dbc.define('Order', {
   id: {
