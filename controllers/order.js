@@ -160,7 +160,7 @@ const getAllOrders = async (req, res) => {
       const allOrders = await orders.Order.findAll()
       return res.json({
         success: true,
-        allOrders
+        data: allOrders
       })
     } else {
       return res.status(401).json({
@@ -186,7 +186,7 @@ const getOrdersOnUser = async (req, res) => {
       if (theOrders.length > 0) {
         return res.json({
           success: true,
-          theOrders
+          data: theOrders
         })
       }
       else {
@@ -219,7 +219,7 @@ const getOrdersOnSection = async (req, res) => {
       if (theOrders.length > 0)
         return res.json({
           success: true,
-          theOrders
+          data: theOrders
         })
       else {
         return res.json({
