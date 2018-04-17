@@ -322,3 +322,5 @@ const addQuantity = async function (req, res) {
       addQuantity,
       getItemByArticleId
     }
+  }
+}
