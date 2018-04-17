@@ -27,12 +27,12 @@ const createOrder = async (req, res) => {
         WarehouseUserId: findWarehouseUser.id
       })
       await req.body.orderLines.forEach(orderLine => createOrderLine(order, body))
-      return res.json({
+      return res.status(200).json({
         success: true,
         message: "Order created"
       })
       //throw error from createOrderLine?
-      return res.json({
+      return res.status(400).json({
         success: false,
         message: "Failed to create orderlines"
       })
@@ -70,23 +70,20 @@ const removeOrder = async (req, res) => {
     const hasAccess = await userRoles.hasWarehouseCustomerAccess(req)
     if (hasAccess) {
       if (!req.body.id) {
-        return res.json({
+        return res.status(400).json({
           success: false,
           message: "Missing parameters"
         })
       }
       const theOrder = await findOrder(req.body.id)
       if (!theOrder)
-        return res.json({
+        return res.status(400).json({
           success: false,
           message: "No such orderID exists"
         })
-      //check if destroy is successful?
-      const order = orders.Order.findOne({ where: { id: req.body.orderId } })
-
       await orderlines.OrderLine.destroy({ where: { orderID: req.body.orderId, } })
       await orders.Order.destroy({ where: { id: req.body.orderId } })
-      return res.json({
+      return res.status(200).json({
         success: true,
         message: "Order removed"
       })
@@ -108,7 +105,6 @@ const removeOrder = async (req, res) => {
 
 const findOrder = (orderID) => {
   return orders.Order.findById(orderID)
-  //return orderlines associated with order?
 }
 
 const getOrderLinesFromOrderId = (orderID) => {
@@ -124,14 +120,14 @@ const editOrder = async (req, res) => {
     const hasAccess = await userRoles.hasWarehouseAdminAccess(req)
     if (hasAccess) {
       if (!req.body.id) {
-        return res.json({
+        return res.status(400).json({
           success: false,
           message: "Invalid parameters"
         })
       }
       const theOrder = await findOrder(req.body.id)
       if (!theOrder)
-        return res.json({
+        return res.status(400).json({
           success: false,
           message: "No such orderID exists"
         })
@@ -143,7 +139,7 @@ const editOrder = async (req, res) => {
       if (req.body.return != null)
         theOrder.return = req.body.return
       await theOrder.save()
-      return res.json({
+      return res.status(200).json({
         success: true,
         message: "Order edited"
       })
@@ -166,7 +162,7 @@ const getAllOrders = async (req, res) => {
     const hasAccess = await userRoles.hasWarehouseAdminAccess(req)
     if (hasAccess) {
       const allOrders = await orders.Order.findAll()
-      return res.json({
+      return res.status(200).json({
         success: true,
         data: allOrders
       })
@@ -192,13 +188,13 @@ const getOrdersOnUser = async (req, res) => {
         where: { warehouseUserID: req.body.warehouseUserID }
       })
       if (theOrders.length > 0) {
-        return res.json({
+        return res.status(200).json({
           success: true,
           data: theOrders
         })
       }
       else {
-        return res.json({
+        return res.status(400).json({
           success: false,
           message: "No orders on that user"
         })
@@ -225,12 +221,12 @@ const getOrdersOnSection = async (req, res) => {
         where: { storageLocationID: req.body.storageLocationID }
       })
       if (theOrders.length > 0)
-        return res.json({
+        return res.status(200).json({
           success: true,
           data: theOrders
         })
       else {
-        return res.json({
+        return res.status(400).json({
           success: false,
           message: "No orders on that section"
         })
