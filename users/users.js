@@ -98,9 +98,24 @@ const getUserByIdentification = function (identity) {
   })
 }
 
+const getUsersBySection = function (sectionid) {
+  return dbc.query(`
+select 
+	u.id, u.firstName, u.lastName,
+	ui.image_name, ui.comments, ui.bad_picture, ui.proxy, ui.has_crop, ui.good_crop
+from 
+	Users u 
+	join UserSections us on u.id=us.userId 
+	left join (select * from UserImages where current_image=1) ui on ui.user_id=u.id
+where us.sectionId=:sectionid;
+`, { replacements: {sectionid: sectionid }, type: Sequelize.QueryTypes.SELECT })
+
+}
+
 module.exports = {
   User,
   KarnevalistInfo,
   getAllUsersAndCount,
-  getUserByIdentification
+  getUserByIdentification,
+  getUsersBySection
 }

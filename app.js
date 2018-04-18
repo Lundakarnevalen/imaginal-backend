@@ -40,6 +40,9 @@ app.post('/login/forgotpassword', forgotPassword.forgotPassword)
 app.post('/login/resetpassword', forgotPassword.setNewPassword)
 
 app.get('/getallsections', section.getAllSections)
+app.get('/api/image/cropped/:imagename', users.getcroppedimage)
+app.get('/api/image/thumbnail/:imagename', users.getimage)
+app.get('/api/image/full/:imagename', users.getfullimage)
 
 /**
  * Authenticate tokens
@@ -79,6 +82,15 @@ app.post('/api/hello', function (req, res) {
     message: 'Hello World!'
   })
 })
+
+app.get('/api/user/section/:sectionid', users.getUsersFromSection)
+
+app.get('/api/image/badphoto/:imagename', users.updateBadPhoto)
+app.get('/api/image/goodphoto/:imagename', users.updateGoodPhoto)
+
+app.post('/api/image/full', users.uploadFullPhoto, users.uploadFullDone)
+app.post('/api/image/cropped', users.uploadCroppedPhoto, users.uploadCroppedDone)
+
 
 app.get('/api/user/checkin/:email', checkin.checkStatus)
 app.post('/api/user/checkin/:identification', checkin.checkIn)
