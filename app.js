@@ -12,6 +12,7 @@ const role = require('./role/roleController')
 const section = require('./controllers/section')
 const checkin = require('./checkin/checkinController')
 const users = require('./users/userController')
+const images = require('./controllers/images')
 
 app.use(bodyParser.json())
 app.use(passport.initialize())
@@ -40,9 +41,9 @@ app.post('/login/forgotpassword', forgotPassword.forgotPassword)
 app.post('/login/resetpassword', forgotPassword.setNewPassword)
 
 app.get('/getallsections', section.getAllSections)
-app.get('/api/image/cropped/:imagename', users.getcroppedimage)
-app.get('/api/image/thumbnail/:imagename', users.getimage)
-app.get('/api/image/full/:imagename', users.getfullimage)
+app.get('/api/image/cropped/:imagename', images.getcroppedimage)
+app.get('/api/image/thumbnail/:imagename', images.getimage)
+app.get('/api/image/full/:imagename', images.getfullimage)
 
 /**
  * Authenticate tokens
@@ -85,11 +86,13 @@ app.post('/api/hello', function (req, res) {
 
 app.get('/api/user/section/:sectionid', users.getUsersFromSection)
 
-app.get('/api/image/badphoto/:imagename', users.updateBadPhoto)
-app.get('/api/image/goodphoto/:imagename', users.updateGoodPhoto)
+// Update UserImage to be bad or good
+app.get('/api/image/badphoto/:imagename', images.updateBadPhoto)
+app.get('/api/image/goodphoto/:imagename', images.updateGoodPhoto)
 
-app.post('/api/image/full', users.uploadFullPhoto, users.uploadFullDone)
-app.post('/api/image/cropped', users.uploadCroppedPhoto, users.uploadCroppedDone)
+// Upload new photos to karnevalistbilder and karnevalistbilder-cropped buckets
+app.post('/api/image/full', images.uploadFullPhoto, images.uploadFullDone)
+app.post('/api/image/cropped', images.uploadCroppedPhoto, images.uploadCroppedDone)
 
 
 app.get('/api/user/checkin/:email', checkin.checkStatus)
