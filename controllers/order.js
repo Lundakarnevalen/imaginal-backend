@@ -3,6 +3,8 @@
 const orders = require('../models/order')
 const orderlines = require('../models/orderLine')
 const warehouseUser = require('../models/warehouseUser')
+const storageContent = require('../models/storageContents')
+const storageLocation = require('../models/storageLocation')
 
 const createOrder = async (req, res) => {
   try {
@@ -20,10 +22,10 @@ const createOrder = async (req, res) => {
       })
       const order = await orders.Order.create({
         storageLocationId: req.body.storageLocationId,
-        userId: req.user.id,
-        deliveryDate: req.body.deliveryDate,
-        delivered: false,
+        orderDeliveryDate: req.body.deliveryDate || null,
+        checkedOut: false,
         return: req.body.return || false,
+        returnDate: req.body.returnDate || null,
         WarehouseUserId: findWarehouseUser.id
       })
       await req.body.orderLines.forEach(orderLine => createOrderLine(order, body))
@@ -250,11 +252,75 @@ const getOrdersOnSection = async (req, res) => {
   }
 }
 
+const checkoutOrderLines = async (req, res) => {
+  try {
+    const hasAccess = await userRoles.hasWarehouseWorkerAccess(req)
+    if (hasAccess) {
+      const reqOrderLines = req.body.orderLines
+      const reqStorageLocationId = await order.Order.findAll({
+        where: {id: req.body.orderLines[0].orderId}
+      })[0].storageLocationId
+
+      reqOrderLines.map(reqOrderLine => {
+        const orderLine = orderlines.OrderLine.findOne({
+          where: { id: reqOrderLine.id }
+        })
+        if (orderLine.quantityOrdered >= reqOrderLine.quantityDelivered) {
+          const itemContent = storageContent.StorageContent.findOne({
+            where: {
+              itemId: reqOrderLine.itemId,
+              storageLocationId: storageLocationId
+            }
+          })
+        
+        if (itemContent.quantity >= reqOrderLine.quantityDelivered) {
+          const s = storageContents.Sto
+          itemContent.quantity -= reqOrderLine.quantityDelivered
+          orderLine.quantityDelivered = reqOrderLine.quantityDelivered
+
+        } else {
+          item = items.Item.findOne({
+            where: { id: orderLine.itemId }
+          })
+          return res.status(400).json({
+            success: false,
+            message: 'Failed to checkout product where name is' + item.name +
+              'due to not enough in storage!'
+          })
+        }
+        } else {
+          item = items.Item.findOne({
+            where: { id: orderLine.itemId }
+          })
+          return res.status(400).json({
+            success: false,
+            message: 'Failed to checkout product where name is' + item.name +
+              'due to more checked out then ordered!'
+          })
+        }
+      })
+
+    } else {
+      return res.status(401).json({
+        success: false,
+        message: 'Go away!'
+      })
+    }
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to get all orders'
+    })
+  }
+}
+
+
 module.exports = {
   createOrder,
   removeOrder,
   editOrder,
   getAllOrders,
   getOrdersOnSection,
-  getOrdersOnUser
+  getOrdersOnUser,
+  checkoutOrderLines
 }

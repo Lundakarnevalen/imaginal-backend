@@ -124,6 +124,7 @@ app.post('/api/warehouse/order/new', orders.createOrder)
 app.post('/api/warehouse/order/edit', orders.editOrder)
 app.get('/api/warehouse/order/list', orders.getAllOrders)
 app.get('/api/warehouse/order/removeOrder/:orderId', orders.removeOrder)
+app.post('/api/warehouse/order/checkout/', orders.checkoutOrderLines)
 
 app.get('/api/warehouse/order/list/:userId', orders.getOrdersOnUser)
 app.delete('/api/warehouse/tag/delete/:orderId', tags.removeTag)
