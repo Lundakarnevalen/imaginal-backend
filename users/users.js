@@ -102,7 +102,7 @@ const getUsersBySection = function (sectionid) {
   return dbc.query(`
 select 
 	u.id, u.firstName, u.lastName,
-	ui.image_name, ui.comments, ui.bad_picture, ui.proxy, ui.has_crop, ui.good_crop
+	ui.image_name, ui.comments, ui.bad_picture, ui.exported 
 from 
 	Users u 
 	join UserSections us on u.id=us.userId 

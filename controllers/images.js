@@ -21,8 +21,7 @@ const uploadFull = multer({
         s3: s3,
         bucket: bucket,
         key: function (req, file, cb) {
-            // Random string if multiple are uploaded same day
-            const newName = (new Date()).toISOString().split('T')[0] + "_" + Math.floor(Math.random() * Math.floor(30)) + "_" + file.originalname 
+            const newName = (new Date()).toISOString() + "_" + file.originalname 
             cb(null, newName); 
         }
     })
@@ -56,8 +55,7 @@ const uploadCropped = multer({
         s3: s3,
         bucket: cropped_bucket,
         key: function (req, file, cb) {
-            // Random string if multiple are uploaded same day
-            const newName = (new Date()).toISOString().split('T')[0] + "_" + Math.floor(Math.random() * Math.floor(30)) + "_" + file.originalname 
+            const newName = (new Date()).toISOString() + "_" + file.originalname 
             cb(null, newName); 
         }
     })

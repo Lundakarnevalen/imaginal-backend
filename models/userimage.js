@@ -17,13 +17,7 @@ const UserImage = dbc.define('UserImage', {
   bad_picture: {
     type: Sequelize.BOOLEAN
   },
-  has_crop: {
-    type: Sequelize.BOOLEAN
-  },
-  good_crop: {
-    type: Sequelize.BOOLEAN
-  },
-  proxy: {
+  exported: {
     type: Sequelize.BOOLEAN
   },
   current_image: {
