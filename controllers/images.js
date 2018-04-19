@@ -12,13 +12,14 @@ const multerS3 = require('multer-s3')
 
 // S3 bucket names
 const bucket = 'karnevalistbilder'
+const cropped_bucket = 'karnevalistbilder-cropped'
 const thumb_bucket = 'karnevalistbilder-thumbnails'
 const cropped_thumb_bucket = 'karnevalistbilder-cropped-thumbnails'
 
 const uploadFull = multer({
     storage: multerS3({
         s3: s3,
-        bucket: 'karnevalistbilder',
+        bucket: bucket 
         key: function (req, file, cb) {
             console.log(file);
             const newName = (new Date()).toISOString().split('T')[0] + "_" + file.originalname
@@ -53,7 +54,7 @@ const uploadFullDone =  async (req, res, next) => {
 const uploadCropped = multer({
     storage: multerS3({
         s3: s3,
-        bucket: 'karnevalistbilder-cropped',
+        bucket: cropped_bucket,
         key: function (req, file, cb) {
             console.log(file);
             const newName = (new Date()).toISOString().split('T')[0] + "_" + file.originalname
