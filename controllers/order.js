@@ -1,10 +1,13 @@
 'use strict'
 
 const orders = require('../models/order')
-const orderlines = require('../models/orderLine')
+const userRoles = require('../models/userrole')
 const warehouseUser = require('../models/warehouseUser')
 const storageContent = require('../models/storageContents')
 const storageLocation = require('../models/storageLocation')
+const orderLines = require('../models/orderLine')
+const items = require('../models/item')
+
 
 const createOrder = async (req, res) => {
   try {
@@ -58,7 +61,7 @@ const createOrderLine = (order, body) => {
         //throw error
         //const error = true
     /*else*/ {
-    orderlines.OrderLine.create({
+    orderLines.OrderLine.create({
       quantity: body.quantity,
       quantityDelivered: 0,
       orderId: order.id,
@@ -83,7 +86,7 @@ const removeOrder = async (req, res) => {
           success: false,
           message: "No such orderId exists"
         })
-      await orderlines.OrderLine.destroy({ where: { orderId: req.body.orderId, } })
+      await orderLines.OrderLine.destroy({ where: { orderId: req.body.orderId, } })
       await orders.Order.destroy({ where: { id: req.body.orderId } })
       return res.status(200).json({
         success: true,
@@ -108,7 +111,7 @@ const findOrder = async (orderId) => {
 }
 
 const getOrderLinesFromOrderId = async (orderId) => {
-  return orderlines.OrderLine.findAll({
+  return orderLines.OrderLine.findAll({
     where: {
       orderId: orderId
     }
@@ -163,7 +166,7 @@ const getAllOrders = async (req, res) => {
     if (hasAccess) {
       const allOrders = await orders.Order.findAll()
       allOrders.forEach(
-        order => (order.orderlines = getOrderLinesFromOrderId(order.id)))
+        order => (order.orderLines = getOrderLinesFromOrderId(order.id)))
       return res.status(200).json({
         success: true,
         data: allOrders
@@ -191,7 +194,7 @@ const getOrdersOnUser = async (req, res) => {
       })
       if (theOrders.length > 0) {
         theOrders.forEach(
-          order => order.orderlines = getOrderLinesFromOrderId(order.id))
+          order => order.orderLines = getOrderLinesFromOrderId(order.id))
         return res.status(200).json({
           success: true,
           data: theOrders
@@ -226,7 +229,7 @@ const getOrdersOnSection = async (req, res) => {
       })
       if (theOrders.length > 0) {
         theOrders.forEach(
-          order => order.orderlines = getOrderLinesFromOrderId(order.id))
+          order => order.orderLines = getOrderLinesFromOrderId(order.id))
         return res.status(200).json({
           success: true,
           data: theOrders
@@ -254,52 +257,47 @@ const getOrdersOnSection = async (req, res) => {
 
 const checkoutOrderLines = async (req, res) => {
   try {
-    const hasAccess = await userRoles.hasWarehouseWorkerAccess(req)
+    const hasAccess = await userRoles.hasWarehouseCustomerAccess(req)
     if (hasAccess) {
       const reqOrderLines = req.body.orderLines
-      const reqStorageLocationId = await order.Order.findAll({
-        where: {id: req.body.orderLines[0].orderId}
-      })[0].storageLocationId
 
-      reqOrderLines.map(reqOrderLine => {
-        const orderLine = orderlines.OrderLine.findOne({
-          where: { id: reqOrderLine.id }
+      if (!reqOrderLines) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid parameters"
         })
-        if (orderLine.quantityOrdered >= reqOrderLine.quantityDelivered) {
-          const itemContent = storageContent.StorageContent.findOne({
-            where: {
-              itemId: reqOrderLine.itemId,
-              storageLocationId: storageLocationId
-            }
-          })
-        
-        if (itemContent.quantity >= reqOrderLine.quantityDelivered) {
-          const s = storageContents.Sto
-          itemContent.quantity -= reqOrderLine.quantityDelivered
-          orderLine.quantityDelivered = reqOrderLine.quantityDelivered
-
-        } else {
-          item = items.Item.findOne({
-            where: { id: orderLine.itemId }
-          })
-          return res.status(400).json({
-            success: false,
-            message: 'Failed to checkout product where name is' + item.name +
-              'due to not enough in storage!'
-          })
-        }
-        } else {
-          item = items.Item.findOne({
-            where: { id: orderLine.itemId }
-          })
-          return res.status(400).json({
-            success: false,
-            message: 'Failed to checkout product where name is' + item.name +
-              'due to more checked out then ordered!'
-          })
-        }
+      }
+      const order = await orders.Order.findOne({
+        where: { id: reqOrderLines[0].orderId }
       })
-
+      const reqStorageLocationId = order.dataValues.storageLocationId
+      const reqOrderLinesIds = reqOrderLines.map(reqOrderLine => reqOrderLine.id)
+      console.log("-----------------")
+      console.log("-----------------")
+      const orderLineList = await orders.Order.findAll({
+        include: [{
+          model: items.Item,
+          through: {
+            attributes: ['quantityOrdered', 'quantityDelivered'],
+            where: { orderId: reqOrderLines[0].orderId }
+          }
+        }]
+      })
+      console.log("-----------------")
+      console.log(orderLineList[0].dataValues.Items)
+      if (itemContent.quantity >= reqOrderLine.quantityDelivered) {
+        itemContent.quantity -= reqOrderLine.quantityDelivered
+        orderLine.quantityDelivered = reqOrderLine.quantityDelivered
+      } else {
+        item = items.Item.findOne({
+          where: { id: orderLine.itemId }
+        })
+        return res.status(400).json({
+          success: false,
+          message: 'Failed to checkout product where name is' + item.name +
+            'due to not enough in storage!'
+        })
+      }
     } else {
       return res.status(401).json({
         success: false,
