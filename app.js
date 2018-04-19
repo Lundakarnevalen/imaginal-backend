@@ -44,6 +44,7 @@ app.get('/getallsections', section.getAllSections)
 app.get('/api/image/cropped/:imagename', images.getcroppedimage)
 app.get('/api/image/thumbnail/:imagename', images.getimage)
 app.get('/api/image/full/:imagename', images.getfullimage)
+app.post('/api/image/comment/:imagename', images.updateImageComment)
 
 /**
  * Authenticate tokens

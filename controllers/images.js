@@ -19,7 +19,7 @@ const cropped_thumb_bucket = 'karnevalistbilder-cropped-thumbnails'
 const uploadFull = multer({
     storage: multerS3({
         s3: s3,
-        bucket: bucket 
+        bucket: bucket,
         key: function (req, file, cb) {
             console.log(file);
             const newName = (new Date()).toISOString().split('T')[0] + "_" + file.originalname
@@ -109,20 +109,43 @@ const getcroppedimage = async (req, res) => {
 const updateBadPhoto = async (req, res) => {
   const filename = req.params.imagename;
 
-  const img = await UserImage.update({
-    bad_picture: true
-  },{where: {image_name: filename}})
-  res.status(200).json({message: 'Went ok'})
+  try{
+    const img = await UserImage.update({
+      bad_picture: true
+    },{where: {image_name: filename}})
+    res.status(200).json({message: 'Went ok'})
+  } catch(error){
+    res.status(500).json(error) 
+  }
 }
 
 // Update image to good
 const updateGoodPhoto = async (req, res) => {
   const filename = req.params.imagename;
 
-  const img = await UserImage.update({
-    bad_picture: false
-  },{where: {image_name: filename}})
-  res.status(200).json({message: 'Went ok'})
+  try{
+    const img = await UserImage.update({
+      bad_picture: false
+    },{where: {image_name: filename}})
+    res.status(200).json({message: 'Went ok'})
+  } catch(error){
+    res.status(500).json(error) 
+  }
+}
+
+// Update image comment
+const updateImageComment = async (req, res) => {
+  const filename = req.body.image_name;
+  const comment = req.body.comment;
+
+  try{
+    await UserImage.update({
+      comments: comment
+    },{where: {image_name: filename}})
+    res.status(200).json({message: 'Went ok'})
+  } catch(error){
+    res.status(500).json(error) 
+  }
 }
 
 module.exports = {
@@ -135,4 +158,5 @@ module.exports = {
   uploadFullDone,
   uploadCroppedPhoto,
   uploadCroppedDone,
+  updateImageComment,
 }
