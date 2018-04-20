@@ -31,6 +31,15 @@ Comments.belongsTo(JodelPost, {
   foreignKey: 'postId'
 })
 
+Comments.prototype.toJSON = async (comment) => {
+  return {
+    isComment: true,
+    text: comment.text,
+    userId: comment.userId,
+    createdAt: ccomment.createdAt
+  }
+}
+
 module.exports = {
   Comments
 }

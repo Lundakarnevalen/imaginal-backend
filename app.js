@@ -100,15 +100,25 @@ app.post('/api/role/:email/:roleid', role.addRole)
 app.delete('/api/role/:email/:roleid', role.removeRole)
 app.get('/api/role/:roleid', role.getUsers)
 
-app.post('/api//jodel/newpost', jodel.newPost)
-app.post('/api//jodel/newcomment', jodel.addJodelComment)
-app.post('/api//jodel/vote', jodel.addJodelVote)
+app.post('/api/jodel/newpost', jodel.newPost)
+app.post('/api/jodel/newcomment', jodel.addJodelComment)
+app.post('/api/jodel/vote', jodel.addJodelVote)
+app.post('/api/jodel/addfavourite', jodel.addFavourite)
+app.post('/api/jodel/report/post', jodel.reportPost)
+app.post('/api/jodel/report/comment', jodel.reportComment)
+app.post('/api/jodel/report/delete', jodel.deleteReport)
+app.post('/api/jodel/post/delete', jodel.deleteReport)
+app.post('/api/jodel/comment/delete', jodel.deleteComment)
+app.get('/api/jodel/reports/:offset', jodel.getAllReports)
 app.get('/api/jodel/:id', jodel.getJodelPost)
 app.get('/api/jodel/all/:offset', jodel.getAllPosts)
 app.get('/api/jodel/allVotes/:offset', jodel.getAllPostsByVotes)
 app.get('/api/jodel/allComments/:offset', jodel.getAllPostsByComments)
 app.get('/api/jodel/user/allComments/:offset', jodel.getAllPostsByComments)
 app.get('/api/jodel/user/allVotes/:offset', jodel.getAllPostsByVotes)
+app.get('/api/jodel/user/allfav/:offset', jodel.getAllUserFavourites)
+
+
 
 app.all('*', function (req, res) {
   res.status(404).json({

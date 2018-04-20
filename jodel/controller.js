@@ -1,19 +1,134 @@
-const TIME_LIMIT_FOR_TRENDING = Date.now() - 1000 * 60 * 60 *24 *10 //10 days old or newer
+const TIME_LIMIT_FOR_TRENDING = Date.now() - 1000 * 60 * 60 *24 *2 //2 days old or newer
 const JodelPost = require('./jodelPost').Posts
 const jodelposts = require('./jodelPost')
 const Sequelize = require('sequelize')
-
+const JodelFav = require('./jodelFavourites').JodelFavourite
+JodelFav.sync()
 JodelPost.sync()
 const JodelComments = require('./jodelComments').Comments
 JodelComments.sync()
 const JodelVote = require('./jodelVote').Vote
 JodelVote.sync()
+const JodelReport = require('./jodelReports').JodelReports
+JodelReport.sync()
 
 const User = require('../users/users').User
+const userRole = require('../models/userrole')
 
 const MAX_LENGTH = 240
 const MIN_LENGTH = 1
 const COMMENT_MAX_LENGTH = 140
+
+const deleteReport = async (req, res) => {
+  const id = req.body.id
+  const asd = await JodelReport.findOne({ where: {id: id}})
+  if (!asd) {
+    return res.status(400).json({
+      success: false,
+      message: 'Unable to find report'
+    })
+  }
+  await asd.destroy()
+  await JodelReport.destroy({where: {postId: id}})
+  res.send()
+}
+
+const deleteComment = async (req, res) => {
+  const id = req.body.commentId
+  const user = req.user
+  const hasAccess = await userRole.hasRole(user, userRole.ADMIN)
+  if (!hasAccess) {
+    return res.status(401).json({
+      success: false,
+      message: 'Unauthorized'
+    })
+  }
+  const asd = await JodelComments.findOne({ where: {id: id}})
+  if (!asd) {res.status(400).json({success:false, message: 'invalid id'})}
+  await asd.destroy()
+  await JodelReport.destroy({where: {commentId: id}})
+  res.json({sucess: true})
+}
+
+const deletePost = async (req, res) => {
+  const id = req.body.postId
+  const user = req.user
+    const hasAccess = await userRole.hasRole(user, userRole.ADMIN)
+  if (!hasAccess) {
+    return res.status(401).json({
+      success: false,
+      message: 'Unauthorized'
+    })
+  }
+  const asd = await JodelPost.findOne({ where: {id: id}})
+  if (!asd) {res.status(400).json({success:false, message: 'invalid id'})}
+  await asd.destroy()
+  await JodelReport.destroy({where: {postId: id}})
+  res.json({sucess: true})
+}
+
+
+
+const getAllReports = async (req, res) => {
+  'use strict'
+   const hasAccess = await userRole.hasRole(req.user, userRole.ADMIN)
+  if (!hasAccess) {
+    return res.status(401).json({
+      success: false,
+      message: 'Unauthorized'
+    })
+  }
+  const offset = parseInt(req.params.offset) || 0
+  const limit = 12
+  if (offset < 0) {
+    return res.status(500).json({
+      success: false,
+      message: 'Invalid offset'
+    })
+  }
+  const allReports = await JodelReport.findAll({
+    order: ['id'],
+    group: ['id'],
+    limit: limit,
+    offset: offset
+  })
+
+  /** ugly code */
+  const harrh = await Promise.all(allReports.map(async(x) => {
+    let asd
+    if (x.postId !== null) {
+      asd = await x.getPostReport()
+      asd = await asd.toJSON(asd)
+    } else {
+      asd = await x.getCommentReport()
+      asd = await asd.toJSON(asd)
+     }
+    return asd
+  }))
+
+
+  res.json({
+    success: true,
+    reports: harrh
+  })
+}
+
+
+
+const reportPost = async (req, res) => {
+  const id = req.body.jodelId
+  await JodelReport.create({
+    postId: id
+  })
+  res.send({success: true})
+}
+
+const reportComment = async (req, res) => {
+  await JodelReport.create({
+    commentId: req.body.commentId
+  })
+  res.send({success: true})
+}
 
 const newPost = async (req, res) => {
   const message = req.body.message
@@ -24,17 +139,17 @@ const newPost = async (req, res) => {
     })
   }
 
+  const color = jodelPosts.getColor()
   const user = req.user
   const newjp = await JodelPost.create({
-    text: message
+    text: message,
+    color: color
   })
   await user.addJodels([newjp])
-  let jodel = await JodelPost.findOne({where: {id: 1}})
-  jodel = await jodel.getJodelUser()
   res.json({
     success: true,
     message: 'Jodel posted',
-    jId: newjp.id
+    jodelId: newjp.id
   })
 }
 
@@ -77,6 +192,7 @@ const hasVoted = async (post, user) => {
 
   return false
 }
+
 const addJodelVote = async (req, res) => {
   'use strict'
   const postid = req.body.jodelId
@@ -138,6 +254,7 @@ const getJodelPost = async (req, res) => {
   const comments = await jp.getJodelComments().map(x => {
     const isOp = x.userId === opId
     const info = {
+      isComment: true,
       text: x.text,
       isOp,
       createdAt: x.createdAt
@@ -281,10 +398,56 @@ const getAllUserPostsByVotes = async (req, res) => {
     posts: listedPosts,
     success: true,
   })
-
 }
 
+const addFavourite = async (req, res) => {
+  const postId = req.body.jodelId
+  //console.log(postId)
+  const user = req.user
+  if (!postId) {
+    return res.status(400).json({
+    success: false,
+      message: 'Invalid postId'
+    })
+  }
+  
+  const jp = await JodelPost.findOne({
+    where: {id: postId}
+  })
+  if (!jp) {
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to find post'
+    })
+  }
+  await jp.addFavouriteUser([user])
+ res.json({success: true})
+}
 
+const getAllUserFavourites = async (req, res) => {
+ const user = req.user
+ const offset = parseInt(req.params.offset) || 0
+  const limit = 12
+  if (offset < 0) {
+    return res.status(500).json({
+      success: false,
+      message: 'Invalid offset'
+      })
+    }
+  const as = await user.getUserFavourites({
+    offset: offset,
+    limit: limit,
+    order: ['id']
+  })
+  console.log(as)
+  const allPostsJSON = await Promise.all(as.map(async (post) => {
+    return await post.toJSON(post)
+  }))    
+  res.json({
+    posts: allPostsJSON,
+    success: true,
+  })
+}
 
 module.exports = {
   newPost,
@@ -295,5 +458,13 @@ module.exports = {
   getAllPostsByVotes,
   getAllPostsByComments,
   getAllUserPostsByComments,
-  getAllUserPostsByVotes 
+  getAllUserPostsByVotes,
+  addFavourite,
+  getAllUserFavourites,
+  reportPost,
+  reportComment,
+  getAllReports,
+  deleteReport,
+  deletePost,
+  deleteComment
 }

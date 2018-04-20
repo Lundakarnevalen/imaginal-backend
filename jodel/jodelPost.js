@@ -7,8 +7,8 @@ const Posts = dbc.define('JodelPosts', {
     primaryKey: true,
     type: Sequelize.INTEGER
   },
+  color: Sequelize.STRING,
   text: Sequelize.TEXT
-  //color: Sequelize.STRING
 })
 
 User.hasMany(Posts, {
@@ -21,10 +21,15 @@ Posts.belongsTo(User, {
   foreignKey: 'userId'
 })
 
+const getColor = function () {
+  const colors = ["#ffffff", "#000000", "#9a9a9a"]
+  const nbr = Math.floor(Math.random() * Math.floor(colors.length))
+  return colors[nbr]
+}
+
 Posts.prototype.toJSON = async (post) => {
   let voted = false
   const votes = await post.getJodelVote().map(x => {
-    console.log(x)
     if (x.userId === post.userId) {voted = true}
     return x.value
   })
@@ -39,7 +44,8 @@ Posts.prototype.toJSON = async (post) => {
     comments: comments.length,
     text: post.text,
     createdAt: post.createdAt,
-    voted
+    voted,
+    color: post.color
   }
   return posts
 }
@@ -48,7 +54,6 @@ const getPostByVotes = function (inputOffset, inputLimit) {
   const offset = parseInt(inputOffset) || 0
   const limit = inputLimit || 25
   const date = Date.now() - 1000*60*60*24*5
-  console.log(date)
   return Posts.findAndCountAll({
     include: [{
       model: Votes,
@@ -80,5 +85,6 @@ const getAllPostsAndCount = function (inputOffset, inputLimit) {
 module.exports = {
   Posts,
   getAllPostsAndCount,
-  getPostByVotes
+  getPostByVotes,
+  getColor
 }
