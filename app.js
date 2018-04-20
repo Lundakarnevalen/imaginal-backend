@@ -45,6 +45,8 @@ app.get('/api/image/cropped/:imagename', images.getcroppedimage)
 app.get('/api/image/thumbnail/:imagename', images.getimage)
 app.get('/api/image/full/:imagename', images.getfullimage)
 app.post('/api/image/comment/:imagename', images.updateImageComment)
+app.get('/api/card/:imagename', images.createCard)
+app.get('/api/cardall/:imagename', images.createAllCards)
 
 /**
  * Authenticate tokens

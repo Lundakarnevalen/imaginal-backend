@@ -1,9 +1,12 @@
 'use strict'
 
-const UserImage = require('../models/userimage').UserImage
+const userimage = require('../models/userimage')
+const UserImage = userimage.UserImage
+const cardInformation = userimage.cardInformation
 const fs = require('fs');
 const AWS = require('aws-sdk');
 const Jimp = require("jimp");
+const pdf = require('html-pdf');
 
 // Setup AWS 
 AWS.config.region = 'eu-central-1';
@@ -132,42 +135,39 @@ function uploadThumbnail(res, inbucket, fileName, outbucket, userId){
 // If localhost then get local file, otherwise s3
 const getfullimage = async (req, res) => {
   const filename = req.params.imagename;
-
-  const filepath = '/Users/christophernilsson/Desktop/karnevalister/all_files/' + filename
-  if(fs.existsSync(filepath)){
-    res.sendFile(filepath)
-    return 
+  const path = getImageURL(bucket, 'all_files', filename)
+  if(path.indexOf('/Users') > -1){
+    return res.sendFile(path) 
   }
-  const url = s3.getSignedUrl('getObject', { Bucket: bucket, Key: filename });
-  res.redirect(url)
+  res.redirect(path)
 }
 
 // Return thumbnail of image
 const getimage = async (req, res) => {
   const filename = req.params.imagename;
-
-  const filepath = '/Users/christophernilsson/Desktop/karnevalister/thumbnails/' + filename
-  if(fs.existsSync(filepath)){
-    res.sendFile(filepath)
-    return 
+  const path = getImageURL(thumb_bucket, 'thumbnails', filename)
+  if(path.indexOf('/Users') > -1){
+    return res.sendFile(path) 
   }
-  const url = s3.getSignedUrl('getObject', { Bucket: thumb_bucket, Key: filename });
-  res.redirect(url)
+  res.redirect(path)
 }
 // Return the thumbnail-cropped image of a karnevalist. 
 // If localhost then get local file, otherwise s3
 const getcroppedimage = async (req, res) => {
   const filename = req.params.imagename;
-
-  const filepath = '/Users/christophernilsson/Desktop/karnevalister/thumbnails_cropped/' + filename
-  if(fs.existsSync(filepath)){
-    res.sendFile(filepath)
-    return
+  const path = getImageURL(cropped_thumb_bucket, 'thumbnails_cropped', filename)
+  if(path.indexOf('/Users') > -1){
+    return res.sendFile(path) 
   }
-  const url = s3.getSignedUrl('getObject', { Bucket: cropped_thumb_bucket, Key: filename });
-  res.redirect(url)
+  res.redirect(path)
 }
-
+function getImageURL(bucket, folder, filename){
+  const filepath = '/Users/christophernilsson/Desktop/karnevalister/' + folder + '/' + filename
+  if(false && fs.existsSync(filepath)){
+    return filepath
+  }
+  return s3.getSignedUrl('getObject', { Bucket: bucket, Key: filename });
+}
 // Update bad image
 const updateBadPhoto = async (req, res) => {
   try{
@@ -204,6 +204,100 @@ const updateImageComment = async (req, res) => {
   }
 }
 
+
+const createCard = async (req, res) => {
+  const filename = req.params.imagename;
+  const image_path = getImageURL(bucket, 'output', filename) 
+
+  // Work directory with pdfs
+  const dir = './cardpdfs'
+  if (!fs.existsSync(dir))
+    fs.mkdirSync(dir)
+
+  // Get diff, those that are left to export
+  const images = await cardInformation({}) 
+
+  // Get diff, those that are left to export
+  const to_export = images.filter(i => i.image_name === filename)
+
+  exportPdf(to_export, dir)
+
+  res.json({message: "Its ok"})
+}
+const createAllCards = async (req, res) => {
+  // Work directory with pdfs
+  const dir = './cardpdfs'
+  if (!fs.existsSync(dir)){
+    fs.mkdirSync(dir);
+  }
+
+  // Get all userimages
+  const images = await cardInformation({}) 
+  console.log(images[0])
+  
+  // Get all already exported pdf
+  const exported_pdf = fs.readdirSync(dir)
+
+  // Get diff, those that are left to export
+  const to_export = images.filter(i => {
+    return !exported_pdf.filter(e => e.indexOf(i.image_name) > -1).length 
+  })
+
+  exportPdf(to_export, dir)
+
+  res.json({message: "Its ok"})
+}
+//var jpeg = require("jpegorientation");
+
+function exportPdf(to_export, dir){
+  if(to_export.length === 0){
+    return console.log('Done!!!!')
+  }
+  const curr = to_export[0]
+  console.log(`Left to export ${to_export.length}... Now:`, curr)
+  const name = `${curr.firstName} ${curr.lastName}`
+  const section = curr.nameSv
+  const pNumber = curr.personalNumber
+  const ssn = pNumber.slice(0,6) + '-' + pNumber.slice(6)
+  const filename = curr.image_name
+  //const image_path =  s3.getSignedUrl('getObject', { Bucket: bucket, Key: filename });
+  let image_path = getImageURL(cropped_thumb_bucket, 'thumbnails_cropped', filename)
+  console.log(image_path)
+
+  // jpeg.orientation(image_path, function(err, orientation) {
+  //   console.log('Orientation:',jpeg.orientationToString(orientation)); // --> "TopLeft"
+  // })
+
+  let base = ''
+  // if(image_path.indexOf('/Users/') > -1){
+  //   const slash_idx = image_path.lastIndexOf('/')
+  //   image_path = image_path.slice(slash_idx + 1)
+  //   base = image_path.slice(0, slash_idx)
+  // }
+
+  var html = fs.readFileSync('./templates/card.html', 'utf8')
+    .replace('URL_TO_USE', image_path)
+    .replace('NAME', name)
+    .replace('NM_SIZE', name.length > 25 ? '20px' : '26px')
+    .replace('SECTION', section)
+    .replace('SSN', ssn)
+  console.log(html)
+
+  pdf.create(html, {
+    height: '540px', 
+    width: '860px', 
+    renderDelay: 2000,
+    base: base,
+  })
+    .toFile('./cardpdfs/' + filename + '.pdf', (err, res) => {
+    if(err) 
+      console.log('error:', err)
+    setTimeout(() => exportPdf(to_export.slice(1), dir), 1000)
+  });
+}
+
+
+
 module.exports = {
   getimage,
   getfullimage,
@@ -215,4 +309,6 @@ module.exports = {
   uploadCroppedPhoto,
   uploadCroppedDone,
   updateImageComment,
+  createCard,
+  createAllCards,
 }
