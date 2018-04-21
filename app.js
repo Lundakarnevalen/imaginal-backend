@@ -41,12 +41,12 @@ app.post('/login/forgotpassword', forgotPassword.forgotPassword)
 app.post('/login/resetpassword', forgotPassword.setNewPassword)
 
 app.get('/getallsections', section.getAllSections)
+
 app.get('/api/image/cropped/:imagename', images.getcroppedimage)
 app.get('/api/image/thumbnail/:imagename', images.getimage)
 app.get('/api/image/full/:imagename', images.getfullimage)
 app.post('/api/image/comment/:imagename', images.updateImageComment)
 app.get('/api/card/:imagename', images.createCard)
-app.get('/api/cardall/:imagename', images.createAllCards)
 app.get('/api/sectioncard/:sectionname', images.createSectionPdfs)
 app.get('/api/sectioncardall', images.createAllSectionPdfs)
 
@@ -91,14 +91,11 @@ app.post('/api/hello', function (req, res) {
 
 app.get('/api/user/section/:sectionid', users.getUsersFromSection)
 
-// Update UserImage to be bad or good
 app.get('/api/image/badphoto/:imagename', images.updateBadPhoto)
 app.get('/api/image/goodphoto/:imagename', images.updateGoodPhoto)
 
-// Upload new photos to karnevalistbilder and karnevalistbilder-cropped buckets
 app.post('/api/image/full', images.uploadFullPhoto, images.uploadFullDone)
 app.post('/api/image/cropped', images.uploadCroppedPhoto, images.uploadCroppedDone)
-
 
 app.get('/api/user/checkin/:email', checkin.checkStatus)
 app.post('/api/user/checkin/:identification', checkin.checkIn)

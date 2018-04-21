@@ -40,9 +40,6 @@
     "passport-http-bearer": "^1.0.1",
     "passport-jwt": "^3.0.0",
     "passport-local": "^1.0.0",
-    "pdfjs": "^2.0.0-alpha.6",
-    "pdfmerger": "^0.2.0",
-    "recursive-readdir": "^2.2.2",
     "sequelize": "^4.31.2",
     "sequelize-cli": "^3.2.0"
   },

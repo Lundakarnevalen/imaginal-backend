@@ -5,8 +5,6 @@ const UserRoles = require('../models/userrole')
 const UserImage = require('../models/userimage').UserImage
 const UserSection = require('../models/userSection')
 const userService = require('./usersService')
-const fs = require('fs');
-
 
 const getAll = async (req, res) => {
   const isAdmin = await UserRoles.hasRole(req.user, UserRoles.ADMIN)

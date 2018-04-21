@@ -58,7 +58,6 @@ const uploadFullDone =  async (req, res, next) => {
   uploadThumbnail(res, bucket, fileName, outbucket, userId)
 }
 
-
 // Function for uploading thumbnail of full image
 const uploadCroppedDone = async (req, res, next) => {
   const fileName = req.file.key
@@ -164,7 +163,7 @@ const getcroppedimage = async (req, res) => {
 }
 function getImageURL(bucket, folder, filename){
   const filepath = '/Users/christophernilsson/Desktop/karnevalister/' + folder + '/' + filename
-  if(false && fs.existsSync(filepath)){
+  if(fs.existsSync(filepath)){
     return filepath
   }
   return s3.getSignedUrl('getObject', { Bucket: bucket, Key: filename });
@@ -205,7 +204,6 @@ const updateImageComment = async (req, res) => {
   }
 }
 
-
 const createCard = async (req, res) => {
   const filename = req.params.imagename;
   const image_path = getImageURL(bucket, 'output', filename) 
@@ -219,52 +217,21 @@ const createCard = async (req, res) => {
   // Get diff, those that are left to export
   const to_export = images.filter(i => i.image_name === filename)
 
+  // Export pdf
   exportPdf(to_export, dir)
 
   res.json({message: "Its ok"})
 }
-const createAllCards = async (req, res) => {
-  // Work directory with pdfs
-  const dir = getCardDir() 
-  // Get all userimages
-  const images = await cardInformation({}) 
-  console.log(images[0])
-  
-  // Get all already exported pdf
-  const exported_pdf = fs.readdirSync(dir)
-
-  // Get diff, those that are left to export
-  const to_export = images.filter(i => {
-    return !exported_pdf.filter(e => e.indexOf(i.image_name) > -1).length 
-  })
-
-  exportPdf(to_export, dir)
-
-  res.json({message: "Its ok"})
-}
-
 function exportPdf(to_export){
-  if(to_export.length === 0){
-    return console.log('Done!!!!')
-  }
   const curr = to_export[0]
-  console.log(`Left to export ${to_export.length}... Now:`, curr)
   const name = `${curr.firstName} ${curr.lastName}`
   const section = curr.nameSv
   const pNumber = curr.personalNumber
   const ssn = pNumber.slice(0,6) + '-' + pNumber.slice(6)
   const filename = curr.image_name
-  //const image_path =  s3.getSignedUrl('getObject', { Bucket: bucket, Key: filename });
-  let image_path = getImageURL(cropped_thumb_bucket, 'thumbnails_cropped', filename)
-  console.log(image_path)
 
-
-  let base = ''
-  // if(image_path.indexOf('/Users/') > -1){
-  //   const slash_idx = image_path.lastIndexOf('/')
-  //   image_path = image_path.slice(slash_idx + 1)
-  //   base = image_path.slice(0, slash_idx)
-  // }
+  const image_path = s3.getSignedUrl('getObject', { Bucket: cropped_thumb_bucket, Key: filename });
+  //let image_path = getImageURL(cropped_thumb_bucket, 'thumbnails_cropped', filename)
 
   var html = fs.readFileSync('./templates/card.html', 'utf8')
     .replace('URL_TO_USE', image_path)
@@ -272,8 +239,6 @@ function exportPdf(to_export){
     .replace('NM_SIZE', name.length > 25 ? '20px' : '26px')
     .replace('SECTION', section)
     .replace('SSN', ssn)
-  console.log(html)
-  html = html + html
 
   pdf.create(html, {
     height: '540px', 
@@ -284,7 +249,7 @@ function exportPdf(to_export){
     .toFile('./cardpdfs/' + filename + '.pdf', (err, res) => {
     if(err) 
       console.log('error:', err)
-    setTimeout(() => exportPdf(to_export.slice(1)), 1000)
+    console.log('Done!!!!')
   });
 }
 function exportHtml(to_export, template){
@@ -297,17 +262,8 @@ function exportHtml(to_export, template){
   const pNumber = curr.personalNumber
   const ssn = pNumber.slice(0,6) + '-' + pNumber.slice(6)
   const filename = curr.image_name
-  //const image_path =  s3.getSignedUrl('getObject', { Bucket: bucket, Key: filename });
-  let image_path = getImageURL(cropped_thumb_bucket, 'thumbnails_cropped', filename)
-  //console.log(`Left to export ${to_export.length}... Now:`, curr)
-  //console.log(image_path)
-
-  let base = ''
-  // if(image_path.indexOf('/Users/') > -1){
-  //   const slash_idx = image_path.lastIndexOf('/')
-  //   image_path = image_path.slice(slash_idx + 1)
-  //   base = image_path.slice(0, slash_idx)
-  // }
+  const image_path = s3.getSignedUrl('getObject', { Bucket: cropped_thumb_bucket, Key: filename });
+  //let image_path = getImageURL(cropped_thumb_bucket, 'thumbnails_cropped', filename)
 
   let template_copy = (' ' + template).slice(1)
   const html = template_copy.replace('URL_TO_USE', image_path)
@@ -408,7 +364,6 @@ module.exports = {
   uploadCroppedDone,
   updateImageComment,
   createCard,
-  createAllCards,
   createSectionPdfs,
   createAllSectionPdfs,
 }
