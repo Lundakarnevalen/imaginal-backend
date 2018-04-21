@@ -3,7 +3,7 @@ const api = supertest('http://localhost:3000')
 const expect = require('chai').expect
 
 module.exports = (user, admin, warehouseCustomer, warehouseWorker,
-  warehouseManager, itemOne, itemTwo, tag) => describe('API /api/warehouse/product/new item tests', function () {
+  warehouseManager, itemOne, itemTwo, tag) => describe('API /api/warehouse/product item tests', function () {
     it('Unauthorized addItem, role: random user', done => {
       api.post('/api/warehouse/product/new')
         .set('Authorization', 'bearer ' + user.token)
@@ -60,7 +60,7 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
         })
     })
 
-    it('Authorized addItem, role: warehouse manager', done => {
+    it('Authorized addItem, role: admin', done => {
       api.post('/api/warehouse/product/new')
         .set('Authorization', 'bearer ' + admin.token)
         .send(itemTwo)

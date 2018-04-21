@@ -184,14 +184,14 @@ const getItemOne = () => {
 
 const getItemTwo = () => {
   return {
-    'name': 'cider2',
+    'name': 'cider3',
     'imageUrl': 'hej.se',
     'unit': 'burk',
     'purchasePrice': 20,
     'salesPrice': 30,
     'description': 'det är en cider',
-    'articleNumber': '1723252',
-    'supplier': 'FINN',
+    'articleNumber': '172',
+    'supplier': 'FINN2',
     'note': 'Detta är ju kalas',
     'warningAmount': '100',
     'vat': 15
@@ -256,16 +256,6 @@ const getWarehouseUser = () => {
     'id': 1,
     'userId': 15000,
     'costBearerId': 1
-  }
-}
-
-const getOrderOne = () => {
-  return {
-    'id': 1,
-    'deliveryDate': '2018-04-13 00:00:00',
-    'storageLocationId': 1,
-    'OrderLines': [getOrderLineOne, getOrderLineTwo]
-
   }
 }
 

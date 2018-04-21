@@ -104,7 +104,7 @@ app.post('/api/warehouse/tag/new', tags.addTag)
 app.delete('/api/warehouse/tag/delete/:tagid', tags.removeTag)
 app.get('/api/warehouse/tag/list', tags.getAllTags)
 
-app.post('/api/warehouse/product/new', items.createItem)
+app.post('/api/warehouse/product/new', items.addItem)
 app.post('/api/warehouse/product/edit', items.editItem)
 app.get('/api/warehouse/product/all', items.getAllItems)
 app.get('/api/warehouse/product/:id', items.getItemById)
@@ -117,8 +117,7 @@ app.post('/api/warehouse/getLocationById', storageLocations.getById) /* For test
 app.post('/api/warehouse/product/addQuantity', items.addQuantity) /** For testing */
 app.get('/api/warehouse/product/getAllItems', items.getAllItems) /** For testing */
 
-
-//app.get('/api/warehouse/product/inventory', items.getInventory)
+// app.get('/api/warehouse/product/inventory', items.getInventory)
 
 app.post('/api/warehouse/order/new', orders.createOrder)
 app.post('/api/warehouse/order/edit', orders.editOrder)
@@ -128,7 +127,6 @@ app.post('/api/warehouse/order/checkout/', orders.checkoutOrderLines)
 
 app.get('/api/warehouse/order/list/:userId', orders.getOrdersOnUser)
 app.delete('/api/warehouse/tag/delete/:orderId', tags.removeTag)
-
 
 app.get('/api/warehouse/user/list', warehouseUser.getAllWarehouseUsers)
 app.get('/api/warehouse/user/', warehouseUser.getWarehouseUserById)

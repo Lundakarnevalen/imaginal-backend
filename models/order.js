@@ -11,7 +11,7 @@ const Order = dbc.define('Order', {
   checkedOut: Sequelize.BOOLEAN,
   checkedOutDate: Sequelize.DATE,
   return: Sequelize.BOOLEAN,
-  returnDate: Sequelize.DATE,
+  returnDate: Sequelize.DATE
 })
 
 module.exports = {
