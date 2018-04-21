@@ -276,24 +276,15 @@ const checkoutOrderLines = async (req, res) => {
         where: { id: reqOrderLines[0].orderId }
       })
       const reqStorageLocationId = order.dataValues.storageLocationId
-      console.log('-----------------')
-      console.log(reqStorageLocationId)
-      console.log('-----------------')
-
       let failed = false
 
       await reqOrderLines.map(async reqOrderLine => {
         const orderLine = await orderLines.OrderLine.findOne({
           where: { id: reqOrderLine.id }
         })
-        console.log(orderLine)
-        console.log('-----------------')
-        console.log(orderLine.dataValues.itemId)
         const item = await items.Item.findOne({
           where: { id: orderLine.dataValues.itemId }
         })
-        console.log(item)
-        console.log('-----------------')
 
         const storageContent = await storageContents.StorageContent.findOne({
           where: {
@@ -301,13 +292,6 @@ const checkoutOrderLines = async (req, res) => {
             storageLocationId: reqStorageLocationId
           }
         })
-        console.log(storageContent)
-        console.log('-----------------')
-
-        console.log(storageContent.dataValues.quantity)
-        console.log(reqOrderLine.quantityDelivered)
-        console.log(orderLine.quantityDelivered + reqOrderLine.quantityDelivered)
-        console.log(orderLine.quantityOrdered)
 
         if (storageContent.dataValues.quantity >= reqOrderLine.quantityDelivered &&
           orderLine.quantityDelivered + reqOrderLine.quantityDelivered <= orderLine.quantityOrdered) {
@@ -326,18 +310,11 @@ const checkoutOrderLines = async (req, res) => {
             }
           })
         } else {
-          console.log('jefjejf df dkfd kf kdkfl d')
           failed = true
-          console.log('jefjejf df dkfd kf kdkfl d')
-          console.log(failed)
         }
       })
 
-      console.log('hehjejfjefefef')
-      console.log(!failed)
-
       if (failed) {
-        console.log('hehjejfjefefef')
         return res.status(400).json({
           success: false,
           message: 'Failed to checkout product due to orderline exeding ordered value'
@@ -346,7 +323,6 @@ const checkoutOrderLines = async (req, res) => {
       const checkOrderLines = await orderLines.OrderLine.findAll({
         where: { orderId: reqOrderLines.orderId }
       })
-      console.log(checkOrderLines)
       let checkOrderFinished = false
       checkOrderLines.map(checkOrderLine => {
         if (checkOrderLine.quantityOrdered <= checkOrderLine.quantityDelivered) checkOrderFinished = true
