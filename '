@@ -310,6 +310,7 @@ function exportHtml(to_export, template){
   // }
 
   let template_copy = (' ' + template).slice(1)
+  console.log('temp:',template_copy)
   const html = template_copy.replace('URL_TO_USE', image_path)
     .replace('NAME', name)
     .replace('NM_SIZE', name.length > 25 ? '20px' : '26px')
@@ -329,7 +330,7 @@ const createSectionPdfs = async (req, res) => {
 const createAllSectionPdfs = async (req, res) => {
   const sections = await Section.findAll()
   function sectionIterator(sections){
-    console.log(`Generating pdf for ${sections[0].nameSv}...`)
+    console.log(`Generating pdf for ${sections[0]}...`)
     generateSectionPdf(sections[0], (err, result) => {
       if(err) {
         res.status(500).json(err)
@@ -344,47 +345,25 @@ const createAllSectionPdfs = async (req, res) => {
 }
 
 // Input: Sectionname and a callback-function
-async function generateSectionPdf(section, cb){
+function async generateSectionPdf(section, cb){
   // Get all userimages
-  console.log('get images...')
   const images = await cardInformation({}) 
 
   // Get diff, those that are left to export
-  const to_export = images.filter(i => i.nameSv === section.nameSv)
-  console.log(`Exporting: ${to_export.length} karnevalists`)
+  const to_export = images.filter(i => i.nameSv === section)
 
-  // Divide inte chunks of 100
-  const chunk_size = 100
-  let chunked = to_export.reduce( (acc, curr) => {
-    if(acc[0].length < chunk_size){
-      acc[0].push(curr)
-    } else {
-      acc.unshift([curr])
-    }
-    return acc
-  }, [[]])
+  // Load template
+  let template = fs.readFileSync('./templates/card.html', 'utf8')
 
-  let count = 0
-  function chunkIterator(err, res){
-    const callback = chunked.length <= 1 ? cb : chunkIterator
-    const chunk = chunked.pop()
+  // Create html of all cards
+  const html = exportHtml(to_export, template)
 
-    // Load template
-    let template = fs.readFileSync('./templates/card.html', 'utf8')
-
-    // Create html of all cards
-    console.log(`Generating html...`)
-    const html = exportHtml(chunk, template)
-
-    // Create pdf
-    console.log(`Generating pdf...`)
-    pdf.create(html, {
-      height: '540px', 
-      width: '860px', 
-      renderDelay: 500,
-    }).toFile(getCardDir() + '/' + section.nameSv + '_' + ++count + '.pdf', callback);
-  }
-  chunkIterator()
+  // Create pdf
+  pdf.create(html, {
+    height: '540px', 
+    width: '860px', 
+    renderDelay: 500,
+  }).toFile(getCardDir() + '/' + 'administerit' + '.pdf', cb);
 }
 
 // Returns the directory of the cards, and ensures it exists

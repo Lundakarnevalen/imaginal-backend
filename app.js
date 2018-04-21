@@ -47,6 +47,8 @@ app.get('/api/image/full/:imagename', images.getfullimage)
 app.post('/api/image/comment/:imagename', images.updateImageComment)
 app.get('/api/card/:imagename', images.createCard)
 app.get('/api/cardall/:imagename', images.createAllCards)
+app.get('/api/sectioncard/:sectionname', images.createSectionPdfs)
+app.get('/api/sectioncardall', images.createAllSectionPdfs)
 
 /**
  * Authenticate tokens
