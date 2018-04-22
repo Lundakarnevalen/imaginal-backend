@@ -99,7 +99,8 @@ const setAndUpdateUserInformation = async (user, dataFields, t) => {
     'postNumber',
     'city',
     'careOf',
-    'shirtSize'
+    'shirtSize',
+    'pushToken'
   ]
 
   // All editable karnevalistInfo fields

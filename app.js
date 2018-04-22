@@ -80,7 +80,6 @@ app.post('/api/hello', function (req, res) {
     message: 'Hello World!'
   })
 })
-
 app.get('/api/user/checkin/:email', checkin.checkStatus)
 app.post('/api/user/checkin/:identification', checkin.checkIn)
 
