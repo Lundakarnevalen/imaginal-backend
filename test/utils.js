@@ -210,6 +210,21 @@ const getTagTwo = () => {
   }
 }
 
+const getCostBearer = () => {
+  return {
+    'id': 1,
+    'name': 'Fabriken'
+  }
+}
+
+const getWarehouseUser = () => {
+  return {
+    'id': 1,
+    'userId': 15000,
+    'costBearerId': 1
+  }
+}
+
 module.exports = {
   getToken,
   getUser,
@@ -220,5 +235,7 @@ module.exports = {
   getItemOne,
   getItemTwo,
   getTagOne,
-  getTagTwo
+  getTagTwo,
+  getCostBearer,
+  getWarehouseUser
 }
