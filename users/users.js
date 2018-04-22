@@ -109,7 +109,6 @@ from
 	left join (select * from UserImages where current_image=1) ui on ui.user_id=u.id
 where us.sectionId=:sectionid;
 `, { replacements: {sectionid: sectionid }, type: Sequelize.QueryTypes.SELECT })
-
 }
 
 module.exports = {

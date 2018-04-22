@@ -1,11 +1,10 @@
 'use strict'
 const Sequelize = require('sequelize')
 const dbc = require('../config/database')
-const User = require('../users/users').User
 
 const UserImage = dbc.define('UserImage', {
   user_id: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.INTEGER
   },
   image_name: {
     type: Sequelize.STRING,
@@ -25,7 +24,7 @@ const UserImage = dbc.define('UserImage', {
   }
 })
 
-const cardInformation = function(){
+const cardInformation = function () {
   return dbc.query(`
 select 
 	u.id, s.nameSv, u.firstName, u.lastName, u.personalNumber,

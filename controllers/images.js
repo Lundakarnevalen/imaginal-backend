@@ -4,14 +4,14 @@ const userimage = require('../models/userimage')
 const UserImage = userimage.UserImage
 const cardInformation = userimage.cardInformation
 const Section = require('../models/section').Section
-const fs = require('fs');
-const AWS = require('aws-sdk');
-const Jimp = require("jimp");
-const pdf = require('html-pdf');
+const fs = require('fs')
+const AWS = require('aws-sdk')
+const Jimp = require('jimp')
+const pdf = require('html-pdf')
 
-// Setup AWS 
-AWS.config.region = 'eu-central-1';
-const s3 = new AWS.S3();
+// Setup AWS
+AWS.config.region = 'eu-central-1'
+const s3 = new AWS.S3()
 const multer = require('multer')
 const multerS3 = require('multer-s3')
 
@@ -23,24 +23,24 @@ const cropped_thumb_bucket = 'karnevalistbilder-cropped-thumbnails'
 
 // Define storage for full-sized images
 const uploadFull = multer({
-    storage: multerS3({
-        s3: s3,
-        bucket: bucket,
-        key: rename_image 
-    })
-});
+  storage: multerS3({
+    s3: s3,
+    bucket: bucket,
+    key: rename_image
+  })
+})
 
 // Define storage for cropped images
 const uploadCropped = multer({
-    storage: multerS3({
-        s3: s3,
-        bucket: cropped_bucket,
-        key: rename_image 
-    })
-});
-function rename_image(req, file, cb) {
-  const newName = (new Date()).toISOString().split('T')[0] + "_" + file.originalname 
-  cb(null, newName); 
+  storage: multerS3({
+    s3: s3,
+    bucket: cropped_bucket,
+    key: rename_image
+  })
+})
+function rename_image (req, file, cb) {
+  const newName = (new Date()).toISOString().split('T')[0] + '_' + file.originalname
+  cb(null, newName)
 }
 
 // Function for uploading original full image
@@ -50,10 +50,10 @@ const uploadFullPhoto = uploadFull.single('file')
 const uploadCroppedPhoto = uploadCropped.single('file')
 
 // Function for uploading thumbnail of full image
-const uploadFullDone =  async (req, res, next) => {
+const uploadFullDone = async (req, res, next) => {
   const userId = req.body.userId
   const fileName = req.file.key
-  const outbucket = thumb_bucket 
+  const outbucket = thumb_bucket
 
   uploadThumbnail(res, bucket, fileName, outbucket, userId)
 }
@@ -61,158 +61,154 @@ const uploadFullDone =  async (req, res, next) => {
 // Function for uploading thumbnail of full image
 const uploadCroppedDone = async (req, res, next) => {
   const fileName = req.file.key
-  const outbucket = cropped_thumb_bucket 
+  const outbucket = cropped_thumb_bucket
 
   uploadThumbnail(res, cropped_bucket, fileName, outbucket, false)
 }
 
 // Fetch image from inbucket, resize it to max-height350px, then upload to
 // outbucket.
-function uploadThumbnail(res, inbucket, fileName, outbucket, userId){
+function uploadThumbnail (res, inbucket, fileName, outbucket, userId) {
   // Fetch image from inbucket
   s3.getObject({
-    Bucket: inbucket, 
-    Key: fileName 
-  }, function(err, data) {
+    Bucket: inbucket,
+    Key: fileName
+  }, function (err, data) {
     // Handle any error and exit
-    if (err)
-      return res.status(500).json(err) 
+    if (err) { return res.status(500).json(err) }
 
     console.log('Reading body...')
     Jimp.read(data.Body, function (err, shrunk) {
-        if (err) 
-          return res.status(500).json(err) 
-        
-        console.log('resizing...')
+      if (err) { return res.status(500).json(err) }
+
+      console.log('resizing...')
         // Resize image to max 350px in height
-        shrunk.resize(Jimp.AUTO, 350) 
-             .quality(100)           
-             .getBuffer(Jimp.MIME_JPEG, function(err, buff){
-          if (err) 
-            return res.status(500).json(err) 
-          console.log(`uploading ${fileName} to`, thumb_bucket)
+      shrunk.resize(Jimp.AUTO, 350)
+             .quality(100)
+             .getBuffer(Jimp.MIME_JPEG, function (err, buff) {
+               if (err) { return res.status(500).json(err) }
+               console.log(`uploading ${fileName} to`, thumb_bucket)
 
           // Upload resized image to outbucket
-          s3.upload({
-            Key: fileName,
-            Body: buff,
-            Bucket: outbucket
-          }, async function(err, data) {
-            if (err) 
-              return res.status(500).json(err) 
+               s3.upload({
+                 Key: fileName,
+                 Body: buff,
+                 Bucket: outbucket
+               }, async function (err, data) {
+                 if (err) { return res.status(500).json(err) }
 
             // If userId, then update imagename in database
-            if(userId){
-              try {
-                await UserImage.update({
-                  current_image: false
-                },{where: {user_id: userId}})
+                 if (userId) {
+                   try {
+                     await UserImage.update({
+                       current_image: false
+                     }, {where: {user_id: userId}})
 
-                await UserImage.create({
-                  user_id: userId,
-                  image_name: fileName,
-                  bad_picture: false,
-                  current_image: true,
-                })
-            
-                console.log('Upload success!')
-                res.send("Uploaded!");
-              } catch(err){
-                console.log('Full error!')
-                res.status(500).json(err)
-              }
-            } else {
-              console.log('Upload success!')
-              res.send("Uploaded!");
-            }
-          });     
-        })
-    });
-  });
+                     await UserImage.create({
+                       user_id: userId,
+                       image_name: fileName,
+                       bad_picture: false,
+                       current_image: true
+                     })
+
+                     console.log('Upload success!')
+                     res.send('Uploaded!')
+                   } catch (err) {
+                     console.log('Full error!')
+                     res.status(500).json(err)
+                   }
+                 } else {
+                   console.log('Upload success!')
+                   res.send('Uploaded!')
+                 }
+               })
+             })
+    })
+  })
 }
 
-// Return the image of a karnevalist. 
+// Return the image of a karnevalist.
 // If localhost then get local file, otherwise s3
 const getfullimage = async (req, res) => {
-  const filename = req.params.imagename;
+  const filename = req.params.imagename
   const path = getImageURL(bucket, 'all_files', filename)
-  if(path.indexOf('/Users') > -1){
-    return res.sendFile(path) 
+  if (path.indexOf('/Users') > -1) {
+    return res.sendFile(path)
   }
   res.redirect(path)
 }
 
 // Return thumbnail of image
 const getimage = async (req, res) => {
-  const filename = req.params.imagename;
+  const filename = req.params.imagename
   const path = getImageURL(thumb_bucket, 'thumbnails', filename)
-  if(path.indexOf('/Users') > -1){
-    return res.sendFile(path) 
+  if (path.indexOf('/Users') > -1) {
+    return res.sendFile(path)
   }
   res.redirect(path)
 }
-// Return the thumbnail-cropped image of a karnevalist. 
+// Return the thumbnail-cropped image of a karnevalist.
 // If localhost then get local file, otherwise s3
 const getcroppedimage = async (req, res) => {
-  const filename = req.params.imagename;
+  const filename = req.params.imagename
   const path = getImageURL(cropped_thumb_bucket, 'thumbnails_cropped', filename)
-  if(path.indexOf('/Users') > -1){
-    return res.sendFile(path) 
+  if (path.indexOf('/Users') > -1) {
+    return res.sendFile(path)
   }
   res.redirect(path)
 }
-function getImageURL(bucket, folder, filename){
+function getImageURL (bucket, folder, filename) {
   const filepath = '/Users/christophernilsson/Desktop/karnevalister/' + folder + '/' + filename
-  if(fs.existsSync(filepath)){
+  if (fs.existsSync(filepath)) {
     return filepath
   }
-  return s3.getSignedUrl('getObject', { Bucket: bucket, Key: filename });
+  return s3.getSignedUrl('getObject', { Bucket: bucket, Key: filename })
 }
 // Update bad image
 const updateBadPhoto = async (req, res) => {
-  try{
+  try {
     const img = await UserImage.update({
       bad_picture: true
-    },{where: {image_name: req.params.imagename}})
+    }, {where: {image_name: req.params.imagename}})
     res.status(200).json({message: 'Went ok'})
-  } catch(error){
-    res.status(500).json(error) 
+  } catch (error) {
+    res.status(500).json(error)
   }
 }
 
 // Update image to good
 const updateGoodPhoto = async (req, res) => {
-  try{
+  try {
     const img = await UserImage.update({
       bad_picture: false
-    },{where: {image_name: req.params.imagename}})
+    }, {where: {image_name: req.params.imagename}})
     res.status(200).json({message: 'Went ok'})
-  } catch(error){
-    res.status(500).json(error) 
+  } catch (error) {
+    res.status(500).json(error)
   }
 }
 
 // Update image comment
 const updateImageComment = async (req, res) => {
-  try{
+  try {
     await UserImage.update({
       comments: req.body.comment
-    },{where: {image_name: req.body.image_name}})
+    }, {where: {image_name: req.body.image_name}})
     res.status(200).json({message: 'Went ok'})
-  } catch(error){
-    res.status(500).json(error) 
+  } catch (error) {
+    res.status(500).json(error)
   }
 }
 
 const createCard = async (req, res) => {
-  const filename = req.params.imagename;
-  const image_path = getImageURL(bucket, 'output', filename) 
+  const filename = req.params.imagename
+  const image_path = getImageURL(bucket, 'output', filename)
 
   // Work directory with pdfs
-  const dir = getCardDir() 
+  const dir = getCardDir()
 
   // Get diff, those that are left to export
-  const images = await cardInformation({}) 
+  const images = await cardInformation({})
 
   // Get diff, those that are left to export
   const to_export = images.filter(i => i.image_name === filename)
@@ -220,18 +216,18 @@ const createCard = async (req, res) => {
   // Export pdf
   exportPdf(to_export, dir)
 
-  res.json({message: "Its ok"})
+  res.json({message: 'Its ok'})
 }
-function exportPdf(to_export){
+function exportPdf (to_export) {
   const curr = to_export[0]
   const name = `${curr.firstName} ${curr.lastName}`
   const section = curr.nameSv
   const pNumber = curr.personalNumber
-  const ssn = pNumber.slice(0,6) + '-' + pNumber.slice(6)
+  const ssn = pNumber.slice(0, 6) + '-' + pNumber.slice(6)
   const filename = curr.image_name
 
-  const image_path = s3.getSignedUrl('getObject', { Bucket: cropped_thumb_bucket, Key: filename });
-  //let image_path = getImageURL(cropped_thumb_bucket, 'thumbnails_cropped', filename)
+  const image_path = s3.getSignedUrl('getObject', { Bucket: cropped_thumb_bucket, Key: filename })
+  // let image_path = getImageURL(cropped_thumb_bucket, 'thumbnails_cropped', filename)
 
   var html = fs.readFileSync('./templates/card.html', 'utf8')
     .replace('URL_TO_USE', image_path)
@@ -241,29 +237,28 @@ function exportPdf(to_export){
     .replace('SSN', ssn)
 
   pdf.create(html, {
-    height: '540px', 
-    width: '860px', 
+    height: '540px',
+    width: '860px',
     renderDelay: 2000,
-    base: base,
+    base: base
   })
     .toFile('./cardpdfs/' + filename + '.pdf', (err, res) => {
-    if(err) 
-      console.log('error:', err)
-    console.log('Done!!!!')
-  });
+      if (err) { console.log('error:', err) }
+      console.log('Done!!!!')
+    })
 }
-function exportHtml(to_export, template){
-  if(to_export.length === 0){
-    return '' 
+function exportHtml (to_export, template) {
+  if (to_export.length === 0) {
+    return ''
   }
   const curr = to_export[0]
   const name = `${curr.firstName} ${curr.lastName}`
   const section = curr.nameSv
   const pNumber = curr.personalNumber
-  const ssn = pNumber.slice(0,6) + '-' + pNumber.slice(6)
+  const ssn = pNumber.slice(0, 6) + '-' + pNumber.slice(6)
   const filename = curr.image_name
-  const image_path = s3.getSignedUrl('getObject', { Bucket: cropped_thumb_bucket, Key: filename });
-  //let image_path = getImageURL(cropped_thumb_bucket, 'thumbnails_cropped', filename)
+  const image_path = s3.getSignedUrl('getObject', { Bucket: cropped_thumb_bucket, Key: filename })
+  // let image_path = getImageURL(cropped_thumb_bucket, 'thumbnails_cropped', filename)
 
   let template_copy = (' ' + template).slice(1)
   const html = template_copy.replace('URL_TO_USE', image_path)
@@ -275,35 +270,34 @@ function exportHtml(to_export, template){
 }
 
 const createSectionPdfs = async (req, res) => {
-  const section = req.params.sectionname;
+  const section = req.params.sectionname
   generateSectionPdf(section, (err, result) => {
-    if(err) 
-      return res.status(500).json(err)
+    if (err) { return res.status(500).json(err) }
     res.json({message: result})
-  });
+  })
 }
 const createAllSectionPdfs = async (req, res) => {
   const sections = await Section.findAll()
-  function sectionIterator(sections){
+  function sectionIterator (sections) {
     console.log(`Generating pdf for ${sections[0].nameSv}...`)
     generateSectionPdf(sections[0], (err, result) => {
-      if(err) {
+      if (err) {
         res.status(500).json(err)
-      } else if(sections.length <= 1){
+      } else if (sections.length <= 1) {
         res.json({message: result})
       } else {
         sectionIterator(sections.slice(1))
       }
-    });
+    })
   }
   sectionIterator(sections)
 }
 
 // Input: Sectionname and a callback-function
-async function generateSectionPdf(section, cb){
+async function generateSectionPdf (section, cb) {
   // Get all userimages
   console.log('get images...')
-  const images = await cardInformation({}) 
+  const images = await cardInformation({})
 
   // Get diff, those that are left to export
   const to_export = images.filter(i => i.nameSv === section.nameSv)
@@ -311,8 +305,8 @@ async function generateSectionPdf(section, cb){
 
   // Divide inte chunks of 100
   const chunk_size = 100
-  let chunked = to_export.reduce( (acc, curr) => {
-    if(acc[0].length < chunk_size){
+  let chunked = to_export.reduce((acc, curr) => {
+    if (acc[0].length < chunk_size) {
       acc[0].push(curr)
     } else {
       acc.unshift([curr])
@@ -321,7 +315,7 @@ async function generateSectionPdf(section, cb){
   }, [[]])
 
   let count = 0
-  function chunkIterator(err, res){
+  function chunkIterator (err, res) {
     const callback = chunked.length <= 1 ? cb : chunkIterator
     const chunk = chunked.pop()
 
@@ -335,22 +329,20 @@ async function generateSectionPdf(section, cb){
     // Create pdf
     console.log(`Generating pdf...`)
     pdf.create(html, {
-      height: '540px', 
-      width: '860px', 
-      renderDelay: 500,
-    }).toFile(getCardDir() + '/' + section.nameSv + '_' + ++count + '.pdf', callback);
+      height: '540px',
+      width: '860px',
+      renderDelay: 500
+    }).toFile(getCardDir() + '/' + section.nameSv + '_' + ++count + '.pdf', callback)
   }
   chunkIterator()
 }
 
 // Returns the directory of the cards, and ensures it exists
-function getCardDir(){
+function getCardDir () {
   const dir = './cardpdfs'
-  if (!fs.existsSync(dir))
-    fs.mkdirSync(dir);
+  if (!fs.existsSync(dir)) { fs.mkdirSync(dir) }
   return dir
 }
-
 
 module.exports = {
   getimage,
@@ -365,5 +357,5 @@ module.exports = {
   updateImageComment,
   createCard,
   createSectionPdfs,
-  createAllSectionPdfs,
+  createAllSectionPdfs
 }
