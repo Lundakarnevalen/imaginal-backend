@@ -5,14 +5,14 @@ const userRoles = require('../models/userrole')
 const warehouseUser = require('../models/warehouseUser')
 const orderLines = require('../models/orderLine')
 const storageContents = require('../models/storageContents')
-const items = require('../models/item')
+// const items = require('../models/item')
 
 const createOrder = async (req, res) => {
   try {
     const hasAccess = await userRoles.hasWarehouseCustomerAccess(req)
     if (hasAccess) {
-      if ((!req.body.storageLocationId || !req.body.warehouseUserId || !req.body.orderlines) ||
-        !(await req.body.orderlines.every(body => body.itemId && body.quantity))) {
+      if ((!req.body.storageLocationId || !req.body.orderLines) ||
+        !(await req.body.orderLines.every(body => body.itemId && body.quantity))) {
         return res.status(400).json({
           success: false,
           message: 'Missing parameters'
@@ -27,21 +27,15 @@ const createOrder = async (req, res) => {
         checkedOut: false,
         return: req.body.return || false,
         returnDate: req.body.returnDate || null,
-        WarehouseUserId: findWarehouseUser.id
+        warehouseUserId: findWarehouseUser.id
       })
       if (req.body.orderLines.length > 0) {
-        await req.body.orderLines.forEach(orderLine => createOrderLine(order, req.body))
-        return res.status(200).json({
-          success: true,
-          message: 'Order created'
-        })
-        // throw error from createOrderLine?
-      } else {
-        return res.status(400).json({
-          success: false,
-          message: 'Failed to create orders'
-        })
+        await req.body.orderLines.forEach(orderLine => createOrderLine(order, orderLine))
       }
+      return res.status(200).json({
+        success: true,
+        message: 'Order created'
+      })
     } else {
       return res.status(401).json({
         success: false,
@@ -57,10 +51,6 @@ const createOrder = async (req, res) => {
 }
 
 const createOrderLine = (order, body) => {
-  // if (!body.quantity || body.itemId)
-  // throw error
-  // const error = true
-  /* else */
   orderLines.OrderLine.create({
     quantity: body.quantity,
     quantityDelivered: 0,
@@ -282,9 +272,9 @@ const checkoutOrderLines = async (req, res) => {
         const orderLine = await orderLines.OrderLine.findOne({
           where: { id: reqOrderLine.id }
         })
-        const item = await items.Item.findOne({
-          where: { id: orderLine.dataValues.itemId }
-        })
+        // const item = await items.Item.findOne({
+        //   where: { id: orderLine.dataValues.itemId }
+        // })
 
         const storageContent = await storageContents.StorageContent.findOne({
           where: {

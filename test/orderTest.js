@@ -5,10 +5,10 @@ const expect = require('chai').expect
 module.exports = (user, admin, warehouseCustomer, warehouseWorker,
   warehouseManager, itemOne, itemTwo, orderOne, orderTwo, orderLineOne,
   orderLineTwo) => describe('API /api/warehouse/order/ order tests', function () {
-    it('Unauthorized addItem, role: random user', done => {
-      api.post('/api/warehouse/product/new')
+    it('Unauthorized createOrder, role: random user', done => {
+      api.post('/api/warehouse/order/new')
         .set('Authorization', 'bearer ' + user.token)
-        .send(itemOne)
+        .send(orderOne)
         .end(async (err, res) => {
           if (err) {
             console.error('Failed to run test, aborting')
@@ -19,122 +19,38 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
         })
     })
 
-    it('Unauthorized addItem, role: warehouse customer', done => {
-      api.post('/api/warehouse/product/new')
+    it('Authorized createOrder, role: warehouse customer', done => {
+      api.post('/api/warehouse/order/new')
         .set('Authorization', 'bearer ' + warehouseCustomer.token)
-        .send(itemOne)
+        .send(orderOne)
         .end(async (err, res) => {
           if (err) {
             console.error('Failed to run test, aborting')
             process.exit(1)
           }
-          await expect(res.statusCode).to.equal(401)
+          await expect(res.statusCode).to.equal(200)
           done()
         })
     })
 
-    it('Unauthorized addItem, role: warehouse worker', done => {
-      api.post('/api/warehouse/product/new')
+    it('Authorized createOrder, role: warehouse worker', done => {
+      api.post('/api/warehouse/order/new')
         .set('Authorization', 'bearer ' + warehouseWorker.token)
-        .send(itemOne)
+        .send(orderOne)
         .end(async (err, res) => {
           if (err) {
             console.error('Failed to run test, aborting')
             process.exit(1)
           }
-          await expect(res.statusCode).to.equal(401)
+          await expect(res.statusCode).to.equal(200)
           done()
         })
     })
 
-    it('Authorized addItem, role: warehouse manager', done => {
-      api.post('/api/warehouse/product/new')
+    it('Authorized createOrder, role: warehouse manager', done => {
+      api.post('/api/warehouse/order/new')
         .set('Authorization', 'bearer ' + warehouseManager.token)
-        .send(itemOne)
-        .end(async (err, res) => {
-          if (err) {
-            console.error('Failed to run test, aborting')
-            process.exit(1)
-          }
-          await expect(res.statusCode).to.equal(200)
-          done()
-        })
-    })
-
-    it('Authorized addItem, role: warehouse manager', done => {
-      api.post('/api/warehouse/product/new')
-        .set('Authorization', 'bearer ' + admin.token)
-        .send(itemTwo)
-        .end(async (err, res) => {
-          if (err) {
-            console.error('Failed to run test, aborting')
-            process.exit(1)
-          }
-          await expect(res.statusCode).to.equal(200)
-          done()
-        })
-    })
-
-    it('Unauthorized checkout order, role: random user', done => {
-      api.post('/api/warehouse/product/new')
-        .set('Authorization', 'bearer ' + user.token)
-        .send(itemOne)
-        .end(async (err, res) => {
-          if (err) {
-            console.error('Failed to run test, aborting')
-            process.exit(1)
-          }
-          await expect(res.statusCode).to.equal(401)
-          done()
-        })
-    })
-
-    it('Unauthorized addItem, role: warehouse customer', done => {
-      api.post('/api/warehouse/product/new')
-        .set('Authorization', 'bearer ' + warehouseCustomer.token)
-        .send(itemOne)
-        .end(async (err, res) => {
-          if (err) {
-            console.error('Failed to run test, aborting')
-            process.exit(1)
-          }
-          await expect(res.statusCode).to.equal(401)
-          done()
-        })
-    })
-
-    it('Unauthorized addItem, role: warehouse worker', done => {
-      api.post('/api/warehouse/product/new')
-        .set('Authorization', 'bearer ' + warehouseWorker.token)
-        .send(itemOne)
-        .end(async (err, res) => {
-          if (err) {
-            console.error('Failed to run test, aborting')
-            process.exit(1)
-          }
-          await expect(res.statusCode).to.equal(401)
-          done()
-        })
-    })
-
-    it('Authorized addItem, role: warehouse manager', done => {
-      api.post('/api/warehouse/product/new')
-        .set('Authorization', 'bearer ' + warehouseManager.token)
-        .send(itemOne)
-        .end(async (err, res) => {
-          if (err) {
-            console.error('Failed to run test, aborting')
-            process.exit(1)
-          }
-          await expect(res.statusCode).to.equal(200)
-          done()
-        })
-    })
-
-    it('Authorized addItem, role: warehouse manager', done => {
-      api.post('/api/warehouse/product/new')
-        .set('Authorization', 'bearer ' + admin.token)
-        .send(itemTwo)
+        .send(orderOne)
         .end(async (err, res) => {
           if (err) {
             console.error('Failed to run test, aborting')

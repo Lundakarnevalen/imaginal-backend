@@ -213,20 +213,18 @@ const getTagTwo = () => {
 const getOrderOne = () => {
   return {
     'id': 1,
-    'userId': 15000,
     'deliveryDate': '2018-04-13 00:00:00',
     'storageLocationId': 1,
-    'OrderLines': [getOrderLineOne, getOrderLineTwo]
+    'orderLines': [getOrderLineOne(), getOrderLineTwo()]
   }
 }
 
 const getOrderTwo = () => {
   return {
     'id': 2,
-    'userId': 15001,
     'deliveryDate': '2018-04-15 00:00:00',
     'storageLocationId': 1,
-    'OrderLines': [getOrderLineTwo]
+    'orderLines': [getOrderLineTwo()]
   }
 }
 
