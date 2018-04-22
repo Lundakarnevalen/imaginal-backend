@@ -2,6 +2,7 @@
 
 const userimage = require('../models/userimage')
 const UserImage = userimage.UserImage
+const UserCardExport = require('../models/usercardexport').UserCardExport
 const cardInformation = userimage.cardInformation
 const Section = require('../models/section').Section
 const fs = require('fs')
@@ -268,7 +269,7 @@ function exportHtml (toExport, template) {
 }
 
 const createSectionPdfs = async (req, res) => {
-  const section = req.params.sectionname
+  const section = {nameSv: req.params.sectionname}
   generateSectionPdf(section, (err, result) => {
     if (err) { return res.status(500).json(err) }
     res.json({message: result})
@@ -298,8 +299,19 @@ async function generateSectionPdf (section, cb) {
   const images = await cardInformation({})
 
   // Get diff, those that are left to export
+  console.log(`Filtering on ${section.nameSv}`)
   const toExport = images.filter(i => i.nameSv === section.nameSv)
   console.log(`Exporting: ${toExport.length} karnevalists`)
+  if(toExport.length < 1){
+    console.log('No karnevalist left to export... aborting')
+    return cb('No karnevalists left in section to export', null)
+  }
+
+  // Set images as exported in database
+  const user_ids = toExport.map(i => { 
+    return { user_id: i.id }
+  })
+  const create_res = await UserCardExport.bulkCreate(user_ids)
 
   // Divide inte chunks of 100
   const chunkSize = 100
@@ -324,13 +336,16 @@ async function generateSectionPdf (section, cb) {
     console.log(`Generating html...`)
     const html = exportHtml(chunk, template)
 
+    // Get current date
+    const currDate = (new Date()).toISOString().split('T')[0]
+
     // Create pdf
     console.log(`Generating pdf...`)
     pdf.create(html, {
       height: '540px',
       width: '860px',
       renderDelay: 500
-    }).toFile(getCardDir() + '/' + section.nameSv + '_' + ++count + '.pdf', callback)
+    }).toFile(getCardDir() + '/' + currDate + '_'+ section.nameSv + '_' + ++count + '.pdf', callback)
   }
   chunkIterator()
 }
