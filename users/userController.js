@@ -36,9 +36,8 @@ const getAll = async (req, res) => {
 
 /** From a social security number - fetch all sections for the user. */
 const getSectionByPersonalNumber = async (req, res) => {
-
   // ssn - Social Security Number
-  const ssn = req.params.personalnumber 
+  const ssn = req.params.personalnumber
 
   if (!ssn) { // If no ssn is given, return bad request.
     return res.status(400).json({
@@ -62,7 +61,7 @@ const getSectionByPersonalNumber = async (req, res) => {
     const sections = await UserSection.findSectionsOfUser(user)
     return res.json({
       success: true,
-      sections,
+      sections
     })
   } catch (err) {
     // On error, log and return success false.
@@ -153,8 +152,7 @@ const setUserInfo = async (req, res) => {
 }
 
 const getUsersFromSection = async (req, res) => {
-
-  const sectionid = req.params.sectionid 
+  const sectionid = req.params.sectionid
 
   // To catch errors when using async-await.
   try {
@@ -169,7 +167,7 @@ const getUsersFromSection = async (req, res) => {
     // Fetch sections of user from db.
     return res.json({
       success: true,
-      users: userList,
+      users: userList
     })
   } catch (err) {
     // On error, log and return success false.
