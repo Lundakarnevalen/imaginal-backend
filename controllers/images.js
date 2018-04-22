@@ -113,7 +113,7 @@ function uploadThumbnail (res, inbucket, fileName, outbucket, userId) {
                      console.log('Upload success!')
                      res.send('Uploaded!')
                    } catch (err) {
-                     console.log('Full error!')
+                     console.log('Full error:', err)
                      res.status(500).json(err)
                    }
                  } else {
@@ -240,12 +240,10 @@ function exportPdf (toExport) {
     height: '540px',
     width: '860px',
     renderDelay: 2000,
-    base: base
+  }).toFile('./cardpdfs/' + filename + '.pdf', (err, res) => {
+    if (err) { console.log('error:', err) }
+    console.log('Done!!!!')
   })
-    .toFile('./cardpdfs/' + filename + '.pdf', (err, res) => {
-      if (err) { console.log('error:', err) }
-      console.log('Done!!!!')
-    })
 }
 function exportHtml (toExport, template) {
   if (toExport.length === 0) {
