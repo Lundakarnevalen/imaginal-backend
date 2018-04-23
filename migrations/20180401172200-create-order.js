@@ -22,8 +22,8 @@ module.exports = {
           key: 'id'
         }
       },
-      deliveryDate: Sequelize.DATE,
-      delivered: Sequelize.BOOLEAN,
+      orderDeliveryDate: Sequelize.DATE,
+      checkedOut: Sequelize.BOOLEAN,
       checkedOutDate: Sequelize.DATE,
       return: Sequelize.BOOLEAN,
       returnDate: Sequelize.DATE,

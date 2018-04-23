@@ -27,7 +27,7 @@ const tagTwo = utils.getTagTwo()
 const orderOne = utils.getOrderOne()
 const orderTwo = utils.getOrderTwo()
 const orderLineOne = utils.getOrderLineOne()
-const orderLineTwo = utils.getOrderTwoOne()
+const orderLineTwo = utils.getOrderLineTwo()
 const costBearer = utils.getCostBearer()
 const warehouseUser = utils.getWarehouseUser()
 

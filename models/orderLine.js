@@ -3,8 +3,7 @@ const dbc = require('../config/database')
 const Order = require('./order').Order
 const Item = require('./item').Item
 
-
-const OrderLine = dbc.define('OrderLine', {
+const OrderLine = dbc.define('OrderLines', {
   id: {
     autoIncrement: true,
     primaryKey: true,

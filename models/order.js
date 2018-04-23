@@ -1,7 +1,5 @@
 const Sequelize = require('sequelize')
 const dbc = require('../config/database')
-const StorageLocation = require('./storageLocation').StorageLocation
-const WarehouseUser = require('./warehouseUser').WarehouseUser
 
 const Order = dbc.define('Order', {
   id: {
@@ -10,14 +8,11 @@ const Order = dbc.define('Order', {
     type: Sequelize.INTEGER
   },
   orderDeliveryDate: Sequelize.DATE,
-  returnDate: Sequelize.DATE,
-  delivered: Sequelize.BOOLEAN,
-  deliveredDate: Sequelize.DATE,
+  checkedOut: Sequelize.BOOLEAN,
+  checkedOutDate: Sequelize.DATE,
   return: Sequelize.BOOLEAN,
+  returnDate: Sequelize.DATE
 })
-
-Order.hasOne(StorageLocation, { as: 'StorageLocation', foreignKey: 'storageLocationID' })
-Order.hasOne(WarehouseUser, { as: 'WarehouseUser', foreignKey: 'warehouseUserID' })
 
 module.exports = {
   Order

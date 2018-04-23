@@ -5,8 +5,8 @@ module.exports = {
     await queryInterface.bulkInsert('Orders', [{
       storageLocationId: 1,
       warehouseUserId: 1,
-      deliveryDate: '2018-04-13 00:00:00',
-      delivered: false,
+      orderDeliveryDate: '2018-04-13 00:00:00',
+      checkedOut: false,
       checkedOutDate: null,
       return: false,
       returnDate: null,
@@ -16,8 +16,8 @@ module.exports = {
     await queryInterface.bulkInsert('Orders', [{
       storageLocationId: 1,
       warehouseUserId: 1,
-      deliveryDate: '2018-04-13 00:00:00',
-      delivered: false,
+      orderDeliveryDate: '2018-04-13 00:00:00',
+      checkedOut: false,
       checkedOutDate: null,
       return: false,
       returnDate: null,

@@ -3,7 +3,7 @@ const api = supertest('http://localhost:3000')
 const expect = require('chai').expect
 
 module.exports = (user, admin, warehouseCustomer, warehouseWorker,
-  warehouseManager, costBearer, warehouseUser) => describe('API /api/warehouse/product/new item tests', function () {
+  warehouseManager, costBearer, warehouseUser) => describe('API /api/warehouse/user Warehouseuser tests', function () {
     it('Unauthorized getAllWarehouseUsers, role: random user', done => {
       api.get('/api/warehouse/user/list')
         .set('Authorization', 'bearer ' + user.token)

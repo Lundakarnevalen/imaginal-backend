@@ -184,14 +184,14 @@ const getItemOne = () => {
 
 const getItemTwo = () => {
   return {
-    'name': 'cider2',
+    'name': 'cider3',
     'imageUrl': 'hej.se',
     'unit': 'burk',
     'purchasePrice': 20,
     'salesPrice': 30,
     'description': 'det är en cider',
-    'articleNumber': '1723252',
-    'supplier': 'FINN',
+    'articleNumber': '172',
+    'supplier': 'FINN2',
     'note': 'Detta är ju kalas',
     'warningAmount': '100',
     'vat': 15
@@ -213,20 +213,18 @@ const getTagTwo = () => {
 const getOrderOne = () => {
   return {
     'id': 1,
-    'userId': 15000,
     'deliveryDate': '2018-04-13 00:00:00',
     'storageLocationId': 1,
-    'OrderLines': [getOrderLineOne, getOrderLineTwo]
+    'orderLines': [getOrderLineOne(), getOrderLineTwo()]
   }
 }
 
 const getOrderTwo = () => {
   return {
     'id': 2,
-    'userId': 15001,
     'deliveryDate': '2018-04-15 00:00:00',
     'storageLocationId': 1,
-    'OrderLines': [getOrderLineTwo]
+    'orderLines': [getOrderLineTwo()]
   }
 }
 
@@ -256,16 +254,6 @@ const getWarehouseUser = () => {
     'id': 1,
     'userId': 15000,
     'costBearerId': 1
-  }
-}
-
-const getOrderOne = () => {
-  return {
-    'id': 1,
-    'deliveryDate': '2018-04-13 00:00:00',
-    'storageLocationId': 1,
-    'OrderLines': [getOrderLineOne, getOrderLineTwo]
-
   }
 }
 

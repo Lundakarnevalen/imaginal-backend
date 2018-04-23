@@ -3,14 +3,14 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.bulkInsert('StorageLocations', [{
-      storageName: "Fabriken",
-      description: "Fabrikens varulager på tågområdet",
+      storageName: 'Fabriken',
+      description: 'Fabrikens varulager på tågområdet',
       createdAt: new Date().toISOString().substr(0, 10),
       updatedAt: new Date().toISOString().substr(0, 10)
     }], {})
     await queryInterface.bulkInsert('StorageLocations', [{
-      storageName: "Tåget",
-      description: "Tågets varulager på tågområdet",
+      storageName: 'Tåget',
+      description: 'Tågets varulager på tågområdet',
       createdAt: new Date().toISOString().substr(0, 10),
       updatedAt: new Date().toISOString().substr(0, 10)
     }], {})

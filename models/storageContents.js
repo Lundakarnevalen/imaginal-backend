@@ -9,7 +9,7 @@ const StorageContent = dbc.define('StorageContent', {
     primaryKey: true,
     autoIncrement: true
   },
-  locationId: {
+  storageLocationId: {
     type: Sequelize.INTEGER
   },
   itemId: {
