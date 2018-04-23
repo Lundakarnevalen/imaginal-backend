@@ -3,6 +3,7 @@
 const orders = require('../models/order')
 const orderlines = require('../models/orderLine')
 const warehouseUser = require('../models/warehouseUser')
+const items = require('../models/item')
 
 const createOrder = async (req, res) => {
   try {
@@ -249,6 +250,42 @@ const getOrdersOnSection = async (req, res) => {
     })
   }
 }
+
+const getOrderedItems = async (req, res) => {
+  /** Add try/catch */
+  /** Add access */
+  /** delivered FALSE? */
+
+  /** for each items */
+  const list = []
+  const allItems = await items.Item.findAll()
+  allItems.forEach( (item) => {
+    const itemId = item.id
+    const orderedItems = await orderlines.OrderLine.findAll({
+      where: {
+        itemId: itemId
+        /** quantity=quantityorder-quantitydelivered */
+      }
+    })
+    const quantity = 0
+    orderedItems.forEach( (order) => {
+      const orderQuantity = order.quantityOrdered - order.quantityDelivered
+      quantity += orderQuantity
+    })
+    const object = {
+      itemId: itemId,
+      quantity: quantity
+    }
+    await list.push(object)
+  })
+  return res.status(200).json({
+    success: true,
+    message: list
+  })
+  /** Pusha till lista. list.push({object}) */
+  /** Return Json-lista */
+}
+
 
 module.exports = {
   createOrder,
