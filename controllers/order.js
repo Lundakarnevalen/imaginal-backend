@@ -67,10 +67,6 @@ const createOrderLine = (order, body) => {
 
 const removeOrder = async (req, res) => {
   try {
-    console.log('---------------------------------------------')
-    console.log(req.body)
-    console.log(req.params)
-    console.log(req.params.orderId)
     const hasAccess = await userRoles.hasWarehouseAdminAccess(req)
     if (hasAccess) {
       if (!req.params.orderId) {
@@ -111,11 +107,16 @@ const findOrder = async (orderId) => {
 }
 
 const getOrderLinesFromOrderId = async (orderId) => {
-  return orderLines.OrderLine.findAll({
+  const orderLine = await orderLines.OrderLine.findAll({
     where: {
       orderId: orderId
     }
   })
+  let orderLinesList = []
+  orderLine.forEach(line => {
+    orderLinesList.push(line.dataValues)
+  })
+  return orderLinesList
 }
 
 const editOrder = async (req, res) => {
@@ -213,8 +214,6 @@ const getOrdersOnUser = async (req, res) => {
   try {
     const hasAccess = await userRoles.hasWarehouseCustomerAccess(req)
     if (hasAccess) {
-      console.log('_-----------------------------__---_')
-      console.log(req.user.dataValues)
       const dbWarehouseUser = await warehouseUser.WarehouseUser.findOne({
         where: { userId: req.user.dataValues.id }
       })
@@ -252,14 +251,17 @@ const getOrdersOnSection = async (req, res) => {
   try {
     const hasAccess = await userRoles.hasWarehouseWorkerAccess(req)
     if (hasAccess) {
-      const theOrders = await orders.Order.findAll({
+      let theOrders = await orders.Order.findAll({
         where: { storageLocationId: req.params.storageLocationId }
       })
-      console.log('""""""""""""-----------------_""""')
-      console.log(theOrders)
       if (theOrders.length > 0) {
-        theOrders.map(
-          order => (order.orderLines = getOrderLinesFromOrderId(order.id)))
+        await Promise.all(theOrders.map(async order => {
+          order.dataValues.orderLines = await getOrderLinesFromOrderId(order.id)
+        }))
+        console.log('---------orders-----------')
+        console.log(theOrders)
+        console.log('---------orders-----------')
+
         return res.status(200).json({
           success: true,
           data: theOrders
