@@ -15,6 +15,7 @@ const users = require('./users/userController')
 const storageLocations = require('./controllers/storageLocation')
 const items = require('./controllers/item')
 const tags = require('./controllers/tag')
+const warehouseUser = require('./controllers/warehouseUser')
 
 app.use(bodyParser.json())
 app.use(passport.initialize())
@@ -116,6 +117,11 @@ app.post('/api/warehouse/location/additems', items.addItemsToLocation)
 app.get('/api/warehouse/location/getallitems/:locationid', storageLocations.getItemsInStorageLocation)
 
 app.post('/api/warehouse/getLocationByID', storageLocations.getByID) /* For testing */
+
+app.get('/api/warehouse/user/list', warehouseUser.getAllWarehouseUsers)
+app.get('/api/warehouse/user/', warehouseUser.getWarehouseUserById)
+app.get('/api/warehouse/user/costbearer/list', warehouseUser.getAllCostBearers)
+app.get('/api/warehouse/user/costbearer/:costBearerId', warehouseUser.getWarehouseUserByCostBearer)
 
 app.all('*', function (req, res) {
   res.status(404).json({
