@@ -5,7 +5,7 @@ const userRoles = require('../models/userrole')
 const warehouseUser = require('../models/warehouseUser')
 const orderLines = require('../models/orderLine')
 const storageContents = require('../models/storageContents')
-// const items = require('../models/item')
+const items = require('../models/item')
 
 const createOrder = async (req, res) => {
   try {
@@ -338,41 +338,51 @@ const checkoutOrderLines = async (req, res) => {
   }
 }
 
-const getOrderedItems = async (req, res) => {
-  /** Add try/catch */
-  /** Add access */
-  /** delivered FALSE? */
-
-  /** for each items */
-  const list = []
-  const allItems = await items.Item.findAll()
-  allItems.forEach( (item) => {
-    const itemId = item.id
-    const orderedItems = await orderlines.OrderLine.findAll({
-      where: {
-        itemId: itemId
-        /** quantity=quantityorder-quantitydelivered */
-      }
-    })
-    const quantity = 0
-    orderedItems.forEach( (order) => {
-      const orderQuantity = order.quantityOrdered - order.quantityDelivered
-      quantity += orderQuantity
-    })
-    const object = {
-      itemId: itemId,
-      quantity: quantity
+const getQuantityOfOrderedItems = async (req, res) => {
+  try {
+    const hasAccess = await userRoles.hasWarehouseCustomerAccess(req)
+    if (hasAccess) {
+      const list = []
+      const allItems = await items.Item.findAll()
+      allItems.forEach((item) => {
+        const itemId = item.id
+        const orderedItems = orderLines.OrderLine.findAll({
+          where: { itemId: itemId }
+        })
+        let totQuantity = 0
+        orderedItems.forEach((order) => {
+          if (!order.quantityOrdered || !order.quantityDelivered) {
+            return res.status(3141592).json({
+              success: false,
+              message: 'Something is wrong in quantity'
+            })
+          }
+          const orderQuantity = order.quantityOrdered - order.quantityDelivered
+          totQuantity = orderQuantity
+        })
+        const object = {
+          itemId: itemId,
+          quantity: totQuantity
+        }
+        list.push(object)
+      })
+      return res.status(200).json({
+        success: true,
+        message: list
+      })
+    } else {
+      return res.status(401).json({
+        success: false,
+        message: 'Go away!'
+      })
     }
-    await list.push(object)
-  })
-  return res.status(200).json({
-    success: true,
-    message: list
-  })
-  /** Pusha till lista. list.push({object}) */
-  /** Return Json-lista */
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to get ordered items'
+    })
+  }
 }
-
 
 module.exports = {
   createOrder,
@@ -381,5 +391,6 @@ module.exports = {
   getAllOrders,
   getOrdersOnSection,
   getOrdersOnUser,
-  checkoutOrderLines
+  checkoutOrderLines,
+  getQuantityOfOrderedItems
 }

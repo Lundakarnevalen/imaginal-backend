@@ -117,6 +117,8 @@ app.post('/api/warehouse/getLocationById', storageLocations.getById) /* For test
 app.post('/api/warehouse/product/addQuantity', items.addQuantity) /** For testing */
 app.get('/api/warehouse/product/getAllItems', items.getAllItems) /** For testing */
 
+app.get('/api/warehouse/product/ordered/list', orders.getQuantityOfOrderedItems)
+
 // app.get('/api/warehouse/product/inventory', items.getInventory)
 
 app.post('/api/warehouse/order/new', orders.createOrder)

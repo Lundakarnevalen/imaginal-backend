@@ -457,4 +457,57 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
           done()
         })
     })
+
+    /** Tests for orderedItems */
+    it('Unauthorized getQuantityOfOrderedItems, role: random user', done => {
+      api.get('/api/warehouse/product/ordered/list')
+        .set('Authorization', 'bearer ' + user.token)
+        .end(async (err, res) => {
+          if (err) {
+            console.error('Failed to run test, aborting')
+            process.exit(1)
+          }
+          await expect(res.statusCode).to.equal(401)
+          done()
+        })
+    })
+
+    it('Authorized getQuantityOfOrderedItems, role: warehouse customer', done => {
+      api.get('/api/warehouse/product/ordered/list')
+        .set('Authorization', 'bearer ' + warehouseCustomer.token)
+        .end(async (err, res) => {
+          if (err) {
+            console.error('Failed to run test, aborting')
+            process.exit(1)
+          }
+          await expect(res.statusCode).to.equal(200)
+          done()
+        })
+    })
+
+    it('Authorized getQuantityOfOrderedItems, role: warehouse worker', done => {
+      api.get('/api/warehouse/product/ordered/list')
+        .set('Authorization', 'bearer ' + warehouseWorker.token)
+        .end(async (err, res) => {
+          if (err) {
+            console.error('Failed to run test, aborting')
+            process.exit(1)
+          }
+          await expect(res.statusCode).to.equal(200)
+          done()
+        })
+    })
+
+    it('Authorized getQuantityOfOrderedItems, role: warehouse manager', done => {
+      api.get('/api/warehouse/product/ordered/list')
+        .set('Authorization', 'bearer ' + warehouseManager.token)
+        .end(async (err, res) => {
+          if (err) {
+            console.error('Failed to run test, aborting')
+            process.exit(1)
+          }
+          await expect(res.statusCode).to.equal(200)
+          done()
+        })
+    })
   })
