@@ -25,9 +25,7 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
             console.error('Failed to run test, aborting')
             process.exit(1)
           }
-          await expect(res.statusCode).to.equal(200)
-          await expect(res.body.data[0].id).to.equal(1)
-          await expect(res.body.data[0].userId).to.equal(15000)
+          await expect(res.statusCode).to.equal(401)
           done()
         })
     })
@@ -105,7 +103,7 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
         })
     })
 
-    it('Authorized failed getAllWarehouseUsers, role: warehouse worker', done => {
+    it('Authorized getWarehouseUserById, role: warehouse worker', done => {
       api.get('/api/warehouse/user/')
         .set('Authorization', 'bearer ' + warehouseWorker.token)
         .end(async (err, res) => {
@@ -113,13 +111,14 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
             console.error('Failed to run test, aborting')
             process.exit(1)
           }
-          await expect(res.statusCode).to.equal(400)
-          await expect(res.body.message).to.equal('Cant find warehouseuser connected to this user')
+          await expect(res.statusCode).to.equal(200)
+          await expect(res.body.data.id).to.equal(2)
+          await expect(res.body.data.userId).to.equal(15001)
           done()
         })
     })
 
-    it('Authorized failed getAllWarehouseUsers, role: warehouse manager user', done => {
+    it('Authorized getWarehouseUserById, role: warehouse manager', done => {
       api.get('/api/warehouse/user/')
         .set('Authorization', 'bearer ' + warehouseManager.token)
         .end(async (err, res) => {
@@ -127,13 +126,14 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
             console.error('Failed to run test, aborting')
             process.exit(1)
           }
-          await expect(res.statusCode).to.equal(400)
-          await expect(res.body.message).to.equal('Cant find warehouseuser connected to this user')
+          await expect(res.statusCode).to.equal(200)
+          await expect(res.body.data.id).to.equal(3)
+          await expect(res.body.data.userId).to.equal(15002)
           done()
         })
     })
 
-    it('Authorized failed getAllWarehouseUsers, role: admin', done => {
+    it('Authorized getWarehouseUserById, role: admin', done => {
       api.get('/api/warehouse/user/')
         .set('Authorization', 'bearer ' + admin.token)
         .end(async (err, res) => {
@@ -141,8 +141,9 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
             console.error('Failed to run test, aborting')
             process.exit(1)
           }
-          await expect(res.statusCode).to.equal(400)
-          await expect(res.body.message).to.equal('Cant find warehouseuser connected to this user')
+          await expect(res.statusCode).to.equal(200)
+          await expect(res.body.data.id).to.equal(4)
+          await expect(res.body.data.userId).to.equal(1)
           done()
         })
     })
