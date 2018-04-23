@@ -122,10 +122,12 @@ app.get('/api/warehouse/product/getAllItems', items.getAllItems) /** For testing
 app.post('/api/warehouse/order/new', orders.createOrder)
 app.post('/api/warehouse/order/edit', orders.editOrder)
 app.get('/api/warehouse/order/list', orders.getAllOrders)
-app.get('/api/warehouse/order/removeOrder/:orderId', orders.removeOrder)
-app.post('/api/warehouse/order/checkout/', orders.checkoutOrderLines)
+app.get('/api/warehouse/order/:id', orders.getOrderById)
+app.delete('/api/warehouse/order/remove/:orderId', orders.removeOrder)
+app.post('/api/warehouse/order/checkout', orders.checkoutOrderLines)
+app.get('/api/warehouse/order/list/user', orders.getOrdersOnUser)
+app.get('/api/warehouse/order/location/list/:storageLocationId', orders.getOrdersOnSection)
 
-app.get('/api/warehouse/order/list/:userId', orders.getOrdersOnUser)
 app.delete('/api/warehouse/tag/delete/:orderId', tags.removeTag)
 
 app.get('/api/warehouse/user/list', warehouseUser.getAllWarehouseUsers)
