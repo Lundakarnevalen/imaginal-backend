@@ -6,6 +6,11 @@ const UserImage = require('../models/userimage').UserImage
 const UserSection = require('../models/userSection')
 const userService = require('./usersService')
 
+const AWS = require('aws-sdk')
+AWS.config.region = 'eu-central-1'
+const s3 = new AWS.S3()
+const croppedThumbBucket = 'karnevalistbilder-cropped-thumbnails'
+
 const getAll = async (req, res) => {
   const isAdmin = await UserRoles.hasRole(req.user, UserRoles.ADMIN)
 
@@ -57,10 +62,23 @@ const getSectionByPersonalNumber = async (req, res) => {
       })
     }
 
+    // Fetch userimage of user from db
+    let imagePath = ''
+    try{
+      const userImage = await UserImage.findOne({
+        where: { user_id: user.id, current_image: 1}
+      })
+      imagePath = s3.getSignedUrl('getObject', { Bucket: croppedThumbBucket, Key: userImage.image_name })
+    } catch(err){
+      console.log(err)
+    }
+
     // Fetch sections of user from db.
     const sections = await UserSection.findSectionsOfUser(user)
     return res.json({
       success: true,
+      userimage: imagePath,
+      name: `${user.firstName} ${user.lastName}`,
       sections
     })
   } catch (err) {

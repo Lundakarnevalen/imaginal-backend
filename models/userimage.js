@@ -39,7 +39,7 @@ where
   ui.current_image=1
   and ui.bad_picture!=1
   and (ui.exported=0 or ui.exported is null)
-  and uce.user_id is not null
+  and uce.user_id is null
   `, {type: Sequelize.QueryTypes.SELECT})
 }
 
