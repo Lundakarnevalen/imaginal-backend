@@ -18,15 +18,18 @@ const createOrder = async (req, res) => {
           message: 'Missing parameters'
         })
       }
+
       const findWarehouseUser = await warehouseUser.WarehouseUser.findOne({
         where: { userId: req.user.dataValues.id }
       })
+
       if (!findWarehouseUser) {
         return res.status(400).json({
           success: false,
           message: 'User dont have permission to create an order.'
         })
       }
+
       const order = await orders.Order.create({
         storageLocationId: req.body.storageLocationId,
         orderDeliveryDate: req.body.deliveryDate || null,
@@ -35,9 +38,16 @@ const createOrder = async (req, res) => {
         returnDate: req.body.returnDate || null,
         warehouseUserId: findWarehouseUser.id
       })
+
       if (req.body.orderLines.length > 0) {
         await req.body.orderLines.forEach(orderLine => createOrderLine(order, orderLine))
+      } else {
+        return res.status(400).json({
+          success: false,
+          message: 'No orderlines specified'
+        })
       }
+
       return res.status(200).json({
         success: true,
         message: 'Order created'
@@ -258,9 +268,6 @@ const getOrdersOnSection = async (req, res) => {
         await Promise.all(theOrders.map(async order => {
           order.dataValues.orderLines = await getOrderLinesFromOrderId(order.id)
         }))
-        console.log('---------orders-----------')
-        console.log(theOrders)
-        console.log('---------orders-----------')
 
         return res.status(200).json({
           success: true,
@@ -286,15 +293,6 @@ const getOrdersOnSection = async (req, res) => {
   }
 }
 
-// Checkout what to do
-// 1. Check parameters
-// 2. Find variables needed, order, orderLineList
-// 3. Get all orderlines from db
-// 4. Iterate over reqOrderLines and set dbOrderLines.quantityDelivered where
-//   orderLinesId is the correct one and subtract storage content. If delivered
-//   is bigger than ordered set ordered to delivered.
-// 5. if all orderLines in Order is set to ordered value, set order to delivered.
-
 const checkoutOrderLines = async (req, res) => {
   try {
     const hasAccess = await userRoles.hasWarehouseWorkerAccess(req)
@@ -317,9 +315,6 @@ const checkoutOrderLines = async (req, res) => {
         const orderLine = await orderLines.OrderLine.findOne({
           where: { id: reqOrderLine.id }
         })
-        // const item = await items.Item.findOne({
-        //   where: { id: orderLine.dataValues.itemId }
-        // })
 
         const storageContent = await storageContents.StorageContent.findOne({
           where: {
