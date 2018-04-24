@@ -43,9 +43,9 @@ const addItem = async (req, res) => {
       }
       /** To do: Control that req.body.articleNumber and supplier are not empty! */
       const item = await items.findUniqueItem(
-        req.body.name, req.body.articleNumber, req.body.supplier)
+        req.body.articleNumber, req.body.supplier)
 
-      if (item.length > 0) {
+      if (item.length > 0 && (req.body.articleNumber && req.body.supplier)) {
         return res.status(400).json({
           success: false,
           message: 'Item already exists'
