@@ -117,6 +117,7 @@ app.get('/api/warehouse/location/list', storageLocations.getStorageLocations)
 app.post('/api/warehouse/getLocationById', storageLocations.getById)
 
 app.get('/api/warehouse/product/ordered/list', orders.getQuantityOfOrderedItems)
+app.get('/api/warehouse/product/ordered/list/:storageLocationId', orders.getQuantityOfOrderedItemsInLocation)
 
 // app.get('/api/warehouse/product/inventory', items.getInventory)
 

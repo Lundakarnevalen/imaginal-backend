@@ -6,6 +6,7 @@ const warehouseUser = require('../models/warehouseUser')
 const orderLines = require('../models/orderLine')
 const storageContents = require('../models/storageContents')
 const items = require('../models/item')
+const locations = require('../models/storageLocation')
 
 const createOrder = async (req, res) => {
   try {
@@ -420,6 +421,60 @@ const getQuantityOfOrderedItems = async (req, res) => {
   }
 }
 
+const getQuantityOfOrderedItemsInLocation = async (req, res) => {
+  try {
+    const hasAccess = await userRoles.hasWarehouseCustomerAccess(req)
+    if (hasAccess) {
+      const findLocation = await locations.StorageLocation.findOne({
+        where: { id: req.params.storageLocationId }
+      })
+      if (!findLocation) {
+        return res.status(400).json({
+          success: false,
+          message: 'No location with that id exists'
+        })
+      } else {
+        const list = []
+        const allItems = await storageContents.StorageContent.findAll({
+          where: { storageLocationId: req.params.storageLocationId }
+        })
+        for (const item of allItems) {
+          const itemId = item.id
+          const orderedItems = await orderLines.OrderLine.findAll({
+            where: { itemId: itemId }
+          })
+          let totQuantity = 0
+          if (orderedItems.length > 0) {
+            for (const order of orderedItems) {
+              const orderQuantity = order.quantityOrdered - order.quantityDelivered
+              totQuantity += orderQuantity
+            }
+          }
+          const object = {
+            itemId: itemId,
+            quantity: totQuantity
+          }
+          list.push(object)
+        }
+        return res.status(200).json({
+          success: true,
+          data: list
+        })
+      }
+    } else {
+      return res.status(401).json({
+        success: false,
+        message: 'Go away!'
+      })
+    }
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to get ordered items'
+    })
+  }
+}
+
 module.exports = {
   createOrder,
   removeOrder,
@@ -429,5 +484,6 @@ module.exports = {
   getOrdersOnUser,
   checkoutOrderLines,
   getOrderById,
-  getQuantityOfOrderedItems
+  getQuantityOfOrderedItems,
+  getQuantityOfOrderedItemsInLocation
 }
