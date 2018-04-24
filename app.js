@@ -15,6 +15,7 @@ const users = require('./users/userController')
 const storageLocations = require('./controllers/storageLocation')
 const items = require('./controllers/item')
 const tags = require('./controllers/tag')
+const tools = require('./controllers/tool')
 const warehouseUser = require('./controllers/warehouseUser')
 
 app.use(bodyParser.json())
@@ -103,6 +104,10 @@ app.get('/api/role/:roleid', role.getUsers)
 app.post('/api/warehouse/tag/new', tags.addTag)
 app.delete('/api/warehouse/tag/delete/:tagid', tags.removeTag)
 app.get('/api/warehouse/tag/list', tags.getAllTags)
+
+app.post('/api/warehouse/tool/new', tools.addTool)
+app.delete('/api/warehouse/tool/delete/:toolid', tools.removeTool)
+app.get('/api/warehouse/tool/list', tools.getAllTools)
 
 app.post('/api/warehouse/product/new', items.addItem)
 app.post('/api/warehouse/product/edit', items.editItem)
