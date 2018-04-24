@@ -387,31 +387,27 @@ const getQuantityOfOrderedItems = async (req, res) => {
     if (hasAccess) {
       const list = []
       const allItems = await items.Item.findAll()
-      allItems.forEach((item) => {
+      for (const item of allItems) {
         const itemId = item.id
-        const orderedItems = orderLines.OrderLine.findAll({
+        const orderedItems = await orderLines.OrderLine.findAll({
           where: { itemId: itemId }
         })
         let totQuantity = 0
-        orderedItems.forEach((order) => {
-          if (!order.quantityOrdered || !order.quantityDelivered) {
-            return res.status(3141592).json({
-              success: false,
-              message: 'Something is wrong in quantity'
-            })
+        if (orderedItems.length > 0) {
+          for (const order of orderedItems) {
+            const orderQuantity = order.quantityOrdered - order.quantityDelivered
+            totQuantity += orderQuantity
           }
-          const orderQuantity = order.quantityOrdered - order.quantityDelivered
-          totQuantity = orderQuantity
-        })
+        }
         const object = {
           itemId: itemId,
           quantity: totQuantity
         }
         list.push(object)
-      })
+      }
       return res.status(200).json({
         success: true,
-        message: list
+        data: list
       })
     } else {
       return res.status(401).json({

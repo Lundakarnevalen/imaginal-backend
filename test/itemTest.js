@@ -458,7 +458,6 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
         })
     })
 
-    /** Tests for orderedItems */
     it('Unauthorized getQuantityOfOrderedItems, role: random user', done => {
       api.get('/api/warehouse/product/ordered/list')
         .set('Authorization', 'bearer ' + user.token)
@@ -481,6 +480,8 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
             process.exit(1)
           }
           await expect(res.statusCode).to.equal(200)
+          await expect(res.body.data[0].itemId).to.equal(1)
+          await expect(res.body.data[0].quantity).to.equal(25)
           done()
         })
     })
