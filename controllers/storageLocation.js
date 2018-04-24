@@ -40,7 +40,7 @@ const getStorageLocations = async (req, res) => {
   })
 }
 
-const getByID = async (req, res) => {
+const getById = async (req, res) => {
   const locations = await storageLocations.StorageLocation.findAll()
   const theLocation = await locations.find(location => location.id === req.body.id)
   if (theLocation) {
@@ -51,14 +51,14 @@ const getByID = async (req, res) => {
   } else {
     res.json({
       success: false,
-      message: 'No such ID'
+      message: 'No such id'
     })
   }
 }
 
 const getInventory = async (req, res) => {
   try {
-    const hasAccess = await userRoles.hasWarehouseCustomerAccess(req)
+    const hasAccess = await userRoles.hasWarehouseWorkerAccess(req)
     if (hasAccess) {
       const storageLocationId = req.body.storageLocationId
       const locationExists = await storageLocations.StorageLocation.findOne({

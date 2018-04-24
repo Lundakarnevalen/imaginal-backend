@@ -184,14 +184,14 @@ const getItemOne = () => {
 
 const getItemTwo = () => {
   return {
-    'name': 'cider2',
+    'name': 'cider3',
     'imageUrl': 'hej.se',
     'unit': 'burk',
     'purchasePrice': 20,
     'salesPrice': 30,
     'description': 'det är en cider',
-    'articleNumber': '1723252',
-    'supplier': 'FINN',
+    'articleNumber': '172',
+    'supplier': 'FINN2',
     'note': 'Detta är ju kalas',
     'warningAmount': '100',
     'vat': 15
@@ -210,6 +210,53 @@ const getTagTwo = () => {
   }
 }
 
+const getOrderOne = () => {
+  return {
+    'id': 1,
+    'deliveryDate': '2018-04-13 00:00:00',
+    'storageLocationId': 1,
+    'orderLines': [getOrderLineOne(), getOrderLineTwo()]
+  }
+}
+
+const getOrderTwo = () => {
+  return {
+    'id': 2,
+    'deliveryDate': '2018-04-15 00:00:00',
+    'storageLocationId': 1,
+    'orderLines': [getOrderLineTwo()]
+  }
+}
+
+const getOrderLineOne = () => {
+  return {
+    'itemId': 1,
+    'quantity': 20
+  }
+}
+
+const getOrderLineTwo = () => {
+  return {
+    'itemId': 2,
+    'quantity': 10
+  }
+}
+
+const getCostBearer = () => {
+  return {
+    'id': 1,
+    'name': 'Fabriken'
+  }
+}
+
+const getWarehouseUser = () => {
+  return {
+    'id': 1,
+    'userId': 15000,
+    'costBearerId': 1
+  }
+}
+
 module.exports = {
   getToken,
   getUser,
@@ -220,5 +267,11 @@ module.exports = {
   getItemOne,
   getItemTwo,
   getTagOne,
-  getTagTwo
+  getTagTwo,
+  getOrderOne,
+  getOrderTwo,
+  getOrderLineOne,
+  getOrderLineTwo,
+  getCostBearer,
+  getWarehouseUser
 }

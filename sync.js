@@ -11,6 +11,8 @@ require('./users/userController')
 require('./controllers/item')
 require('./controllers/storageLocation')
 require('./controllers/tag')
+require('./controllers/warehouseUser')
+require('./controllers/order')
 
 require('./config/database')
   .sync()
