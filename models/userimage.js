@@ -7,11 +7,11 @@ const UserImage = dbc.define('UserImage', {
     type: Sequelize.INTEGER
   },
   image_name: {
-    type: Sequelize.STRING,
+    type: Sequelize.STRING(100),
     primaryKey: true
   },
   comments: {
-    type: Sequelize.STRING
+    type: Sequelize.TEXT,
   },
   bad_picture: {
     type: Sequelize.BOOLEAN
