@@ -100,60 +100,98 @@ const createItem = async (req, res) => {
   })
 }
 
-const addQuantity = async function (req, res) {
+const addQuantity = async (req, res) => {
   /** Check locationID, itemID, addedQuantity != null */
-  if (!req.body.locationId || !req.body.itemId || !req.body.addedQuantity) {
-    return res.status(400).json({
-      success: false,
-      message: 'Invalid parameter'
-    })
-  }
-  /** Check if locationID and itemID exist */
-  const findLocation = await storageLocations.StorageLocation.findOne({
-    where: { id: req.body.locationId }
-  })
-  if (!findLocation) {
-    return res.status(400).json({
-      success: false,
-      message: 'No such location'
-    })
-  }
-  const findItem = await items.Item.findOne({
-    where: { id: req.body.itemId }
-  })
-
-  if (!findItem) {
-    return res.status(400).json({
-      success: false,
-      message: 'No such item'
-    })
-  }
-
-  const getStorage = await storageContents.StorageContent.findOne({
-    where: {
-      locationId: req.body.locationId,
-      itemId: req.body.itemId
+  try {
+    const hasAccess = await userRoles.hasWarehouseWorkerAccess(req)
+    if (hasAccess) {
+      if (!req.body.storageContentId || !req.body.quantity) {
+        return res.status(400).json({
+          success: false,
+          message: 'Invalid parameter'
+        })
+      }
+      /** Check if locationID and itemID exist */
+      const storageContent = await storageContents.StorageContent.findOne({
+        where: { id: req.body.storageContentId }
+      })
+      if (!storageContent) {
+        return res.status(400).json({
+          success: false,
+          message: 'No such storage content'
+        })
+      }
+      storageContents.StorageContent.update({ quantity: storageContent.dataValues.quanity + req.body.quantiy },
+        { where: { id: storageContent.dataValues.id } })
+      return res.json({
+        success: true,
+        message: 'Quantity added to storage content'
+      })
+    } else {
+      return res.status(401).json({
+        success: false,
+        message: 'Go away!'
+      })
     }
-  })
+  } catch (err) {
+    console.log(err)
+    return res.status(500).json({
+      success: false,
+      message: 'Something went horribly wrong!'
+    })
+  }
+}
 
-  if (!getStorage) {
-    /** Add Item to Location */
-    await storageContents.StorageContent.create({
-      locationId: req.body.locationId,
-      itemId: req.body.itemId,
-      quantity: req.body.addedQuantity
-    })
-    return res.json({
-      success: true,
-      message: 'Item(s) added to storage location'
-    })
-  } else {
-    /** Update quantity */
-    getStorage.quantity += req.body.addedQuantity
-    await getStorage.save()
-    return res.json({
-      success: true,
-      message: 'Storage location updated'
+const addToStorageContent = async (req, res) => {
+  try {
+    const hasAccess = await userRoles.hasWarehouseWorkerAccess(req)
+    if (hasAccess) {
+      if (!req.body.storageLocationId || !req.body.itemId || !req.body.quantity) {
+        return res.status(400).json({
+          success: false,
+          message: 'Invalid parameters'
+        })
+      }
+      const item = await items.Item.findOne({
+        where: { id: req.body.itemId }
+      })
+
+      if (!item) {
+        return res.status(400).json({
+          success: false,
+          message: 'No such item!'
+        })
+      }
+      const storageLocation = await storageLocations.StorageLocation.findOne({
+        where: { id: req.body.storageLocationId }
+      })
+      if (!storageLocation) {
+        return res.status(400).json({
+          success: false,
+          message: 'No such storageLocation!'
+        })
+      }
+
+      storageContents.StorageContent.create({
+        storageLocationId: req.body.storageLocationId,
+        itemId: req.body.itemId,
+        quantity: req.body.quantity
+      })
+      return res.json({
+        success: true,
+        message: 'Item added to stroageContent with specified quantity'
+      })
+    } else {
+      return res.status(401).json({
+        success: false,
+        message: 'Go away!'
+      })
+    }
+  } catch (err) {
+    console.log(err)
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to retrive items'
     })
   }
 }
@@ -315,5 +353,6 @@ module.exports = {
   getItemsOnTags,
   getItemById,
   addQuantity,
+  addToStorageContent,
   getItemByArticleId
 }

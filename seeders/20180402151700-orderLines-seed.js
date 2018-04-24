@@ -5,7 +5,7 @@ module.exports = {
     await queryInterface.bulkInsert('OrderLines', [{
       orderId: 1,
       itemId: 1,
-      quantityOrdered: 20,
+      quantityOrdered: 70,
       quantityDelivered: 10,
       createdAt: new Date().toISOString().substr(0, 10),
       updatedAt: new Date().toISOString().substr(0, 10)
@@ -13,7 +13,7 @@ module.exports = {
     await queryInterface.bulkInsert('OrderLines', [{
       orderId: 2,
       itemId: 1,
-      quantityOrdered: 30,
+      quantityOrdered: 90,
       quantityDelivered: 15,
       createdAt: new Date().toISOString().substr(0, 10),
       updatedAt: new Date().toISOString().substr(0, 10)
