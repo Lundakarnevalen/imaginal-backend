@@ -367,7 +367,7 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
             process.exit(1)
           }
           await expect(res.statusCode).to.equal(200)
-          await expect(res.body.data[0].orderLines[0].quantityDelivered).to.equal(15)
+          await expect(res.body.data[0].orderLines[0].quantityDelivered).to.equal(10)
           done()
         })
     })
@@ -487,7 +487,6 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
     it('Unauthorized getOrdersOnSection, role: warehouseManager', done => {
       api.get('/api/warehouse/order/location/list/1')
         .set('Authorization', 'bearer ' + warehouseManager.token)
-        .send(orderOne)
         .end(async (err, res) => {
           if (err) {
             console.error('Failed to run test, aborting')
@@ -495,7 +494,7 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
           }
           await expect(res.statusCode).to.equal(200)
           await expect(res.body.data[0].id).to.equal(1)
-          await expect(res.body.data[0].warehouseUserId).to.equal(1)
+          await expect(res.body.data[0].orderLines[0].quantityDelivered).to.equal(10)
           done()
         })
     })
@@ -614,9 +613,8 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
     })
 
     it('Unauthorized getOrdersOnSection, role: admin', done => {
-      api.delete('/api/warehouse/order/location/list/1')
+      api.get('/api/warehouse/order/location/list/1')
         .set('Authorization', 'bearer ' + admin.token)
-        .send(orderOne)
         .end(async (err, res) => {
           if (err) {
             console.error('Failed to run test, aborting')
@@ -624,7 +622,7 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
           }
           await expect(res.statusCode).to.equal(200)
           await expect(res.body.data[0].id).to.equal(1)
-          await expect(res.body.data[0].warehouseUserId).to.equal(1)
+          await expect(res.body.data[0].orderLines[0].quantityDelivered).to.equal(10)
           done()
         })
     })

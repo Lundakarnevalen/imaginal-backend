@@ -122,6 +122,13 @@ const addQuantity = async function (req, res) {
     where: { id: req.body.itemId }
   })
 
+  if (!findItem) {
+    return res.status(400).json({
+      success: false,
+      message: 'No such item'
+    })
+  }
+
   const getStorage = await storageContents.StorageContent.findOne({
     where: {
       locationId: req.body.locationId,
@@ -129,12 +136,6 @@ const addQuantity = async function (req, res) {
     }
   })
 
-  if (!findItem) {
-    return res.status(400).json({
-      success: false,
-      message: 'No such item'
-    })
-  }
   if (!getStorage) {
     /** Add Item to Location */
     await storageContents.StorageContent.create({
