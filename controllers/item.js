@@ -146,8 +146,6 @@ const addToStorageContent = async (req, res) => {
   try {
     const hasAccess = await userRoles.hasWarehouseWorkerAccess(req)
     if (hasAccess) {
-      console.log('-------------------')
-      console.log(req.body)
       if (!req.body.storageLocationId || !req.body.itemId || !req.body.quantity) {
         return res.status(400).json({
           success: false,
@@ -167,8 +165,6 @@ const addToStorageContent = async (req, res) => {
       const storageLocation = await storageLocations.StorageLocation.findOne({
         where: { id: req.body.storageLocationId }
       })
-      console.log('----------------')
-      console.log(storageLocation)
       if (!storageLocation) {
         return res.status(400).json({
           success: false,
