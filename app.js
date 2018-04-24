@@ -110,7 +110,7 @@ app.get('/api/warehouse/product/all', items.getAllItems)
 app.get('/api/warehouse/product/:id', items.getItemById)
 app.post('/api/warehouse/product/itemontags', items.getItemsOnTags)
 app.post('/api/warehouse/product/addQuantity', items.addQuantity)
-app.post('/api/warehouse/product/addtostoragecontent', items.addToStorageContent) /** For testing */
+app.post('/api/warehouse/product/addtostoragecontent', items.addToStorageContent)
 app.get('/api/warehouse/product/getAllItems', items.getAllItems)
 
 app.post('/api/warehouse/location/new', storageLocations.addStorageLocation)

@@ -121,7 +121,7 @@ const addQuantity = async (req, res) => {
           message: 'No such storage content'
         })
       }
-      storageContents.StorageContent.update({ quantity: storageContent.dataValues.quanity + req.body.quantiy },
+      storageContents.StorageContent.update({ quantity: storageContent.dataValues.quantity + req.body.quantity },
         { where: { id: storageContent.dataValues.id } })
       return res.json({
         success: true,
@@ -179,7 +179,7 @@ const addToStorageContent = async (req, res) => {
       })
       return res.json({
         success: true,
-        message: 'Item added to stroageContent with specified quantity'
+        message: 'Item added to storage content with specified quantity'
       })
     } else {
       return res.status(401).json({
