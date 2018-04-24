@@ -3,12 +3,16 @@ const Sequelize = require('sequelize')
 const dbc = require('../config/database')
 
 const UserImage = dbc.define('UserImage', {
+  id: {
+    autoIncrement: true,
+    primaryKey: true,
+    type: Sequelize.INTEGER
+  },
   user_id: {
     type: Sequelize.INTEGER
   },
   image_name: {
     type: Sequelize.STRING,
-    primaryKey: true
   },
   comments: {
     type: Sequelize.STRING
