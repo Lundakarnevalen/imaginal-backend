@@ -38,7 +38,7 @@ Role.belongsToMany(User, {
 
 const hasRole = function (user, role) { // (user, role) returns a boolean-promise
   return Role.findOne({
-    where: {description: role}
+    where: { description: role }
   }).then(role => {
     return user.hasRole(role)
   })

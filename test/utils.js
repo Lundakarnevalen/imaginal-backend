@@ -184,14 +184,14 @@ const getItemOne = () => {
 
 const getItemTwo = () => {
   return {
-    'name': 'cider2',
+    'name': 'cider3',
     'imageUrl': 'hej.se',
     'unit': 'burk',
     'purchasePrice': 20,
     'salesPrice': 30,
     'description': 'det är en cider',
-    'articleNumber': '1723252',
-    'supplier': 'FINN',
+    'articleNumber': '172',
+    'supplier': 'FINN2',
     'note': 'Detta är ju kalas',
     'warningAmount': '100',
     'vat': 15
@@ -207,6 +207,38 @@ const getTagOne = () => {
 const getTagTwo = () => {
   return {
     'name': 'tagTwo'
+  }
+}
+
+const getOrderOne = () => {
+  return {
+    'id': 1,
+    'deliveryDate': '2018-04-13 00:00:00',
+    'storageLocationId': 1,
+    'orderLines': [getOrderLineOne(), getOrderLineTwo()]
+  }
+}
+
+const getOrderTwo = () => {
+  return {
+    'id': 2,
+    'deliveryDate': '2018-04-15 00:00:00',
+    'storageLocationId': 1,
+    'orderLines': [getOrderLineTwo()]
+  }
+}
+
+const getOrderLineOne = () => {
+  return {
+    'itemId': 1,
+    'quantity': 20
+  }
+}
+
+const getOrderLineTwo = () => {
+  return {
+    'itemId': 2,
+    'quantity': 10
   }
 }
 
@@ -236,6 +268,10 @@ module.exports = {
   getItemTwo,
   getTagOne,
   getTagTwo,
+  getOrderOne,
+  getOrderTwo,
+  getOrderLineOne,
+  getOrderLineTwo,
   getCostBearer,
   getWarehouseUser
 }

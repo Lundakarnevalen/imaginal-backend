@@ -4,9 +4,9 @@ const userRoles = require('../models/userrole')
 const costBearer = require('../models/costBearer')
 const warehouseUser = require('../models/warehouseUser')
 
-const getAllWarehouseUsers = async(req, res) => {
+const getAllWarehouseUsers = async (req, res) => {
   try {
-    const hasAccess = await userRoles.hasWarehouseCustomerAccess(req)
+    const hasAccess = await userRoles.hasWarehouseWorkerAccess(req)
 
     if (hasAccess) {
       const warehouseUsers = await warehouseUser.WarehouseUser.findAll()
@@ -28,13 +28,13 @@ const getAllWarehouseUsers = async(req, res) => {
   }
 }
 
-const getWarehouseUserById = async(req, res) => {
+const getWarehouseUserById = async (req, res) => {
   try {
     const hasAccess = await userRoles.hasWarehouseCustomerAccess(req)
     if (hasAccess) {
       const userId = req.user.id
       const warehouseUsers = await warehouseUser.WarehouseUser.findOne({
-        where: {userId: userId}
+        where: { userId: userId }
       })
       if (warehouseUsers) {
         return res.json({
@@ -61,7 +61,7 @@ const getWarehouseUserById = async(req, res) => {
   }
 }
 
-const getWarehouseUserByCostBearer = async(req, res) => {
+const getWarehouseUserByCostBearer = async (req, res) => {
   try {
     const hasAccess = await userRoles.hasWarehouseCustomerAccess(req)
     if (hasAccess) {
@@ -86,7 +86,7 @@ const getWarehouseUserByCostBearer = async(req, res) => {
   }
 }
 
-const getAllCostBearers = async(req, res) => {
+const getAllCostBearers = async (req, res) => {
   try {
     const hasAccess = await userRoles.hasWarehouseCustomerAccess(req)
     if (hasAccess) {

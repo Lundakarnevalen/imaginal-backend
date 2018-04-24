@@ -15,6 +15,7 @@ const users = require('./users/userController')
 const storageLocations = require('./controllers/storageLocation')
 const items = require('./controllers/item')
 const tags = require('./controllers/tag')
+const orders = require('./controllers/order')
 const warehouseUser = require('./controllers/warehouseUser')
 
 app.use(bodyParser.json())
@@ -41,7 +42,6 @@ app.post('/register', register.registerUser)
 app.post('/login/email', login.loginByEmail)
 app.post('/login/forgotpassword', forgotPassword.forgotPassword)
 app.post('/login/resetpassword', forgotPassword.setNewPassword)
-
 app.get('/getallsections', section.getAllSections)
 
 /**
@@ -109,14 +109,23 @@ app.post('/api/warehouse/product/edit', items.editItem)
 app.get('/api/warehouse/product/all', items.getAllItems)
 app.get('/api/warehouse/product/:id', items.getItemById)
 app.post('/api/warehouse/product/itemontags', items.getItemsOnTags)
+app.post('/api/warehouse/product/addQuantity', items.addQuantity)
+app.get('/api/warehouse/product/getAllItems', items.getAllItems)
 
 app.post('/api/warehouse/location/new', storageLocations.addStorageLocation)
 app.get('/api/warehouse/location/list', storageLocations.getStorageLocations)
+app.post('/api/warehouse/getLocationById', storageLocations.getById)
 
-app.post('/api/warehouse/location/additems', items.addItemsToLocation)
-app.get('/api/warehouse/location/getallitems/:locationid', storageLocations.getItemsInStorageLocation)
+// app.get('/api/warehouse/product/inventory', items.getInventory)
 
-app.post('/api/warehouse/getLocationByID', storageLocations.getByID) /* For testing */
+app.post('/api/warehouse/order/new', orders.createOrder)
+app.post('/api/warehouse/order/edit', orders.editOrder)
+app.get('/api/warehouse/order/list', orders.getAllOrders)
+app.get('/api/warehouse/order/:id', orders.getOrderById)
+app.delete('/api/warehouse/order/remove/:orderId', orders.removeOrder)
+app.post('/api/warehouse/order/checkout', orders.checkoutOrderLines)
+app.get('/api/warehouse/order/list/user', orders.getOrdersOnUser)
+app.get('/api/warehouse/order/location/list/:storageLocationId', orders.getOrdersOnSection)
 
 app.get('/api/warehouse/user/list', warehouseUser.getAllWarehouseUsers)
 app.get('/api/warehouse/user/', warehouseUser.getWarehouseUserById)
