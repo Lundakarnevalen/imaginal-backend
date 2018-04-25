@@ -1,6 +1,10 @@
 'use strict'
 
+<<<<<<< Updated upstream
 const tools = require('../models/tools')
+=======
+const tools = require('../models/tool')
+>>>>>>> Stashed changes
 const userRoles = require('../models/userrole')
 
 const addTool = async (req, res) => {

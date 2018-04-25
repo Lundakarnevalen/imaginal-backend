@@ -1,5 +1,8 @@
+'use strict'
 const Sequelize = require('sequelize')
 const dbc = require('../config/database')
+const Tool = require('./tools').Tool
+const WarehouseUser = require('./warehouseUser').WarehouseUser
 
 const BorrowedTool = dbc.define('BorrowedTools', {
   id: {
@@ -8,11 +11,28 @@ const BorrowedTool = dbc.define('BorrowedTools', {
     type: Sequelize.INTEGER
   },
   startDate: Sequelize.DATE,
-  endDate: Sequelize.DATE,
+  returnDate: Sequelize.DATE,
   checkedOut: Sequelize.BOOLEAN,
-  returned: Sequelize.BOOLEAN
+  returned: Sequelize.BOOLEAN,
+  warehouseUserId: Sequelize.INTEGER,
+  toolId: sequelize.INTEGER
 })
 
+<<<<<<< Updated upstream
 module.exports = {
   BorrowedTool
 }
+=======
+BorrowedTool.(Tool, {
+  through: {
+    model: BorrowedTool,
+    unique: false
+  },
+  foreignKey: 'itemId',
+  constraints: false
+})
+
+WarehouseUser.belongsToMany(
+
+)
+>>>>>>> Stashed changes
