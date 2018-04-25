@@ -118,6 +118,7 @@ const getInventory = async (req, res) => {
         })
       }
       const storage = await storageLocations.StorageLocation.findAll({
+        where: { id: storageLocationId },
         include: [{
           model: items.Item,
           through: {
