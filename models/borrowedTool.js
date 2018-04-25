@@ -13,3 +13,6 @@ const BorrowedTool = dbc.define('BorrowedTools', {
   returned: Sequelize.BOOLEAN
 })
 
+module.exports = {
+  BorrowedTool
+}

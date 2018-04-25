@@ -1,6 +1,7 @@
 'use strict'
 
-const tools = require('../models/tool')
+const tools = require('../models/tools')
+const userRoles = require('../models/userrole')
 
 const addTool = async (req, res) => {
   try {
@@ -69,7 +70,7 @@ const removeTool = async (req, res) => {
     const hasAccess = await userRoles.hasWarehouseAdminAccess(req)
     if (hasAccess) {
       const toolId = req.params.toolid
-      const tool = await tools.tool.findOne({
+      const tool = await tools.Tool.findOne({
         where: {id: toolId}
       })
       if (!tool) {
@@ -98,8 +99,7 @@ const removeTool = async (req, res) => {
   }
 }
 
-
-//Private method
+// Private method
 const createTool = function (req, res) {
   tools.Tool.create({
     name: req.body.name,
@@ -111,4 +111,10 @@ const createTool = function (req, res) {
     success: true,
     message: 'Tool added'
   })
+}
+
+module.exports = {
+  addTool,
+  getAllTools,
+  removeTool
 }

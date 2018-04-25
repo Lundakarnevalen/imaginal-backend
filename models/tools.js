@@ -10,10 +10,10 @@ const Tool = dbc.define('Tools', {
   name: Sequelize.STRING,
   description: Sequelize.STRING,
   imgUrl: Sequelize.TEXT,
-  quantity: Sequelize.INTEGER,
+  quantity: Sequelize.INTEGER
 })
 
-//Tool.hasMany(BorrowedTool, {as: 'BorrowedTools', foreignKey: 'toolId'})
+// Tool.hasMany(BorrowedTool, {as: 'BorrowedTools', foreignKey: 'toolId'})
 
 module.exports = {
   Tool

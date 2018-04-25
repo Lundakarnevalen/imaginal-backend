@@ -9,7 +9,7 @@ const WarehouseUser = dbc.define('WarehouseUser', {
   }
 })
 
-//WarehouseUser.hasOne(BorrowedTool, {as: 'BorrowedTool', foreignKey: 'warehouseUserId'})
+// WarehouseUser.hasOne(BorrowedTool, {as: 'BorrowedTool', foreignKey: 'warehouseUserId'})
 
 module.exports = {
   WarehouseUser

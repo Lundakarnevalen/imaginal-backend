@@ -2,13 +2,12 @@ const supertest = require('supertest')
 const api = supertest('http://localhost:3000')
 const expect = require('chai').expect
 
-module.exports = (user, admin, warehouseCustomer, warehouseWorker,
-                  warehouseManager, toolOne, toolTwo) => describe('API /api/warehouse/tool tool tests', function () {
+module.exports = (user, admin, warehouseCustomer, warehouseWorker, warehouseManager, toolOne, toolTwo) => describe('API /api/warehouse/tool tool tests', function () {
   it('Unauthorized addTool, role: random user', done => {
     api.post('/api/warehouse/tool/new')
       .set('Authorization', 'bearer ' + user.token)
       .send(toolOne)
-      .end(async(err, res) => {
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
@@ -38,7 +37,7 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
     api.post('/api/warehouse/tool/new')
       .set('Authorization', 'bearer ' + warehouseWorker.token)
       .send(toolOne)
-      .end(async(err, res) => {
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
@@ -53,7 +52,7 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
     api.post('/api/warehouse/tool/new')
       .set('Authorization', 'bearer ' + warehouseManager.token)
       .send(toolOne)
-      .end(async(err, res) => {
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
@@ -67,7 +66,7 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
     api.post('/api/warehouse/tool/new')
       .set('Authorization', 'bearer ' + admin.token)
       .send(toolTwo)
-      .end(async(err, res) => {
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
@@ -83,7 +82,7 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
       .send({
         nam1e: 'OneTool'
       })
-      .end(async(err, res) => {
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
@@ -97,7 +96,7 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
   it('Unauthorized getTool, role: user', done => {
     api.get('/api/warehouse/tool/list')
       .set('Authorization', 'bearer ' + user.token)
-      .end(async(err, res) => {
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
@@ -110,13 +109,13 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
   it('Authorized getTool, role: WarehouseCustomer', done => {
     api.get('/api/warehouse/tool/list')
       .set('Authorization', 'bearer ' + warehouseCustomer.token)
-      .end(async(err, res) => {
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
         }
         await expect(res.statusCode).to.equal(200)
-        await expect(res.body.data[0].name).to.equal('öl')
+        await expect(res.body.data[0].name).to.equal('ÖrnisHammare')
         done()
       })
   })
@@ -124,13 +123,13 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
   it('Authorized getTool, role: WarehouseCustomer', done => {
     api.get('/api/warehouse/tool/list')
       .set('Authorization', 'bearer ' + warehouseWorker.token)
-      .end(async(err, res) => {
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
         }
         await expect(res.statusCode).to.equal(200)
-        await expect(res.body.data[0].name).to.equal('öl')
+        await expect(res.body.data[0].name).to.equal('ÖrnisHammare')
         done()
       })
   })
@@ -138,13 +137,13 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
   it('Authorized getTool, role: WarehouseCustomer', done => {
     api.get('/api/warehouse/tool/list')
       .set('Authorization', 'bearer ' + warehouseManager.token)
-      .end(async(err, res) => {
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
         }
         await expect(res.statusCode).to.equal(200)
-        await expect(res.body.data[0].name).to.equal('öl')
+        await expect(res.body.data[0].name).to.equal('ÖrnisHammare')
         done()
       })
   })
@@ -152,13 +151,13 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
   it('Authorized getTool, role: WarehouseCustomer', done => {
     api.get('/api/warehouse/tool/list')
       .set('Authorization', 'bearer ' + admin.token)
-      .end(async(err, res) => {
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
         }
         await expect(res.statusCode).to.equal(200)
-        await expect(res.body.data[0].name).to.equal('öl')
+        await expect(res.body.data[0].name).to.equal('ÖrnisHammare')
         done()
       })
   })
@@ -166,8 +165,8 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
   it('Unauthorized deleteTool, role: None', done => {
     api.delete('/api/warehouse/tool/delete/2')
       .set('Authorization', 'bearer ' + user.token)
-      .send({ id: 2 })
-      .end(async(err, res) => {
+      .send({id: 2})
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
@@ -180,7 +179,7 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
   it('Unauthorized deleteTool, role: warehouse customer', done => {
     api.delete('/api/warehouse/tool/delete/2')
       .set('Authorization', 'bearer ' + warehouseCustomer.token)
-      .end(async(err, res) => {
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
@@ -194,7 +193,7 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
   it('Unauthorized deleteTool, role: warehouse worker', done => {
     api.delete('/api/warehouse/tool/delete/2')
       .set('Authorization', 'bearer ' + warehouseWorker.token)
-      .end(async(err, res) => {
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
@@ -206,9 +205,9 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
   })
 
   it('Authorized deleteTool, role: warehouse manager', done => {
-    api.delete('/api/warehouse/tool/delete/2')
+    api.delete('/api/warehouse/tool/delete/1')
       .set('Authorization', 'bearer ' + warehouseManager.token)
-      .end(async(err, res) => {
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
@@ -219,9 +218,9 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
   })
 
   it('Authorized deleteTool, role: admin', done => {
-    api.delete('/api/warehouse/tool/delete/3')
+    api.delete('/api/warehouse/tool/delete/2')
       .set('Authorization', 'bearer ' + admin.token)
-      .end(async(err, res) => {
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)

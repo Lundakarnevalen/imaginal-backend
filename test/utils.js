@@ -198,6 +198,24 @@ const getItemTwo = () => {
   }
 }
 
+const getToolOne = () => {
+  return {
+    'name': 'ÖrnisHammare',
+    'description': 'Den är jättestor!',
+    'imgUrl': 'https://thumbs.dreamstime.com/b/stor-hammare-35151100.jpg',
+    'quantity': 13
+  }
+}
+
+const getToolTwo = () => {
+  return {
+    'name': 'ArcombesHammare',
+    'description': 'Den är medelstor!',
+    'imgUrl': 'https://st.depositphotos.com/1494934/4274/i/950/depositphotos_42748953-stock-photo-strong-fat-man-holding-a.jpg',
+    'quantity': 17
+  }
+}
+
 const getTagOne = () => {
   return {
     'name': 'tagOne'
@@ -236,6 +254,8 @@ module.exports = {
   getItemTwo,
   getTagOne,
   getTagTwo,
+  getToolOne,
+  getToolTwo,
   getCostBearer,
   getWarehouseUser
 }
