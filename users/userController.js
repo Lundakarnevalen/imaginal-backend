@@ -66,7 +66,7 @@ const getSectionByPersonalNumber = async (req, res) => {
     let imagePath = ''
     try{
       const userImage = await UserImage.findOne({
-        where: { user_id: user.id, current_image: 1}
+        where: { user_id: user.id, current_image: 1, bad_picture: 0}
       })
       imagePath = s3.getSignedUrl('getObject', { Bucket: croppedThumbBucket, Key: userImage.image_name })
     } catch(err){
