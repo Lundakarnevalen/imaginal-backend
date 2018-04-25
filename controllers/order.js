@@ -296,80 +296,58 @@ const getOrdersOnSection = async (req, res) => {
 const checkoutOrderLines = async (req, res) => {
   try {
     const hasAccess = await userRoles.hasWarehouseWorkerAccess(req)
-    if (hasAccess) {
-      const reqOrderLines = req.body.orderLines
-
-      if (reqOrderLines.length <= 0) {
-        return res.status(400).json({
-          success: false,
-          message: 'No orderLines provided.'
-        })
-      }
-      const order = await orders.Order.findOne({
-        where: { id: reqOrderLines[0].orderId }
-      })
-      const reqStorageLocationId = order.dataValues.storageLocationId
-      let failed = false
-
-      await reqOrderLines.map(async reqOrderLine => {
-        const orderLine = await orderLines.OrderLine.findOne({
-          where: { id: reqOrderLine.id }
-        })
-
-        const storageContent = await storageContents.StorageContent.findOne({
-          where: {
-            itemId: orderLine.dataValues.itemId,
-            storageLocationId: reqStorageLocationId
-          }
-        })
-
-        if (storageContent.dataValues.quantity >= reqOrderLine.quantityDelivered &&
-          orderLine.quantityDelivered + reqOrderLine.quantityDelivered <= orderLine.quantityOrdered) {
-          storageContents.StorageContent.update(
-            { quantity: storageContent.dataValues.quantity -= reqOrderLine.quantityDelivered },
-            {
-              where: {
-                itemId: orderLine.dataValues.itemId,
-                storageLocationId: reqStorageLocationId
-              }
-            }
-          ).then((result) => {
-            if (result === 1) {
-              orderLines.OrderLine.update({ quantityDelivered: orderLine.quantityDelivered + reqOrderLine.quantityDelivered },
-                { where: { id: reqOrderLine.id } })
-            }
-          })
-        } else {
-          failed = true
-        }
-      })
-
-      if (failed) {
-        return res.status(400).json({
-          success: false,
-          message: 'Failed to checkout product due to orderline exeding ordered value'
-        })
-      }
-      const checkOrderLines = await orderLines.OrderLine.findAll({
-        where: { orderId: reqOrderLines.orderId }
-      })
-      let checkOrderFinished = false
-      checkOrderLines.map(checkOrderLine => {
-        if (checkOrderLine.quantityOrdered <= checkOrderLine.quantityDelivered) checkOrderFinished = true
-      })
-      if (checkOrderFinished) {
-        orders.Order.update({ delivered: true }, { where: { id: reqOrderLines.orderId } })
-      }
-      return res.status(200).json({
-        success: true,
-        message: 'Successfully checked order out'
-      })
-    } else {
+    if (!hasAccess) {
       return res.status(401).json({
         success: false,
         message: 'Go away!'
       })
     }
+    const reqOrderLines = req.body.orderLines
+
+    if (reqOrderLines.length <= 0) {
+      return res.status(400).json({
+        success: false,
+        message: 'No orderLines provided.'
+      })
+    }
+    let dbInfo = {
+      orderLines: null,
+      storageContent: null
+    }
+    const order = await orders.Order.findOne({
+      where: { id: reqOrderLines[0].orderId }
+    })
+    const reqStorageLocationId = order.dataValues.storageLocationId
+    const reqOrderLinesId = reqOrderLines.map(reqOrderLine => reqOrderLine.id)
+    dbInfo.orderLines = await orderLines.OrderLine.findAll({
+      where: { id: reqOrderLinesId }
+    })
+    orderLines.map(async orderLine => {
+      orderLine.storageContent = await storageContents.StorageContent.findOne({
+        where: {
+          itemId: orderLine.dataValues.itemId,
+          storageLocationId: reqStorageLocationId
+        }
+      })
+    })
+
+    orderLines.forEach(orderLine => {
+      reqOrderLines.forEach(reqOrderLine => {
+        const quantityStorage = orderLine.dataValues.storageContent.dataValues.quantity - orderLine.dataValues.quantityOrdered
+        const quantityOrderLine = orderLine.dataValues.quantityDelivered += orderLine.dataValues.quantityOrdered
+        if (quantity >= 0 && quantityOrderLine <= orderLine.dataValues.quantityOrdered) {
+          orderLine.dataValues.storageContent.dataValues.quantity = quantityStorage
+          orderLine.dataValues.quantityDelivered = quantityOrderLine
+        }
+      })
+    })
+    orderLine.dataValues.st
+    orderLine.save()
+
+    return res.status(200).json({
+      success: true,
+      message: 'Successfully checked order out'
+    })
   } catch (err) {
     return res.status(500).json({
       success: false,
