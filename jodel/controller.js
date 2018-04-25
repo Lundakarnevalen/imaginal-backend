@@ -1,4 +1,4 @@
-const TIME_LIMIT_FOR_TRENDING = Date.now() - 1000 * 60 * 60 *24 *2 //2 days old or newer
+const TIME_LIMIT_FOR_TRENDING = Date.now() - 1000 * 60 * 60 * 24 * 2 // 2 days old or newer
 const JodelPost = require('./jodelPost').Posts
 const jodelposts = require('./jodelPost')
 const Sequelize = require('sequelize')
@@ -12,7 +12,6 @@ JodelVote.sync()
 const JodelReport = require('./jodelReports').JodelReports
 JodelReport.sync()
 
-const User = require('../users/users').User
 const userRole = require('../models/userrole')
 
 const MAX_LENGTH = 240
@@ -21,7 +20,9 @@ const COMMENT_MAX_LENGTH = 140
 
 const deleteReport = async (req, res) => {
   const id = req.body.id
-  const asd = await JodelReport.findOne({ where: {id: id}})
+  const asd = await JodelReport.findOne({
+    where: {id: id}
+  })
   if (!asd) {
     return res.status(400).json({
       success: false,
@@ -43,8 +44,10 @@ const deleteComment = async (req, res) => {
       message: 'Unauthorized'
     })
   }
-  const asd = await JodelComments.findOne({ where: {id: id}})
-  if (!asd) {res.status(400).json({success:false, message: 'invalid id'})}
+  const asd = await JodelComments.findOne({
+    where: {id: id}
+  })
+  if (!asd) { res.status(400).json({success: false, message: 'invalid id'}) }
   await asd.destroy()
   await JodelReport.destroy({where: {commentId: id}})
   res.json({sucess: true})
@@ -53,25 +56,25 @@ const deleteComment = async (req, res) => {
 const deletePost = async (req, res) => {
   const id = req.body.postId
   const user = req.user
-    const hasAccess = await userRole.hasRole(user, userRole.ADMIN)
+  const hasAccess = await userRole.hasRole(user, userRole.ADMIN)
   if (!hasAccess) {
     return res.status(401).json({
       success: false,
       message: 'Unauthorized'
     })
   }
-  const asd = await JodelPost.findOne({ where: {id: id}})
-  if (!asd) {res.status(400).json({success:false, message: 'invalid id'})}
+  const asd = await JodelPost.findOne({
+    where: {id: id}
+  })
+  if (!asd) { res.status(400).json({success: false, message: 'invalid id'}) }
   await asd.destroy()
   await JodelReport.destroy({where: {postId: id}})
   res.json({sucess: true})
 }
 
-
-
 const getAllReports = async (req, res) => {
   'use strict'
-   const hasAccess = await userRole.hasRole(req.user, userRole.ADMIN)
+  const hasAccess = await userRole.hasRole(req.user, userRole.ADMIN)
   if (!hasAccess) {
     return res.status(401).json({
       success: false,
@@ -102,18 +105,15 @@ const getAllReports = async (req, res) => {
     } else {
       asd = await x.getCommentReport()
       asd = await asd.toJSON(asd)
-     }
+    }
     return asd
   }))
-
 
   res.json({
     success: true,
     reports: harrh
   })
 }
-
-
 
 const reportPost = async (req, res) => {
   const id = req.body.jodelId
@@ -139,7 +139,7 @@ const newPost = async (req, res) => {
     })
   }
 
-  const color = jodelPosts.getColor()
+  const color = jodelposts.getColor()
   const user = req.user
   const newjp = await JodelPost.create({
     text: message,
@@ -156,7 +156,7 @@ const newPost = async (req, res) => {
 const addJodelComment = async (req, res) => {
   'use strict'
   const message = req.body.message
-  if (!message || message.length > COMMENT.MAX_LENGTH || message.length < MIN_LENGTH) {
+  if (!message || message.length > COMMENT_MAX_LENGTH || message.length < MIN_LENGTH) {
     return res.status(400).json({
       success: false,
       message: 'Message too long or too short'
@@ -280,7 +280,7 @@ const getAllPosts = async (req, res) => {
   }
   const allPosts = await jodelposts.getAllPostsAndCount(offset, limit)
   const allPostsJSON = await Promise.all(allPosts.rows.map(async (post) => {
-    return await post.toJSON(post)
+    return post.toJSON(post)
   }))
   res.json({
     success: true,
@@ -296,25 +296,26 @@ const getAllPostsByVotes = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: 'Invalid offset'
-      })
-    }
+    })
+  }
   const as = await JodelVote.findAll({
     where: {createdAt: {gte: TIME_LIMIT_FOR_TRENDING}},
-	  include: [{model: JodelPost, as: 'Votes'}],
+    include: [{model: JodelPost, as: 'Votes'}],
     order: [Sequelize.fn(`SUM`, Sequelize.col('value'))],
-    group: ['postId']
+    group: ['postId'],
+    offset: offset,
+    limit: limit
   })
   const listedPosts = []
-  for (let i = as.length-1; i >= 0; i--) {
+  for (let i = as.length - 1; i >= 0; i--) {
     const asd = await as[i].Votes.toJSON(as[i].Votes)
     listedPosts.push(asd)
   }
   await Promise.all(listedPosts)
   res.json({
     posts: listedPosts,
-    success: true,
+    success: true
   })
-
 }
 
 const getAllPostsByComments = async (req, res) => {
@@ -324,93 +325,97 @@ const getAllPostsByComments = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: 'Invalid offset'
-      })
-    }
+    })
+  }
   const as = await JodelComments.findAll({
     where: {createdAt: {gte: TIME_LIMIT_FOR_TRENDING}},
-	  include: [{model: JodelPost, as: 'Comments'}],
+    include: [{model: JodelPost, as: 'Comments'}],
     order: [Sequelize.fn(`COUNT`, Sequelize.col('postId'))],
-    group: ['postId']
+    group: ['postId'],
+    offset: offset,
+    limit: limit
   })
   const listedPosts = []
-  for (let i = as.length-1; i >= 0; i--) {
+  for (let i = as.length - 1; i >= 0; i--) {
     const asd = await as[i].Comments.toJSON(as[i].Comments)
     listedPosts.push(asd)
   }
   await Promise.all(listedPosts)
   res.json({
     posts: listedPosts,
-    success: true,
+    success: true
   })
-
 }
 const getAllUserPostsByComments = async (req, res) => {
-  const user = req.user 
+  const user = req.user
   const offset = parseInt(req.params.offset) || 0
   const limit = 12
   if (offset < 0) {
     return res.status(500).json({
       success: false,
       message: 'Invalid offset'
-      })
-    }
+    })
+  }
   const as = await user.getJodelComments({
     include: [{model: JodelPost, as: 'Comments'}],
     order: [Sequelize.fn(`COUNT`, Sequelize.col('postId'))],
-    group: ['postId']
+    group: ['postId'],
+    limit: limit,
+    offset: offset
   })
   const listedPosts = []
-  for (let i = as.length-1; i >= 0; i--) {
+  for (let i = as.length - 1; i >= 0; i--) {
     const asd = await as[i].Comments.toJSON(as[i].Comments)
     listedPosts.push(asd)
   }
   await Promise.all(listedPosts)
   res.json({
     posts: listedPosts,
-    success: true,
+    success: true
   })
-
 }
 
 const getAllUserPostsByVotes = async (req, res) => {
- const user = req.user
- const offset = parseInt(req.params.offset) || 0
+  const user = req.user
+  const offset = parseInt(req.params.offset) || 0
   const limit = 12
   if (offset < 0) {
     return res.status(500).json({
       success: false,
       message: 'Invalid offset'
-      })
-    }
+    })
+  }
   const as = await user.JodelVotes({
     where: {createdAt: {gte: TIME_LIMIT_FOR_TRENDING}},
-	  include: [{model: JodelPost, as: 'Votes'}],
+    include: [{model: JodelPost, as: 'Votes'}],
     order: [Sequelize.fn(`SUM`, Sequelize.col('value'))],
-    group: ['postId']
+    group: ['postId'],
+    limit: limit,
+    offset: offset
   })
   const listedPosts = []
-  for (let i = as.length-1; i >= 0; i--) {
+  for (let i = as.length - 1; i >= 0; i--) {
     const asd = await as[i].Votes.toJSON(as[i].Votes)
     listedPosts.push(asd)
   }
   await Promise.all(listedPosts)
   res.json({
     posts: listedPosts,
-    success: true,
+    success: true
   })
 }
 
 const addFavourite = async (req, res) => {
   const postId = req.body.jodelId
-  //console.log(postId)
+  // console.log(postId)
   const user = req.user
   if (!postId) {
     return res.status(400).json({
-    success: false,
+      success: false,
       message: 'Invalid postId'
     })
   }
-  
+
   const jp = await JodelPost.findOne({
     where: {id: postId}
   })
@@ -421,19 +426,19 @@ const addFavourite = async (req, res) => {
     })
   }
   await jp.addFavouriteUser([user])
- res.json({success: true})
+  res.json({success: true})
 }
 
 const getAllUserFavourites = async (req, res) => {
- const user = req.user
- const offset = parseInt(req.params.offset) || 0
+  const user = req.user
+  const offset = parseInt(req.params.offset) || 0
   const limit = 12
   if (offset < 0) {
     return res.status(500).json({
       success: false,
       message: 'Invalid offset'
-      })
-    }
+    })
+  }
   const as = await user.getUserFavourites({
     offset: offset,
     limit: limit,
@@ -441,11 +446,11 @@ const getAllUserFavourites = async (req, res) => {
   })
   console.log(as)
   const allPostsJSON = await Promise.all(as.map(async (post) => {
-    return await post.toJSON(post)
-  }))    
+    return post.toJSON(post)
+  }))
   res.json({
     posts: allPostsJSON,
-    success: true,
+    success: true
   })
 }
 

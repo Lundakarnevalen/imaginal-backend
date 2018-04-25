@@ -7,7 +7,7 @@ const JodelFavourite = dbc.define('JodelFavourite', {
     autoIncrement: true,
     primaryKey: true,
     type: Sequelize.INTEGER
-  },
+  }
 })
 
 JodelPost.belongsToMany(User, {

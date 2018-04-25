@@ -36,7 +36,7 @@ Comments.prototype.toJSON = async (comment) => {
     isComment: true,
     text: comment.text,
     userId: comment.userId,
-    createdAt: ccomment.createdAt
+    createdAt: comment.createdAt
   }
 }
 

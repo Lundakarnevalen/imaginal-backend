@@ -56,8 +56,8 @@ app.all(/(\/)?api\/.*/, function (req, res, next) {
     }
 
     if (!user) {
-	    console.log(err)
-	    console.log(info)
+      console.log(err)
+      console.log(info)
       return res.status(401).json({
         success: false,
         message: 'Unauthorized'
@@ -117,8 +117,6 @@ app.get('/api/jodel/allComments/:offset', jodel.getAllPostsByComments)
 app.get('/api/jodel/user/allComments/:offset', jodel.getAllPostsByComments)
 app.get('/api/jodel/user/allVotes/:offset', jodel.getAllPostsByVotes)
 app.get('/api/jodel/user/allfav/:offset', jodel.getAllUserFavourites)
-
-
 
 app.all('*', function (req, res) {
   res.status(404).json({

@@ -22,7 +22,7 @@ Posts.belongsTo(User, {
 })
 
 const getColor = function () {
-  const colors = ["#ffffff", "#000000", "#9a9a9a"]
+  const colors = ['#ffffff', '#000000', '#9a9a9a']
   const nbr = Math.floor(Math.random() * Math.floor(colors.length))
   return colors[nbr]
 }
@@ -30,7 +30,7 @@ const getColor = function () {
 Posts.prototype.toJSON = async (post) => {
   let voted = false
   const votes = await post.getJodelVote().map(x => {
-    if (x.userId === post.userId) {voted = true}
+    if (x.userId === post.userId) { voted = true }
     return x.value
   })
   let result
@@ -50,31 +50,13 @@ Posts.prototype.toJSON = async (post) => {
   return posts
 }
 
-const getPostByVotes = function (inputOffset, inputLimit) {
-  const offset = parseInt(inputOffset) || 0
-  const limit = inputLimit || 25
-  const date = Date.now() - 1000*60*60*24*5
-  return Posts.findAndCountAll({
-    include: [{
-      model: Votes,
-      as: votes
-    }],
-    where: {
-      createdAt: {gte: date} //Move this to the part where you get a users posts, votes etc
-    },
-    order: ['id'],
-    offset: offset,
-    limit: limit
-  })
-}
-
 const getAllPostsAndCount = function (inputOffset, inputLimit) {
   const offset = parseInt(inputOffset) || 0
   const limit = inputLimit || 25
-  const date = Date.now() - 1000*60*60*24*5
+  const date = Date.now() - 1000 * 60 * 60 * 24 * 5
   return Posts.findAndCountAll({
     where: {
-      createdAt: {gte: date} //Move this to the part where you get a users posts, votes etc
+      createdAt: {gte: date} // Move this to the part where you get a users posts, votes etc
     },
     order: ['id'],
     offset: offset,
@@ -85,6 +67,5 @@ const getAllPostsAndCount = function (inputOffset, inputLimit) {
 module.exports = {
   Posts,
   getAllPostsAndCount,
-  getPostByVotes,
   getColor
 }
