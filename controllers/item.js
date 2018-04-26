@@ -11,7 +11,12 @@ const getAllItems = async (req, res) => {
   try {
     const hasAccess = await userRoles.hasWarehouseCustomerAccess(req)
     if (hasAccess) {
-      const itemList = await items.Item.findAll()
+      const itemList = await items.Item.findAll({
+        include:[{
+          model: tags.Tag,
+          through: {attributes: []},
+        }]
+      })
       return res.json({
         success: true,
         data: itemList
@@ -81,7 +86,7 @@ const createItem = async (req, res) => {
       supplier: req.body.supplier || '',
       note: req.body.note || '',
       warningAmount: req.body.warningAmount || 1,
-      vat: req.body.vat || 0
+      vat: 1 + req.body.vat || 1
     }
   })
 
@@ -100,8 +105,46 @@ const createItem = async (req, res) => {
   })
 }
 
+const setQuantity = async (req, res) => {
+  try {
+    const hasAccess = await userRoles.hasWarehouseWorkerAccess(req)
+    if (!hasAccess) {
+      return res.status(401).json({
+        success: false,
+        message: 'Go away!'
+      })
+    }
+    if (!req.body.storageContentId || !req.body.quantity) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid parameter'
+      })
+    }
+    const storageContent = await storageContents.StorageContent.findOne({
+      where: { id: req.body.storageContentId }
+    })
+    if (!storageContent) {
+      return res.status(400).json({
+        success: false,
+        message: 'No such storage content'
+      })
+    }
+    storageContent.quantity = req.body.quantity
+    storageContent.save()
+    return res.json({
+      success: true,
+      message: 'Quantity added to storage content'
+    })
+  } catch (err) {
+    console.log(err)
+    return res.status(500).json({
+      success: false,
+      message: 'Something went horribly wrong!'
+    })
+  }
+}
+
 const addQuantity = async (req, res) => {
-  /** Check locationID, itemID, addedQuantity != null */
   try {
     const hasAccess = await userRoles.hasWarehouseWorkerAccess(req)
     if (hasAccess) {
@@ -111,7 +154,7 @@ const addQuantity = async (req, res) => {
           message: 'Invalid parameter'
         })
       }
-      /** Check if locationID and itemID exist */
+
       const storageContent = await storageContents.StorageContent.findOne({
         where: { id: req.body.storageContentId }
       })
@@ -121,8 +164,8 @@ const addQuantity = async (req, res) => {
           message: 'No such storage content'
         })
       }
-      storageContents.StorageContent.update({ quantity: storageContent.dataValues.quantity + req.body.quantity },
-        { where: { id: storageContent.dataValues.id } })
+      storageContent.dataValues.quantity += req.body.quantity
+      storageContent.save()
       return res.json({
         success: true,
         message: 'Quantity added to storage content'
@@ -211,8 +254,8 @@ const editItem = async (req, res) => {
       } else {
         if (req.body.name) findItem.name = req.body.name
         if (req.body.imageUrl) findItem.imageUrl = req.body.imageUrl
-        if (req.body.unit) findItem.unit = req.body.unit
         if (req.body.purchasePrice) findItem.purchasePrice = req.body.purchasePrice
+        if (req.body.unit) findItem.unit = req.body.unit
         if (req.body.retailPrice) findItem.salesPrice = req.body.retailPrice
         if (req.body.description) findItem.description = req.body.description
         if (req.body.articleNumber) findItem.articleNumber = req.body.articleNumber
@@ -328,24 +371,6 @@ const getItemById = async (req, res) => {
   }
 }
 
-const getItemByArticleId = async (req, res) => {
-  const item = req.params.articleId
-  const findItem = await items.Item.findAll({
-    where: { articleNumber: item }
-  })
-  if (findItem.length > 0) {
-    return res.json({
-      success: true,
-      message: findItem
-    })
-  } else {
-    return res.status(400).json({
-      success: false,
-      message: 'No item with that article number exists'
-    })
-  }
-}
-
 module.exports = {
   addItem,
   getAllItems,
@@ -353,6 +378,6 @@ module.exports = {
   getItemsOnTags,
   getItemById,
   addQuantity,
-  addToStorageContent,
-  getItemByArticleId
+  setQuantity,
+  addToStorageContent
 }
