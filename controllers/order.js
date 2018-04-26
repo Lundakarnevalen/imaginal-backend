@@ -7,6 +7,7 @@ const orderLines = require('../models/orderLine')
 const storageContents = require('../models/storageContents')
 const items = require('../models/item')
 const locations = require('../models/storageLocation')
+const costBearers = require('../models/costBearer')
 
 const createOrder = async (req, res) => {
   try {
@@ -385,21 +386,61 @@ const getQuantityOfOrderedItems = async (req, res) => {
     if (hasAccess) {
       const list = []
       const allItems = await items.Item.findAll()
-      for (const item of allItems) {
-        const itemId = item.id
-        const orderedItems = await orderLines.OrderLine.findAll({
-          where: { itemId: itemId }
-        })
-        let totQuantity = 0
-        if (orderedItems.length > 0) {
-          for (const order of orderedItems) {
-            const orderQuantity = order.quantityOrdered - order.quantityDelivered
-            totQuantity += orderQuantity
+
+      const itemIds = allItems.map(item => item.id)
+
+      const itemList = await items.Item.findAll({
+        include: [{
+          model: orders.Order,
+          through: {
+            attributes: ['quantityOrdered', 'quantityDelivered'],
+            where: { itemId: itemIds }
           }
+        }]
+      })
+
+      for (let i = 0; i < itemList.length; i++) {
+        const item = itemList[i]
+
+        let itemOrders = await item.Orders
+
+        if (req.params.storageLocationId) {
+          itemOrders = itemOrders.filter(function (oneOrder) {
+            return oneOrder.storageLocationId === parseInt(req.params.storageLocationId)
+            /** Can I use parseInt? the first is number, second one is string
+             * npm test doesnt allow me to use ==
+            */
+          })
+        } else if (req.params.costBearerId) {
+          const listOfWarehouseUsers = await warehouseUser.WarehouseUser.findAll({
+            where: {costBearerId: req.params.costBearerId}
+          })
+          const warehouseUserIds = listOfWarehouseUsers.map(user => user.id)
+
+          itemOrders = itemOrders.filter(function (oneOrder) {
+            return warehouseUserIds.filter(function (oneId) {
+              return oneId === oneOrder.warehouseUserId
+            }).length > 0
+          })
         }
+
+        const totQuantities = itemOrders.map(order => {
+          return order.OrderLines.quantityOrdered - order.OrderLines.quantityDelivered
+        })
+
+        const totQuantity = totQuantities.reduce(function (preVal, quantity) {
+          return preVal + quantity
+        }, 0)
+
         const object = {
-          itemId: itemId,
-          quantity: totQuantity
+          itemId: item.id,
+          name: item.name,
+          articleNumber: item.articleNumber,
+          supplier: item.supplier,
+          unit: item.unit,
+          salesPrice: item.salesPrice,
+          quantity: totQuantity,
+          totalPrice: totQuantity * item.salesPrice
         }
         list.push(object)
       }
@@ -434,32 +475,36 @@ const getQuantityOfOrderedItemsInLocation = async (req, res) => {
           message: 'No location with that id exists'
         })
       } else {
-        const list = []
-        const allItems = await storageContents.StorageContent.findAll({
-          where: { storageLocationId: req.params.storageLocationId }
+        getQuantityOfOrderedItems(req, res)
+      }
+    } else {
+      return res.status(401).json({
+        success: false,
+        message: 'Go away!'
+      })
+    }
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to get ordered items'
+    })
+  }
+}
+
+const getQuantityOfOrderedItemsForCostBearer = async (req, res) => {
+  try {
+    const hasAccess = await userRoles.hasWarehouseCustomerAccess(req)
+    if (hasAccess) {
+      const findCostBearer = await costBearers.CostBearer.findOne({
+        where: { id: req.params.costBearerId }
+      })
+      if (!findCostBearer) {
+        return res.status(400).json({
+          success: false,
+          message: 'No cost bearer with that id exists'
         })
-        for (const item of allItems) {
-          const itemId = item.id
-          const orderedItems = await orderLines.OrderLine.findAll({
-            where: { itemId: itemId }
-          })
-          let totQuantity = 0
-          if (orderedItems.length > 0) {
-            for (const order of orderedItems) {
-              const orderQuantity = order.quantityOrdered - order.quantityDelivered
-              totQuantity += orderQuantity
-            }
-          }
-          const object = {
-            itemId: itemId,
-            quantity: totQuantity
-          }
-          list.push(object)
-        }
-        return res.status(200).json({
-          success: true,
-          data: list
-        })
+      } else {
+        getQuantityOfOrderedItems(req, res)
       }
     } else {
       return res.status(401).json({
@@ -485,5 +530,6 @@ module.exports = {
   checkoutOrderLines,
   getOrderById,
   getQuantityOfOrderedItems,
-  getQuantityOfOrderedItemsInLocation
+  getQuantityOfOrderedItemsInLocation,
+  getQuantityOfOrderedItemsForCostBearer
 }
