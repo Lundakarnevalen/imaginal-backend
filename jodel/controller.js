@@ -57,24 +57,44 @@ const deleteComment = async (req, res) => {
 const deletePost = async (req, res) => {
   const id = req.body.jodelId
   const user = req.user
+  const post = await JodelPost.findOne({
+    where: {id: id}
+  })
+  if (!post) {
+    return res.status(400).json({
+      success: false,
+      message: 'invalid id'})
+  }
+  const userpost = await post.getJodelUser()
   const hasAccess = await userRole.hasRole(user, userRole.ADMIN)
-  console.log(`HAS ACCESS: ${hasAccess}`)
-  if (!hasAccess) {
+  if (!hasAccess && user.id !== userpost.id) {
     return res.status(401).json({
       success: false,
       message: 'Unauthorized'
     })
   }
-  const asd = await JodelPost.findOne({
-    where: {id: id}
-  })
-  if (!asd) {
+
+  await post.destroy()
+  await JodelReport.destroy({where: {postId: id}})
+  await JodelComments.destroy({where: {postId: id}})
+  res.json({sucess: true})
+}
+
+const deleteFavourite = async (req, res) => {
+  const id = parseInt(req.body.jodelId) || 0
+  if (id < 1) {
     return res.status(400).json({
       success: false,
-      message: 'invalid id'})
+      message: 'Invalid post id'
+    })
   }
-  await asd.destroy()
-  await JodelReport.destroy({where: {postId: id}})
+  await JodelFav.destroy({
+    where: {
+      userId: req.user.id,
+      postId: id
+    }
+  })
+  await JodelComments.destroy({where: {postId: id}})
   res.json({sucess: true})
 }
 
@@ -488,5 +508,6 @@ module.exports = {
   getAllReports,
   deleteReport,
   deletePost,
-  deleteComment
+  deleteComment,
+  deleteFavourite
 }

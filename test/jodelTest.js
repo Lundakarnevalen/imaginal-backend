@@ -184,7 +184,7 @@ module.exports = (user, admin) => describe('API /jodel/', function () {
         await done()
       })
   })
-  it('Post invalid post', done => {
+    it('Post invalid post', done => {
     api.post('/api/jodel/newpost')
       .set('Authorization', 'bearer ' + user.token)
       .send({ message: '' })
@@ -618,6 +618,123 @@ module.exports = (user, admin) => describe('API /jodel/', function () {
            console.error('Failed to run test, aborting')
            process.exit(1)
          }
+         await expect(res.statusCode).to.equal(200)
+         await done()
+       })
+  })
+  it('Admin post new post', done => {
+    api.post('/api/jodel/newpost')
+      .set('Authorization', 'bearer ' + admin.token)
+      .send({ message: 'Admin jodel post!' })
+      .end(async (err, res) => {
+        if (err) {
+          console.error('Failed to run test, aborting')
+          process.exit(1)
+        }
+        await expect(res.statusCode).to.equal(200)
+        await done()
+      })
+  })
+   it('User delete  admin post', done => {
+    api.post('/api/jodel/delete/post')
+      .set('Authorization', 'bearer ' + user.token)
+       .send({
+         jodelId: 14
+       })
+       .end(async (err, res) => {
+         if (err) {
+           console.error('Failed to run test, aborting')
+           process.exit(1)
+         }
+         await expect(res.statusCode).to.equal(401)
+         await done()
+       })
+  })
+  it('User delete post', done => {
+    api.post('/api/jodel/delete/post')
+      .set('Authorization', 'bearer ' + admin.token)
+       .send({
+         jodelId: 14
+       })
+       .end(async (err, res) => {
+         if (err) {
+           console.error('Failed to run test, aborting')
+           process.exit(1)
+         }
+         await expect(res.statusCode).to.equal(200)
+         await done()
+       })
+  })
+  it('Admin delete comment', done => {
+    api.post('/api/jodel/delete/comment')
+      .set('Authorization', 'bearer ' + admin.token)
+      .send({
+        commentId: 3
+      })
+      .end(async (err, res) => {
+        if (err) {
+          console.error('Failed to run test, aborting')
+          process.exit(1)
+        }
+        await expect(res.statusCode).to.equal(200)
+        await done()
+      })
+  })
+  it('Comment should be deleted', done => {
+    api.get('/api/jodel/3')
+      .set('Authorization', 'bearer ' + admin.token)
+       .send({
+         jodelId: 14
+       })
+       .end(async (err, res) => {
+         if (err) {
+           console.error('Failed to run test, aborting')
+           process.exit(1)
+         }
+         await expect(res.body.post.comments).to.equal(0)
+         await expect(res.statusCode).to.equal(200)
+         await done()
+       })
+  })
+  it('List user favourites', done => {
+    api.get('/api/jodel/user/allfav/0')
+      .set('Authorization', 'bearer ' + user.token)
+       .end(async (err, res) => {
+         if (err) {
+           console.error('Failed to run test, aborting')
+           process.exit(1)
+         }
+         console.log(res.body)
+         await expect(res.body.posts.length).to.equal(1)
+         await expect(res.body.posts[0].id).to.equal(3)
+         await expect(res.statusCode).to.equal(200)
+         await done()
+       })
+  })
+  it('User remove fevourite', done => {
+    api.post('/api/jodel/delete/favourite')
+      .set('Authorization', 'bearer ' + user.token)
+      .send({
+        jodelId: 3 
+      })
+       .end(async (err, res) => {
+         if (err) {
+           console.error('Failed to run test, aborting')
+           process.exit(1)
+         }
+         await expect(res.statusCode).to.equal(200)
+         await done()
+       })
+    })
+    it('List user empty favourites', done => {
+    api.get('/api/jodel/user/allfav/0')
+      .set('Authorization', 'bearer ' + user.token)
+       .end(async (err, res) => {
+         if (err) {
+           console.error('Failed to run test, aborting')
+           process.exit(1)
+         }
+         await expect(res.body.posts.length).to.equal(0)
          await expect(res.statusCode).to.equal(200)
          await done()
        })
