@@ -6,7 +6,7 @@ module.exports = (user) => describe('API /login/email', function () {
   it('should login the user', done => {
     api.post('/login/email')
       .send({email: user.email, password: user.password})
-      .end(async(err, res) => {
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
@@ -19,7 +19,7 @@ module.exports = (user) => describe('API /login/email', function () {
   it('Wrong email at login', done => {
     api.post('/login/email')
       .send({email: 'wrongemail', password: user.password})
-      .end(async(err, res) => {
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
@@ -31,7 +31,7 @@ module.exports = (user) => describe('API /login/email', function () {
   it('Wrong accessToken', done => {
     api.get('/api/hello')
       .set('Authorization', 'bearer wrongaccesstoken')
-      .end(async(err, res) => {
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
@@ -43,7 +43,7 @@ module.exports = (user) => describe('API /login/email', function () {
   it('No email at login', done => {
     api.post('/login/email')
       .send({password: user.password})
-      .end(async(err, res) => {
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
@@ -55,7 +55,7 @@ module.exports = (user) => describe('API /login/email', function () {
   it('No password at login', done => {
     api.post('/login/email')
       .send({email: user.email})
-      .end(async(err, res) => {
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)

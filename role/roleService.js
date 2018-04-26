@@ -2,7 +2,7 @@ const userRoles = require('../models/userrole')
 const users = require('../users/users')
 const roles = require('../role/role')
 
-const findUserAndRole = async (user, email, roleId) => {  // callback takes two arguments, user and role
+const findUserAndRole = async (user, email, roleId) => { // callback takes two arguments, user and role
   const isAdmin = await userRoles.hasRole(user, userRoles.ADMIN)
   if (!isAdmin) {
     console.log('ISNOTADMIN')
