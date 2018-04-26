@@ -14,6 +14,7 @@ const tagTest = require('./tagTest')
 const itemTest = require('./itemTest')
 const orderTest = require('./orderTest')
 const warehouseUserTest = require('./warehouseUserTest')
+const storageLocationTest = require('./storageLocationTest')
 
 const user = utils.getUser()
 const admin = utils.getAdmin()
@@ -30,6 +31,8 @@ const orderLineOne = utils.getOrderLineOne()
 const orderLineTwo = utils.getOrderLineTwo()
 const costBearer = utils.getCostBearer()
 const warehouseUser = utils.getWarehouseUser()
+const storageLocationOne = utils.getStorageLocationOne()
+const storageLocationTwo = utils.getStorageLocationTwo()
 
 register(user)
 login(user)
@@ -42,4 +45,7 @@ tagTest(user, admin, warehouseCustomer, warehouseWorker, warehouseManager, tagOn
 itemTest(user, admin, warehouseCustomer, warehouseWorker, warehouseManager, itemOne, itemTwo, tagOne)
 orderTest(user, admin, warehouseCustomer, warehouseWorker, warehouseManager,
   itemOne, itemTwo, orderOne, orderTwo, orderLineOne, orderLineTwo)
-warehouseUserTest(user, admin, warehouseCustomer, warehouseWorker, warehouseManager, costBearer, warehouseUser)
+warehouseUserTest(user, admin, warehouseCustomer, warehouseWorker, warehouseManager,
+  costBearer, warehouseUser)
+storageLocationTest(user, admin, warehouseCustomer, warehouseWorker, warehouseManager,
+  storageLocationOne, storageLocationTwo)
