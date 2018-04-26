@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize')
 const dbc = require('../config/database')
 const User = require('../users/users').User
+const service = require('./service')
 const Posts = dbc.define('JodelPosts', {
   id: {
     autoIncrement: true,
@@ -38,6 +39,8 @@ Posts.prototype.toJSON = async (post) => {
     result = votes.reduce((acc, curval) => acc + curval)
   } else { result = 0 }
   const comments = await post.getJodelComments()
+  const user = await post.getJodelUser()
+  const isFav = await service.isFavourite(post, user)
   const posts = {
     id: post.id,
     votes: result,
@@ -45,7 +48,8 @@ Posts.prototype.toJSON = async (post) => {
     text: post.text,
     createdAt: post.createdAt,
     voted,
-    color: post.color
+    color: post.color,
+    isFavourite: isFav
   }
   return posts
 }

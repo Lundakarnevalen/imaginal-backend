@@ -11,7 +11,8 @@ const JodelVote = require('./jodelVote').Vote
 JodelVote.sync()
 const JodelReport = require('./jodelReports').JodelReports
 JodelReport.sync()
-
+require('./jodelVote') // Required for ORM stuff
+const service = require('./service')
 const userRole = require('../models/userrole')
 
 const MAX_LENGTH = 240
@@ -54,9 +55,10 @@ const deleteComment = async (req, res) => {
 }
 
 const deletePost = async (req, res) => {
-  const id = req.body.postId
+  const id = req.body.jodelId
   const user = req.user
   const hasAccess = await userRole.hasRole(user, userRole.ADMIN)
+  console.log(`HAS ACCESS: ${hasAccess}`)
   if (!hasAccess) {
     return res.status(401).json({
       success: false,
@@ -66,7 +68,11 @@ const deletePost = async (req, res) => {
   const asd = await JodelPost.findOne({
     where: {id: id}
   })
-  if (!asd) { res.status(400).json({success: false, message: 'invalid id'}) }
+  if (!asd) {
+    return res.status(400).json({
+      success: false,
+      message: 'invalid id'})
+  }
   await asd.destroy()
   await JodelReport.destroy({where: {postId: id}})
   res.json({sucess: true})
@@ -156,6 +162,7 @@ const newPost = async (req, res) => {
 const addJodelComment = async (req, res) => {
   'use strict'
   const message = req.body.message
+  const id = req.body.jodelId
   if (!message || message.length > COMMENT_MAX_LENGTH || message.length < MIN_LENGTH) {
     return res.status(400).json({
       success: false,
@@ -165,7 +172,7 @@ const addJodelComment = async (req, res) => {
   const user = req.user
 
   const jp = await JodelPost.findOne({
-    where: {id: req.body.id}
+    where: {id: id}
   })
   if (!jp) {
     return res.status(400).json({
@@ -196,7 +203,7 @@ const hasVoted = async (post, user) => {
 const addJodelVote = async (req, res) => {
   'use strict'
   const postid = req.body.jodelId
-  let value = req.body.vote
+  let value = req.body.value
 
   if (value !== 1) {
     value = -1
@@ -225,26 +232,27 @@ const addJodelVote = async (req, res) => {
     value: value
   })
 
-  user.addJodelVotes([newjv])
-  jp.addJodelVote([newjv])
+  await user.addJodelVotes([newjv])
+  await jp.addJodelVote([newjv])
 
   res.send()
 }
 
 const getJodelPost = async (req, res) => {
   'use strict'
-  const postId = req.params.id
-  if (!postId) {
+  const postId = parseInt(req.params.id) || 0
+  if (postId < 1) {
     return res.status(400).json({
       success: false,
       message: 'Invalid postId'
     })
   }
+
   const jp = await JodelPost.findOne({
     where: {id: postId}
   })
   if (!jp) {
-    return res.status(500).json({
+    return res.status(400).json({
       success: false,
       message: 'Failed to find post'
     })
@@ -273,7 +281,7 @@ const getAllPosts = async (req, res) => {
   const offset = parseInt(req.params.offset) || 0
   const limit = 12
   if (offset < 0) {
-    return res.status(500).json({
+    return res.status(400).json({
       success: false,
       message: 'Invalid offset'
     })
@@ -420,11 +428,20 @@ const addFavourite = async (req, res) => {
     where: {id: postId}
   })
   if (!jp) {
-    return res.status(500).json({
+    return res.status(400).json({
       success: false,
       message: 'Failed to find post'
     })
   }
+
+  const isFav = await service.isFavourite(jp, user)
+  if (isFav) {
+    return res.status(400).json({
+      success: false,
+      message: 'That is already a favourite'
+    })
+  }
+
   await jp.addFavouriteUser([user])
   res.json({success: true})
 }

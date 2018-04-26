@@ -1,30 +1,38 @@
-jodelPost: {
+post: { 	--This is a jodel post, the "head message"
   id: integer,
   votes: integer,
   comments: integer,
   text: string,
   createdAt: Some timestamp,
   voted: boolean,
-  color: string (e.g. "#ffffff")
+  color: string (e.g. "#ffffff"),
+  isFavourite: boolean
 }
 
-comment: {
+comment: {	--This is how a comment for a post looks like
   isComment: true,
   text: String,
   isOp: null or boolean,
   createdAt: Some timestamp
 }
 
+reports: [{
+  id: boolean,
+  votes: integer,
+  text: string,
+  isComment: true or null
+  createdAt: some timestamp
+}]
 
 POST /api/jodel/newpost Body: message<String>
 POST /api/jodel/newcomment Body: message<String>, id<Integer>
 POST /api/jodel/vote Body: jodelId<Integer>, value<integer, 1 or -1>
 POST /api/jodel/addfavourite Body: jodelId<Integer>
 POST /api/jodel/report/post Body: jodelId<Integer>
-POST /api/jodel/report/comment Body: commentId<Integer>
-POST /api/jodel/report/delete Body: id<Integer>
-POST /api/jodel/post/delete Body: postId<Integer>
-POST /api/jodel/comment/delete Body: commentId<Integer>
+POST /api/jodel/report/comment Body: commentId<Integer>, message<String>
+POST /api/jodel/delete/report/delete Body: id<Integer>
+POST /api/jodel/delete/post Body: jodelId<Integer>
+POST /api/jodel/delete/comment Body: commentId<Integer>
 Get /api/jodel/reports/:offset --Hämtar ut 12 rapporterade meddelande från och med offset :offset
 GET /api/jodel/:id --Hämtar ut en jodelpost med id't :id
 GET /api/jodel/all/:offset --Hämtar ut 12(?) posts från och med offsett :offset
@@ -33,5 +41,4 @@ GET /api/jodel/user/allVotes/:offsett --Hämtar ut de posts man har gjort ordnat
 GET /api/jodel/user/allComments/:offsett --Hämtar ut de posts man har gjort ordnat på antal röster fr.o.m. :offsett
 GET /api/jodel/user/allfav/:offsett --Hämtar sina favoriter fr.o.m. :offsett
 GET /api/jodel/allVotes/:offsett --Samma sak som ovan fast ordnat på antal kommentarer
-
 
