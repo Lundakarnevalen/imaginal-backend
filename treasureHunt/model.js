@@ -17,14 +17,12 @@ const TreasureHunt = dbc.define('TreasureHunt', {
 
 const info = async () => {
   const players = await TreasureHunt.findAndCountAll()
-  const winners = await TreasureHunt.findAndCountAll({
-    where: { finished: true }
-  })
-  return { players: players.count, winnersLeft: 25 - winners.count }
+  const winnerCount = players.rows.filter(player => player.dataValues.finished).length
+  return {players: players.count, winnersLeft: 25 - winnerCount}
 }
 
 const enroll = async user => {
-  if (!await TreasureHunt.findOne({ where: { contestant: user.email } })) {
+  if (!await TreasureHunt.findOne({where: {contestant: user.email}})) {
     return TreasureHunt.create({
       contestant: user.email,
       finished: false
@@ -32,7 +30,14 @@ const enroll = async user => {
   }
 }
 
+const win = async user => {
+  const player = await TreasureHunt.find({where: {contestant: user.email}})
+  player.finished = true
+  player.save()
+}
+
 module.exports = {
   enroll,
-  info
+  info,
+  win
 }

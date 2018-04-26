@@ -6,7 +6,7 @@ const info = async (req, res) => {
     return res.json(info)
   }
 
-  res.json({
+  res.status(404).json({
     message: 'Failed to get treasurehunt info, make sure hunt exists'
   })
 }
@@ -19,12 +19,16 @@ const start = async (req, res) => {
   })
 }
 
-const exists = (req, res) => {
-  res.json({ exists: Math.random() > 0.5 })
+const win = async (req, res) => {
+  treasureModel.win(req.user)
+
+  return res.json({
+    message: 'Congratulations!!'
+  })
 }
 
 module.exports = {
   info,
   start,
-  exists
+  win
 }

@@ -39,18 +39,13 @@ app.post('/register', register.registerUser)
 app.post('/login/email', login.loginByEmail)
 app.post('/login/forgotpassword', forgotPassword.forgotPassword)
 app.post('/login/resetpassword', forgotPassword.setNewPassword)
-
 app.get('/getallsections', section.getAllSections)
 
 /**
  * Authenticate tokens
  */
 app.all(/(\/)?api\/.*/, function (req, res, next) {
-  passport.authenticate('bearer', { session: false }, function (
-    err,
-    user,
-    info
-  ) {
+  passport.authenticate('bearer', {session: false}, function (err, user, info) {
     if (err) {
       return next(err)
     }
@@ -98,8 +93,8 @@ app.delete('/api/role/:email/:roleid', role.removeRole)
 app.get('/api/role/:roleid', role.getUsers)
 
 app.post('/api/treasurehunt/start', treasureHunt.start)
-app.get('/api/treasurehunt/exists', treasureHunt.exists)
 app.get('/api/treasurehunt/info', treasureHunt.info)
+app.post('/api/treasurehunt/win', treasureHunt.win)
 
 app.all('*', function (req, res) {
   res.status(404).json({
