@@ -3,6 +3,7 @@
 const storageLocations = require('../models/storageLocation')
 const userRoles = require('../models/userrole')
 const items = require('../models/item')
+const tags = require('../models/tag')
 
 const addStorageLocation = async (req, res) => {
   try {
@@ -117,13 +118,17 @@ const getInventory = async (req, res) => {
           message: 'Location does not exist'
         })
       }
-      const storage = await storageLocations.StorageLocation.findAll({
-        where: { id: storageLocationId },
+      const storage = await items.Item.findAll({
         include: [{
-          model: items.Item,
+          model: storageLocations.StorageLocation,
           through: {
-            where: { storageLocationId: storageLocationId }
+            where: { storageLocationId: storageLocationId },
+            attributes: ['quantity']
           }
+        },
+        {
+          model: tags.Tag,
+          through: { attributes: [] },
         }]
       })
       return res.json({
