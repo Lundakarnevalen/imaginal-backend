@@ -2,18 +2,16 @@ const Sequelize = require('sequelize')
 const dbc = require('../config/database')
 const Order = require('./order').Order
 
-const StorageLocation = dbc.define('StorageLocation', {
+const WarehouseUser = dbc.define('WarehouseUser', {
   id: {
     autoIncrement: true,
     primaryKey: true,
     type: Sequelize.INTEGER
-  },
-  storageName: Sequelize.STRING,
-  description: Sequelize.TEXT
+  }
 })
 
-StorageLocation.hasOne(Order, { as: 'Order', foreignKey: 'storageLocationId' })
+WarehouseUser.hasOne(Order, { as: 'Order', foreignKey: 'warehouseUserId' })
 
 module.exports = {
-  StorageLocation
+  WarehouseUser
 }

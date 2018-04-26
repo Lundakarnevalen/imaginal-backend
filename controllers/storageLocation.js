@@ -38,7 +38,7 @@ const getStorageLocations = async (req, res) => {
   })
 }
 
-const getByID = async (req, res) => {
+const getById = async (req, res) => {
   const locations = await storageLocations.StorageLocation.findAll()
   const theLocation = await locations.find(location => location.id === req.body.id)
   if (theLocation) {
@@ -49,14 +49,14 @@ const getByID = async (req, res) => {
   } else {
     res.json({
       success: false,
-      message: 'No such ID'
+      message: 'No such id'
     })
   }
 }
 
 const getItemsInStorageLocation = async (req, res) => {
   const locationExists = await storageLocations.StorageLocation.findOne({
-    where: { id: req.params.locationid }
+    where: { id: req.params.locationId }
   })
   if (!locationExists) {
     return res.status(400).json({
@@ -66,7 +66,7 @@ const getItemsInStorageLocation = async (req, res) => {
   }
 
   const storage = await storageContents.StorageContent.findAll({
-    where: { locationID: req.params.locationid }
+    where: { locationId: req.params.locationId }
   })
   return res.json({
     success: true,
@@ -78,6 +78,6 @@ const getItemsInStorageLocation = async (req, res) => {
 module.exports = {
   addStorageLocation,
   getStorageLocations,
-  getByID,
+  getById,
   getItemsInStorageLocation
 }

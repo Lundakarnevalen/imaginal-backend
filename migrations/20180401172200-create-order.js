@@ -1,7 +1,7 @@
 'use strict'
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('StorageContents', {
+    await queryInterface.createTable('Orders', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -15,16 +15,18 @@ module.exports = {
           key: 'id'
         }
       },
-      itemId: {
+      warehouseUserId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'Items',
+          model: 'WarehouseUsers',
           key: 'id'
         }
       },
-      quantity: {
-        type: Sequelize.INTEGER
-      },
+      orderDeliveryDate: Sequelize.DATE,
+      checkedOut: Sequelize.BOOLEAN,
+      checkedOutDate: Sequelize.DATE,
+      return: Sequelize.BOOLEAN,
+      returnDate: Sequelize.DATE,
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -36,6 +38,6 @@ module.exports = {
     })
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('StorageContents')
+    await queryInterface.dropTable('Orders')
   }
 }

@@ -20,10 +20,8 @@ const Item = dbc.define('Item', {
   vat: Sequelize.DOUBLE
 })
 
-const findUniqueItem = (name, articleNumber, supplier) => Item.findAll({
-  where: {
-    $or: [{ name: name }, { articleNumber: articleNumber, supplier: supplier }]
-  }
+const findUniqueItem = (articleNumber, supplier) => Item.findAll({
+  where: { articleNumber: articleNumber, supplier: supplier }
 })
 
 module.exports = {

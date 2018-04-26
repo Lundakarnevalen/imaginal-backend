@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize')
 const dbc = require('../config/database')
-const Location = require('./storageLocation').StorageLocation
+const StorageLocation = require('./storageLocation').StorageLocation
 const Item = require('./item').Item
 
 const StorageContent = dbc.define('StorageContent', {
@@ -9,10 +9,10 @@ const StorageContent = dbc.define('StorageContent', {
     primaryKey: true,
     autoIncrement: true
   },
-  locationID: {
+  storageLocationId: {
     type: Sequelize.INTEGER
   },
-  itemID: {
+  itemId: {
     type: Sequelize.INTEGER
   },
   quantity: {
@@ -20,21 +20,21 @@ const StorageContent = dbc.define('StorageContent', {
   }
 })
 
-Location.belongsToMany(Item, {
+StorageLocation.belongsToMany(Item, {
   through: {
     model: StorageContent,
     unique: false
   },
-  foreignKey: 'locationID',
+  foreignKey: 'storageLocationId',
   constrains: false
 })
 
-Item.belongsToMany(Location, {
+Item.belongsToMany(StorageLocation, {
   through: {
     model: StorageContent,
     unique: false
   },
-  foreignKey: 'itemID',
+  foreignKey: 'itemId',
   constrains: false
 
 })

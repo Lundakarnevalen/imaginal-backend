@@ -1,29 +1,26 @@
 'use strict'
 module.exports = {
-  up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('StorageContents', {
+  up: async (quereryInterface, Sequelize) => {
+    await quereryInterface.createTable('WarehouseUsers', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      storageLocationId: {
+      userId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'StorageLocations',
+          model: 'Users',
           key: 'id'
         }
       },
-      itemId: {
+      costBearerId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'Items',
+          model: 'CostBearers',
           key: 'id'
         }
-      },
-      quantity: {
-        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
@@ -35,7 +32,7 @@ module.exports = {
       }
     })
   },
-  down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('StorageContents')
+  down: async (quereryInterface, Sequelize) => {
+    await quereryInterface.dropTable('WarehouseUsers')
   }
 }
