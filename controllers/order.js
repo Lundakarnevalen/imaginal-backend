@@ -319,31 +319,36 @@ const checkoutOrderLines = async (req, res) => {
     })
     const reqStorageLocationId = order.dataValues.storageLocationId
     const reqOrderLinesId = reqOrderLines.map(reqOrderLine => reqOrderLine.id)
+
     dbInfo.orderLines = await orderLines.OrderLine.findAll({
       where: { id: reqOrderLinesId }
     })
-    orderLines.map(async orderLine => {
-      orderLine.storageContent = await storageContents.StorageContent.findOne({
+
+    await Promise.all(dbInfo.orderLines.map(async orderLine => {
+      dbInfo.storageContent = await storageContents.StorageContent.findOne({
         where: {
           itemId: orderLine.dataValues.itemId,
           storageLocationId: reqStorageLocationId
         }
       })
-    })
+    }))
 
-    orderLines.forEach(orderLine => {
-      reqOrderLines.forEach(reqOrderLine => {
-        const quantityStorage = orderLine.dataValues.storageContent.dataValues.quantity - orderLine.dataValues.quantityOrdered
-        const quantityOrderLine = orderLine.dataValues.quantityDelivered += orderLine.dataValues.quantityOrdered
-        if (quantity >= 0 && quantityOrderLine <= orderLine.dataValues.quantityOrdered) {
-          orderLine.dataValues.storageContent.dataValues.quantity = quantityStorage
-          orderLine.dataValues.quantityDelivered = quantityOrderLine
+    dbInfo.orderLines.forEach(async orderLine => {
+      reqOrderLines.forEach(async reqOrderLine => {
+        if (orderLine.id === reqOrderLine.id) {
+          // Get values before changing database object to validate that enough in storage and quantityOrdered
+          const quantityStorage = dbInfo.storageContent.quantity - reqOrderLine.quantity
+          const quantityOrderLine = orderLine.quantityDelivered + reqOrderLine.quantity
+
+          if ((quantityStorage > 0) && (quantityOrderLine <= orderLine.quantityOrdered)) {
+            dbInfo.storageContent.quantity = quantityStorage
+            orderLine.quantityDelivered = quantityOrderLine
+            await dbInfo.storageContent.save()
+          }
         }
       })
+      await orderLine.save()
     })
-    orderLine.dataValues.st
-    orderLine.save()
-
     return res.status(200).json({
       success: true,
       message: 'Successfully checked order out'

@@ -212,7 +212,7 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
     })
 
     it('Unauthorized getInventory, role: random user', done => {
-      api.get('/api/warehouse/product/inventory/1')
+      api.get('/api/warehouse/location/inventory/1')
         .set('Authorization', 'bearer ' + user.token)
         .end(async (err, res) => {
           if (err) {
@@ -225,7 +225,7 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
     })
 
     it('Unauthorized getInventory, role: warehouse customer', done => {
-      api.get('/api/warehouse/product/inventory/1')
+      api.get('/api/warehouse/location/inventory/1')
         .set('Authorization', 'bearer ' + warehouseCustomer.token)
         .end(async (err, res) => {
           if (err) {
@@ -238,7 +238,7 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
     })
 
     it('Unauthorized getInventory, role: warehouse worker', done => {
-      api.get('/api/warehouse/product/inventory/1')
+      api.get('/api/warehouse/location/inventory/1')
         .set('Authorization', 'bearer ' + warehouseWorker.token)
         .end(async (err, res) => {
           if (err) {
@@ -248,13 +248,13 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
           await expect(res.statusCode).to.equal(200)
           await expect(res.body.data[0].storageName).to.equal('Fabriken')
           await expect(res.body.data[0].Items[0].name).to.equal('karnevöl')
-          await expect(res.body.data[0].Items[0].StorageContent.quantity).to.equal(200)
+          await expect(res.body.data[0].Items[0].StorageContent.quantity).to.equal(170)
           done()
         })
     })
 
     it('Authorized getInventory, role: warehouse manager', done => {
-      api.get('/api/warehouse/product/inventory/1')
+      api.get('/api/warehouse/location/inventory/1')
         .set('Authorization', 'bearer ' + warehouseManager.token)
         .end(async (err, res) => {
           if (err) {
@@ -264,14 +264,13 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
           await expect(res.statusCode).to.equal(200)
           await expect(res.body.data[0].storageName).to.equal('Fabriken')
           await expect(res.body.data[0].Items[0].name).to.equal('karnevöl')
-          await expect(res.body.data[0].Items[0].StorageContent.quantity).to.equal(200)
-
+          await expect(res.body.data[0].Items[0].StorageContent.quantity).to.equal(170)
           done()
         })
     })
 
     it('Authorized getInventory, role: admin', done => {
-      api.get('/api/warehouse/product/inventory/1')
+      api.get('/api/warehouse/location/inventory/1')
         .set('Authorization', 'bearer ' + admin.token)
         .end(async (err, res) => {
           if (err) {
@@ -281,8 +280,7 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
           await expect(res.statusCode).to.equal(200)
           await expect(res.body.data[0].storageName).to.equal('Fabriken')
           await expect(res.body.data[0].Items[0].name).to.equal('karnevöl')
-          await expect(res.body.data[0].Items[0].StorageContent.quantity).to.equal(200)
-
+          await expect(res.body.data[0].Items[0].StorageContent.quantity).to.equal(170)
           done()
         })
     })
