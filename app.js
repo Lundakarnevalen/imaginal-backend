@@ -17,6 +17,7 @@ const items = require('./controllers/item')
 const tags = require('./controllers/tag')
 const orders = require('./controllers/order')
 const warehouseUser = require('./controllers/warehouseUser')
+const images = require('./controllers/images')
 
 app.use(bodyParser.json())
 app.use(passport.initialize())
@@ -37,12 +38,24 @@ app.use(function (error, req, res, next) {
 /**
  * Unauthorized endpoints
  */
+app.get('/medcheck/:personalnumber', users.getSectionByPersonalNumber)
 app.get('/api/medcheck/:personalnumber', users.getSectionByPersonalNumber)
 app.post('/register', register.registerUser)
 app.post('/login/email', login.loginByEmail)
 app.post('/login/forgotpassword', forgotPassword.forgotPassword)
 app.post('/login/resetpassword', forgotPassword.setNewPassword)
 app.get('/getallsections', section.getAllSections)
+
+app.get('/api/image/cropped/:imagename', images.getcroppedimage)
+app.get('/api/image/thumbnail/:imagename', images.getimage)
+app.get('/api/image/full/:imagename', images.getfullimage)
+app.post('/api/image/comment/:imagename', images.updateImageComment)
+
+// Hidden endpoints. They require a lot of RAM and may crash the server. 
+// Therefore only for local use.
+// app.get('/api/card/:imagename', images.createCard)
+// app.get('/api/sectioncard/:sectionname', images.createSectionPdfs)
+// app.get('/api/sectioncardall', images.createAllSectionPdfs)
 
 /**
  * Authenticate tokens
@@ -82,6 +95,14 @@ app.post('/api/hello', function (req, res) {
     message: 'Hello World!'
   })
 })
+
+app.get('/api/user/section/:sectionid', users.getUsersFromSection)
+
+app.get('/api/image/badphoto/:imagename', images.updateBadPhoto)
+app.get('/api/image/goodphoto/:imagename', images.updateGoodPhoto)
+
+app.post('/api/image/full', images.uploadFullPhoto, images.uploadFullDone)
+app.post('/api/image/cropped', images.uploadCroppedPhoto, images.uploadCroppedDone)
 
 app.get('/api/user/checkin/:email', checkin.checkStatus)
 app.post('/api/user/checkin/:identification', checkin.checkIn)
