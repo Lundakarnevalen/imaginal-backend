@@ -49,8 +49,8 @@ const deleteComment = async (req, res) => {
     where: {id: id}
   })
   if (!asd) { res.status(400).json({success: false, message: 'invalid id'}) }
-  await asd.destroy()
   await JodelReport.destroy({where: {commentId: id}})
+  await asd.destroy()
   res.json({sucess: true})
 }
 
@@ -74,9 +74,10 @@ const deletePost = async (req, res) => {
     })
   }
 
-  await post.destroy()
+  await JodelVote.destroy({where: {postId: id}})
   await JodelReport.destroy({where: {postId: id}})
   await JodelComments.destroy({where: {postId: id}})
+  await post.destroy()
   res.json({sucess: true})
 }
 
@@ -172,6 +173,11 @@ const newPost = async (req, res) => {
     color: color
   })
   await user.addJodels([newjp])
+/*  JodelVote.create({ //asdasdasd
+    value: 0,
+    userId: 1,
+    postId: newjp.id
+  }) */
   res.json({
     success: true,
     message: 'Jodel posted',
@@ -210,7 +216,7 @@ const addJodelComment = async (req, res) => {
 
 const hasVoted = async (post, user) => {
   'use strict'
-  const votes = await post.getJodelVote()
+  const votes = await post.getJodelVotes()
   for (let i = 0, len = votes.length; i < len; i++) {
     if (votes[i].userId === user.id) {
       return true
@@ -403,6 +409,30 @@ const getAllUserPostsByComments = async (req, res) => {
   })
 }
 
+const getAllUserPosts = async (req, res) => {
+  const user = req.user
+  const offset = parseInt(req.params.offset) || 0
+  const limit = 12
+  if (offset < 0) {
+    return res.status(500).json({
+      success: false,
+      message: 'Invalid offset'
+    })
+  }
+  const posts = await user.getJodels({
+    order: ['id'],
+    limit: limit,
+    offset: offset
+  })
+  const allPostsJSON = await Promise.all(posts.map(async (post) => {
+    return post.toJSON(post)
+  }))
+  res.json({
+    posts: allPostsJSON,
+    success: true
+  })
+}
+
 const getAllUserPostsByVotes = async (req, res) => {
   const user = req.user
   const offset = parseInt(req.params.offset) || 0
@@ -413,14 +443,38 @@ const getAllUserPostsByVotes = async (req, res) => {
       message: 'Invalid offset'
     })
   }
-  const as = await user.JodelVotes({
-    where: {createdAt: {gte: TIME_LIMIT_FOR_TRENDING}},
-    include: [{model: JodelPost, as: 'Votes'}],
-    order: [Sequelize.fn(`SUM`, Sequelize.col('value'))],
-    group: ['postId'],
-    limit: limit,
-    offset: offset
+  await console.log('..................')
+  const as = await user.getJodels({
+    attributes: {
+      include: [
+        [Sequelize.fn(`SUM`, Sequelize.col('JodelVotes.value')), 'votes']
+      ]
+    },
+    include: [{
+      model: JodelVote,
+      as: 'JodelVotes',
+      attributes: ['value'],
+      required: false
+    }],
+    offset: offset,
+    limit: limit
   })
+  /*  const as = await user.getJodels({
+    include: [{
+      model: JodelVote,
+      as: 'JodelVote',
+      attributes: [["value", "votes"]]
+      //attributes: [[Sequelize.fn(`SUM`, Sequelize.col('value')), 'votes']]
+//      attributes: [["value", 'votes']]
+    //    order: [['JodelVote', 'votes']]
+    }],
+    offset: offset,
+    limit: limit
+    order: [[Sequelize.fn]]
+  }) */
+  await console.log('..................')
+  console.log(as)
+  console.log(as[0].JodelVote)
   const listedPosts = []
   for (let i = as.length - 1; i >= 0; i--) {
     const asd = await as[i].Votes.toJSON(as[i].Votes)
@@ -501,6 +555,7 @@ module.exports = {
   getAllPostsByComments,
   getAllUserPostsByComments,
   getAllUserPostsByVotes,
+  getAllUserPosts,
   addFavourite,
   getAllUserFavourites,
   reportPost,

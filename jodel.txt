@@ -33,6 +33,7 @@ POST /api/jodel/report/comment Body: commentId<Integer>, message<String>
 POST /api/jodel/delete/report/delete Body: id<Integer>
 POST /api/jodel/delete/post Body: jodelId<Integer>
 POST /api/jodel/delete/comment Body: commentId<Integer>
+POST /api/jodel/delete/favourite Body: jodelId<Integer>
 Get /api/jodel/reports/:offset --Hämtar ut 12 rapporterade meddelande från och med offset :offset
 GET /api/jodel/:id --Hämtar ut en jodelpost med id't :id
 GET /api/jodel/all/:offset --Hämtar ut 12(?) posts från och med offsett :offset
@@ -40,5 +41,6 @@ GET /api/jodel/allVotes/:offsett --Samma sak som /api/jodel/:offsett fast ordnat
 GET /api/jodel/user/allVotes/:offsett --Hämtar ut de posts man har gjort ordnat på antal röster fr.o.m. :offsett
 GET /api/jodel/user/allComments/:offsett --Hämtar ut de posts man har gjort ordnat på antal röster fr.o.m. :offsett
 GET /api/jodel/user/allfav/:offsett --Hämtar sina favoriter fr.o.m. :offsett
-GET /api/jodel/allVotes/:offsett --Samma sak som ovan fast ordnat på antal kommentarer
+GET /api/jodel/user/allVotes/:offsett --Samma sak som ovan fast ordnat på antal kommentarer
+GET /api/jodel/user/allposts/:offset --Hämar ut alla poster gjorde av en user
 

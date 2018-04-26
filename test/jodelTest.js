@@ -184,7 +184,7 @@ module.exports = (user, admin) => describe('API /jodel/', function () {
         await done()
       })
   })
-    it('Post invalid post', done => {
+  it('Post invalid post', done => {
     api.post('/api/jodel/newpost')
       .set('Authorization', 'bearer ' + user.token)
       .send({ message: '' })
@@ -312,7 +312,6 @@ module.exports = (user, admin) => describe('API /jodel/', function () {
           console.error('failed to run test, aborting')
           process.exit(1)
         }
-        console.log(res.body)
         await expect(res.statusCode).to.equal(200)
         await expect(res.body.post.id).to.equal(4)
         await expect(res.body.comments.length).to.equal(2)
@@ -481,7 +480,6 @@ module.exports = (user, admin) => describe('API /jodel/', function () {
           console.error('Failed to run test, aborting')
           process.exit(1)
         }
-        console.log(res.body.posts)
         await expect(res.statusCode).to.equal(200)
         await expect(res.body.posts.length).to.equal(12)
         await expect(res.body.posts[3].isFavourite).to.equal(true)
@@ -603,7 +601,7 @@ module.exports = (user, admin) => describe('API /jodel/', function () {
           console.error('Failed to run test, aborting')
           process.exit(1)
         }
-        await expect(res.statusCode).to.equal(200)
+        await expect(res.statusCode).to.equal(400)
         await done()
       })
   })
@@ -635,7 +633,7 @@ module.exports = (user, admin) => describe('API /jodel/', function () {
         await done()
       })
   })
-   it('User delete  admin post', done => {
+  it('User delete  admin post', done => {
     api.post('/api/jodel/delete/post')
       .set('Authorization', 'bearer ' + user.token)
        .send({
@@ -704,7 +702,6 @@ module.exports = (user, admin) => describe('API /jodel/', function () {
            console.error('Failed to run test, aborting')
            process.exit(1)
          }
-         console.log(res.body)
          await expect(res.body.posts.length).to.equal(1)
          await expect(res.body.posts[0].id).to.equal(3)
          await expect(res.statusCode).to.equal(200)
@@ -715,7 +712,7 @@ module.exports = (user, admin) => describe('API /jodel/', function () {
     api.post('/api/jodel/delete/favourite')
       .set('Authorization', 'bearer ' + user.token)
       .send({
-        jodelId: 3 
+        jodelId: 3
       })
        .end(async (err, res) => {
          if (err) {
@@ -725,8 +722,8 @@ module.exports = (user, admin) => describe('API /jodel/', function () {
          await expect(res.statusCode).to.equal(200)
          await done()
        })
-    })
-    it('List user empty favourites', done => {
+  })
+  it('List user empty favourites', done => {
     api.get('/api/jodel/user/allfav/0')
       .set('Authorization', 'bearer ' + user.token)
        .end(async (err, res) => {
@@ -735,6 +732,62 @@ module.exports = (user, admin) => describe('API /jodel/', function () {
            process.exit(1)
          }
          await expect(res.body.posts.length).to.equal(0)
+         await expect(res.statusCode).to.equal(200)
+         await done()
+       })
+  })
+  it('User list his posts', done => {
+    api.get('/api/jodel/user/allposts/0')
+      .set('Authorization', 'bearer ' + user.token)
+       .end(async (err, res) => {
+         if (err) {
+           console.error('Failed to run test, aborting')
+           process.exit(1)
+         }
+         await expect(res.body.posts.length).to.equal(11)
+         await expect(res.statusCode).to.equal(200)
+         await done()
+       })
+  })
+  it('Vote on a post', done => {
+    api.post('/api/jodel/vote')
+      .set('Authorization', 'bearer ' + user.token)
+      .send({
+        jodelId: 10, value: 1
+      })
+       .end(async (err, res) => {
+         if (err) {
+           console.error('Failed to run test, aborting')
+           process.exit(1)
+         }
+         await expect(res.statusCode).to.equal(200)
+         await done()
+       })
+  })
+
+  it('User list his posts by votes', done => {
+    api.get('/api/jodel/user/allVotes/0')
+      .set('Authorization', 'bearer ' + user.token)
+       .end(async (err, res) => {
+         if (err) {
+           console.error('Failed to run test, aborting')
+           process.exit(1)
+         }
+         console.log(res.body.posts)
+         await expect(res.body.posts[0].id).to.equal(10)
+         await expect(res.body.posts.length).to.equal(12)
+         await expect(res.statusCode).to.equal(200)
+         await done()
+       })
+  })
+  it('User list his posts by comments', done => {
+    api.get('/api/jodel/user/allComments/0')
+      .set('Authorization', 'bearer ' + user.token)
+       .end(async (err, res) => {
+         if (err) {
+           console.error('Failed to run test, aborting')
+           process.exit(1)
+         }
          await expect(res.statusCode).to.equal(200)
          await done()
        })

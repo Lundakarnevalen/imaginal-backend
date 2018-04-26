@@ -115,9 +115,10 @@ app.get('/api/jodel/:id', jodel.getJodelPost)
 app.get('/api/jodel/all/:offset', jodel.getAllPosts)
 app.get('/api/jodel/allVotes/:offset', jodel.getAllPostsByVotes)
 app.get('/api/jodel/allComments/:offset', jodel.getAllPostsByComments)
-app.get('/api/jodel/user/allComments/:offset', jodel.getAllPostsByComments)
-app.get('/api/jodel/user/allVotes/:offset', jodel.getAllPostsByVotes)
+app.get('/api/jodel/user/allComments/:offset', jodel.getAllUserPostsByComments)
+app.get('/api/jodel/user/allVotes/:offset', jodel.getAllUserPostsByVotes)
 app.get('/api/jodel/user/allfav/:offset', jodel.getAllUserFavourites)
+app.get('/api/jodel/user/allposts/:offset', jodel.getAllUserPosts)
 
 app.all('*', function (req, res) {
   res.status(404).json({

@@ -22,7 +22,7 @@ Vote.belongsTo(User, {
 })
 
 JodelPost.hasMany(Vote, {
-  as: 'JodelVote',
+  as: 'JodelVotes',
   foreignKey: 'postId'
 })
 

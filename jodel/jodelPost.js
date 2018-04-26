@@ -30,7 +30,7 @@ const getColor = function () {
 
 Posts.prototype.toJSON = async (post) => {
   let voted = false
-  const votes = await post.getJodelVote().map(x => {
+  const votes = await post.getJodelVotes().map(x => {
     if (x.userId === post.userId) { voted = true }
     return x.value
   })
