@@ -1,82 +1,153 @@
 'use strict'
 
 const storageLocations = require('../models/storageLocation')
-const storageContents = require('../models/storageContents')
+const userRoles = require('../models/userrole')
+const items = require('../models/item')
 
 const addStorageLocation = async (req, res) => {
-  const locations = await storageLocations.StorageLocation.findAll()
-  const existingLocation = await locations.find(location => location.storageName === req.body.storageName)
-  if (existingLocation) {
-    res.json({
+  try {
+    const hasAccess = await userRoles.hasWarehouseWorkerAccess(req)
+    if (hasAccess) {
+      const locations = await storageLocations.StorageLocation.findAll()
+      const existingLocation = await locations.find(location => location.storageName === req.body.storageName)
+      if (existingLocation) {
+        res.json({
+          success: false,
+          message: 'Storage Location already exists'
+        })
+      } else if (!req.body.storageName) {
+        res.json({
+          success: false,
+          message: 'Missing parameter storageName'
+        })
+      } else {
+        const theDescription = (req.body.description) ? req.body.description : ''
+        await storageLocations.StorageLocation.create({
+          storageName: req.body.storageName,
+          description: theDescription
+        })
+        res.json({
+          success: true,
+          message: 'Storage Location added'
+        })
+      }
+    } else {
+      return res.status(401).json({
+        success: false,
+        message: 'Go away!'
+      })
+    }
+  } catch (err) {
+    console.log(err)
+    return res.status(500).json({
       success: false,
-      message: 'Storage Location already exists'
-    })
-  } else if (!req.body.storageName) {
-    res.json({
-      success: false,
-      message: 'Missing parameter storageName'
-    })
-  } else {
-    const theDescription = (req.body.description) ? req.body.description : ''
-    // Check if create succeeds?
-    await storageLocations.StorageLocation.create({
-      storageName: req.body.storageName,
-      description: theDescription
-    })
-    res.json({
-      success: true,
-      message: 'Storage Location added'
+      message: 'Failed to retrive items'
     })
   }
 }
 
 const getStorageLocations = async (req, res) => {
-  const locations = await storageLocations.StorageLocation.findAll()
-  return res.json({
-    success: true,
-    locations: locations
-  })
-}
-
-const getById = async (req, res) => {
-  const locations = await storageLocations.StorageLocation.findAll()
-  const theLocation = await locations.find(location => location.id === req.body.id)
-  if (theLocation) {
-    res.json({
-      success: true,
-      location: theLocation
-    })
-  } else {
-    res.json({
+  try {
+    const hasAccess = await userRoles.hasWarehouseWorkerAccess(req)
+    if (hasAccess) {
+      const locations = await storageLocations.StorageLocation.findAll()
+      return res.json({
+        success: true,
+        data: locations
+      })
+    } else {
+      return res.status(401).json({
+        success: false,
+        message: 'Go away!'
+      })
+    }
+  } catch (err) {
+    console.log(err)
+    return res.status(500).json({
       success: false,
-      message: 'No such id'
+      message: 'Failed to retrive items'
     })
   }
 }
 
-const getItemsInStorageLocation = async (req, res) => {
-  const locationExists = await storageLocations.StorageLocation.findOne({
-    where: { id: req.params.locationId }
-  })
-  if (!locationExists) {
-    return res.status(400).json({
+const getStorageLocationById = async (req, res) => {
+  try {
+    const hasAccess = await userRoles.hasWarehouseWorkerAccess(req)
+    if (hasAccess) {
+      const theLocation = await storageLocations.StorageLocation.findOne({
+        where: { id: req.params.storageLocationId }
+      })
+      if (theLocation) {
+        res.json({
+          success: true,
+          data: theLocation
+        })
+      } else {
+        res.json({
+          success: false,
+          message: 'No such id'
+        })
+      }
+    } else {
+      return res.status(401).json({
+        success: false,
+        message: 'Go away!'
+      })
+    }
+  } catch (err) {
+    console.log(err)
+    return res.status(500).json({
       success: false,
-      message: 'Location does not exist'
+      message: 'Failed to retrive items'
     })
   }
+}
 
-  const storage = await storageContents.StorageContent.findAll({
-    where: { locationId: req.params.locationId }
-  })
-  return res.json({
-    success: true,
-    data: storage
-  })
+const getInventory = async (req, res) => {
+  try {
+    const hasAccess = await userRoles.hasWarehouseWorkerAccess(req)
+    if (hasAccess) {
+      const storageLocationId = req.params.storageLocationId
+      const locationExists = await storageLocations.StorageLocation.findOne({
+        where: { id: storageLocationId }
+      })
+      if (!locationExists) {
+        return res.status(400).json({
+          success: false,
+          message: 'Location does not exist'
+        })
+      }
+      const storage = await storageLocations.StorageLocation.findAll({
+        where: { id: storageLocationId },
+        include: [{
+          model: items.Item,
+          through: {
+            where: { storageLocationId: storageLocationId }
+          }
+        }]
+      })
+      return res.json({
+        success: true,
+        data: storage
+      })
+    } else {
+      return res.status(401).json({
+        success: false,
+        message: 'Go away!'
+      })
+    }
+  } catch (err) {
+    console.log(err)
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to retrive items'
+    })
+  }
 }
 
 module.exports = {
   addStorageLocation,
   getStorageLocations,
-  getById,
-  getItemsInStorageLocation
+  getStorageLocationById,
+  getInventory
 }
