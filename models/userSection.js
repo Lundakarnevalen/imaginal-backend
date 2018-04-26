@@ -48,14 +48,11 @@ const findSectionsOfUser = async function (user) {
   // Convert the usersection-objects to the sectionid.
   const sectionIds = usersections.map(s => s.sectionId)
 
-<<<<<<< HEAD
-=======
   // Return empty if user not part of any section
-  if(sectionIds.length == 0){
+  if (sectionIds.length == 0) {
     return []
   }
 
->>>>>>> 4b35c890b197b2b86681fe065435052ec0be4dd0
   // Find all sections
   // Op.or is the OR operator for sequelize. Read more at:
   // http://docs.sequelizejs.com/manual/tutorial/querying.html#basics

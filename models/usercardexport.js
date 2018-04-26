@@ -5,9 +5,9 @@ const dbc = require('../config/database')
 const UserCardExport = dbc.define('UserCardExport', {
   user_id: {
     type: Sequelize.INTEGER
-  },
+  }
 })
 
 module.exports = {
-  UserCardExport,
+  UserCardExport
 }

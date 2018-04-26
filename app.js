@@ -51,7 +51,7 @@ app.get('/api/image/thumbnail/:imagename', images.getimage)
 app.get('/api/image/full/:imagename', images.getfullimage)
 app.post('/api/image/comment/:imagename', images.updateImageComment)
 
-// Hidden endpoints. They require a lot of RAM and may crash the server. 
+// Hidden endpoints. They require a lot of RAM and may crash the server.
 // Therefore only for local use.
 // app.get('/api/card/:imagename', images.createCard)
 // app.get('/api/sectioncard/:sectionname', images.createSectionPdfs)

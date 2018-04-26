@@ -122,12 +122,12 @@ const getInventory = async (req, res) => {
         include: [{
           model: storageLocations.StorageLocation,
           through: {
-            where: { storageLocationId: storageLocationId },
+            where: { storageLocationId: storageLocationId }
           }
         },
         {
           model: tags.Tag,
-          through: { attributes: [] },
+          through: { attributes: [] }
         }]
       })
       return res.json({

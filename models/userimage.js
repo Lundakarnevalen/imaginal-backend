@@ -12,7 +12,7 @@ const UserImage = dbc.define('UserImage', {
     type: Sequelize.INTEGER
   },
   image_name: {
-    type: Sequelize.STRING,
+    type: Sequelize.STRING
   },
   comments: {
     type: Sequelize.STRING
@@ -49,5 +49,5 @@ where
 
 module.exports = {
   UserImage,
-  cardInformation,
+  cardInformation
 }

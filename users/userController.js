@@ -64,12 +64,12 @@ const getSectionByPersonalNumber = async (req, res) => {
 
     // Fetch userimage of user from db
     let imagePath = ''
-    try{
+    try {
       const userImage = await UserImage.findOne({
         where: { user_id: user.id, current_image: 1, bad_picture: 0}
       })
       imagePath = s3.getSignedUrl('getObject', { Bucket: croppedThumbBucket, Key: userImage.image_name })
-    } catch(err){
+    } catch (err) {
       console.log(err)
     }
 
@@ -77,11 +77,8 @@ const getSectionByPersonalNumber = async (req, res) => {
     const sections = await UserSection.findSectionsOfUser(user)
     return res.json({
       success: true,
-<<<<<<< HEAD
-=======
       userimage: imagePath,
       name: `${user.firstName} ${user.lastName}`,
->>>>>>> 4b35c890b197b2b86681fe065435052ec0be4dd0
       sections
     })
   } catch (err) {

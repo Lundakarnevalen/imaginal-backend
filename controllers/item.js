@@ -12,9 +12,9 @@ const getAllItems = async (req, res) => {
     const hasAccess = await userRoles.hasWarehouseCustomerAccess(req)
     if (hasAccess) {
       const itemList = await items.Item.findAll({
-        include:[{
+        include: [{
           model: tags.Tag,
-          through: {attributes: []},
+          through: {attributes: []}
         }]
       })
       return res.json({
