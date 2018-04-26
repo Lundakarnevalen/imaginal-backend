@@ -328,6 +328,7 @@ const getItemById = async (req, res) => {
   }
 }
 
+<<<<<<< HEAD
 const getInventory = async (req, res) => {
   try {
     const hasAccess = await userRoles.hasWarehouseCustomerAccess(req)
@@ -364,6 +365,26 @@ const getInventory = async (req, res) => {
 }
 
 
+=======
+const getItemByArticleId = async (req, res) => {
+  const item = req.params.articleId
+  const findItem = await items.Item.findAll({
+    where: { articleNumber: item }
+  })
+  if (findItem.length > 0) {
+    return res.json({
+      success: true,
+      message: findItem
+    })
+  } else {
+    return res.status(400).json({
+      success: false,
+      message: 'No item with that article number exists'
+    })
+  }
+}
+
+>>>>>>> 2dbb74305089ea6e505e4de6673282976516f7c6
 module.exports = {
   addItem,
   getAllItems,
