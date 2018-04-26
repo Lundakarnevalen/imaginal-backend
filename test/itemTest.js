@@ -457,4 +457,181 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
           done()
         })
     })
+
+    it('Unauthorized addQuantity, role: user', done => {
+      api.post('/api/warehouse/product/addquantity')
+        .set('Authorization', 'bearer ' + user.token)
+        .send({
+          'storageContentId': 1,
+          'quantity': 5
+        })
+        .end(async (err, res) => {
+          if (err) {
+            console.error('Failed to run test, aborting')
+            process.exit(1)
+          }
+          await expect(res.statusCode).to.equal(401)
+
+          done()
+        })
+    })
+
+    it('Authorized addQuantity, role: warehouse customer', done => {
+      api.post('/api/warehouse/product/addquantity')
+        .set('Authorization', 'bearer ' + warehouseCustomer.token)
+        .send({
+          'storageContentId': 1,
+          'quantity': 5
+        })
+        .end(async (err, res) => {
+          if (err) {
+            console.error('Failed to run test, aborting')
+            process.exit(1)
+          }
+          await expect(res.statusCode).to.equal(401)
+          done()
+        })
+    })
+
+    it('Authorized addQuantity, role: warehouse worker', done => {
+      api.post('/api/warehouse/product/addquantity')
+        .set('Authorization', 'bearer ' + warehouseWorker.token)
+        .send({
+          'storageContentId': 1,
+          'quantity': 5
+        })
+        .end(async (err, res) => {
+          if (err) {
+            console.error('Failed to run test, aborting')
+            process.exit(1)
+          }
+          await expect(res.statusCode).to.equal(200)
+          done()
+        })
+    })
+
+    it('Authorized addQuantity, role: warehouse manager', done => {
+      api.post('/api/warehouse/product/addquantity')
+        .set('Authorization', 'bearer ' + warehouseManager.token)
+        .send({
+          'storageContentId': 1,
+          'quantity': 5
+        })
+        .end(async (err, res) => {
+          if (err) {
+            console.error('Failed to run test, aborting')
+            process.exit(1)
+          }
+          await expect(res.statusCode).to.equal(200)
+          done()
+        })
+    })
+
+    it('Authorized addQuantity, role: admin', done => {
+      api.post('/api/warehouse/product/addquantity')
+        .set('Authorization', 'bearer ' + admin.token)
+        .send({
+          'storageContentId': 1,
+          'quantity': 5
+        })
+        .end(async (err, res) => {
+          if (err) {
+            console.error('Failed to run test, aborting')
+            process.exit(1)
+          }
+          await expect(res.statusCode).to.equal(200)
+          done()
+        })
+    })
+
+    it('Unauthorized addToStorageContent, role: user', done => {
+      api.post('/api/warehouse/product/addtostoragecontent')
+        .set('Authorization', 'bearer ' + user.token)
+        .send({
+          'itemId': 2,
+          'storageLocationId': 1,
+          'quantity': 5
+        })
+        .end(async (err, res) => {
+          if (err) {
+            console.error('Failed to run test, aborting')
+            process.exit(1)
+          }
+          await expect(res.statusCode).to.equal(401)
+
+          done()
+        })
+    })
+
+    it('Authorized addToStorageContent, role: warehouse customer', done => {
+      api.post('/api/warehouse/product/addtostoragecontent')
+        .set('Authorization', 'bearer ' + warehouseCustomer.token)
+        .send({
+          'itemId': 2,
+          'storageLocationId': 1,
+          'quantity': 5
+        })
+        .end(async (err, res) => {
+          if (err) {
+            console.error('Failed to run test, aborting')
+            process.exit(1)
+          }
+          await expect(res.statusCode).to.equal(401)
+          done()
+        })
+    })
+
+    it('Authorized addToStorageContent, role: warehouse worker', done => {
+      api.post('/api/warehouse/product/addtostoragecontent')
+        .set('Authorization', 'bearer ' + warehouseWorker.token)
+        .send({
+          'itemId': 2,
+          'storageLocationId': 1,
+          'quantity': 5
+        })
+        .end(async (err, res) => {
+          if (err) {
+            console.error('Failed to run test, aborting')
+            process.exit(1)
+          }
+          await expect(res.statusCode).to.equal(200)
+          done()
+        })
+    })
+
+    it('Authorized addToStorageContent, role: warehouse manager', done => {
+      api.post('/api/warehouse/product/addtostoragecontent')
+        .set('Authorization', 'bearer ' + warehouseManager.token)
+        .send({
+          'itemId': 3,
+          'storageLocationId': 1,
+          'quantity': 5
+        })
+        .end(async (err, res) => {
+          if (err) {
+            console.error('Failed to run test, aborting')
+            process.exit(1)
+          }
+          await expect(res.statusCode).to.equal(200)
+          done()
+        })
+    })
+
+    it('Authorized addToStorageContent, role: admin', done => {
+      api.post('/api/warehouse/product/addtostoragecontent')
+        .set('Authorization', 'bearer ' + admin.token)
+        .send({
+          'itemId': 4,
+          'storageLocationId': 1,
+          'quantity': 5
+        })
+        .end(async (err, res) => {
+          if (err) {
+            console.error('Failed to run test, aborting')
+            process.exit(1)
+          }
+          await expect(res.statusCode).to.equal(200)
+          done()
+        })
+    })
   })
