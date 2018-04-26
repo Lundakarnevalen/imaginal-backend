@@ -123,7 +123,6 @@ const getInventory = async (req, res) => {
           model: storageLocations.StorageLocation,
           through: {
             where: { storageLocationId: storageLocationId },
-            attributes: ['quantity']
           }
         },
         {
