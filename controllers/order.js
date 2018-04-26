@@ -494,12 +494,12 @@ const getQuantity = async (req, res) => {
       })
     }
 
-    const totQuantities = itemOrders.map(order => {
-      return order.OrderLines.quantityOrdered - order.OrderLines.quantityDelivered
-    })
+    const totQuantity = itemOrders.reduce(function(preVal, order) {
+      return preVal + order.OrderLines.quantityOrdered
+    }, 0)
 
-    const totQuantity = totQuantities.reduce(function (preVal, quantity) {
-      return preVal + quantity
+    const notDeliveredQuantity = itemOrders.reduce(function(preVal, order) {
+      return preVal + order.OrderLines.quantityOrdered - order.OrderLines.quantityDelivered
     }, 0)
 
     const object = {
@@ -509,7 +509,7 @@ const getQuantity = async (req, res) => {
       supplier: item.supplier,
       unit: item.unit,
       salesPrice: item.salesPrice,
-      quantity: totQuantity,
+      quantityNotDelivered: notDeliveredQuantity,
       totalPrice: totQuantity * item.salesPrice
     }
     list.push(object)
