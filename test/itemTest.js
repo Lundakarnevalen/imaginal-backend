@@ -604,4 +604,78 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
           done()
         })
     })
+
+    it('Unauthorized getQuantityOfOrderedItemsForCostBearer, role: user', done => {
+      api.get('/api/warehouse/product/ordered/costBearer/1')
+        .set('Authorization', 'bearer ' + user.token)
+        .end(async (err, res) => {
+          if (err) {
+            console.error('Failed to run test, aborting')
+            process.exit(1)
+          }
+          await expect(res.statusCode).to.equal(401)
+
+          done()
+        })
+    })
+
+    it('Authorized getQuantityOfOrderedItemsForCostBearer, role: warehouse customer', done => {
+      api.get('/api/warehouse/product/ordered/costBearer/1')
+        .set('Authorization', 'bearer ' + warehouseCustomer.token)
+        .end(async (err, res) => {
+          if (err) {
+            console.error('Failed to run test, aborting')
+            process.exit(1)
+          }
+          await expect(res.statusCode).to.equal(200)
+          await expect(res.body.data[0].itemId).to.equal(1)
+          await expect(res.body.data[0].quantity).to.equal(25)
+          done()
+        })
+    })
+
+    it('Authorized getQuantityOfOrderedItemsForCostBearer, role: warehouse worker', done => {
+      api.get('/api/warehouse/product/ordered/costBearer/1')
+        .set('Authorization', 'bearer ' + warehouseWorker.token)
+        .end(async (err, res) => {
+          if (err) {
+            console.error('Failed to run test, aborting')
+            process.exit(1)
+          }
+          await expect(res.statusCode).to.equal(200)
+          await expect(res.body.data[0].itemId).to.equal(1)
+          await expect(res.body.data[0].quantity).to.equal(25)
+          done()
+        })
+    })
+
+    it('Authorized getQuantityOfOrderedItemsForCostBearer, role: warehouse manager', done => {
+      api.get('/api/warehouse/product/ordered/costBearer/1')
+        .set('Authorization', 'bearer ' + warehouseManager.token)
+        .end(async (err, res) => {
+          if (err) {
+            console.error('Failed to run test, aborting')
+            process.exit(1)
+          }
+          await expect(res.statusCode).to.equal(200)
+          await expect(res.body.data[0].itemId).to.equal(1)
+          await expect(res.body.data[0].quantity).to.equal(25)
+          done()
+        })
+    })
+
+    it('Authorized getQuantityOfOrderedItemsForCostBearer, role: admin', done => {
+      api.get('/api/warehouse/product/ordered/costBearer/1')
+        .set('Authorization', 'bearer ' + admin.token)
+        .end(async (err, res) => {
+          if (err) {
+            console.error('Failed to run test, aborting')
+            process.exit(1)
+          }
+          await expect(res.statusCode).to.equal(200)
+          await expect(res.body.data[0].itemId).to.equal(1)
+          await expect(res.body.data[0].quantity).to.equal(25)
+          done()
+        })
+    })
   })
