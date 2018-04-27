@@ -120,16 +120,22 @@ const getInventory = async (req, res) => {
       }
       const storage = await items.Item.findAll({
         include: [{
+          required: true,
           model: storageLocations.StorageLocation,
+          attributes: ['id', 'storageName', 'description'],
           through: {
-            where: { storageLocationId: storageLocationId }
+            where: { storageLocationId: storageLocationId },
+            attributes: ['quantity']
+
           }
         },
         {
           model: tags.Tag,
+          attributes: ['name', 'id'],
           through: { attributes: [] }
         }]
       })
+
       return res.json({
         success: true,
         data: storage
