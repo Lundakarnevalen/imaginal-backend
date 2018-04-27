@@ -136,7 +136,6 @@ const setUserInfo = async (req, res) => {
   try {
     const email = req.params.email
     const isAdmin = await UserRoles.hasRole(req.user, UserRoles.ADMIN)
-
     if (!isAdmin && email !== req.user.email) {
       return res.status(401).json({
         success: false,

@@ -1,6 +1,6 @@
 // TODO: Run seed and this in npm test
 // TODO: Drop test database.
-// TODO: Seeda in en token på adminen och avänd.
+// TODO: Seeda in en token på adminen och använd.
 
 const utils = require('./utils')
 const register = require('./registerTest')
@@ -9,10 +9,31 @@ const getAllUsers = require('./getAllUsersTest')
 const userChangeInfo = require('./userChangeInfoTest')
 const role = require('./roleTest')
 const userInfo = require('./userInfoTest')
+const checkin = require('./checkinTest')
+const tagTest = require('./tagTest')
+const itemTest = require('./itemTest')
+const orderTest = require('./orderTest')
+const warehouseUserTest = require('./warehouseUserTest')
+const storageLocationTest = require('./storageLocationTest')
+const tresureHunt = require('../treasureHunt/test')
+
 const user = utils.getUser()
 const admin = utils.getAdmin()
-const checkin = require('./checkinTest')
-const tresureHunt = require('../treasureHunt/test')
+const warehouseCustomer = utils.getWarehouseCustomer()
+const warehouseWorker = utils.getWarehouseWorker()
+const warehouseManager = utils.getWarehouseManager()
+const itemOne = utils.getItemOne()
+const itemTwo = utils.getItemTwo()
+const tagOne = utils.getTagOne()
+const tagTwo = utils.getTagTwo()
+const orderOne = utils.getOrderOne()
+const orderTwo = utils.getOrderTwo()
+const orderLineOne = utils.getOrderLineOne()
+const orderLineTwo = utils.getOrderLineTwo()
+const costBearer = utils.getCostBearer()
+const warehouseUser = utils.getWarehouseUser()
+const storageLocationOne = utils.getStorageLocationOne()
+const storageLocationTwo = utils.getStorageLocationTwo()
 
 register(user)
 login(user)
@@ -22,3 +43,11 @@ getAllUsers(user, admin)
 userChangeInfo(user, admin)
 checkin(user, admin)
 tresureHunt(user)
+tagTest(user, admin, warehouseCustomer, warehouseWorker, warehouseManager, tagOne, tagTwo)
+itemTest(user, admin, warehouseCustomer, warehouseWorker, warehouseManager, itemOne, itemTwo, tagOne)
+orderTest(user, admin, warehouseCustomer, warehouseWorker, warehouseManager,
+  itemOne, itemTwo, orderOne, orderTwo, orderLineOne, orderLineTwo)
+warehouseUserTest(user, admin, warehouseCustomer, warehouseWorker, warehouseManager,
+  costBearer, warehouseUser)
+storageLocationTest(user, admin, warehouseCustomer, warehouseWorker, warehouseManager,
+  storageLocationOne, storageLocationTwo)

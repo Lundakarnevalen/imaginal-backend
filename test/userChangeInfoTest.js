@@ -32,7 +32,7 @@ module.exports = (user, admin) => describe('API /api/user change user info', fun
         bigPleasures: ['Drinking', 'Alcohol'],
         smallPleasures: ['School', 'Studying']
       })
-      .end(async(err, res) => {
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
@@ -70,7 +70,7 @@ module.exports = (user, admin) => describe('API /api/user change user info', fun
         bigPleasures: ['Drinking', 'Alcohol'],
         smallPleasures: ['School', 'Studying']
       })
-      .end(async(err, res) => {
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
@@ -108,7 +108,7 @@ module.exports = (user, admin) => describe('API /api/user change user info', fun
         bigPleasures: ['Drinking', 'Alcohol'],
         smallPleasures: ['School', 'Studying']
       })
-      .end(async(err, res) => {
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
@@ -120,7 +120,7 @@ module.exports = (user, admin) => describe('API /api/user change user info', fun
   it('Validate all recently put data', done => {
     api.get('/api/user/' + user.email)
       .set('Authorization', 'bearer ' + user.token)
-      .end(async(err, res) => {
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
@@ -178,7 +178,7 @@ module.exports = (user, admin) => describe('API /api/user change user info', fun
         bigPleasures: ['Games'],
         smallPleasures: ['Going to bed']
       })
-      .end(async(err, res) => {
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
@@ -190,7 +190,7 @@ module.exports = (user, admin) => describe('API /api/user change user info', fun
   it('Validate all recently put data again', done => {
     api.get('/api/user/' + user.email)
       .set('Authorization', 'bearer ' + user.token)
-      .end(async(err, res) => {
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)

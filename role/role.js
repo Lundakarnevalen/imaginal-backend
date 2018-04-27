@@ -16,7 +16,7 @@ Role.prototype.toJSON = function () {
   return role.description
 }
 
-const getRoleById = async(roleId) => {
+const getRoleById = async (roleId) => {
   return Role.findOne({
     where: {id: roleId}
   })

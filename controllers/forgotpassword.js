@@ -147,9 +147,9 @@ const setNewPassword = function (req, res) {
       users.User.findOne({
         where: {email: reset.email}
       })
-      .then((user) => {
-        resetPassword(res, user, req.body.password, req.body.passwordToken)
-      })
+        .then((user) => {
+          resetPassword(res, user, req.body.password, req.body.passwordToken)
+        })
     })
 }
 

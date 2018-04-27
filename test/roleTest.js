@@ -6,7 +6,7 @@ module.exports = (user, admin) => describe('API /api/role role tests', function 
   it('Unauthorized addRole, done', done => {
     api.post('/api/role/admin@lundakarnevalen.se/2')
       .set('Authorization', 'bearer ' + user.token)
-      .end(async(err, res) => {
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
@@ -18,7 +18,7 @@ module.exports = (user, admin) => describe('API /api/role role tests', function 
   it('Unauthorized addRole, done', done => {
     api.delete('/api/role/admin@lundakarnevalen.se/2')
       .set('Authorization', 'bearer ' + user.token)
-      .end(async(err, res) => {
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
@@ -30,7 +30,7 @@ module.exports = (user, admin) => describe('API /api/role role tests', function 
   it('addRole to user', done => {
     api.post('/api/role/' + user.email + '/2')
       .set('Authorization', 'bearer ' + admin.token)
-      .end(async(err, res) => {
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
@@ -42,7 +42,7 @@ module.exports = (user, admin) => describe('API /api/role role tests', function 
   it('addRole to admin', done => {
     api.post('/api/role/' + user.email + '/1')
       .set('Authorization', 'bearer ' + admin.token)
-      .end(async(err, res) => {
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
@@ -54,7 +54,7 @@ module.exports = (user, admin) => describe('API /api/role role tests', function 
   it('Admin adds role', done => {
     api.post('/api/role/' + admin.email + '/2')
       .set('Authorization', 'bearer ' + user.token)
-      .end(async(err, res) => {
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
@@ -66,7 +66,7 @@ module.exports = (user, admin) => describe('API /api/role role tests', function 
   it('User adds role', done => {
     api.post('/api/role/' + admin.email + '/2')
       .set('Authorization', 'bearer ' + user.token)
-      .end(async(err, res) => {
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
@@ -78,7 +78,7 @@ module.exports = (user, admin) => describe('API /api/role role tests', function 
   it('User can get all users', done => {
     api.get('/api/users')
       .set('Authorization', 'bearer ' + user.token)
-      .end(async(err, res) => {
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
@@ -92,7 +92,7 @@ module.exports = (user, admin) => describe('API /api/role role tests', function 
   it('User remove role', done => {
     api.delete('/api/role/' + user.email + '/1')
       .set('Authorization', 'bearer ' + user.token)
-      .end(async(err, res) => {
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
@@ -104,7 +104,7 @@ module.exports = (user, admin) => describe('API /api/role role tests', function 
   it('Unauthorized user get all users', done => {
     api.get('/api/users')
       .set('Authorization', 'bearer ' + user.token)
-      .end(async(err, res) => {
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
@@ -116,7 +116,7 @@ module.exports = (user, admin) => describe('API /api/role role tests', function 
   it('Unauthorized user remove role', done => {
     api.delete('/api/role/' + admin.email + '/1')
       .set('Authorization', 'bearer ' + user.token)
-      .end(async(err, res) => {
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
@@ -128,7 +128,7 @@ module.exports = (user, admin) => describe('API /api/role role tests', function 
   it('Get users with role admin', done => {
     api.get('/api/role/1')
       .set('Authorization', 'bearer ' + admin.token)
-      .end(async(err, res) => {
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
@@ -142,7 +142,7 @@ module.exports = (user, admin) => describe('API /api/role role tests', function 
   it('Get users with invalid role admin', done => {
     api.get('/api/role/45')
       .set('Authorization', 'bearer ' + admin.token)
-      .end(async(err, res) => {
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
@@ -155,7 +155,7 @@ module.exports = (user, admin) => describe('API /api/role role tests', function 
   it('Add role to invalid user', done => {
     api.post('/api/role/invaliduser/2')
       .set('Authorization', 'bearer ' + admin.token)
-      .end(async(err, res) => {
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
@@ -168,7 +168,7 @@ module.exports = (user, admin) => describe('API /api/role role tests', function 
   it('Add invalid role to user', done => {
     api.post('/api/role/' + admin.email + '/45')
       .set('Authorization', 'bearer ' + admin.token)
-      .end(async(err, res) => {
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
@@ -181,7 +181,7 @@ module.exports = (user, admin) => describe('API /api/role role tests', function 
   it('Unauthorized get all users with roleid', done => {
     api.get('/api/role/1')
       .set('Authorization', 'bearer ' + user.token)
-      .end(async(err, res) => {
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
