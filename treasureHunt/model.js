@@ -17,8 +17,9 @@ const TreasureHunt = dbc.define('TreasureHunt', {
 
 const info = async () => {
   const players = await TreasureHunt.findAndCountAll()
-  const winnerCount = players.rows.filter(player => player.dataValues.finished).length
-  return {players: players.count, winnersLeft: 25 - winnerCount}
+  const possibleWinnersLeft = 25 - players.rows.filter(player => player.dataValues.finished).length
+  const winnersLeft = possibleWinnersLeft < 0 ? 0 : possibleWinnersLeft
+  return {players: players.count, winnersLeft}
 }
 
 const enroll = async user => {
