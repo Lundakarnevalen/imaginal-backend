@@ -41,19 +41,24 @@ Section.belongsToMany(User, {
 const findSectionsOfUser = async function (user) {
   // Fetch all usersections for the user.
   const usersections = await UserSection.findAll({
-    where: { userId: user.id },
+    where: {userId: user.id},
     attributes: ['sectionId']
   })
 
   // Convert the usersection-objects to the sectionid.
   const sectionIds = usersections.map(s => s.sectionId)
 
+  // Return empty if user not part of any section
+  if (sectionIds.length == 0) {
+    return []
+  }
+
   // Find all sections
   // Op.or is the OR operator for sequelize. Read more at:
   // http://docs.sequelizejs.com/manual/tutorial/querying.html#basics
   const sections = await Section.findAll({
     where: {
-      id: { [Op.or]: sectionIds }
+      id: {[Op.or]: sectionIds}
     }
   })
   return sections
