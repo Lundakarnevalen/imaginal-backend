@@ -214,7 +214,19 @@ const addToStorageContent = async (req, res) => {
           message: 'No such storageLocation!'
         })
       }
-
+      const storageContent = await storageContents.StorageContent.findAll({
+        where: {
+          storageLocationId: req.body.storageLocationId,
+          itemId: req.body.itemId
+        }
+      })
+      console.log(storageContent)
+      if (storageContent.length !== 0) {
+        return res.status(400).json({
+          success: false,
+          message: 'Item already exist in the storagecontent'
+        })
+      }
       storageContents.StorageContent.create({
         storageLocationId: req.body.storageLocationId,
         itemId: req.body.itemId,
