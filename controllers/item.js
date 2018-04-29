@@ -211,10 +211,21 @@ const addToStorageContent = async (req, res) => {
       if (!storageLocation) {
         return res.status(400).json({
           success: false,
-          message: 'No such storageLocation!'
+          message: 'Invalid storage location.'
         })
       }
-
+      const storageContent = await storageContents.StorageContent.findAll({
+        where: {
+          storageLocationId: req.body.storageLocationId,
+          itemId: req.body.itemId
+        }
+      })
+      if (storageContent.length !== 0) {
+        return res.status(400).json({
+          success: false,
+          message: 'Item already assigned to this storage.'
+        })
+      }
       storageContents.StorageContent.create({
         storageLocationId: req.body.storageLocationId,
         itemId: req.body.itemId,
@@ -222,7 +233,7 @@ const addToStorageContent = async (req, res) => {
       })
       return res.json({
         success: true,
-        message: 'Item added to storage content with specified quantity'
+        message: 'Item added to storage with specified quantity.'
       })
     } else {
       return res.status(401).json({
