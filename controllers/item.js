@@ -117,7 +117,7 @@ const setQuantity = async (req, res) => {
     if (!req.body.storageContentId || !req.body.quantity) {
       return res.status(400).json({
         success: false,
-        message: 'Invalid parameter'
+        message: 'Invalid parameter!'
       })
     }
     const storageContent = await storageContents.StorageContent.findOne({
@@ -126,14 +126,14 @@ const setQuantity = async (req, res) => {
     if (!storageContent) {
       return res.status(400).json({
         success: false,
-        message: 'No such storage content'
+        message: 'No such storage content.'
       })
     }
     storageContent.quantity = req.body.quantity
     storageContent.save()
     return res.json({
       success: true,
-      message: 'Quantity added to storage content'
+      message: 'Quantity has been set.'
     })
   } catch (err) {
     console.log(err)
