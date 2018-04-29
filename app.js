@@ -133,7 +133,6 @@ app.post('/api/warehouse/product/itemontags', items.getItemsOnTags)
 app.post('/api/warehouse/product/addtostoragecontent', items.addToStorageContent)
 app.post('/api/warehouse/product/addQuantity', items.addQuantity)
 app.post('/api/warehouse/product/setQuantity', items.setQuantity)
-app.post('/api/warehouse/product/addtostoragecontent', items.addToStorageContent)
 app.get('/api/warehouse/product/getAllItems', items.getAllItems)
 
 app.get('/api/warehouse/location/inventory/:storageLocationId', storageLocations.getInventory)
