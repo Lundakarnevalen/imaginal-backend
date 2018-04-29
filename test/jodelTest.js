@@ -764,7 +764,21 @@ module.exports = (user, admin) => describe('API /jodel/', function () {
          await done()
        })
   })
-
+  it('Vote on a post', done => {
+    api.post('/api/jodel/vote')
+      .set('Authorization', 'bearer ' + admin.token)
+      .send({
+        jodelId: 10, value: 1
+      })
+       .end(async (err, res) => {
+         if (err) {
+           console.error('Failed to run test, aborting')
+           process.exit(1)
+         }
+         await expect(res.statusCode).to.equal(200)
+         await done()
+       })
+  })
   it('User list his posts by votes', done => {
     api.get('/api/jodel/user/allVotes/0')
       .set('Authorization', 'bearer ' + user.token)

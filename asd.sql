@@ -1,0 +1,1 @@
+select JodelPosts.id,JodelPosts.text,JodelPosts.userId,sum(JodelVotes.value) AS votes from JodelPosts LEFT JOIN JodelVotes on JodelPosts.id=JodelVotes.postID GROUP BY JodelPosts.id ORDER BY votes DESC, id DESC;

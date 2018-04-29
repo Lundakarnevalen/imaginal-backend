@@ -436,7 +436,7 @@ const getAllUserPosts = async (req, res) => {
 const getAllUserPostsByVotes = async (req, res) => {
   const user = req.user
   const offset = parseInt(req.params.offset) || 0
-  const limit = 12
+  const limit = 24 // SET TO 12
   if (offset < 0) {
     return res.status(500).json({
       success: false,
@@ -445,36 +445,40 @@ const getAllUserPostsByVotes = async (req, res) => {
   }
   await console.log('..................')
   const as = await user.getJodels({
-    attributes: {
-      include: [
-        [Sequelize.fn(`SUM`, Sequelize.col('JodelVotes.value')), 'votes']
-      ]
-    },
     include: [{
       model: JodelVote,
       as: 'JodelVotes',
-      attributes: ['value'],
-      required: false
+      attributes: [['value', 'votes'], 'postId'],
+      required: false,
+      order: ['votes'],
+      allowNull: true
     }],
-    offset: offset,
-    limit: limit
+    group: ['id'],
+    attributes: [[Sequelize.fn(`SUM`, 'votes'), 'result'], 'id', 'userId'],
+    allowNull: true,
+    limit,
+    offset,
+    raw: true
   })
-  /*  const as = await user.getJodels({
+/*  const as = await user.getJodels({
     include: [{
       model: JodelVote,
-      as: 'JodelVote',
-      attributes: [["value", "votes"]]
-      //attributes: [[Sequelize.fn(`SUM`, Sequelize.col('value')), 'votes']]
-//      attributes: [["value", 'votes']]
-    //    order: [['JodelVote', 'votes']]
+      as: 'JodelVotes',
+      attributes: [['value', 'votes'], 'postId'],
+      required: false,
+      allowNull: true
     }],
-    offset: offset,
-    limit: limit
-    order: [[Sequelize.fn]]
-  }) */
+    group: ['id'],
+    attributes: [[Sequelize.fn(`SUM`, 'votes'), 'votes'], 'id', 'userId'],
+    allowNull: true,
+    limit,
+    offset
+  })
+*/
   await console.log('..................')
   console.log(as)
-  console.log(as[0].JodelVote)
+  console.log(as[0].JodelVotes)
+  console.log(as[1].JodelVotes)
   const listedPosts = []
   for (let i = as.length - 1; i >= 0; i--) {
     const asd = await as[i].Votes.toJSON(as[i].Votes)
