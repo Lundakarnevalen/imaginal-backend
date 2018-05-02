@@ -1,7 +1,7 @@
 const User = require('../users/users').User
 const jwt = require('jsonwebtoken')
 
-const createUser = async(req, t) => {
+const createUser = async (req, t) => {
   const token = await jwt.sign({email: req.body.email}, process.env.TOKEN_SECRET || 'secret')
   const user = await User.create({
     email: req.body.email,

@@ -49,7 +49,7 @@ const findSectionsOfUser = async function (user) {
   const sectionIds = usersections.map(s => s.sectionId)
 
   // Return empty if user not part of any section
-  if(sectionIds.length == 0){
+  if (sectionIds.length === 0) {
     return []
   }
 

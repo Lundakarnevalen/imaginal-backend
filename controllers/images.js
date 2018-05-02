@@ -84,45 +84,45 @@ function uploadThumbnail (res, inbucket, fileName, outbucket, userId) {
       console.log('resizing...')
       // Resize image to max 350px in height
       shrunk.resize(Jimp.AUTO, 350)
-             .quality(100)
-             .getBuffer(Jimp.MIME_JPEG, function (err, buff) {
-               if (err) { return res.status(500).json(err) }
-               console.log(`uploading ${fileName} to`, thumbBucket)
+        .quality(100)
+        .getBuffer(Jimp.MIME_JPEG, function (err, buff) {
+          if (err) { return res.status(500).json(err) }
+          console.log(`uploading ${fileName} to`, thumbBucket)
 
           // Upload resized image to outbucket
-               s3.upload({
-                 Key: fileName,
-                 Body: buff,
-                 Bucket: outbucket
-               }, async function (err, data) {
-                 if (err) { return res.status(500).json(err) }
+          s3.upload({
+            Key: fileName,
+            Body: buff,
+            Bucket: outbucket
+          }, async function (err, data) {
+            if (err) { return res.status(500).json(err) }
 
             // If userId, then update imagename in database
-                 if (userId) {
-                   try {
-                     await UserImage.update({
-                       current_image: false
-                     }, {where: {user_id: userId}})
+            if (userId) {
+              try {
+                await UserImage.update({
+                  current_image: false
+                }, {where: {user_id: userId}})
 
-                     await UserImage.create({
-                       user_id: userId,
-                       image_name: fileName,
-                       bad_picture: false,
-                       current_image: true
-                     })
+                await UserImage.create({
+                  user_id: userId,
+                  image_name: fileName,
+                  bad_picture: false,
+                  current_image: true
+                })
 
-                     console.log('Upload success!')
-                     res.send('Uploaded!')
-                   } catch (err) {
-                     console.log('Full error:', err)
-                     res.status(500).json(err)
-                   }
-                 } else {
-                   console.log('Upload success!')
-                   res.send('Uploaded!')
-                 }
-               })
-             })
+                console.log('Upload success!')
+                res.send('Uploaded!')
+              } catch (err) {
+                console.log('Full error:', err)
+                res.status(500).json(err)
+              }
+            } else {
+              console.log('Upload success!')
+              res.send('Uploaded!')
+            }
+          })
+        })
     })
   })
 }
@@ -203,7 +203,6 @@ const updateImageComment = async (req, res) => {
 
 const createCard = async (req, res) => {
   const filename = req.params.imagename
-  const imagePath = getImageURL(bucket, 'output', filename)
 
   // Work directory with pdfs
   const dir = getCardDir()
@@ -240,7 +239,7 @@ function exportPdf (toExport) {
   pdf.create(html, {
     height: '540px',
     width: '860px',
-    renderDelay: 2000,
+    renderDelay: 2000
   }).toFile('./cardpdfs/' + filename + '.pdf', (err, res) => {
     if (err) { console.log('error:', err) }
     console.log('Done!!!!')
@@ -302,16 +301,16 @@ async function generateSectionPdf (section, cb) {
   console.log(`Filtering on ${section.nameSv}`)
   const toExport = images.filter(i => i.nameSv === section.nameSv)
   console.log(`Exporting: ${toExport.length} karnevalists`)
-  if(toExport.length < 1){
+  if (toExport.length < 1) {
     console.log('No karnevalist left to export... aborting')
-    return cb('No karnevalists left in section to export', null)
+    return cb(new Error('No karnevalists left in section to export'), null)
   }
 
   // Set images as exported in database
-  const user_ids = toExport.map(i => { 
+  const userIds = toExport.map(i => {
     return { user_id: i.id }
   })
-  const create_res = await UserCardExport.bulkCreate(user_ids)
+  await UserCardExport.bulkCreate(userIds)
 
   // Divide inte chunks of 100
   const chunkSize = 100
@@ -326,6 +325,9 @@ async function generateSectionPdf (section, cb) {
 
   let count = 0
   function chunkIterator (err, res) {
+    if (err) {
+      return console.log(err)
+    }
     const callback = chunked.length <= 1 ? cb : chunkIterator
     const chunk = chunked.pop()
 
@@ -345,7 +347,7 @@ async function generateSectionPdf (section, cb) {
       height: '540px',
       width: '860px',
       renderDelay: 500
-    }).toFile(getCardDir() + '/' + currDate + '_'+ section.nameSv + '_' + ++count + '.pdf', callback)
+    }).toFile(getCardDir() + '/' + currDate + '_' + section.nameSv + '_' + ++count + '.pdf', callback)
   }
   chunkIterator()
 }

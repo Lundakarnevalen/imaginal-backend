@@ -64,12 +64,12 @@ const getSectionByPersonalNumber = async (req, res) => {
 
     // Fetch userimage of user from db
     let imagePath = ''
-    try{
+    try {
       const userImage = await UserImage.findOne({
-        where: { user_id: user.id, current_image: 1}
+        where: {user_id: user.id, current_image: 1, bad_picture: 0}
       })
-      imagePath = s3.getSignedUrl('getObject', { Bucket: croppedThumbBucket, Key: userImage.image_name })
-    } catch(err){
+      imagePath = s3.getSignedUrl('getObject', {Bucket: croppedThumbBucket, Key: userImage.image_name})
+    } catch (err) {
       console.log(err)
     }
 
@@ -136,7 +136,6 @@ const setUserInfo = async (req, res) => {
   try {
     const email = req.params.email
     const isAdmin = await UserRoles.hasRole(req.user, UserRoles.ADMIN)
-
     if (!isAdmin && email !== req.user.email) {
       return res.status(401).json({
         success: false,

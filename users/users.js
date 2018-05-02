@@ -7,6 +7,7 @@ const Skills = require('../models/skills').Skills
 const BigPleasures = require('../models/bigpleasures').BigPleasures
 const SmallPleasures = require('../models/smallpleasures').SmallPleasures
 const Interests = require('../models/interests').Interests
+const WarehouseUser = require('../models/warehouseUser').WarehouseUser
 
 const User = dbc.define('User', {
   id: {
@@ -49,8 +50,8 @@ const KarnevalistInfo = dbc.define('KarnevalistInfo', {
 })
 
 // This adds UserId to KarnevalistInfo as foreign key
-User.hasOne(KarnevalistInfo)
 
+User.hasOne(KarnevalistInfo)
 User.hasMany(Checkin, { as: 'CheckinOwnership', foreignKey: 'checkerId' })
 User.hasOne(Checkin, { as: 'Checkin', foreignKey: 'userId' })
 
@@ -58,6 +59,8 @@ User.hasMany(SmallPleasures, {as: 'UserSmallAudition', foreignKey: 'userId'})
 User.hasMany(Skills, {as: 'UserSkill', foreignKey: 'userId'})
 User.hasMany(Interests, {as: 'UserInterest', foreignKey: 'userId'})
 User.hasMany(BigPleasures, {as: 'UserBigAudition', foreignKey: 'userId'})
+
+User.hasOne(WarehouseUser, {as: 'WarehouseUser', foreignKey: 'userId'})
 
 User.prototype.setNewPassword = function (password) {
   return new Promise((resolve, reject) => {
@@ -101,15 +104,15 @@ const getUserByIdentification = function (identity) {
 const getUsersBySection = function (sectionid) {
   return dbc.query(`
 select 
-	u.id, u.firstName, u.lastName,
-	ui.image_name, ui.comments, ui.bad_picture, uce.createdAt as exported 
+u.id, u.firstName, u.lastName,
+ui.image_name, ui.comments, ui.bad_picture, uce.createdAt as exported 
 from 
-	Users u 
-	join UserSections us on u.id=us.userId 
-	left join (select * from UserImages where current_image=1) ui on ui.user_id=u.id
-  left join UserCardExports uce on uce.user_id=u.id
+Users u 
+join UserSections us on u.id=us.userId 
+left join (select * from UserImages where current_image=1) ui on ui.user_id=u.id
+ left join UserCardExports uce on uce.user_id=u.id
 where us.sectionId=:sectionid
-`, { replacements: {sectionid: sectionid }, type: Sequelize.QueryTypes.SELECT })
+`, {replacements: {sectionid: sectionid}, type: Sequelize.QueryTypes.SELECT})
 }
 
 module.exports = {

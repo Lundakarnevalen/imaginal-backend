@@ -63,25 +63,25 @@ const setUserSkillsAndTalents = async (user, interests, skills, bigAuditions, sm
   /** TODO: This is the same code as in register.js, we need to refactor stuff */
 
   if (isValidArray(interests)) {
-    await user.getUserInterest({t}).map(async(interest) => { await interest.destroy({t}) })
+    await user.getUserInterest({t}).map(async (interest) => { await interest.destroy({t}) })
     const userInterests = await Promise.all(interests.map(async (interest) => { return Interest.create({interest}, {t}) }))
     await user.setUserInterest(userInterests, {t})
   }
 
   if (isValidArray(skills)) {
-    await user.getUserSkill({t}).map(async(skill) => { await skill.destroy({t}) })
+    await user.getUserSkill({t}).map(async (skill) => { await skill.destroy({t}) })
     const userSkills = await Promise.all(skills.map(async (skill) => { return Skills.create({skill}, {t}) }))
     await user.setUserSkill(userSkills, {t})
   }
 
   if (isValidArray(bigAuditions)) {
-    await user.getUserBigAudition({t}).map(async(audition) => { await audition.destroy({t}) })
+    await user.getUserBigAudition({t}).map(async (audition) => { await audition.destroy({t}) })
     const bigPleasures = await Promise.all(bigAuditions.map(async (bigPleasures) => { return BigPleasures.create({audition: bigPleasures}, {t}) }))
     await user.setUserBigAudition(bigPleasures)
   }
 
   if (isValidArray(smallAuditions)) {
-    await user.getUserSmallAudition({t}).map(async(audition) => { await audition.destroy({t}) })
+    await user.getUserSmallAudition({t}).map(async (audition) => { await audition.destroy({t}) })
     const smallPleasures = await Promise.all(smallAuditions.map(async (smallPleasures) => { return SmallPleasures.create({audition: smallPleasures}, {t}) }))
     await user.setUserSmallAudition(smallPleasures, {t})
   }
