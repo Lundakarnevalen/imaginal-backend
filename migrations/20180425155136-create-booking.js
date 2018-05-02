@@ -1,4 +1,4 @@
-"use strict";
+'use strict'
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
@@ -9,7 +9,7 @@ module.exports = {
       Example:
       return queryInterface.createTable('users', { id: Sequelize.INTEGER });
     */
-    return queryInterface.createTable("Bookings", {
+    return queryInterface.createTable('Bookings', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -21,9 +21,10 @@ module.exports = {
         references: {
           model: {
             tableName: 'Events',
-            key: 'id',
+            key: 'id'
           }
-        }
+        },
+        allowNull: false,
       },
       name: Sequelize.STRING,
       email: Sequelize.STRING,
@@ -32,14 +33,14 @@ module.exports = {
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        default: Sequelize.NOW,
+        default: Sequelize.NOW
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        default: Sequelize.NOW,
+        default: Sequelize.NOW
       }
-    });
+    })
   },
 
   down: (queryInterface, Sequelize) => {
@@ -50,6 +51,6 @@ module.exports = {
       Example:
       return queryInterface.dropTable('users');
     */
-    return queryInterface.dropTable("Bookings");
+    return queryInterface.dropTable('Bookings')
   }
-};
+}

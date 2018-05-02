@@ -18,6 +18,8 @@ const tags = require('./controllers/tag')
 const orders = require('./controllers/order')
 const warehouseUser = require('./controllers/warehouseUser')
 const images = require('./controllers/images')
+const events = require("./controllers/event")
+const booknings = require('./controllers/booking')
 
 app.use(bodyParser.json())
 app.use(passport.initialize())
@@ -153,6 +155,13 @@ app.get('/api/warehouse/user/list', warehouseUser.getAllWarehouseUsers)
 app.get('/api/warehouse/user/', warehouseUser.getWarehouseUserById)
 app.get('/api/warehouse/user/costbearer/list', warehouseUser.getAllCostBearers)
 app.get('/api/warehouse/user/costbearer/:costBearerId', warehouseUser.getWarehouseUserByCostBearer)
+
+app.get("/api/event", events.getAll);
+app.get("/api/event/:id", events.getById);
+app.post("/api/event/", events.create);
+app.put("/api/event/:id", events.update);
+app.delete("/api/event/:id", events.remove);
+app.post("/api/event/:id/booking", booknings.create);
 
 app.all('*', function (req, res) {
   res.status(404).json({

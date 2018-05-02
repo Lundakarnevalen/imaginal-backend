@@ -1,29 +1,29 @@
-"use strict";
+'use strict'
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.bulkInsert(
-      "Events",
+      'Events',
       [
         {
-          name: "Awesome sittning",
-          date: "2018-06-1",
-          startTime: "12:00:00",
+          name: 'Awesome sittning',
+          date: '2018-06-1',
+          startTime: '12:00:00',
           nbrSeats: 200,
           createdAt: new Date(),
           updatedAt: new Date()
         },
         {
-          name: "Gris",
-          date: "2018-06-2",
-          startTime: "23:00:00",
+          name: 'Gris',
+          date: '2018-06-2',
+          startTime: '23:00:00',
           nbrSeats: 200,
           createdAt: new Date(),
           updatedAt: new Date()
         }
       ],
       {}
-    );
+    )
     /*
       Add altering commands here.
       Return a promise to correctly handle asynchronicity.
@@ -37,7 +37,7 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkDelete("Events", null, {});
+    await queryInterface.bulkDelete('Events', null, {})
     /*
       Add reverting commands here.
       Return a promise to correctly handle asynchronicity.
@@ -46,4 +46,4 @@ module.exports = {
       return queryInterface.bulkDelete('Person', null, {});
     */
   }
-};
+}
