@@ -33,8 +33,10 @@ const enroll = async user => {
 
 const win = async user => {
   const player = await TreasureHunt.find({where: {contestant: user.email}})
-  player.finished = true
-  player.save()
+  if (player) {
+    player.finished = true
+    player.save()
+  }
 }
 
 module.exports = {
