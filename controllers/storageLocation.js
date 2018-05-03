@@ -126,7 +126,7 @@ const getInventory = async (req, res) => {
           attributes: ['id', 'storageName', 'description'],
           through: {
             where: { storageLocationId: storageLocationId },
-            attributes: ['quantity']
+            attributes: ['id', 'quantity']
 
           }
         },

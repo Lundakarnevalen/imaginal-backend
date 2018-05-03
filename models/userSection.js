@@ -41,7 +41,7 @@ Section.belongsToMany(User, {
 const findSectionsOfUser = async function (user) {
   // Fetch all usersections for the user.
   const usersections = await UserSection.findAll({
-    where: { userId: user.id },
+    where: {userId: user.id},
     attributes: ['sectionId']
   })
 
@@ -58,7 +58,7 @@ const findSectionsOfUser = async function (user) {
   // http://docs.sequelizejs.com/manual/tutorial/querying.html#basics
   const sections = await Section.findAll({
     where: {
-      id: { [Op.or]: sectionIds }
+      id: {[Op.or]: sectionIds}
     }
   })
   return sections

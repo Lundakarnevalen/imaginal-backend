@@ -12,6 +12,7 @@ const role = require('./role/roleController')
 const section = require('./controllers/section')
 const checkin = require('./checkin/checkinController')
 const users = require('./users/userController')
+const treasureHunt = require('./treasureHunt/index')
 const storageLocations = require('./controllers/storageLocation')
 const items = require('./controllers/item')
 const tags = require('./controllers/tag')
@@ -61,11 +62,7 @@ app.post('/api/image/comment/:imagename', images.updateImageComment)
  * Authenticate tokens
  */
 app.all(/(\/)?api\/.*/, function (req, res, next) {
-  passport.authenticate('bearer', { session: false }, function (
-    err,
-    user,
-    info
-  ) {
+  passport.authenticate('bearer', {session: false}, function (err, user, info) {
     if (err) {
       return next(err)
     }
@@ -133,7 +130,6 @@ app.post('/api/warehouse/product/itemontags', items.getItemsOnTags)
 app.post('/api/warehouse/product/addtostoragecontent', items.addToStorageContent)
 app.post('/api/warehouse/product/addQuantity', items.addQuantity)
 app.post('/api/warehouse/product/setQuantity', items.setQuantity)
-app.post('/api/warehouse/product/addtostoragecontent', items.addToStorageContent)
 app.get('/api/warehouse/product/getAllItems', items.getAllItems)
 
 app.get('/api/warehouse/location/inventory/:storageLocationId', storageLocations.getInventory)
@@ -154,6 +150,10 @@ app.get('/api/warehouse/user/list', warehouseUser.getAllWarehouseUsers)
 app.get('/api/warehouse/user/', warehouseUser.getWarehouseUserById)
 app.get('/api/warehouse/user/costbearer/list', warehouseUser.getAllCostBearers)
 app.get('/api/warehouse/user/costbearer/:costBearerId', warehouseUser.getWarehouseUserByCostBearer)
+
+app.post('/api/treasurehunt/start', treasureHunt.start)
+app.get('/api/treasurehunt/info', treasureHunt.info)
+app.post('/api/treasurehunt/win', treasureHunt.win)
 
 app.all('*', function (req, res) {
   res.status(404).json({
