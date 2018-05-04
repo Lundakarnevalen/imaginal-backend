@@ -12,7 +12,7 @@ const addTag = async (req, res) => {
       })
     }
     const hasAccess = await userRoles.hasWarehouseAdminAccess(req)
-      if (hasAccess) {
+    if (hasAccess) {
       const tag = await tags.Tag.findOne({
         where: {
           name: req.body.name
