@@ -5,7 +5,6 @@ const userRoles = require('../models/userrole')
 const items = require('../models/item')
 const tags = require('../models/tag')
 const orders = require('../models/order')
-const orderLines = require('../models/orderLine')
 
 const addStorageLocation = async (req, res) => {
   try {
