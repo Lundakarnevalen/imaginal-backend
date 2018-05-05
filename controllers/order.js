@@ -167,6 +167,9 @@ const getOrderById = async (req, res) => {
           through: {attributes: ['quantityOrdered', 'quantityDelivered']}
         }]
       })
+
+      addPrice(order)
+
       return res.status(200).json({
         success: true,
         data: order
@@ -195,6 +198,11 @@ const getAllOrders = async (req, res) => {
           through: {attributes: ['quantityOrdered', 'quantityDelivered']}
         }]
       })
+
+      allOrders.map(function (order) {
+        addPrice(order)
+      })
+
       return res.status(200).json({
         success: true,
         data: allOrders
@@ -228,6 +236,10 @@ const getOrdersOnUser = async (req, res) => {
         }]
       })
       if (theOrders.length > 0) {
+        theOrders.map(function (order) {
+          addPrice(order)
+        })
+
         return res.status(200).json({
           success: true,
           data: theOrders
@@ -264,6 +276,10 @@ const getOrdersOnSection = async (req, res) => {
         }]
       })
       if (theOrders.length > 0) {
+        theOrders.map(function (order) {
+          addPrice(order)
+        })
+
         return res.status(200).json({
           success: true,
           data: theOrders
@@ -286,6 +302,15 @@ const getOrdersOnSection = async (req, res) => {
       message: 'Failed to get all orders'
     })
   }
+}
+
+/** Private method */
+const addPrice = (order) => {
+  order.dataValues.totalPrice = order.Items.reduce(function (preVal, item) {
+    const price = item.salesPrice * item.OrderLines.quantityOrdered
+    item.OrderLines.dataValues.priceOrderLine = price
+    return preVal + price
+  }, 0)
 }
 
 const checkoutOrderLines = async (req, res) => {
@@ -372,6 +397,10 @@ const getOrdersOnCostBearer = async (req, res) => {
         }]
       })
       if (theOrders.length > 0) {
+        theOrders.map(function (order) {
+          addPrice(order)
+        })
+
         return res.status(200).json({
           success: true,
           data: theOrders
