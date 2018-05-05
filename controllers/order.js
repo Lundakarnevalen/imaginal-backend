@@ -366,11 +366,8 @@ const getOrdersOnCostBearer = async (req, res) => {
   try {
     const hasAccess = await userRoles.hasWarehouseWorkerAccess(req)
     if (hasAccess) {
-      const bearerId = await costBearers.CostBearer.findOne({
-        where: { name: req.params.costBearer }
-      })
       const userIds = await warehouseUser.WarehouseUser.findAll({
-        where: { costBearerId: bearerId}
+        where: { costBearerId: req.params.costBearerId}
       }).userId
       const theOrders = await orders.Order.findAll({
         where: { warehouseUserId: userIds }
