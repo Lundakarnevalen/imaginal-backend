@@ -4,6 +4,7 @@ const storageLocations = require('../models/storageLocation')
 const userRoles = require('../models/userrole')
 const items = require('../models/item')
 const tags = require('../models/tag')
+const orders = require('../models/order')
 
 const addStorageLocation = async (req, res) => {
   try {
@@ -126,14 +127,26 @@ const getInventory = async (req, res) => {
           through: {
             where: { storageLocationId: storageLocationId },
             attributes: ['id', 'quantity']
-
           }
         },
         {
           model: tags.Tag,
           attributes: ['name', 'id'],
           through: { attributes: [] }
+        },
+        {
+          model: orders.Order,
+          through: {
+            attributes: ['quantityOrdered', 'quantityDelivered']
+          }
         }]
+      })
+
+      storage.map(function (item) {
+        const totQuantity = item.Orders.reduce(function (preVal, order) {
+          return preVal + order.OrderLines.quantityOrdered - order.OrderLines.quantityDelivered
+        }, 0)
+        item.dataValues.ordered = totQuantity
       })
 
       return res.json({
