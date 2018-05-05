@@ -274,6 +274,14 @@ const editItem = async (req, res) => {
         if (req.body.note) findItem.note = req.body.note
         if (req.body.warningAmount) findItem.warningAmount = req.body.warningAmount
         if (req.body.vat) findItem.vat = req.body.vat
+        if (req.body.tags) {
+          req.body.tags.map(tag => {
+            itemTags.ItemTag.create({
+              tagId: tag.id,
+              itemId: findItem.id
+            })
+          })
+        }
         await findItem.save()
         return res.json({
           success: true,
