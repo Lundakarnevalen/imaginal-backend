@@ -5,7 +5,6 @@ const userRoles = require('../models/userrole')
 const warehouseUser = require('../models/warehouseUser')
 const orderLines = require('../models/orderLine')
 const storageContents = require('../models/storageContents')
-// const items = require('../models/item')
 
 const createOrder = async (req, res) => {
   try {

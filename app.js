@@ -135,6 +135,8 @@ app.get('/api/warehouse/product/getAllItems', items.getAllItems)
 app.get('/api/warehouse/location/inventory/:storageLocationId', storageLocations.getInventory)
 app.post('/api/warehouse/location/new', storageLocations.addStorageLocation)
 app.get('/api/warehouse/location/list', storageLocations.getStorageLocations)
+
+// app.get('/api/warehouse/product/inventory', items.getInventory)
 app.get('/api/warehouse/location/:storageLocationId', storageLocations.getStorageLocationById)
 
 app.post('/api/warehouse/order/new', orders.createOrder)
