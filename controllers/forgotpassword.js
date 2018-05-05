@@ -117,7 +117,7 @@ const resetPassword = function (res, user, password, passwordToken) {
     })
   }
   removeEntry(user.email, passwordToken).then(() => {
-    users.setNewPassword(user, password)
+    user.setNewPassword(password)
     user.save().then(() => {
       res.json({
         success: true,
