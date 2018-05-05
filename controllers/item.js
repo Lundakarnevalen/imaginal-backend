@@ -11,7 +11,12 @@ const getAllItems = async (req, res) => {
   try {
     const hasAccess = await userRoles.hasWarehouseCustomerAccess(req)
     if (hasAccess) {
-      const itemList = await items.Item.findAll()
+      const itemList = await items.Item.findAll({
+        include: [{
+          model: tags.Tag,
+          through: {attributes: []}
+        }]
+      })
       return res.json({
         success: true,
         data: itemList
@@ -43,9 +48,9 @@ const addItem = async (req, res) => {
       }
       /** To do: Control that req.body.articleNumber and supplier are not empty! */
       const item = await items.findUniqueItem(
-        req.body.name, req.body.articleNumber, req.body.supplier)
+        req.body.articleNumber, req.body.supplier)
 
-      if (item.length > 0) {
+      if (item.length > 0 && (req.body.articleNumber && req.body.supplier)) {
         return res.status(400).json({
           success: false,
           message: 'Item already exists'
@@ -81,7 +86,7 @@ const createItem = async (req, res) => {
       supplier: req.body.supplier || '',
       note: req.body.note || '',
       warningAmount: req.body.warningAmount || 1,
-      vat: req.body.vat || 0
+      vat: 1 + req.body.vat || 1
     }
   })
 
@@ -100,60 +105,147 @@ const createItem = async (req, res) => {
   })
 }
 
-const addQuantity = async function (req, res) {
-  /** Check locationID, itemID, addedQuantity != null */
-  if (!req.body.locationId || !req.body.itemId || !req.body.addedQuantity) {
-    return res.status(400).json({
-      success: false,
-      message: 'Invalid parameter'
-    })
-  }
-  /** Check if locationID and itemID exist */
-  const findLocation = await storageLocations.StorageLocation.findOne({
-    where: { id: req.body.locationId }
-  })
-  if (!findLocation) {
-    return res.status(400).json({
-      success: false,
-      message: 'No such location'
-    })
-  }
-  const findItem = await items.Item.findOne({
-    where: { id: req.body.itemId }
-  })
-
-  if (!findItem) {
-    return res.status(400).json({
-      success: false,
-      message: 'No such item'
-    })
-  }
-
-  const getStorage = await storageContents.StorageContent.findOne({
-    where: {
-      locationId: req.body.locationId,
-      itemId: req.body.itemId
+const setQuantity = async (req, res) => {
+  try {
+    const hasAccess = await userRoles.hasWarehouseWorkerAccess(req)
+    if (!hasAccess) {
+      return res.status(401).json({
+        success: false,
+        message: 'Go away!'
+      })
     }
-  })
+    if (!req.body.storageContentId || !req.body.quantity) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid parameter!'
+      })
+    }
+    const storageContent = await storageContents.StorageContent.findOne({
+      where: { id: req.body.storageContentId }
+    })
+    if (!storageContent) {
+      return res.status(400).json({
+        success: false,
+        message: 'No such storage content.'
+      })
+    }
+    storageContent.quantity = req.body.quantity
+    storageContent.save()
+    return res.json({
+      success: true,
+      message: 'Quantity has been set.'
+    })
+  } catch (err) {
+    console.log(err)
+    return res.status(500).json({
+      success: false,
+      message: 'Something went horribly wrong!'
+    })
+  }
+}
 
-  if (!getStorage) {
-    /** Add Item to Location */
-    await storageContents.StorageContent.create({
-      locationId: req.body.locationId,
-      itemId: req.body.itemId,
-      quantity: req.body.addedQuantity
+const addQuantity = async (req, res) => {
+  try {
+    const hasAccess = await userRoles.hasWarehouseWorkerAccess(req)
+    if (hasAccess) {
+      if (!req.body.storageContentId || !req.body.quantity) {
+        return res.status(400).json({
+          success: false,
+          message: 'Invalid parameter'
+        })
+      }
+
+      const storageContent = await storageContents.StorageContent.findOne({
+        where: { id: req.body.storageContentId }
+      })
+      if (!storageContent) {
+        return res.status(400).json({
+          success: false,
+          message: 'No such storage content'
+        })
+      }
+      storageContent.dataValues.quantity += req.body.quantity
+      storageContent.save()
+      return res.json({
+        success: true,
+        message: 'Quantity added to storage content'
+      })
+    } else {
+      return res.status(401).json({
+        success: false,
+        message: 'Go away!'
+      })
+    }
+  } catch (err) {
+    console.log(err)
+    return res.status(500).json({
+      success: false,
+      message: 'Something went horribly wrong!'
     })
-    return res.json({
-      success: true,
-      message: 'Item(s) added to storage location'
-    })
-  } else {
-    /** Update quantity */
-    getStorage.quantity += req.body.addedQuantity
-    await getStorage.save()
-    return res.json({
-      success: true,
-      message: 'Storage location updated'
+  }
+}
+
+const addToStorageContent = async (req, res) => {
+  try {
+    const hasAccess = await userRoles.hasWarehouseWorkerAccess(req)
+    if (hasAccess) {
+      if (!req.body.storageLocationId || !req.body.itemId || !req.body.quantity) {
+        return res.status(400).json({
+          success: false,
+          message: 'Invalid parameters'
+        })
+      }
+      const item = await items.Item.findOne({
+        where: { id: req.body.itemId }
+      })
+
+      if (!item) {
+        return res.status(400).json({
+          success: false,
+          message: 'No such item!'
+        })
+      }
+      const storageLocation = await storageLocations.StorageLocation.findOne({
+        where: { id: req.body.storageLocationId }
+      })
+      if (!storageLocation) {
+        return res.status(400).json({
+          success: false,
+          message: 'Invalid storage location.'
+        })
+      }
+      const storageContent = await storageContents.StorageContent.findAll({
+        where: {
+          storageLocationId: req.body.storageLocationId,
+          itemId: req.body.itemId
+        }
+      })
+      if (storageContent.length !== 0) {
+        return res.status(400).json({
+          success: false,
+          message: 'Item already assigned to this storage.'
+        })
+      }
+      storageContents.StorageContent.create({
+        storageLocationId: req.body.storageLocationId,
+        itemId: req.body.itemId,
+        quantity: req.body.quantity
+      })
+      return res.json({
+        success: true,
+        message: 'Item added to storage with specified quantity.'
+      })
+    } else {
+      return res.status(401).json({
+        success: false,
+        message: 'Go away!'
+      })
+    }
+  } catch (err) {
+    console.log(err)
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to retrive items'
     })
   }
 }
@@ -173,8 +265,8 @@ const editItem = async (req, res) => {
       } else {
         if (req.body.name) findItem.name = req.body.name
         if (req.body.imageUrl) findItem.imageUrl = req.body.imageUrl
-        if (req.body.unit) findItem.unit = req.body.unit
         if (req.body.purchasePrice) findItem.purchasePrice = req.body.purchasePrice
+        if (req.body.unit) findItem.unit = req.body.unit
         if (req.body.retailPrice) findItem.salesPrice = req.body.retailPrice
         if (req.body.description) findItem.description = req.body.description
         if (req.body.articleNumber) findItem.articleNumber = req.body.articleNumber
@@ -290,24 +382,6 @@ const getItemById = async (req, res) => {
   }
 }
 
-const getItemByArticleId = async (req, res) => {
-  const item = req.params.articleId
-  const findItem = await items.Item.findAll({
-    where: { articleNumber: item }
-  })
-  if (findItem.length > 0) {
-    return res.json({
-      success: true,
-      message: findItem
-    })
-  } else {
-    return res.status(400).json({
-      success: false,
-      message: 'No item with that article number exists'
-    })
-  }
-}
-
 module.exports = {
   addItem,
   getAllItems,
@@ -315,5 +389,6 @@ module.exports = {
   getItemsOnTags,
   getItemById,
   addQuantity,
-  getItemByArticleId
+  setQuantity,
+  addToStorageContent
 }

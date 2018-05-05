@@ -16,6 +16,49 @@ module.exports = {
       updatedAt: new Date().toISOString().substr(0, 10),
       vat: 0.0
     }], {})
+    await queryInterface.bulkInsert('Items', [{
+      name: 'karnevöl1',
+      imageUrl: 'hej.se',
+      unit: 'burk',
+      purchasePrice: 10,
+      salesPrice: 10,
+      description: 'fin öl',
+      articleNumber: 123457,
+      supplier: 'systemet',
+      note: 'hoppas på detta',
+      createdAt: new Date().toISOString().substr(0, 10),
+      updatedAt: new Date().toISOString().substr(0, 10),
+      vat: 0.0
+    }], {})
+    await queryInterface.bulkInsert('Items', [{
+      name: 'karnevöl2',
+      imageUrl: 'hej.se',
+      unit: 'burk',
+      purchasePrice: 10,
+      salesPrice: 10,
+      description: 'fin öl',
+      articleNumber: 123458,
+      supplier: 'systemet',
+      note: 'hoppas på detta',
+      createdAt: new Date().toISOString().substr(0, 10),
+      updatedAt: new Date().toISOString().substr(0, 10),
+      vat: 0.0
+    }], {})
+
+    await queryInterface.bulkInsert('Items', [{
+      name: 'karnevöl3',
+      imageUrl: 'hej.se',
+      unit: 'burk',
+      purchasePrice: 10,
+      salesPrice: 10,
+      description: 'fin öl',
+      articleNumber: 123459,
+      supplier: 'systemet',
+      note: 'hoppas på detta',
+      createdAt: new Date().toISOString().substr(0, 10),
+      updatedAt: new Date().toISOString().substr(0, 10),
+      vat: 0.0
+    }], {})
 
     /*
       Add altering commands here.

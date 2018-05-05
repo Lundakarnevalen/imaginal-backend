@@ -3,9 +3,79 @@ const api = supertest('http://localhost:3000')
 const expect = require('chai').expect
 
 module.exports = (user, admin, warehouseCustomer, warehouseWorker,
-  warehouseManager, costBearer, warehouseUser) => describe('API /api/warehouse/user Warehouseuser tests', function () {
-    it('Unauthorized getAllWarehouseUsers, role: random user', done => {
-      api.get('/api/warehouse/user/list')
+  warehouseManager, storageLocationOne, storageLocationTwo) => describe('API /api/warehouse/location StorageLocation tests', function () {
+    it('Unauthorized addStorageLocation, role: random user', done => {
+      api.post('/api/warehouse/location/new')
+      .set('Authorization', 'bearer ' + user.token)
+      .send(storageLocationOne)
+      .end(async (err, res) => {
+        if (err) {
+          console.error('Failed to run test, aborting')
+          process.exit(1)
+        }
+        await expect(res.statusCode).to.equal(401)
+        done()
+      })
+    })
+
+    it('Unauthorized addStorageLocation, role: warehouse customer', done => {
+      api.post('/api/warehouse/location/new')
+      .set('Authorization', 'bearer ' + warehouseCustomer.token)
+      .send(storageLocationOne)
+      .end(async (err, res) => {
+        if (err) {
+          console.error('Failed to run test, aborting')
+          process.exit(1)
+        }
+        await expect(res.statusCode).to.equal(401)
+        done()
+      })
+    })
+
+    it('Unauthorized addStorageLocation, role: warehouse worker', done => {
+      api.post('/api/warehouse/location/new')
+      .set('Authorization', 'bearer ' + warehouseWorker.token)
+      .send(storageLocationOne)
+      .end(async (err, res) => {
+        if (err) {
+          console.error('Failed to run test, aborting')
+          process.exit(1)
+        }
+        await expect(res.statusCode).to.equal(200)
+        done()
+      })
+    })
+
+    it('Authorized addStorageLocation, role: warehouse manager', done => {
+      api.post('/api/warehouse/location/new')
+      .set('Authorization', 'bearer ' + warehouseManager.token)
+      .send(storageLocationOne)
+      .end(async (err, res) => {
+        if (err) {
+          console.error('Failed to run test, aborting')
+          process.exit(1)
+        }
+        await expect(res.statusCode).to.equal(200)
+        done()
+      })
+    })
+
+    it('Authorized addStorageLocation, role: admin', done => {
+      api.post('/api/warehouse/location/new')
+      .set('Authorization', 'bearer ' + admin.token)
+      .send(storageLocationTwo)
+      .end(async (err, res) => {
+        if (err) {
+          console.error('Failed to run test, aborting')
+          process.exit(1)
+        }
+        await expect(res.statusCode).to.equal(200)
+        done()
+      })
+    })
+
+    it('Unauthorized getStorageLocations, role: random user', done => {
+      api.get('/api/warehouse/location/list')
       .set('Authorization', 'bearer ' + user.token)
       .end(async (err, res) => {
         if (err) {
@@ -17,8 +87,8 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
       })
     })
 
-    it('Authorized getAllWarehouseUsers, role: warehouse customer', done => {
-      api.get('/api/warehouse/user/list')
+    it('Unauthorized getStorageLocations, role: warehouse customer', done => {
+      api.get('/api/warehouse/location/list')
       .set('Authorization', 'bearer ' + warehouseCustomer.token)
       .end(async (err, res) => {
         if (err) {
@@ -30,23 +100,23 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
       })
     })
 
-    it('Authorized getAllWarehouseUsers, role: warehouse worker', done => {
-      api.get('/api/warehouse/user/list')
+    it('Authorized getStorageLocations, role: warehouse worker', done => {
+      api.get('/api/warehouse/location/list')
       .set('Authorization', 'bearer ' + warehouseWorker.token)
       .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
         }
+
         await expect(res.statusCode).to.equal(200)
-        await expect(res.body.data[0].id).to.equal(1)
-        await expect(res.body.data[0].userId).to.equal(15000)
+        await expect(res.body.data[0].storageName).to.equal('Fabriken')
         done()
       })
     })
 
-    it('Authorized getAllWarehouseUsers, role: warehouse manager user', done => {
-      api.get('/api/warehouse/user/list')
+    it('Authorized getStorageLocations, role: warehouse manager', done => {
+      api.get('/api/warehouse/location/list')
       .set('Authorization', 'bearer ' + warehouseManager.token)
       .end(async (err, res) => {
         if (err) {
@@ -54,14 +124,13 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
           process.exit(1)
         }
         await expect(res.statusCode).to.equal(200)
-        await expect(res.body.data[0].id).to.equal(1)
-        await expect(res.body.data[0].userId).to.equal(15000)
+        await expect(res.body.data[0].storageName).to.equal('Fabriken')
         done()
       })
     })
 
-    it('Authorized getAllWarehouseUsers, role: admin', done => {
-      api.get('/api/warehouse/user/list')
+    it('Authorized getStorageLocations, role: admin', done => {
+      api.get('/api/warehouse/location/list')
       .set('Authorization', 'bearer ' + admin.token)
       .end(async (err, res) => {
         if (err) {
@@ -69,14 +138,13 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
           process.exit(1)
         }
         await expect(res.statusCode).to.equal(200)
-        await expect(res.body.data[0].id).to.equal(1)
-        await expect(res.body.data[0].userId).to.equal(15000)
+        await expect(res.body.data[0].storageName).to.equal('Fabriken')
         done()
       })
     })
 
-    it('Unauthorized getWarehouseUserById, role: random user', done => {
-      api.get('/api/warehouse/user/')
+    it('Unauthorized getStorageLocationById, role: random user', done => {
+      api.get('/api/warehouse/location/2')
       .set('Authorization', 'bearer ' + user.token)
       .end(async (err, res) => {
         if (err) {
@@ -88,23 +156,21 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
       })
     })
 
-    it('Authorized getWarehouseUserById, role: warehouse customer', done => {
-      api.get('/api/warehouse/user/')
+    it('Unauthorized getStorageLocationById, role: warehouse customer', done => {
+      api.get('/api/warehouse/location/2')
       .set('Authorization', 'bearer ' + warehouseCustomer.token)
       .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
         }
-        await expect(res.statusCode).to.equal(200)
-        await expect(res.body.data.id).to.equal(1)
-        await expect(res.body.data.userId).to.equal(15000)
+        await expect(res.statusCode).to.equal(401)
         done()
       })
     })
 
-    it('Authorized getWarehouseUserById, role: warehouse worker', done => {
-      api.get('/api/warehouse/user/')
+    it('Unauthorized getStorageLocationById, role: warehouse worker', done => {
+      api.get('/api/warehouse/location/2')
       .set('Authorization', 'bearer ' + warehouseWorker.token)
       .end(async (err, res) => {
         if (err) {
@@ -112,14 +178,13 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
           process.exit(1)
         }
         await expect(res.statusCode).to.equal(200)
-        await expect(res.body.data.id).to.equal(2)
-        await expect(res.body.data.userId).to.equal(15001)
+        await expect(res.body.data.storageName).to.equal('Tåget')
         done()
       })
     })
 
-    it('Authorized getWarehouseUserById, role: warehouse manager', done => {
-      api.get('/api/warehouse/user/')
+    it('Authorized getStorageLocationById, role: warehouse manager', done => {
+      api.get('/api/warehouse/location/2')
       .set('Authorization', 'bearer ' + warehouseManager.token)
       .end(async (err, res) => {
         if (err) {
@@ -127,14 +192,13 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
           process.exit(1)
         }
         await expect(res.statusCode).to.equal(200)
-        await expect(res.body.data.id).to.equal(3)
-        await expect(res.body.data.userId).to.equal(15002)
+        await expect(res.body.data.storageName).to.equal('Tåget')
         done()
       })
     })
 
-    it('Authorized getWarehouseUserById, role: admin', done => {
-      api.get('/api/warehouse/user/')
+    it('Authorized getStorageLocationById, role: admin', done => {
+      api.get('/api/warehouse/location/2')
       .set('Authorization', 'bearer ' + admin.token)
       .end(async (err, res) => {
         if (err) {
@@ -142,14 +206,13 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
           process.exit(1)
         }
         await expect(res.statusCode).to.equal(200)
-        await expect(res.body.data.id).to.equal(4)
-        await expect(res.body.data.userId).to.equal(1)
+        await expect(res.body.data.storageName).to.equal('Tåget')
         done()
       })
     })
 
-    it('Unauthorized getWarehouseUserByCostBearer, role: random user', done => {
-      api.get('/api/warehouse/user/costbearer/1')
+    it('Unauthorized getInventory, role: random user', done => {
+      api.get('/api/warehouse/location/inventory/1')
       .set('Authorization', 'bearer ' + user.token)
       .end(async (err, res) => {
         if (err) {
@@ -161,69 +224,9 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
       })
     })
 
-    it('Authorized getWarehouseUserByCostBearer, role: warehouse customer', done => {
-      api.get('/api/warehouse/user/costbearer/1')
+    it('Unauthorized getInventory, role: warehouse customer', done => {
+      api.get('/api/warehouse/location/inventory/1')
       .set('Authorization', 'bearer ' + warehouseCustomer.token)
-      .end(async (err, res) => {
-        if (err) {
-          console.error('Failed to run test, aborting')
-          process.exit(1)
-        }
-        await expect(res.statusCode).to.equal(200)
-        await expect(res.body.data[0].id).to.equal(1)
-        await expect(res.body.data[0].userId).to.equal(15000)
-        done()
-      })
-    })
-
-    it('Authorized failed getWarehouseUserByCostBearer, role: warehouse worker', done => {
-      api.get('/api/warehouse/user/costbearer/1')
-      .set('Authorization', 'bearer ' + warehouseWorker.token)
-      .end(async (err, res) => {
-        if (err) {
-          console.error('Failed to run test, aborting')
-          process.exit(1)
-        }
-        await expect(res.statusCode).to.equal(200)
-        await expect(res.body.data[0].id).to.equal(1)
-        await expect(res.body.data[0].userId).to.equal(15000)
-        done()
-      })
-    })
-
-    it('Authorized failed getWarehouseUserByCostBearer, role: warehouse manager user', done => {
-      api.get('/api/warehouse/user/costbearer/1')
-      .set('Authorization', 'bearer ' + warehouseManager.token)
-      .end(async (err, res) => {
-        if (err) {
-          console.error('Failed to run test, aborting')
-          process.exit(1)
-        }
-        await expect(res.statusCode).to.equal(200)
-        await expect(res.body.data[0].id).to.equal(1)
-        await expect(res.body.data[0].userId).to.equal(15000)
-        done()
-      })
-    })
-
-    it('Authorized failed getWarehouseUserByCostBearer, role: admin', done => {
-      api.get('/api/warehouse/user/costbearer/1')
-      .set('Authorization', 'bearer ' + admin.token)
-      .end(async (err, res) => {
-        if (err) {
-          console.error('Failed to run test, aborting')
-          process.exit(1)
-        }
-        await expect(res.statusCode).to.equal(200)
-        await expect(res.body.data[0].id).to.equal(1)
-        await expect(res.body.data[0].userId).to.equal(15000)
-        done()
-      })
-    })
-
-    it('Unauthorized getWarehouseUserByCostBearer, role: random user', done => {
-      api.get('/api/warehouse/user/costbearer/list')
-      .set('Authorization', 'bearer ' + user.token)
       .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
@@ -234,23 +237,8 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
       })
     })
 
-    it('Authorized getWarehouseUserByCostBearer, role: warehouse customer', done => {
-      api.get('/api/warehouse/user/costbearer/list')
-      .set('Authorization', 'bearer ' + warehouseCustomer.token)
-      .end(async (err, res) => {
-        if (err) {
-          console.error('Failed to run test, aborting')
-          process.exit(1)
-        }
-        await expect(res.statusCode).to.equal(200)
-        await expect(res.body.data[0].id).to.equal(1)
-        await expect(res.body.data[0].name).to.equal('Fabriken')
-        done()
-      })
-    })
-
-    it('Authorized failed getWarehouseUserByCostBearer, role: warehouse worker', done => {
-      api.get('/api/warehouse/user/costbearer/list')
+    it('Unauthorized getInventory, role: warehouse worker', done => {
+      api.get('/api/warehouse/location/inventory/1')
       .set('Authorization', 'bearer ' + warehouseWorker.token)
       .end(async (err, res) => {
         if (err) {
@@ -258,14 +246,15 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
           process.exit(1)
         }
         await expect(res.statusCode).to.equal(200)
-        await expect(res.body.data[0].id).to.equal(1)
-        await expect(res.body.data[0].name).to.equal('Fabriken')
+        await expect(res.body.data[0].StorageLocations[0].storageName).to.equal('Fabriken')
+        await expect(res.body.data[0].name).to.equal('karnevöl')
+        await expect(res.body.data[0].StorageLocations[0].StorageContent.quantity).to.equal(170)
         done()
       })
     })
 
-    it('Authorized failed getWarehouseUserByCostBearer, role: warehouse manager user', done => {
-      api.get('/api/warehouse/user/costbearer/list')
+    it('Authorized getInventory, role: warehouse manager', done => {
+      api.get('/api/warehouse/location/inventory/1')
       .set('Authorization', 'bearer ' + warehouseManager.token)
       .end(async (err, res) => {
         if (err) {
@@ -273,14 +262,15 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
           process.exit(1)
         }
         await expect(res.statusCode).to.equal(200)
-        await expect(res.body.data[0].id).to.equal(1)
-        await expect(res.body.data[0].name).to.equal('Fabriken')
+        await expect(res.body.data[0].StorageLocations[0].storageName).to.equal('Fabriken')
+        await expect(res.body.data[0].name).to.equal('karnevöl')
+        await expect(res.body.data[0].StorageLocations[0].StorageContent.quantity).to.equal(170)
         done()
       })
     })
 
-    it('Authorized failed getWarehouseUserByCostBearer, role: admin', done => {
-      api.get('/api/warehouse/user/costbearer/list')
+    it('Authorized getInventory, role: admin', done => {
+      api.get('/api/warehouse/location/inventory/1')
       .set('Authorization', 'bearer ' + admin.token)
       .end(async (err, res) => {
         if (err) {
@@ -288,8 +278,9 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
           process.exit(1)
         }
         await expect(res.statusCode).to.equal(200)
-        await expect(res.body.data[0].id).to.equal(1)
-        await expect(res.body.data[0].name).to.equal('Fabriken')
+        await expect(res.body.data[0].name).to.equal('karnevöl')
+        await expect(res.body.data[0].StorageLocations[0].storageName).to.equal('Fabriken')
+        await expect(res.body.data[0].StorageLocations[0].StorageContent.quantity).to.equal(170)
         done()
       })
     })

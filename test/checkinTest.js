@@ -10,7 +10,7 @@ module.exports = (user, admin) => describe('API /api/user/checkin Checkin user',
   it('Admin can checkin other user', done => {
     api.post('/api/user/checkin/' + user.email)
       .set('Authorization', 'bearer ' + admin.token)
-      .end(async(err, res) => {
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
@@ -23,7 +23,7 @@ module.exports = (user, admin) => describe('API /api/user/checkin Checkin user',
   it('Admin can checkin self', done => {
     api.post('/api/user/checkin/' + admin.email)
       .set('Authorization', 'bearer ' + admin.token)
-      .end(async(err, res) => {
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
@@ -36,7 +36,7 @@ module.exports = (user, admin) => describe('API /api/user/checkin Checkin user',
   it('Admin fail to checkin invalid user', done => {
     api.post('/api/user/checkin/invaliduser')
       .set('Authorization', 'bearer ' + admin.token)
-      .end(async(err, res) => {
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
@@ -49,7 +49,7 @@ module.exports = (user, admin) => describe('API /api/user/checkin Checkin user',
   it('Admin fail to checkin checked in user', done => {
     api.post('/api/user/checkin/' + user.email)
       .set('Authorization', 'bearer ' + admin.token)
-      .end(async(err, res) => {
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
@@ -62,7 +62,7 @@ module.exports = (user, admin) => describe('API /api/user/checkin Checkin user',
   it('Users cannot checkin users', done => {
     api.post('/api/user/checkin/' + admin.email)
       .set('Authorization', 'bearer ' + user.token)
-      .end(async(err, res) => {
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
@@ -75,7 +75,7 @@ module.exports = (user, admin) => describe('API /api/user/checkin Checkin user',
   it('Users can check their checkin status', done => {
     api.get('/api/user/checkin/' + user.email)
       .set('Authorization', 'bearer ' + user.token)
-      .end(async(err, res) => {
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
@@ -90,7 +90,7 @@ module.exports = (user, admin) => describe('API /api/user/checkin Checkin user',
   it('Admin can check others checkin status', done => {
     api.get('/api/user/checkin/' + user.email)
       .set('Authorization', 'bearer ' + admin.token)
-      .end(async(err, res) => {
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
@@ -105,7 +105,7 @@ module.exports = (user, admin) => describe('API /api/user/checkin Checkin user',
   it('Users cannot check others checkin status', done => {
     api.get('/api/user/checkin/' + admin.email)
       .set('Authorization', 'bearer ' + user.token)
-      .end(async(err, res) => {
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
@@ -118,7 +118,7 @@ module.exports = (user, admin) => describe('API /api/user/checkin Checkin user',
   it('Admin fail to check invalid users status', done => {
     api.get('/api/user/checkin/invaliduser')
       .set('Authorization', 'bearer ' + admin.token)
-      .end(async(err, res) => {
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
@@ -131,7 +131,7 @@ module.exports = (user, admin) => describe('API /api/user/checkin Checkin user',
   it('Admin can list all checkings made by user', done => {
     api.get('/api/user/listcheckins/' + admin.email)
       .set('Authorization', 'bearer ' + admin.token)
-      .end(async(err, res) => {
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
@@ -149,7 +149,7 @@ module.exports = (user, admin) => describe('API /api/user/checkin Checkin user',
   it('Admin cannot list all checkings made by invalid user', done => {
     api.get('/api/user/listcheckins/invaliduser')
       .set('Authorization', 'bearer ' + admin.token)
-      .end(async(err, res) => {
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
@@ -162,7 +162,7 @@ module.exports = (user, admin) => describe('API /api/user/checkin Checkin user',
   it('User cannot list all checkings made by user', done => {
     api.get('/api/user/listcheckins/' + admin.email)
       .set('Authorization', 'bearer ' + user.token)
-      .end(async(err, res) => {
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)

@@ -257,6 +257,20 @@ const getWarehouseUser = () => {
   }
 }
 
+const getStorageLocationOne = () => {
+  return {
+    'name': 'Stationen',
+    'description': 'Stationen har saker'
+  }
+}
+
+const getStorageLocationTwo = () => {
+  return {
+    'name': 'Drömmerian',
+    'description': 'Har saker tror jag'
+  }
+}
+
 module.exports = {
   getToken,
   getUser,
@@ -273,5 +287,7 @@ module.exports = {
   getOrderLineOne,
   getOrderLineTwo,
   getCostBearer,
-  getWarehouseUser
+  getWarehouseUser,
+  getStorageLocationOne,
+  getStorageLocationTwo
 }
