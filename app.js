@@ -12,6 +12,7 @@ const role = require('./role/roleController')
 const section = require('./controllers/section')
 const checkin = require('./checkin/checkinController')
 const users = require('./users/userController')
+const treasureHunt = require('./treasureHunt/index')
 const storageLocations = require('./controllers/storageLocation')
 const items = require('./controllers/item')
 const tags = require('./controllers/tag')
@@ -63,11 +64,7 @@ app.post('/api/image/comment/:imagename', images.updateImageComment)
  * Authenticate tokens
  */
 app.all(/(\/)?api\/.*/, function (req, res, next) {
-  passport.authenticate('bearer', { session: false }, function (
-    err,
-    user,
-    info
-  ) {
+  passport.authenticate('bearer', {session: false}, function (err, user, info) {
     if (err) {
       return next(err)
     }
@@ -156,12 +153,18 @@ app.get('/api/warehouse/user/', warehouseUser.getWarehouseUserById)
 app.get('/api/warehouse/user/costbearer/list', warehouseUser.getAllCostBearers)
 app.get('/api/warehouse/user/costbearer/:costBearerId', warehouseUser.getWarehouseUserByCostBearer)
 
+<<<<<<< HEAD
 app.get("/api/event", events.getAll);
 app.get("/api/event/:id", events.getById);
 app.post("/api/event/", events.create);
 app.put("/api/event/:id", events.update);
 app.delete("/api/event/:id", events.remove);
 app.post("/api/event/:id/booking", booknings.create);
+=======
+app.post('/api/treasurehunt/start', treasureHunt.start)
+app.get('/api/treasurehunt/info', treasureHunt.info)
+app.post('/api/treasurehunt/win', treasureHunt.win)
+>>>>>>> master
 
 app.all('*', function (req, res) {
   res.status(404).json({

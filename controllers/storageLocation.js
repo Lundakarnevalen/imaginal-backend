@@ -47,9 +47,10 @@ const addStorageLocation = async (req, res) => {
   }
 }
 
+
 const getStorageLocations = async (req, res) => {
   try {
-    const hasAccess = await userRoles.hasWarehouseWorkerAccess(req)
+    const hasAccess = await userRoles.hasWarehouseCustomerAccess(req)
     if (hasAccess) {
       const locations = await storageLocations.StorageLocation.findAll()
       return res.json({

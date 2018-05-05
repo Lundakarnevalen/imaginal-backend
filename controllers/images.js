@@ -11,8 +11,7 @@ const Jimp = require('jimp')
 const pdf = require('html-pdf')
 
 // Setup AWS
-AWS.config.region = 'eu-central-1'
-const s3 = new AWS.S3()
+const s3 = new AWS.S3({ region: 'eu-central-1' })
 const multer = require('multer')
 const multerS3 = require('multer-s3')
 
@@ -306,15 +305,24 @@ async function generateSectionPdf (section, cb) {
     return cb(new Error('No karnevalists left in section to export'), null)
   }
 
+  const toExportSorted = toExport.sort((a, b) => {
+    if (a.firstName < b.firstName) {
+      return -1
+    } else if (a.firstName > b.firstName) {
+      return 1
+    }
+    return 0
+  })
+
   // Set images as exported in database
-  const userIds = toExport.map(i => {
+  const userIds = toExportSorted.map(i => {
     return { user_id: i.id }
   })
   await UserCardExport.bulkCreate(userIds)
 
   // Divide inte chunks of 100
   const chunkSize = 100
-  let chunked = toExport.reduce((acc, curr) => {
+  let chunked = toExportSorted.reduce((acc, curr) => {
     if (acc[0].length < chunkSize) {
       acc[0].push(curr)
     } else {
