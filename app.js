@@ -20,7 +20,6 @@ const tags = require('./controllers/tag')
 const orders = require('./controllers/order')
 const warehouseUser = require('./controllers/warehouseUser')
 const images = require('./controllers/images')
->>>>>>> master
 
 app.use(bodyParser.json())
 app.use(passport.initialize())
@@ -165,7 +164,6 @@ app.all('*', function (req, res) {
 })
 
 const port = process.env.PORT || 3000
-
 
 require('./config/database')
   .sync()
