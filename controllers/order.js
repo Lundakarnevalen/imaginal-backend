@@ -229,11 +229,13 @@ const getOrdersOnUser = async (req, res) => {
         where: { userId: req.user.dataValues.id }
       })
       const theOrders = await orders.Order.findAll({
-        where: { warehouseUserId: dbWarehouseUser.id }
+        where: { warehouseUserId: dbWarehouseUser.id },
+        include: [{
+          model: items.Item,
+          through: {attributes: ['quantityOrdered', 'quantityDelivered']}
+        }]
       })
       if (theOrders.length > 0) {
-        theOrders.forEach(
-          order => (order.orderLines = getOrderLinesFromOrderId(order.id)))
         return res.status(200).json({
           success: true,
           data: theOrders
