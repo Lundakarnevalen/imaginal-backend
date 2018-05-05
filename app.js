@@ -135,17 +135,9 @@ app.get('/api/warehouse/product/getAllItems', items.getAllItems)
 app.get('/api/warehouse/location/inventory/:storageLocationId', storageLocations.getInventory)
 app.post('/api/warehouse/location/new', storageLocations.addStorageLocation)
 app.get('/api/warehouse/location/list', storageLocations.getStorageLocations)
-<<<<<<< HEAD
-app.post('/api/warehouse/getLocationById', storageLocations.getById)
-
-app.get('/api/warehouse/product/ordered/list', orders.getQuantityOfOrderedItems)
-app.get('/api/warehouse/product/ordered/list/:storageLocationId', orders.getQuantityOfOrderedItemsInLocation)
-app.get('/api/warehouse/product/ordered/costBearer/:costBearerId', orders.getQuantityOfOrderedItemsForCostBearer)
 
 // app.get('/api/warehouse/product/inventory', items.getInventory)
-=======
 app.get('/api/warehouse/location/:storageLocationId', storageLocations.getStorageLocationById)
->>>>>>> f3e90fd25e8ea2d6a1796fae1ff15248207a8776
 
 app.post('/api/warehouse/order/new', orders.createOrder)
 app.post('/api/warehouse/order/edit', orders.editOrder)
