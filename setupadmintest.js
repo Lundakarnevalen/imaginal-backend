@@ -1,13 +1,13 @@
 'use strict'
 
-const user = require('./models/users')
+const user = require('./users/users')
 
 user.User.findOne({
   where: {id: 1}
-}).then(admin => {
-  user.setNewPassword(admin, 'ADMINPASSWORDPLEASEIGNORE').then(() => {
+}).then(async (admin) => {
+  await admin.setNewPassword('ADMINPASSWORDPLEASEIGNORE').then(() => {
     process.exit()
   })
 }).catch(() => {
-  console.log('Failed to set adminpassword')
+  console.error('Failed to set adminpassword')
 })

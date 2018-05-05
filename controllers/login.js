@@ -1,6 +1,5 @@
 'use strict'
 const passport = require('passport')
-const users = require('../models/users')
 
 const loginByEmail = async (req, res, next) => {
   if (!req.body.email || !req.body.password) {
@@ -20,6 +19,7 @@ const loginByEmail = async (req, res, next) => {
           message: 'Incorrect login credentials.'
         })
       }
+
       req.logIn(user, async (err) => {
         if (err) {
           return res.json({
@@ -27,31 +27,15 @@ const loginByEmail = async (req, res, next) => {
             message: 'Incorrect login credentials.'
           })
         }
-
-        const checkedIn = await users.isCheckedIn(user)
-        const allRoles = await user.getRoles()
-        const roles = await allRoles.map(role => role.toJSON())
-        const karnevalistInfo = await users.KarnevalistInfo.findOne({
-          where: {userId: user.id},
-          attributes: ['language', 'driversLicense', 'disability',
-            'audition', 'talent', 'entertainmentCategory',
-            'corps', 'startOfStudies', 'pastInvolvement',
-            'groupLeader', 'interests', 'misc',
-            'plenipotentiary']
-        })
-
-        const userinfo = {
-          checkedIn,
-          ...user.toJSON(),
-          ...karnevalistInfo.dataValues,
-          roles: [...roles]
-        }
+        const accessToken = req.user.token
+        const userinfo = await user.toJSON()
 
         return res.json({
           success: true,
           message: 'Successfully logged in',
-          accessToken: req.user.token,
-          userinfo
+          accessToken,
+          userinfo,
+          user: userinfo // compability with app
         })
       })
     })(req, res, next)

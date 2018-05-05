@@ -18,6 +18,7 @@ const setKarnevalistInfo = function (req, res) {
     if (req.body.misc) entry.misc = req.body.misc
     if (req.body.plenipotentiary) entry.plenipotentiary = req.body.plenipotentiary
     if (req.body.bff) entry.bff = req.body.bff
+    if (req.body.studentNation) entry.studentNation = req.body.studentNation
     entry.save().then(() => {
       res.json({
         success: true,
@@ -27,7 +28,7 @@ const setKarnevalistInfo = function (req, res) {
   })
 }
 
-const getKarnevalistInfo = function (req, res) {
+const getKarnevalistInfos = function (req, res) {
   karnevalistInfo.KarnevalistInfo.findOne({
     where: {user_id: req.user.id}
   }).then(info => {
@@ -39,5 +40,5 @@ const getKarnevalistInfo = function (req, res) {
 
 module.exports = {
   setKarnevalistInfo,
-  getKarnevalistInfo
+  getKarnevalistInfos
 }

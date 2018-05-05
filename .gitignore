@@ -1,3 +1,7 @@
+# Ignore vim temp files
+*.swp
+cardpdfs
+
 # Logs
 logs
 *.log

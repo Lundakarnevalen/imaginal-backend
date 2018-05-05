@@ -1,8 +1,14 @@
 'use strict'
 const dbc = require('../config/database')
 const Sequelize = require('sequelize')
-const User = require('./users').User
+const User = require('../users/users').User
 const Section = require('./section').Section
+
+const OK = 0
+const LATE = 1
+const DUPLICATE = 2
+const NONUMBER = 3
+const SERVERERROR = 4
 
 const SectionPriority = dbc.define('SectionPriority', {
   id: {
@@ -33,14 +39,14 @@ Section.belongsToMany(User, {
   constraints: false
 })
 
-const setSectionPriorities = function (user, sections, done) {
-  const lastDate = new Date(2020, 0, 0, 0, 0, 0, 0) // new Date(year, month, day, hours, minutes, seconds, milliseconds)
+const setSectionPriorities = async (user, sections) => {
+  const lastDate = new Date('2018-06-05T03:24:00')
   if (Date.now() > lastDate.getTime()) {
-    return done(null, false, 'Last date passed!')
+    return LATE
   }
 
-  if (uniqueSections(sections)) {
-    return done(null, false, 'Duplicate sections!')
+  if (!uniqueSections(sections)) {
+    return DUPLICATE
   }
   let invalidNumber = false
   sections.forEach((sectionid, index) => {
@@ -51,45 +57,55 @@ const setSectionPriorities = function (user, sections, done) {
   })
 
   if (invalidNumber) {
-    return done(null, false, 'Invalid sectionid')
+    return NONUMBER
   }
 
-  SectionPriority.destroy({
-    where: {
-      user_id: user.id
-    }
-  }).then(() => sections.forEach((sectionid, index) => {
-    const section = parseInt(sectionid)
-    SectionPriority.create({
-      user_id: user.id,
-      section: parseInt(section),
-      prio: index
+  try {
+    await SectionPriority.destroy({
+      where: {
+        user_id: user.id
+      }
     })
-  })).then((priority) => {
-    return done(null, true, 'Priorities set')
-  })
+    await sections.forEach(async (sectionid, index) => {
+      const section = parseInt(sectionid)
+      await SectionPriority.create({
+        user_id: user.id,
+        section: parseInt(section),
+        prio: index
+      })
+    })
+  } catch (err) {
+    return SERVERERROR
+  }
+
+  return OK
 }
 
-const getSectionPriorities = function (user, done) {
-  SectionPriority.findAll({
+const getSectionPriorities = async (user) => {
+  let prios = await SectionPriority.findAll({
     where: {
       user_id: user.id
     }
-  }).then(prios => {
-    if (!prios) {
-      return done(null, null)
-    } else {
-      return done(null, prios.map(x => x.section))
-    }
   })
+
+  if (!prios) {
+    return []
+  }
+
+  return prios.map(x => x.section)
 }
 
 const uniqueSections = function (array) {
-  return (new Set(array)).size !== array.length
+  return (new Set(array)).size === array.length
 }
 
 module.exports = {
   SectionPriority,
   getSectionPriorities,
-  setSectionPriorities
+  setSectionPriorities,
+  OK,
+  LATE,
+  DUPLICATE,
+  NONUMBER,
+  SERVERERROR
 }
