@@ -175,9 +175,12 @@ const getOrderById = async (req, res) => {
     const hasAccess = await userRoles.hasWarehouseWorkerAccess(req)
     if (hasAccess) {
       const order = await orders.Order.findOne({
-        where: { id: req.params.id }
+        where: { id: req.params.id },
+        include: [{
+          model: items.Item,
+          through: {attributes: ['quantityOrdered', 'quantityDelivered']}
+        }]
       })
-      console.log(order)
       return res.status(200).json({
         success: true,
         data: order
@@ -200,9 +203,12 @@ const getAllOrders = async (req, res) => {
   try {
     const hasAccess = await userRoles.hasWarehouseWorkerAccess(req)
     if (hasAccess) {
-      const allOrders = await orders.Order.findAll()
-      allOrders.forEach(
-        order => (order.orderLines = getOrderLinesFromOrderId(order.id)))
+      const allOrders = await orders.Order.findAll({
+        include: [{
+          model: items.Item,
+          through: {attributes: ['quantityOrdered', 'quantityDelivered']}
+        }]
+      })
       return res.status(200).json({
         success: true,
         data: allOrders
