@@ -361,6 +361,10 @@ const checkoutOrderLines = async (req, res) => {
   }
 }
 
+const getOrdersOnCostBearer = async (req, res) => {
+
+}
+
 module.exports = {
   createOrder,
   removeOrder,
@@ -369,5 +373,6 @@ module.exports = {
   getOrdersOnSection,
   getOrdersOnUser,
   checkoutOrderLines,
-  getOrderById
+  getOrderById,
+  getOrdersOnCostBearer
 }
