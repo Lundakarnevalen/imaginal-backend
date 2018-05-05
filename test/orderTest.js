@@ -367,7 +367,7 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
           process.exit(1)
         }
         await expect(res.statusCode).to.equal(200)
-        await expect(res.body.data[0].orderLines[0].quantityDelivered).to.equal(15)
+        await expect(res.body.data[0].Items[0].OrderLines.quantityDelivered).to.equal(15)
         done()
       })
     })
@@ -494,7 +494,7 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
         }
         await expect(res.statusCode).to.equal(200)
         await expect(res.body.data[0].id).to.equal(1)
-        await expect(res.body.data[0].orderLines[0].quantityDelivered).to.equal(20)
+        await expect(res.body.data[0].Items[0].OrderLines.quantityDelivered).to.equal(20)
         done()
       })
     })
@@ -622,7 +622,7 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
         }
         await expect(res.statusCode).to.equal(200)
         await expect(res.body.data[0].id).to.equal(1)
-        await expect(res.body.data[0].orderLines[0].quantityDelivered).to.equal(25)
+        await expect(res.body.data[0].Items[0].OrderLines.quantityDelivered).to.equal(25)
         done()
       })
     })
