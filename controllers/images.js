@@ -11,8 +11,7 @@ const Jimp = require('jimp')
 const pdf = require('html-pdf')
 
 // Setup AWS
-AWS.config.region = 'eu-central-1'
-const s3 = new AWS.S3()
+const s3 = new AWS.S3({ region: 'eu-central-1' })
 const multer = require('multer')
 const multerS3 = require('multer-s3')
 
