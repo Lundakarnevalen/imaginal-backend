@@ -5,6 +5,7 @@ const userRoles = require('../models/userrole')
 const warehouseUser = require('../models/warehouseUser')
 const orderLines = require('../models/orderLine')
 const storageContents = require('../models/storageContents')
+const costBearers = require('../models/costBearer')
 // const items = require('../models/item')
 
 const createOrder = async (req, res) => {
@@ -362,7 +363,43 @@ const checkoutOrderLines = async (req, res) => {
 }
 
 const getOrdersOnCostBearer = async (req, res) => {
-
+  try {
+    const hasAccess = await userRoles.hasWarehouseWorkerAccess(req)
+    if (hasAccess) {
+      const bearerId = await costBearers.CostBearer.findOne({
+        where: { name: req.params.costBearer }
+      })
+      const userIds = await warehouseUser.WarehouseUser.findAll({
+        where: { costBearerId: bearerId}
+      }).userId
+      const theOrders = await orders.Order.findAll({
+        where: { warehouseUserId: userIds }
+      })
+      if (theOrders.length > 0) {
+        theOrders.forEach(
+          order => (order.orderLines = getOrderLinesFromOrderId(order.id)))
+        return res.status(200).json({
+          success: true,
+          data: theOrders
+        })
+      } else {
+        return res.status(400).json({
+          success: false,
+          message: 'No orders for this cost bearer'
+        })
+      }
+    } else {
+      return res.status(401).json({
+        success: false,
+        message: 'Go away!'
+      })
+    }
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to get all orders'
+    })
+  }
 }
 
 module.exports = {
