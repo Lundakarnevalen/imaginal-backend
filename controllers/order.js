@@ -6,7 +6,7 @@ const warehouseUser = require('../models/warehouseUser')
 const orderLines = require('../models/orderLine')
 const storageContents = require('../models/storageContents')
 const costBearers = require('../models/costBearer')
-// const items = require('../models/item')
+const items = require('../models/item')
 
 const createOrder = async (req, res) => {
   try {
@@ -366,15 +366,18 @@ const getOrdersOnCostBearer = async (req, res) => {
   try {
     const hasAccess = await userRoles.hasWarehouseWorkerAccess(req)
     if (hasAccess) {
-      const userIds = await warehouseUser.WarehouseUser.findAll({
-        where: { costBearerId: req.params.costBearerId}
-      }).userId
+      const costUsers = await warehouseUser.WarehouseUser.findAll({
+        where: {costBearerId: req.params.costBearerId}
+      })
+      const ids = costUsers.map(user => user.id)
       const theOrders = await orders.Order.findAll({
-        where: { warehouseUserId: userIds }
+        where: {warehouseUserId: ids},
+        include: [{
+          model: items.Item,
+          through: {attributes: ['quantityOrdered', 'quantityDelivered']}
+        }]
       })
       if (theOrders.length > 0) {
-        theOrders.forEach(
-          order => (order.orderLines = getOrderLinesFromOrderId(order.id)))
         return res.status(200).json({
           success: true,
           data: theOrders
