@@ -24,7 +24,7 @@ module.exports = {
             key: 'id'
           }
         },
-        allowNull: false,
+        allowNull: false
       },
       name: Sequelize.STRING,
       email: Sequelize.STRING,

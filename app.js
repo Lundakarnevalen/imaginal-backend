@@ -19,8 +19,8 @@ const tags = require('./controllers/tag')
 const orders = require('./controllers/order')
 const warehouseUser = require('./controllers/warehouseUser')
 const images = require('./controllers/images')
-const events = require("./controllers/event")
-const booknings = require('./controllers/booking')
+const events = require('./controllers/event')
+const bookings = require('./controllers/booking')
 
 app.use(bodyParser.json())
 app.use(passport.initialize())
@@ -153,18 +153,20 @@ app.get('/api/warehouse/user/', warehouseUser.getWarehouseUserById)
 app.get('/api/warehouse/user/costbearer/list', warehouseUser.getAllCostBearers)
 app.get('/api/warehouse/user/costbearer/:costBearerId', warehouseUser.getWarehouseUserByCostBearer)
 
-<<<<<<< HEAD
-app.get("/api/event", events.getAll);
-app.get("/api/event/:id", events.getById);
-app.post("/api/event/", events.create);
-app.put("/api/event/:id", events.update);
-app.delete("/api/event/:id", events.remove);
-app.post("/api/event/:id/booking", booknings.create);
-=======
 app.post('/api/treasurehunt/start', treasureHunt.start)
 app.get('/api/treasurehunt/info', treasureHunt.info)
 app.post('/api/treasurehunt/win', treasureHunt.win)
->>>>>>> master
+
+app.get("/api/event", events.list);
+app.get("/api/event/:id", events.show);
+app.post("/api/event/", events.create);
+app.put("/api/event/:id", events.update);
+app.delete("/api/event/:id", events.remove);
+app.post("/api/event/:id/booking", bookings.create);
+app.get("/api/booking/", bookings.list);
+app.get("/api/booking/:id", bookings.show);
+app.put("/api/booking/:id", bookings.update);
+app.delete("/api/booking/:id", bookings.remove);
 
 app.all('*', function (req, res) {
   res.status(404).json({

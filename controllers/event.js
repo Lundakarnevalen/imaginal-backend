@@ -1,7 +1,7 @@
-const { Event } = require("../models/event");
+const { Event } = require('../models/event')
 const {Booking} = require('../models/booking')
 
-const getAll = async (req, res) => {
+const list = async (req, res) => {
   try {
     let allEvents = await Event.findAll({include: {model: Booking}})
     let allEvents2 = await Promise.all(allEvents.map(async event => {
@@ -14,11 +14,11 @@ const getAll = async (req, res) => {
       events: allEvents2
     })
   } catch (e) {
-    res.json({success: false, message: e.message })
+    res.json({ success: false, message: e.message })
   }
 }
 
-const getById = async (req, res) => {
+const show = async (req, res) => {
   try {
     let event = await Event.findById(req.params.id, {include: {model: Booking}})
     if (event) {
@@ -76,8 +76,8 @@ const remove = async(req, res) => {
 }
 
 module.exports = {
-  getAll,
-  getById,
+  list,
+  show,
   create,
   update,
   remove

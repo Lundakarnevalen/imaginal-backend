@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize')
 const dbc = require('../config/database')
 
-const Booking = dbc.define("Booking", {
+const Booking = dbc.define('Booking', {
   name: {
     type: Sequelize.STRING,
     allowNull: false
@@ -15,7 +15,7 @@ const Booking = dbc.define("Booking", {
       min: 1
     }
   }
-});
+})
 
 Booking.associate = (models) => {
   Booking.belongsTo(models.Event)
