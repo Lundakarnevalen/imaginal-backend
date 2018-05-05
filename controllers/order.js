@@ -5,7 +5,6 @@ const userRoles = require('../models/userrole')
 const warehouseUser = require('../models/warehouseUser')
 const orderLines = require('../models/orderLine')
 const storageContents = require('../models/storageContents')
-const costBearers = require('../models/costBearer')
 const items = require('../models/item')
 
 const createOrder = async (req, res) => {
@@ -115,19 +114,6 @@ const removeOrder = async (req, res) => {
 
 const findOrder = async (orderId) => {
   return orders.Order.findById(orderId)
-}
-
-const getOrderLinesFromOrderId = async (orderId) => {
-  const orderLine = await orderLines.OrderLine.findAll({
-    where: {
-      orderId: orderId
-    }
-  })
-  let orderLinesList = []
-  orderLine.forEach(line => {
-    orderLinesList.push(line.dataValues)
-  })
-  return orderLinesList
 }
 
 const editOrder = async (req, res) => {
