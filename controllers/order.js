@@ -263,13 +263,13 @@ const getOrdersOnSection = async (req, res) => {
     const hasAccess = await userRoles.hasWarehouseWorkerAccess(req)
     if (hasAccess) {
       let theOrders = await orders.Order.findAll({
-        where: { storageLocationId: req.params.storageLocationId }
+        where: { storageLocationId: req.params.storageLocationId },
+        include: [{
+          model: items.Item,
+          through: {attributes: ['quantityOrdered', 'quantityDelivered']}
+        }]
       })
       if (theOrders.length > 0) {
-        await Promise.all(theOrders.map(async order => {
-          order.dataValues.orderLines = await getOrderLinesFromOrderId(order.id)
-        }))
-
         return res.status(200).json({
           success: true,
           data: theOrders
