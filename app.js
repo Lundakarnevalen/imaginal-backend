@@ -150,7 +150,7 @@ app.get('/api/warehouse/order/location/list/:storageLocationId', orders.getOrder
 app.get('/api/warehouse/order/costbearer/list/:costBearerId', orders.getOrdersOnCostBearer)
 
 app.get('/api/warehouse/user/list', warehouseUser.getAllWarehouseUsers)
-app.get('/api/warehouse/user/', warehouseUser.getWarehouseUserById)
+app.get('/api/warehouse/user', warehouseUser.getWarehouseUserById)
 app.get('/api/warehouse/user/costbearer/list', warehouseUser.getAllCostBearers)
 app.get('/api/warehouse/user/costbearer/:costBearerId', warehouseUser.getWarehouseUserByCostBearer)
 

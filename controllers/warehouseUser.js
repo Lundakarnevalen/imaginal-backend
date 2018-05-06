@@ -50,6 +50,7 @@ const getWarehouseUserById = async (req, res) => {
         where: { userId: userId }
       })
       if (warehouseUsers) {
+        await appendName(warehouseUsers)
         return res.json({
           success: true,
           data: warehouseUsers
@@ -81,10 +82,15 @@ const getWarehouseUserByCostBearer = async (req, res) => {
       const warehouseUsers = await warehouseUser.WarehouseUser.findAll({
         where: { costBearerId: req.params.costBearerId }
       })
-      return res.json({
-        success: true,
-        data: warehouseUsers
-      })
+      if(warehouseUsers.length > 0) {
+        await Promise.all(warehouseUsers.map(async user => {
+          await appendName(user)
+        }))
+        return res.json({
+          success: true,
+          data: warehouseUsers
+        })
+      }
     } else {
       return res.status(401).json({
         success: false,
