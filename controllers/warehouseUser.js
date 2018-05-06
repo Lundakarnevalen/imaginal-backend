@@ -82,7 +82,7 @@ const getWarehouseUserByCostBearer = async (req, res) => {
       const warehouseUsers = await warehouseUser.WarehouseUser.findAll({
         where: { costBearerId: req.params.costBearerId }
       })
-      if(warehouseUsers.length > 0) {
+      if (warehouseUsers.length > 0) {
         await Promise.all(warehouseUsers.map(async user => {
           await appendName(user)
         }))
