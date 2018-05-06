@@ -209,6 +209,9 @@ const getAllOrders = async (req, res) => {
           through: {attributes: ['quantityOrdered', 'quantityDelivered']}
         }]
       })
+      for(var i = 0; i < allOrders.length; i++) { 
+        await appendNameToOrder(allOrders[i])
+      }
       return res.status(200).json({
         success: true,
         data: allOrders
