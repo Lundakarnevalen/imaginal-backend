@@ -53,7 +53,7 @@ module.exports = (user) => describe('API /register', function () {
     }
     api.post('/register')
       .send(user)
-      .end(async(err, res) => {
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
@@ -70,7 +70,7 @@ module.exports = (user) => describe('API /register', function () {
     }
     api.post('/register')
       .send(user)
-      .end(async(err, res) => {
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)
@@ -86,7 +86,7 @@ module.exports = (user) => describe('API /register', function () {
     }
     api.post('/register')
       .send(user)
-      .end(async(err, res) => {
+      .end(async (err, res) => {
         if (err) {
           console.error('Failed to run test, aborting')
           process.exit(1)

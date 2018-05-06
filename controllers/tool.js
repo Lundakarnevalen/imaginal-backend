@@ -1,6 +1,8 @@
 'use strict'
 
+const tags = require('../models/tag')
 const tools = require('../models/tools')
+const toolTags = require('../models/toolTag')
 const userRoles = require('../models/userrole')
 
 const addTool = async (req, res) => {
@@ -65,6 +67,41 @@ const getAllTools = async (req, res) => {
   }
 }
 
+const getToolsOnTags = async (req, res) => {
+  try {
+    const hasAccess = await userRoles.hasWarehouseCustomerAccess(req)
+    if (hasAccess) {
+      const reqTags = req.body.tags
+      const tagIds = reqTags.map(tag => tag.id)
+      const tagList = await Promise.all(tagIds.map(id => tags.Tag.findById(id, {include: {model: tools.Tool}})))
+      const toolList2 = tagList.reduce((acc, tag) => [...acc, ...tag.Tools], [])
+      const toolList3 = toolList2.reduce((x, y) => x.includes(y) ? x : [...x, y], [])
+      if (toolList3.length > 0) {
+        return res.json({
+          success: true,
+          data: toolList3
+        })
+      } else {
+        return res.status(401).json({
+          success: false,
+          message: 'Found no tools with that tag'
+        })
+      }
+    } else {
+      return res.status(401).json({
+        success: false,
+        message: 'Go away!'
+      })
+    }
+  } catch (err) {
+    console.log(err)
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to retrieve tools'
+    })
+  }
+}
+
 const removeTool = async (req, res) => {
   try {
     const hasAccess = await userRoles.hasWarehouseAdminAccess(req)
@@ -79,6 +116,7 @@ const removeTool = async (req, res) => {
           message: 'Tool not found'
         })
       }
+
       await tool.destroy()
       return res.json({
         success: true,
@@ -99,14 +137,25 @@ const removeTool = async (req, res) => {
   }
 }
 
-// Private method
-const createTool = function (req, res) {
-  tools.Tool.create({
-    name: req.body.name,
-    description: req.body.description || '',
-    imgUrl: req.body.imgUrl || '',
-    quantity: req.body.quantity
+// Private methods
+const createTool = async (req, res) => {
+  const tool = await tools.Tool.findCreateFind({
+    where: {
+      name: req.body.name,
+      description: req.body.description || '',
+      imgUrl: req.body.imgUrl || '',
+      quantity: req.body.quantity
+    }
   })
+
+  if (req.body.tags) {
+    Promise.all(req.body.tags.map(async tag => {
+      await toolTags.ToolTag.create({
+        tagId: tag,
+        toolId: tool[0].dataValues.id
+      })
+    }))
+  }
   return res.json({
     success: true,
     message: 'Tool added'
@@ -116,5 +165,6 @@ const createTool = function (req, res) {
 module.exports = {
   addTool,
   getAllTools,
+  getToolsOnTags,
   removeTool
 }

@@ -184,14 +184,14 @@ const getItemOne = () => {
 
 const getItemTwo = () => {
   return {
-    'name': 'cider2',
+    'name': 'cider3',
     'imageUrl': 'hej.se',
     'unit': 'burk',
     'purchasePrice': 20,
     'salesPrice': 30,
     'description': 'det är en cider',
-    'articleNumber': '1723252',
-    'supplier': 'FINN',
+    'articleNumber': '172',
+    'supplier': 'FINN2',
     'note': 'Detta är ju kalas',
     'warningAmount': '100',
     'vat': 15
@@ -202,8 +202,9 @@ const getToolOne = () => {
   return {
     'name': 'ÖrnisHammare',
     'description': 'Den är jättestor!',
-    'imgUrl': 'https://thumbs.dreamstime.com/b/stor-hammare-35151100.jpg',
-    'quantity': 13
+    'imgUrl': 'stor.se',
+    'quantity': 13,
+    'tags': [2]
   }
 }
 
@@ -211,8 +212,9 @@ const getToolTwo = () => {
   return {
     'name': 'ArcombesHammare',
     'description': 'Den är medelstor!',
-    'imgUrl': 'https://st.depositphotos.com/1494934/4274/i/950/depositphotos_42748953-stock-photo-strong-fat-man-holding-a.jpg',
-    'quantity': 17
+    'imgUrl': 'liten.se',
+    'quantity': 17,
+    'tags': [2]
   }
 }
 
@@ -225,6 +227,38 @@ const getTagOne = () => {
 const getTagTwo = () => {
   return {
     'name': 'tagTwo'
+  }
+}
+
+const getOrderOne = () => {
+  return {
+    'id': 1,
+    'deliveryDate': '2018-04-13 00:00:00',
+    'storageLocationId': 1,
+    'orderLines': [getOrderLineOne(), getOrderLineTwo()]
+  }
+}
+
+const getOrderTwo = () => {
+  return {
+    'id': 2,
+    'deliveryDate': '2018-04-15 00:00:00',
+    'storageLocationId': 1,
+    'orderLines': [getOrderLineTwo()]
+  }
+}
+
+const getOrderLineOne = () => {
+  return {
+    'itemId': 1,
+    'quantity': 20
+  }
+}
+
+const getOrderLineTwo = () => {
+  return {
+    'itemId': 2,
+    'quantity': 10
   }
 }
 
@@ -243,6 +277,20 @@ const getWarehouseUser = () => {
   }
 }
 
+const getStorageLocationOne = () => {
+  return {
+    'name': 'Stationen',
+    'description': 'Stationen har saker'
+  }
+}
+
+const getStorageLocationTwo = () => {
+  return {
+    'name': 'Drömmerian',
+    'description': 'Har saker tror jag'
+  }
+}
+
 module.exports = {
   getToken,
   getUser,
@@ -256,6 +304,12 @@ module.exports = {
   getTagTwo,
   getToolOne,
   getToolTwo,
+  getOrderOne,
+  getOrderTwo,
+  getOrderLineOne,
+  getOrderLineTwo,
   getCostBearer,
-  getWarehouseUser
+  getWarehouseUser,
+  getStorageLocationOne,
+  getStorageLocationTwo
 }

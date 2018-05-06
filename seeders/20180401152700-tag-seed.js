@@ -6,6 +6,11 @@ module.exports = {
       name: 'öl',
       createdAt: new Date().toISOString().substr(0, 10),
       updatedAt: new Date().toISOString().substr(0, 10)
+    },
+    {
+      name: 'verktyg',
+      createdAt: new Date().toISOString().substr(0, 10),
+      updatedAt: new Date().toISOString().substr(0, 10)
     }], {})
 
     /*

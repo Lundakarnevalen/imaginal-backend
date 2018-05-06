@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize')
 const dbc = require('../config/database')
+const Order = require('./order').Order
 
 const WarehouseUser = dbc.define('WarehouseUser', {
   id: {
@@ -9,7 +10,7 @@ const WarehouseUser = dbc.define('WarehouseUser', {
   }
 })
 
-// WarehouseUser.hasOne(BorrowedTool, {as: 'BorrowedTool', foreignKey: 'warehouseUserId'})
+WarehouseUser.hasOne(Order, { as: 'Order', foreignKey: 'warehouseUserId' })
 
 module.exports = {
   WarehouseUser

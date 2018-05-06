@@ -2,16 +2,15 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkInsert('CostBearers', [{
-      name: 'Fabriken',
+    await queryInterface.bulkInsert('Tools', [{
+      name: 'Hammare',
+      description: 'Stor',
+      imgUrl: 'stor.se',
+      quantity: '5',
       createdAt: new Date().toISOString().substr(0, 10),
       updatedAt: new Date().toISOString().substr(0, 10)
     }], {})
-    await queryInterface.bulkInsert('CostBearers', [{
-      name: 'Tåget',
-      createdAt: new Date().toISOString().substr(0, 10),
-      updatedAt: new Date().toISOString().substr(0, 10)
-    }], {})
+
     /*
       Add altering commands here.
       Return a promise to correctly handle asynchronicity.
@@ -24,8 +23,8 @@ module.exports = {
     */
   },
 
-  down: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkDelete('CostBearers', null, {})
+  down: (queryInterface, Sequelize) => {
+    return queryInterface.bulkDelete('Tools', null, {})
     /*
       Add reverting commands here.
       Return a promise to correctly handle asynchronicity.

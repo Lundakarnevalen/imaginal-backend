@@ -1,29 +1,26 @@
 'use strict'
 module.exports = {
-  up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('StorageContents', {
+  up: (queryInterface, Sequelize) => {
+    return queryInterface.createTable('ToolTags', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      storageLocationId: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'StorageLocations',
-          key: 'id'
-        }
-      },
       itemId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'Items',
+          model: 'Tools',
           key: 'id'
         }
       },
-      quantity: {
-        type: Sequelize.INTEGER
+      tagId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Tags',
+          key: 'id'
+        }
       },
       createdAt: {
         allowNull: false,
@@ -35,7 +32,7 @@ module.exports = {
       }
     })
   },
-  down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('StorageContents')
+  down: (queryInterface, Sequelize) => {
+    return queryInterface.dropTable('ToolTags')
   }
 }

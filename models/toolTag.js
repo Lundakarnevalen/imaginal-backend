@@ -23,17 +23,17 @@ Tool.belongsToMany(Tag, {
     model: ToolTag,
     unique: false
   },
-  foreignKey: 'toolId',
-  constraints: false
+
+  foreignKey: 'toolId'
 })
 
 Tag.belongsToMany(Tool, {
   through: {
     model: ToolTag,
     unique: false
+
   },
-  foreignKey: 'tagId',
-  constraints: false
+  foreignKey: 'tagId'
 })
 
 module.exports = {

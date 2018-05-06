@@ -70,7 +70,7 @@ const removeTag = async (req, res) => {
     if (hasAccess) {
       const tagId = req.params.tagid
       const tag = await tags.Tag.findOne({
-        where: {id: tagId}
+        where: { id: tagId }
       })
       if (!tag) {
         return res.status(400).json({

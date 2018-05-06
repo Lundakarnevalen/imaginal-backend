@@ -11,10 +11,10 @@ module.exports = function (passport) {
     usernameField: 'email',
     passwordField: 'password'
   },
-    function (username, password, done) {
-      User.findOne({
-        where: {email: username}
-      })
+  function (username, password, done) {
+    User.findOne({
+      where: {email: username}
+    })
       .then(function (user) {
         if (!user) {
           return done(null, false)
@@ -33,7 +33,7 @@ module.exports = function (passport) {
           }
         })
       })
-    }
+  }
   ))
 
   passport.use(new BearerStrategy(
@@ -47,15 +47,15 @@ module.exports = function (passport) {
           where: { token: token },
           include: [{model: KarnevalistInfo}]
         })
-        .then(function (user) {
-          if (!user) {
-            return done(null, false)
-          }
-          return done(null, user)
-        })
-        .catch(function (err) {
-          return done(err)
-        })
+          .then(function (user) {
+            if (!user) {
+              return done(null, false)
+            }
+            return done(null, user)
+          })
+          .catch(function (err) {
+            return done(err)
+          })
       })
     }))
 
