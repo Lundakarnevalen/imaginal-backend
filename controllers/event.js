@@ -4,14 +4,14 @@ const {Booking} = require('../models/booking')
 const list = async (req, res) => {
   try {
     let allEvents = await Event.findAll({include: {model: Booking}})
-    let allEvents2 = await Promise.all(allEvents.map(async event => {
+    allEvents = await Promise.all(allEvents.map(async event => {
       event.dataValues.nbrRemainingSeats = await event.getRemainingSeats()
       delete event.dataValues.Bookings
       return event
     }))
     res.json({
       success: true,
-      events: allEvents2
+      events: allEvents
     })
   } catch (e) {
     res.json({ success: false, message: e.message })
@@ -20,7 +20,7 @@ const list = async (req, res) => {
 
 const show = async (req, res) => {
   try {
-    let event = await Event.findById(req.params.id, {include: {model: Booking}})
+    const event = await Event.findById(req.params.id, {include: {model: Booking}})
     if (event) {
       event.dataValues.nbrRemainingSeats = await event.getRemainingSeats()
       res.json({success: true, event})
@@ -43,17 +43,12 @@ const create = async(req, res) => {
 
 const update = async(req, res) => {
   try {
-    const [affected] = await Event.update(req.body, {where: {id: req.params.id}})
-    if (affected === 1) {
-      res.json({ success: true })
-    } else if (affected === 0) {
-      res.json({ success: false, message: 'No such element' })
+    let event = await Event.findById(req.params.id)
+    if (event) {
+      event = await event.update(req.body)
+      res.json({ success: true, event })
     } else {
-      res.json({
-        success: false,
-        message:
-          'More then one event was updated. Something has gone terribly wrong.'
-      })
+      res.json({ success: false, message: 'No such element' })
     }
   } catch (e) {
     res.json({ success: false, message: e.message })
@@ -62,13 +57,12 @@ const update = async(req, res) => {
 
 const remove = async(req, res) => {
   try {
-    const affected = await Event.destroy({where: {id: req.params.id}})
-    if (affected === 1) {
-      res.json({success: true})
-    } else if (affected === 0) {
-      res.json({success: false, message: 'No such element'})
+    let event = await Event.findById(req.params.id)
+    if (event) {
+      event = await event.destroy()
+      res.json({ success: true, event })
     } else {
-      res.json({success: false, message: 'More then one event was delete. Something has gone terribly wrong.'})
+      res.json({ success: false, message: 'No such element' })
     }
   } catch (e) {
     res.json({ success: false, message: e.message })

@@ -29,7 +29,7 @@ const list = async (req, res) => {
 const show = async (req, res) => {
   try {
     const booking = await Booking.findById(req.params.id, {include: {model: Event}})
-    if (booking !== null) {
+    if (booking) {
       res.json({ success: true, booking })
     } else {
       res.json({ success: false, message: 'No such booking' })
@@ -41,7 +41,7 @@ const show = async (req, res) => {
 const update = async (req, res) => {
   try {
     let booking = await Booking.findById(req.params.id)
-    if (booking !== null) {
+    if (booking) {
       booking = await booking.update(req.body)
       res.json({ success: true, booking })
     } else {
@@ -54,7 +54,7 @@ const update = async (req, res) => {
 const remove = async (req, res) => {
   try {
     let booking = await Booking.findById(req.params.id)
-    if (booking !== null) {
+    if (booking) {
       booking = await booking.destroy()
       res.json({ success: true, booking })
     } else {

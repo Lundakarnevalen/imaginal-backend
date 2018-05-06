@@ -14,6 +14,8 @@ require('./controllers/storageLocation')
 require('./controllers/tag')
 require('./controllers/warehouseUser')
 require('./controllers/order')
+require('./controllers/event')
+require('./controllers/booking')
 
 require('./config/database')
   .sync()
