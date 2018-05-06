@@ -181,6 +181,7 @@ const getOrderById = async (req, res) => {
         }]
       })
       await appendNameToOrder(theOrder)
+      addPrice(theOrder)
       return res.status(200).json({
         success: true,
         data: theOrder
@@ -209,9 +210,10 @@ const getAllOrders = async (req, res) => {
           through: {attributes: ['quantityOrdered', 'quantityDelivered']}
         }]
       })
-      for (var i = 0; i < allOrders.length; i++) {
-        await appendNameToOrder(allOrders[i])
-      }
+      await Promise.all(allOrders.map(async order => {
+        await appendNameToOrder(order)
+        await addPrice(order)
+      }))
       return res.status(200).json({
         success: true,
         data: allOrders
@@ -245,9 +247,10 @@ const getOrdersOnUser = async (req, res) => {
         }]
       })
       if (theOrders.length > 0) {
-        for (var i = 0; i < theOrders.length; i++) {
-          await appendNameToOrder(theOrders[i])
-        }
+        await Promise.all(theOrders.map(async order => {
+          await appendNameToOrder(order)
+          await addPrice(order)
+        }))
         return res.status(200).json({
           success: true,
           data: theOrders
@@ -284,9 +287,10 @@ const getOrdersOnSection = async (req, res) => {
         }]
       })
       if (theOrders.length > 0) {
-        for (var i = 0; i < theOrders.length; i++) {
-          await appendNameToOrder(theOrders[i])
-        }
+        await Promise.all(theOrders.map(async order => {
+          await appendNameToOrder(order)
+          await addPrice(order)
+        }))
         return res.status(200).json({
           success: true,
           data: theOrders
@@ -309,6 +313,15 @@ const getOrdersOnSection = async (req, res) => {
       message: 'Failed to get all orders'
     })
   }
+}
+
+/** Private method */
+const addPrice = (order) => {
+  order.dataValues.totalPrice = order.Items.reduce(function (preVal, item) {
+    const price = item.salesPrice * item.OrderLines.quantityOrdered
+    item.OrderLines.dataValues.priceOrderLine = price
+    return preVal + price
+  }, 0)
 }
 
 const checkoutOrderLines = async (req, res) => {
@@ -395,9 +408,10 @@ const getOrdersOnCostBearer = async (req, res) => {
         }]
       })
       if (theOrders.length > 0) {
-        for (var i = 0; i < theOrders.length; i++) {
-          await appendNameToOrder(theOrders[i])
-        }
+        await Promise.all(theOrders.map(async order => {
+          await appendNameToOrder(order)
+          await addPrice(order)
+        }))
         return res.status(200).json({
           success: true,
           data: theOrders
