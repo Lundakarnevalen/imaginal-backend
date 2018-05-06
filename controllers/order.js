@@ -209,7 +209,7 @@ const getAllOrders = async (req, res) => {
           through: {attributes: ['quantityOrdered', 'quantityDelivered']}
         }]
       })
-      for(var i = 0; i < allOrders.length; i++) { 
+      for (var i = 0; i < allOrders.length; i++) {
         await appendNameToOrder(allOrders[i])
       }
       return res.status(200).json({
@@ -245,6 +245,9 @@ const getOrdersOnUser = async (req, res) => {
         }]
       })
       if (theOrders.length > 0) {
+        for (var i = 0; i < theOrders.length; i++) {
+          await appendNameToOrder(theOrders[i])
+        }
         return res.status(200).json({
           success: true,
           data: theOrders
@@ -281,6 +284,9 @@ const getOrdersOnSection = async (req, res) => {
         }]
       })
       if (theOrders.length > 0) {
+        for (var i = 0; i < theOrders.length; i++) {
+          await appendNameToOrder(theOrders[i])
+        }
         return res.status(200).json({
           success: true,
           data: theOrders
@@ -389,6 +395,9 @@ const getOrdersOnCostBearer = async (req, res) => {
         }]
       })
       if (theOrders.length > 0) {
+        for (var i = 0; i < theOrders.length; i++) {
+          await appendNameToOrder(theOrders[i])
+        }
         return res.status(200).json({
           success: true,
           data: theOrders
