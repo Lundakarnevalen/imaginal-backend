@@ -6,6 +6,7 @@ const warehouseUser = require('../models/warehouseUser')
 const orderLines = require('../models/orderLine')
 const storageContents = require('../models/storageContents')
 const items = require('../models/item')
+const user = require('../users/users')
 
 const createOrder = async (req, res) => {
   try {
@@ -156,23 +157,34 @@ const editOrder = async (req, res) => {
   }
 }
 
+const appendNameToOrder = async (order) => {
+  const middleUser = await warehouseUser.WarehouseUser.findOne({
+    where: {id: order.warehouseUserId}
+  })
+  const finalUser = await user.User.findOne({
+    where: {id: middleUser.userId},
+    attributes: ['firstName', 'lastName']
+  })
+  order.dataValues.firstName = finalUser.firstName
+  order.dataValues.lastName = finalUser.lastName
+}
+
 const getOrderById = async (req, res) => {
   try {
     const hasAccess = await userRoles.hasWarehouseWorkerAccess(req)
     if (hasAccess) {
-      const order = await orders.Order.findOne({
+      const theOrder = await orders.Order.findOne({
         where: { id: req.params.id },
         include: [{
           model: items.Item,
           through: {attributes: ['quantityOrdered', 'quantityDelivered']}
         }]
       })
-
-      addPrice(order)
-
+      await appendNameToOrder(theOrder)
+      addPrice(theOrder)
       return res.status(200).json({
         success: true,
-        data: order
+        data: theOrder
       })
     } else {
       return res.status(401).json({
@@ -198,11 +210,10 @@ const getAllOrders = async (req, res) => {
           through: {attributes: ['quantityOrdered', 'quantityDelivered']}
         }]
       })
-
-      allOrders.map(function (order) {
-        addPrice(order)
-      })
-
+      await Promise.all(allOrders.map(async order => {
+        await appendNameToOrder(order)
+        await addPrice(order)
+      }))
       return res.status(200).json({
         success: true,
         data: allOrders
@@ -236,10 +247,10 @@ const getOrdersOnUser = async (req, res) => {
         }]
       })
       if (theOrders.length > 0) {
-        theOrders.map(function (order) {
-          addPrice(order)
-        })
-
+        await Promise.all(theOrders.map(async order => {
+          await appendNameToOrder(order)
+          await addPrice(order)
+        }))
         return res.status(200).json({
           success: true,
           data: theOrders
@@ -276,10 +287,10 @@ const getOrdersOnSection = async (req, res) => {
         }]
       })
       if (theOrders.length > 0) {
-        theOrders.map(function (order) {
-          addPrice(order)
-        })
-
+        await Promise.all(theOrders.map(async order => {
+          await appendNameToOrder(order)
+          await addPrice(order)
+        }))
         return res.status(200).json({
           success: true,
           data: theOrders
@@ -397,10 +408,10 @@ const getOrdersOnCostBearer = async (req, res) => {
         }]
       })
       if (theOrders.length > 0) {
-        theOrders.map(function (order) {
-          addPrice(order)
-        })
-
+        await Promise.all(theOrders.map(async order => {
+          await appendNameToOrder(order)
+          await addPrice(order)
+        }))
         return res.status(200).json({
           success: true,
           data: theOrders
