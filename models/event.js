@@ -6,14 +6,9 @@ const Event = dbc.define('Event', {
   name: Sequelize.STRING,
   date: Sequelize.DATEONLY,
   startTime: Sequelize.TIME,
+  endTime: Sequelize.TIME,
   nbrSeats: Sequelize.INTEGER
 })
-// const Booking = dbc.define('Booking', {
-//   name: Sequelize.STRING,
-//   email: Sequelize.STRING,
-//   phoneNbr: Sequelize.STRING,
-//   nbrGuests: Sequelize.INTEGER
-// })
 Booking.belongsTo(Event)
 Event.hasMany(Booking)
 

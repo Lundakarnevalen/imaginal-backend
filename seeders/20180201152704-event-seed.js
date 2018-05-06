@@ -8,19 +8,21 @@ module.exports = {
         {
           name: 'Awesome sittning',
           date: '2018-06-1',
-          startTime: '12:00:00',
+          startTime: '19:00:00',
+          endTime: '23:00:00',
           nbrSeats: 200,
           createdAt: new Date(),
-          updatedAt: new Date()
+          updatedAt: new Date(),
         },
         {
           name: 'Gris',
           date: '2018-06-2',
-          startTime: '23:00:00',
+          startTime: '21:00:00',
+          endTime: '23:00:00',
           nbrSeats: 200,
           createdAt: new Date(),
-          updatedAt: new Date()
-        }
+          updatedAt: new Date(),
+        },
       ],
       {}
     )
@@ -45,5 +47,5 @@ module.exports = {
       Example:
       return queryInterface.bulkDelete('Person', null, {});
     */
-  }
+  },
 }
