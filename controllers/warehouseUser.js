@@ -3,6 +3,16 @@
 const userRoles = require('../models/userrole')
 const costBearer = require('../models/costBearer')
 const warehouseUser = require('../models/warehouseUser')
+const user = require('../users/users')
+
+const appendName = async (theUser) => {
+  const finalUser = await user.User.findOne({
+    where: {id: theUser.userId},
+    attributes: ['firstName', 'lastName']
+  })
+  theUser.dataValues.firstName = finalUser.firstName
+  theUser.dataValues.lastName = finalUser.lastName
+}
 
 const getAllWarehouseUsers = async (req, res) => {
   try {
@@ -10,6 +20,9 @@ const getAllWarehouseUsers = async (req, res) => {
 
     if (hasAccess) {
       const warehouseUsers = await warehouseUser.WarehouseUser.findAll()
+      await Promise.all(warehouseUsers.map(async user => {
+        await appendName(user)
+      }))
       return res.json({
         success: true,
         data: warehouseUsers
