@@ -400,7 +400,7 @@ const getOrdersOnCostBearer = async (req, res) => {
       const findWarehouseUser = await warehouseUser.WarehouseUser.findOne({
         where: { userId: req.user.dataValues.id }
       })
-      if (findWarehouseUser) {
+      if (!findWarehouseUser) {
         return res.status(400).json({
           success: false,
           message: 'No such warehouse users'
@@ -411,7 +411,7 @@ const getOrdersOnCostBearer = async (req, res) => {
         where: { id: findWarehouseUser.costBearerId }
       })
 
-      if (costBearer) {
+      if (!costBearer) {
         return res.status(400).json({
           success: false,
           message: 'No such cost bearer'
@@ -422,7 +422,7 @@ const getOrdersOnCostBearer = async (req, res) => {
         where: { costBearerId: costBearer.id }
       })
       // This can never happen, but still
-      if (findWarehouseUsers) {
+      if (!findWarehouseUsers) {
         return res.status(400).json({
           success: false,
           message: 'No warehouseusers connected to that costbearer'
