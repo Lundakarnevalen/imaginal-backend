@@ -160,10 +160,10 @@ const editOrder = async (req, res) => {
 
 const appendNameToOrder = async (order) => {
   const middleUser = await warehouseUser.WarehouseUser.findOne({
-    where: {id: order.warehouseUserId}
+    where: { id: order.warehouseUserId }
   })
   const finalUser = await user.User.findOne({
-    where: {id: middleUser.userId},
+    where: { id: middleUser.userId },
     attributes: ['firstName', 'lastName']
   })
   order.dataValues.firstName = finalUser.firstName
@@ -178,7 +178,7 @@ const getOrderById = async (req, res) => {
         where: { id: req.params.id },
         include: [{
           model: items.Item,
-          through: {attributes: ['quantityOrdered', 'quantityDelivered']}
+          through: { attributes: ['quantityOrdered', 'quantityDelivered'] }
         }]
       })
       await appendNameToOrder(theOrder)
@@ -208,7 +208,7 @@ const getAllOrders = async (req, res) => {
       const allOrders = await orders.Order.findAll({
         include: [{
           model: items.Item,
-          through: {attributes: ['quantityOrdered', 'quantityDelivered']}
+          through: { attributes: ['quantityOrdered', 'quantityDelivered'] }
         }]
       })
       await Promise.all(allOrders.map(async order => {
@@ -244,7 +244,7 @@ const getOrdersOnUser = async (req, res) => {
         where: { warehouseUserId: dbWarehouseUser.id },
         include: [{
           model: items.Item,
-          through: {attributes: ['quantityOrdered', 'quantityDelivered']}
+          through: { attributes: ['quantityOrdered', 'quantityDelivered'] }
         }]
       })
       if (theOrders.length > 0) {
@@ -284,7 +284,7 @@ const getOrdersOnSection = async (req, res) => {
         where: { storageLocationId: req.params.storageLocationId },
         include: [{
           model: items.Item,
-          through: {attributes: ['quantityOrdered', 'quantityDelivered']}
+          through: { attributes: ['quantityOrdered', 'quantityDelivered'] }
         }]
       })
       if (theOrders.length > 0) {
@@ -430,10 +430,10 @@ const getOrdersOnCostBearer = async (req, res) => {
       }
       const ids = findWarehouseUsers.map(user => user.id)
       const theOrders = await orders.Order.findAll({
-        where: {warehouseUserId: ids},
+        where: { warehouseUserId: ids },
         include: [{
           model: items.Item,
-          through: {attributes: ['quantityOrdered', 'quantityDelivered']}
+          through: { attributes: ['quantityOrdered', 'quantityDelivered'] }
         }]
       })
 
