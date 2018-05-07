@@ -150,7 +150,7 @@ const createReturn = async (req, res) => {
   } catch (err) {
     return res.status(500).json({
       success: false,
-      message: 'Failed to create order'
+      message: 'Failed to create return'
     })
   }
 }
