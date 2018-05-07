@@ -7,6 +7,7 @@ const orderLines = require('../models/orderLine')
 const storageContents = require('../models/storageContents')
 const items = require('../models/item')
 const user = require('../users/users')
+const costBearers = require('../models/costBearer')
 
 const createOrder = async (req, res) => {
   try {
@@ -394,12 +395,40 @@ const checkoutOrderLines = async (req, res) => {
 
 const getOrdersOnCostBearer = async (req, res) => {
   try {
-    const hasAccess = await userRoles.hasWarehouseWorkerAccess(req)
+    const hasAccess = await userRoles.hasWarehouseCustomerAccess(req)
     if (hasAccess) {
-      const costUsers = await warehouseUser.WarehouseUser.findAll({
-        where: {costBearerId: req.params.costBearerId}
+      const findWarehouseUser = await warehouseUser.WarehouseUser.findOne({
+        where: { userId: req.user.dataValues.id }
       })
-      const ids = costUsers.map(user => user.id)
+      if (findWarehouseUser) {
+        return res.status(400).json({
+          success: false,
+          message: 'No such warehouse users'
+        })
+      }
+
+      const costBearer = await costBearers.CostBearer.findOne({
+        where: { id: findWarehouseUser.costBearerId }
+      })
+
+      if (costBearer) {
+        return res.status(400).json({
+          success: false,
+          message: 'No such cost bearer'
+        })
+      }
+
+      const findWarehouseUsers = await warehouseUser.WarehouseUser.findAll({
+        where: { costBearerId: costBearer.id }
+      })
+      // This can never happen, but still
+      if (findWarehouseUsers) {
+        return res.status(400).json({
+          success: false,
+          message: 'No warehouseusers connected to that costbearer'
+        })
+      }
+      const ids = findWarehouseUsers.map(user => user.id)
       const theOrders = await orders.Order.findAll({
         where: {warehouseUserId: ids},
         include: [{
@@ -407,6 +436,7 @@ const getOrdersOnCostBearer = async (req, res) => {
           through: {attributes: ['quantityOrdered', 'quantityDelivered']}
         }]
       })
+
       if (theOrders.length > 0) {
         await Promise.all(theOrders.map(async order => {
           await appendNameToOrder(order)

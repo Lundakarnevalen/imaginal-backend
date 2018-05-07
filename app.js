@@ -147,7 +147,7 @@ app.delete('/api/warehouse/order/remove/:orderId', orders.removeOrder)
 app.post('/api/warehouse/order/checkout', orders.checkoutOrderLines)
 app.get('/api/warehouse/order/list/user', orders.getOrdersOnUser)
 app.get('/api/warehouse/order/location/list/:storageLocationId', orders.getOrdersOnSection)
-app.get('/api/warehouse/order/costbearer/list/:costBearerId', orders.getOrdersOnCostBearer)
+app.get('/api/warehouse/order/costbearer/list/', orders.getOrdersOnCostBearer)
 
 app.get('/api/warehouse/user/list', warehouseUser.getAllWarehouseUsers)
 app.get('/api/warehouse/user', warehouseUser.getWarehouseUserById)
