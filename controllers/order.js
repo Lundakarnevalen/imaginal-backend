@@ -36,8 +36,8 @@ const createOrder = async (req, res) => {
         storageLocationId: req.body.storageLocationId,
         orderDeliveryDate: req.body.deliveryDate || null,
         checkedOut: false,
-        return: req.body.return || false,
-        returnDate: req.body.returnDate || null,
+        return: false,
+        returnDate: null,
         warehouseUserId: findWarehouseUser.id
       })
 
@@ -75,6 +75,84 @@ const createOrderLine = (order, body) => {
     orderId: order.id,
     itemId: body.itemId
   })
+}
+
+const createReturn = async (req, res) => {
+  try {
+    const hasAccess = await userRoles.hasWarehouseWorkerAccess(req)
+    if (hasAccess) {
+      if ((!req.body.storageLocationId || !req.body.orderLines) || !req.body.userId ||
+        !(await req.body.orderLines.map(body => body.itemId && body.quantity))) {
+        return res.status(400).json({
+          success: false,
+          message: 'Missing parameters'
+        })
+      }
+
+      const order = await orders.Order.create({
+        storageLocationId: req.body.storageLocationId,
+        orderDeliveryDate: new Date(),
+        checkedOut: true,
+        checkedOutDate: new Date(),
+        return: true,
+        returnDate: null,
+        warehouseUserId: req.body.userId
+      })
+
+      if (req.body.orderLines.length > 0) {
+        const allOrderLines = await Promise.all(req.body.orderLines.map(orderLine => {
+          return orderLines.OrderLine.create({
+            quantityOrdered: orderLine.quantity,
+            quantityDelivered: orderLine.quantity,
+            orderId: order.id,
+            itemId: orderLine.itemId
+          })
+        }))
+
+        const storageLocationId = order.dataValues.storageLocationId
+
+        Promise.all(allOrderLines.map(async (line) => {
+          let content = await storageContents.StorageContent.findOne({
+            where: {
+              storageLocationId: storageLocationId,
+              itemId: line.dataValues.itemId
+            }
+          })
+
+          if (!content) {
+            content = await storageContents.StorageContent.create({
+              storageLocationId: storageLocationId,
+              itemId: line.dataValues.itemId,
+              quantity: line.dataValues.quantityOrdered
+            })
+          } else {
+            content.quantity += line.dataValues.quantityOrdered
+            content.save()
+          }
+        }))
+
+        return res.status(200).json({
+          success: true,
+          message: 'Return created'
+        })
+      } else {
+        return res.status(400).json({
+          success: false,
+          message: 'No orderlines specified'
+        })
+      }
+    } else {
+      return res.status(401).json({
+        success: false,
+        message: 'Go away!'
+      })
+    }
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to create return'
+    })
+  }
 }
 
 const removeOrder = async (req, res) => {
@@ -470,6 +548,7 @@ module.exports = {
   createOrder,
   removeOrder,
   editOrder,
+  createReturn,
   getAllOrders,
   getOrdersOnSection,
   getOrdersOnUser,

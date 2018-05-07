@@ -141,6 +141,7 @@ app.get('/api/warehouse/location/:storageLocationId', storageLocations.getStorag
 
 app.post('/api/warehouse/order/new', orders.createOrder)
 app.post('/api/warehouse/order/edit', orders.editOrder)
+app.post('/api/warehouse/order/return/new', orders.createReturn)
 app.get('/api/warehouse/order/list', orders.getAllOrders)
 app.get('/api/warehouse/order/:id', orders.getOrderById)
 app.delete('/api/warehouse/order/remove/:orderId', orders.removeOrder)
