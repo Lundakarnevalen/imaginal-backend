@@ -5,7 +5,9 @@ const userRoles = require('../models/userrole')
 const warehouseUser = require('../models/warehouseUser')
 const orderLines = require('../models/orderLine')
 const storageContents = require('../models/storageContents')
-// const items = require('../models/item')
+const items = require('../models/item')
+const user = require('../users/users')
+const costBearers = require('../models/costBearer')
 
 const createOrder = async (req, res) => {
   try {
@@ -116,19 +118,6 @@ const findOrder = async (orderId) => {
   return orders.Order.findById(orderId)
 }
 
-const getOrderLinesFromOrderId = async (orderId) => {
-  const orderLine = await orderLines.OrderLine.findAll({
-    where: {
-      orderId: orderId
-    }
-  })
-  let orderLinesList = []
-  orderLine.forEach(line => {
-    orderLinesList.push(line.dataValues)
-  })
-  return orderLinesList
-}
-
 const editOrder = async (req, res) => {
   try {
     const hasAccess = await userRoles.hasWarehouseAdminAccess(req)
@@ -169,17 +158,34 @@ const editOrder = async (req, res) => {
   }
 }
 
+const appendNameToOrder = async (order) => {
+  const middleUser = await warehouseUser.WarehouseUser.findOne({
+    where: {id: order.warehouseUserId}
+  })
+  const finalUser = await user.User.findOne({
+    where: {id: middleUser.userId},
+    attributes: ['firstName', 'lastName']
+  })
+  order.dataValues.firstName = finalUser.firstName
+  order.dataValues.lastName = finalUser.lastName
+}
+
 const getOrderById = async (req, res) => {
   try {
     const hasAccess = await userRoles.hasWarehouseWorkerAccess(req)
     if (hasAccess) {
-      const order = await orders.Order.findOne({
-        where: { id: req.params.id }
+      const theOrder = await orders.Order.findOne({
+        where: { id: req.params.id },
+        include: [{
+          model: items.Item,
+          through: {attributes: ['quantityOrdered', 'quantityDelivered']}
+        }]
       })
-      console.log(order)
+      await appendNameToOrder(theOrder)
+      addPrice(theOrder)
       return res.status(200).json({
         success: true,
-        data: order
+        data: theOrder
       })
     } else {
       return res.status(401).json({
@@ -199,9 +205,16 @@ const getAllOrders = async (req, res) => {
   try {
     const hasAccess = await userRoles.hasWarehouseWorkerAccess(req)
     if (hasAccess) {
-      const allOrders = await orders.Order.findAll()
-      allOrders.forEach(
-        order => (order.orderLines = getOrderLinesFromOrderId(order.id)))
+      const allOrders = await orders.Order.findAll({
+        include: [{
+          model: items.Item,
+          through: {attributes: ['quantityOrdered', 'quantityDelivered']}
+        }]
+      })
+      await Promise.all(allOrders.map(async order => {
+        await appendNameToOrder(order)
+        await addPrice(order)
+      }))
       return res.status(200).json({
         success: true,
         data: allOrders
@@ -228,11 +241,17 @@ const getOrdersOnUser = async (req, res) => {
         where: { userId: req.user.dataValues.id }
       })
       const theOrders = await orders.Order.findAll({
-        where: { warehouseUserId: dbWarehouseUser.id }
+        where: { warehouseUserId: dbWarehouseUser.id },
+        include: [{
+          model: items.Item,
+          through: {attributes: ['quantityOrdered', 'quantityDelivered']}
+        }]
       })
       if (theOrders.length > 0) {
-        theOrders.forEach(
-          order => (order.orderLines = getOrderLinesFromOrderId(order.id)))
+        await Promise.all(theOrders.map(async order => {
+          await appendNameToOrder(order)
+          await addPrice(order)
+        }))
         return res.status(200).json({
           success: true,
           data: theOrders
@@ -262,13 +281,17 @@ const getOrdersOnSection = async (req, res) => {
     const hasAccess = await userRoles.hasWarehouseWorkerAccess(req)
     if (hasAccess) {
       let theOrders = await orders.Order.findAll({
-        where: { storageLocationId: req.params.storageLocationId }
+        where: { storageLocationId: req.params.storageLocationId },
+        include: [{
+          model: items.Item,
+          through: {attributes: ['quantityOrdered', 'quantityDelivered']}
+        }]
       })
       if (theOrders.length > 0) {
         await Promise.all(theOrders.map(async order => {
-          order.dataValues.orderLines = await getOrderLinesFromOrderId(order.id)
+          await appendNameToOrder(order)
+          await addPrice(order)
         }))
-
         return res.status(200).json({
           success: true,
           data: theOrders
@@ -291,6 +314,15 @@ const getOrdersOnSection = async (req, res) => {
       message: 'Failed to get all orders'
     })
   }
+}
+
+/** Private method */
+const addPrice = (order) => {
+  order.dataValues.totalPrice = order.Items.reduce(function (preVal, item) {
+    const price = item.salesPrice * item.OrderLines.quantityOrdered
+    item.OrderLines.dataValues.priceOrderLine = price
+    return preVal + price
+  }, 0)
 }
 
 const checkoutOrderLines = async (req, res) => {
@@ -361,6 +393,79 @@ const checkoutOrderLines = async (req, res) => {
   }
 }
 
+const getOrdersOnCostBearer = async (req, res) => {
+  try {
+    const hasAccess = await userRoles.hasWarehouseCustomerAccess(req)
+    if (hasAccess) {
+      const findWarehouseUser = await warehouseUser.WarehouseUser.findOne({
+        where: { userId: req.user.dataValues.id }
+      })
+      if (findWarehouseUser) {
+        return res.status(400).json({
+          success: false,
+          message: 'No such warehouse users'
+        })
+      }
+
+      const costBearer = await costBearers.CostBearer.findOne({
+        where: { id: findWarehouseUser.costBearerId }
+      })
+
+      if (costBearer) {
+        return res.status(400).json({
+          success: false,
+          message: 'No such cost bearer'
+        })
+      }
+
+      const findWarehouseUsers = await warehouseUser.WarehouseUser.findAll({
+        where: { costBearerId: costBearer.id }
+      })
+      // This can never happen, but still
+      if (findWarehouseUsers) {
+        return res.status(400).json({
+          success: false,
+          message: 'No warehouseusers connected to that costbearer'
+        })
+      }
+      const ids = findWarehouseUsers.map(user => user.id)
+      const theOrders = await orders.Order.findAll({
+        where: {warehouseUserId: ids},
+        include: [{
+          model: items.Item,
+          through: {attributes: ['quantityOrdered', 'quantityDelivered']}
+        }]
+      })
+
+      if (theOrders.length > 0) {
+        await Promise.all(theOrders.map(async order => {
+          await appendNameToOrder(order)
+          await addPrice(order)
+        }))
+        return res.status(200).json({
+          success: true,
+          data: theOrders
+        })
+      } else {
+        return res.status(400).json({
+          success: false,
+          message: 'No orders for this cost bearer'
+        })
+      }
+    } else {
+      return res.status(401).json({
+        success: false,
+        message: 'Go away!'
+      })
+    }
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to get all orders'
+    })
+  }
+}
+
 module.exports = {
   createOrder,
   removeOrder,
@@ -369,5 +474,6 @@ module.exports = {
   getOrdersOnSection,
   getOrdersOnUser,
   checkoutOrderLines,
-  getOrderById
+  getOrderById,
+  getOrdersOnCostBearer
 }

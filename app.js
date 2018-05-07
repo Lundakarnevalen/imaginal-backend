@@ -135,6 +135,8 @@ app.get('/api/warehouse/product/getAllItems', items.getAllItems)
 app.get('/api/warehouse/location/inventory/:storageLocationId', storageLocations.getInventory)
 app.post('/api/warehouse/location/new', storageLocations.addStorageLocation)
 app.get('/api/warehouse/location/list', storageLocations.getStorageLocations)
+
+// app.get('/api/warehouse/product/inventory', items.getInventory)
 app.get('/api/warehouse/location/:storageLocationId', storageLocations.getStorageLocationById)
 
 app.post('/api/warehouse/order/new', orders.createOrder)
@@ -145,9 +147,10 @@ app.delete('/api/warehouse/order/remove/:orderId', orders.removeOrder)
 app.post('/api/warehouse/order/checkout', orders.checkoutOrderLines)
 app.get('/api/warehouse/order/list/user', orders.getOrdersOnUser)
 app.get('/api/warehouse/order/location/list/:storageLocationId', orders.getOrdersOnSection)
+app.get('/api/warehouse/order/costbearer/list/', orders.getOrdersOnCostBearer)
 
 app.get('/api/warehouse/user/list', warehouseUser.getAllWarehouseUsers)
-app.get('/api/warehouse/user/', warehouseUser.getWarehouseUserById)
+app.get('/api/warehouse/user', warehouseUser.getWarehouseUserById)
 app.get('/api/warehouse/user/costbearer/list', warehouseUser.getAllCostBearers)
 app.get('/api/warehouse/user/costbearer/:costBearerId', warehouseUser.getWarehouseUserByCostBearer)
 
