@@ -141,13 +141,14 @@ app.get('/api/warehouse/location/:storageLocationId', storageLocations.getStorag
 
 app.post('/api/warehouse/order/new', orders.createOrder)
 app.post('/api/warehouse/order/edit', orders.editOrder)
+app.post('/api/warehouse/order/return/new', orders.createReturn)
 app.get('/api/warehouse/order/list', orders.getAllOrders)
 app.get('/api/warehouse/order/:id', orders.getOrderById)
 app.delete('/api/warehouse/order/remove/:orderId', orders.removeOrder)
 app.post('/api/warehouse/order/checkout', orders.checkoutOrderLines)
 app.get('/api/warehouse/order/list/user', orders.getOrdersOnUser)
 app.get('/api/warehouse/order/location/list/:storageLocationId', orders.getOrdersOnSection)
-app.get('/api/warehouse/order/costbearer/list/:costBearerId', orders.getOrdersOnCostBearer)
+app.get('/api/warehouse/order/costbearer/list/', orders.getOrdersOnCostBearer)
 
 app.get('/api/warehouse/user/list', warehouseUser.getAllWarehouseUsers)
 app.get('/api/warehouse/user', warehouseUser.getWarehouseUserById)
