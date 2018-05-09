@@ -274,6 +274,7 @@ const editItem = async (req, res) => {
         if (req.body.note) findItem.note = req.body.note
         if (req.body.warningAmount) findItem.warningAmount = req.body.warningAmount
         if (req.body.vat) findItem.vat = req.body.vat
+        if (req.body.costNr) findItem.costNr = req.body.costNr
         await findItem.save()
         return res.json({
           success: true,
