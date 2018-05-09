@@ -29,11 +29,11 @@ app.use(passport.session())
 app.use(helmet())
 app.use(cors())
 
-app.use(function (error, req, res, next) {
+app.use(function(error, req, res, next) {
   if (error.name === 'SyntaxError') {
     res.status(400).json({
       status: false,
-      message: 'Bad Request, invalid json'
+      message: 'Bad Request, invalid json',
     })
   }
   next()
@@ -59,7 +59,7 @@ app.get('/event', events.list)
 app.get('/event/:id', events.show)
 
 app.get('/event/:eventId/timeslot', eventTimeslots.list)
-app.post('/event/:eventId/timeslot', eventTimeslots.create)
+app.get('/timeslot/:id', eventTimeslots.show)
 
 // Hidden endpoints. They require a lot of RAM and may crash the server.
 // Therefore only for local use.
@@ -70,8 +70,8 @@ app.post('/event/:eventId/timeslot', eventTimeslots.create)
 /**
  * Authenticate tokens
  */
-app.all(/(\/)?api\/.*/, function (req, res, next) {
-  passport.authenticate('bearer', { session: false }, function (
+app.all(/(\/)?api\/.*/, function(req, res, next) {
+  passport.authenticate('bearer', { session: false }, function(
     err,
     user,
     info
@@ -83,11 +83,11 @@ app.all(/(\/)?api\/.*/, function (req, res, next) {
     if (!user) {
       return res.status(401).json({
         success: false,
-        message: 'Unauthorized'
+        message: 'Unauthorized',
       })
     }
 
-    req.logIn(user, function (err) {
+    req.logIn(user, function(err) {
       if (err) {
         return next(err)
       }
@@ -99,10 +99,10 @@ app.all(/(\/)?api\/.*/, function (req, res, next) {
 /**
  * Authorized endpoints
  */
-app.post('/api/hello', function (req, res) {
+app.post('/api/hello', function(req, res) {
   res.json({
     success: true,
-    message: 'Hello World!'
+    message: 'Hello World!',
   })
 })
 
@@ -191,7 +191,7 @@ app.post('/api/event/', events.create)
 app.put('/api/event/:id', events.update)
 app.delete('/api/event/:id', events.remove)
 
-app.get('/api/timeslot/:id', eventTimeslots.show)
+app.post('/api/event/:eventId/timeslot', eventTimeslots.create)
 app.put('/api/timeslot/:id', eventTimeslots.update)
 app.delete('/api/timeslot/:id', eventTimeslots.remove)
 
@@ -201,10 +201,10 @@ app.get('/api/booking/:id', bookings.show)
 app.put('/api/booking/:id', bookings.update)
 app.delete('/api/booking/:id', bookings.remove)
 
-app.all('*', function (req, res) {
+app.all('*', function(req, res) {
   res.status(404).json({
     success: false,
-    message: 'File not found'
+    message: 'File not found',
   })
 })
 
@@ -213,7 +213,7 @@ const port = process.env.PORT || 3000
 require('./config/database')
   .sync()
   .then(() => {
-    app.listen(port, function () {
+    app.listen(port, function() {
       console.log('Listening on port', port)
     })
   })
