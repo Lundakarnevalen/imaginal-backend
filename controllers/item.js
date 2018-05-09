@@ -389,10 +389,6 @@ const moveItems = async (req, res) => {
       const fromLocation = await req.body.fromLocation
       const toLocation = await req.body.toLocation
 
-      // const findItem = await items.Item.findAll({
-      //   where: { id: itemId }
-      // })
-
       const findOldLocation = await storageLocations.StorageLocation.findOne({
         where: { id: fromLocation }
       })

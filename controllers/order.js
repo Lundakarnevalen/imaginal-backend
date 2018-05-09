@@ -81,7 +81,7 @@ const createReturn = async (req, res) => {
   try {
     const hasAccess = await userRoles.hasWarehouseWorkerAccess(req)
     if (hasAccess) {
-      if ((!req.body.storageLocationId || !req.body.orderLines) || !req.body.userId ||
+      if ((!req.body.storageLocationId || !req.body.orderLines) || !req.body.warehouseUserId ||
         !(await req.body.orderLines.map(body => body.itemId && body.quantity))) {
         return res.status(400).json({
           success: false,
@@ -96,7 +96,7 @@ const createReturn = async (req, res) => {
         checkedOutDate: new Date(),
         return: true,
         returnDate: null,
-        warehouseUserId: req.body.userId
+        warehouseUserId: req.body.warehouseUserId
       })
 
       if (req.body.orderLines.length > 0) {
