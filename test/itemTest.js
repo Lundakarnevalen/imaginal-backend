@@ -634,4 +634,27 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
         done()
       })
     })
+
+    it('Authorized moveItems, role: admin', done => {
+      api.post('/api/warehouse/product/moveItems')
+      .set('Authorization', 'bearer ' + admin.token)
+      .send({
+        'fromLocation': 1,
+        'toLocation': 2,
+        'items': [
+          {
+            'itemId': 4,
+            'quantity': 5
+          }
+        ]
+      })
+      .end(async (err, res) => {
+        if (err) {
+          console.error('Failed to run test, aborting')
+          process.exit(1)
+        }
+        await expect(res.statusCode).to.equal(200)
+        done()
+      })
+    })
   })
