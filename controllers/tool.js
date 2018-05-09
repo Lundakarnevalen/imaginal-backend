@@ -102,6 +102,8 @@ const getToolsOnTags = async (req, res) => {
   }
 }
 
+//todo: editTool()
+
 const removeTool = async (req, res) => {
   try {
     const hasAccess = await userRoles.hasWarehouseAdminAccess(req)
