@@ -1,16 +1,19 @@
 const { Event } = require('../models/event')
 const { Booking } = require('../models/booking')
+const { EventTimeslot } = require('../models/eventTimeslot')
 
 const create = async (req, res) => {
   try {
-    const event = await Event.findById(req.params.id, {include: {model: Booking}})
-    const remainingSeats = await event.getRemainingSeats()
+    const eventTimeslot = await EventTimeslot.findById(req.params.id, {
+      include: [{ model: Booking }, { model: Event }]
+    })
+    const remainingSeats = await eventTimeslot.getRemainingSeats()
     if (remainingSeats < req.body.nbrGuests) {
       throw new Error('Not enough remaining seats')
     }
     let booking = Booking.build(req.body)
-    booking.EventId = event.id
-    // booking.setEvent(event)
+    booking.EventTimeslotId = eventTimeslot.id
+    // booking.setEvent(eventTimeslot)
     booking = await booking.save()
     res.json({ success: true, booking })
   } catch (e) {
@@ -20,15 +23,19 @@ const create = async (req, res) => {
 
 const list = async (req, res) => {
   try {
-    const bookings = await Booking.all()
-    res.json({success: true, bookings})
+    const bookings = await Booking.findAll({
+      where: { eventTimeslotId: req.params.id }
+    })
+    res.json({ success: true, bookings })
   } catch (e) {
     res.json({ success: false, message: e.message })
   }
 }
 const show = async (req, res) => {
   try {
-    const booking = await Booking.findById(req.params.id, {include: {model: Event}})
+    const booking = await Booking.findById(req.params.id, {
+      include: { model: EventTimeslot, include: {model: Event} }
+    })
     if (booking) {
       res.json({ success: true, booking })
     } else {

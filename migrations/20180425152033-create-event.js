@@ -14,25 +14,25 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        type: Sequelize.INTEGER
       },
       name: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING
       },
-      date: { type: Sequelize.DATEONLY },
-      startTime: { type: Sequelize.TIME },
-      endTime: { type: Sequelize.TIME },
+      // date: { type: Sequelize.DATEONLY },
+      startDateTime: { type: Sequelize.DATE, allowNull: false },
+      // endTime: { type: Sequelize.TIME },
       nbrSeats: { type: Sequelize.INTEGER },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        default: Sequelize.NOW,
+        default: Sequelize.NOW
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        default: Sequelize.NOW,
-      },
+        default: Sequelize.NOW
+      }
     })
   },
 
@@ -45,5 +45,5 @@ module.exports = {
       return queryInterface.dropTable('users');
     */
     queryInterface.dropTable('Events')
-  },
+  }
 }

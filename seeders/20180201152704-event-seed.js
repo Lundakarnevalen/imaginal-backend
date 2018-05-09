@@ -7,22 +7,56 @@ module.exports = {
       [
         {
           name: 'Awesome sittning',
-          date: '2018-06-1',
-          startTime: '19:00:00',
-          endTime: '23:00:00',
+          startDateTime: '2018-06-01 20:00:00',
           nbrSeats: 200,
           createdAt: new Date(),
-          updatedAt: new Date(),
+          updatedAt: new Date()
         },
         {
           name: 'Gris',
-          date: '2018-06-2',
-          startTime: '21:00:00',
-          endTime: '23:00:00',
+          startDateTime: '2018-06-02 21:00:00',
           nbrSeats: 200,
           createdAt: new Date(),
+          updatedAt: new Date()
+        }
+      ],
+      {}
+    )
+    await queryInterface.bulkInsert(
+      'EventTimeslots',
+      [
+        {
+          startDateTime: '2018-06-01 20:00:00',
+          duration: 120,
+          guestDuration: 105,
+          createdAt: new Date(),
           updatedAt: new Date(),
+          eventId: 1
         },
+        {
+          startDateTime: '2018-06-01 22:00:00',
+          duration: 120,
+          guestDuration: 105,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          eventId: 1
+        },
+        {
+          startDateTime: '2018-06-02 20:00:00',
+          duration: 120,
+          guestDuration: 105,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          eventId: 2
+        },
+        {
+          startDateTime: '2018-06-02 22:00:00',
+          duration: 120,
+          guestDuration: 105,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          eventId: 2
+        }
       ],
       {}
     )
@@ -47,5 +81,5 @@ module.exports = {
       Example:
       return queryInterface.bulkDelete('Person', null, {});
     */
-  },
+  }
 }

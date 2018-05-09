@@ -15,6 +15,7 @@ require('./controllers/tag')
 require('./controllers/warehouseUser')
 require('./controllers/order')
 require('./controllers/event')
+require('./controllers/eventTimeslot')
 require('./controllers/booking')
 
 require('./config/database')

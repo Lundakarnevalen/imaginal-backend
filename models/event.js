@@ -1,26 +1,21 @@
 const Sequelize = require('sequelize')
 const dbc = require('../config/database')
 const { Booking } = require('./booking')
+const { EventTimeslot } = require('./eventTimeslot')
 
 const Event = dbc.define('Event', {
   name: Sequelize.STRING,
-  date: Sequelize.DATEONLY,
-  startTime: Sequelize.TIME,
-  endTime: Sequelize.TIME,
+  // date: Sequelize.DATEONLY,
+  startDateTime: Sequelize.DATE,
+  // endTime: Sequelize.TIME,
   nbrSeats: Sequelize.INTEGER
 })
-Booking.belongsTo(Event)
-Event.hasMany(Booking)
-
-Event.prototype.getRemainingSeats = async function () {
-  let bookings
-  if (!this.Bookings) {
-    bookings = await this.getBookings()
-  } else {
-    bookings = this.Bookings
-  }
-  return this.nbrSeats - bookings.reduce((sum, booking) => (sum += booking.nbrGuests), 0)
-}
+// Booking.belongsTo(Event)
+// Event.hasMany(Booking)
+Event.hasMany(EventTimeslot, {onDelete: 'cascade', hooks: true})
+Booking.belongsTo(EventTimeslot)
+EventTimeslot.belongsTo(Event)
+EventTimeslot.hasMany(Booking)
 
 module.exports = {
   Event

@@ -21,6 +21,7 @@ const warehouseUser = require('./controllers/warehouseUser')
 const images = require('./controllers/images')
 const events = require('./controllers/event')
 const bookings = require('./controllers/booking')
+const eventTimeslots = require('./controllers/eventTimeslot')
 
 app.use(bodyParser.json())
 app.use(passport.initialize())
@@ -54,6 +55,12 @@ app.get('/api/image/thumbnail/:imagename', images.getimage)
 app.get('/api/image/full/:imagename', images.getfullimage)
 app.post('/api/image/comment/:imagename', images.updateImageComment)
 
+app.get('/event', events.list)
+app.get('/event/:id', events.show)
+
+app.get('/event/:eventId/timeslot', eventTimeslots.list)
+app.post('/event/:eventId/timeslot', eventTimeslots.create)
+
 // Hidden endpoints. They require a lot of RAM and may crash the server.
 // Therefore only for local use.
 // app.get('/api/card/:imagename', images.createCard)
@@ -64,7 +71,11 @@ app.post('/api/image/comment/:imagename', images.updateImageComment)
  * Authenticate tokens
  */
 app.all(/(\/)?api\/.*/, function (req, res, next) {
-  passport.authenticate('bearer', {session: false}, function (err, user, info) {
+  passport.authenticate('bearer', { session: false }, function (
+    err,
+    user,
+    info
+  ) {
     if (err) {
       return next(err)
     }
@@ -101,7 +112,11 @@ app.get('/api/image/badphoto/:imagename', images.updateBadPhoto)
 app.get('/api/image/goodphoto/:imagename', images.updateGoodPhoto)
 
 app.post('/api/image/full', images.uploadFullPhoto, images.uploadFullDone)
-app.post('/api/image/cropped', images.uploadCroppedPhoto, images.uploadCroppedDone)
+app.post(
+  '/api/image/cropped',
+  images.uploadCroppedPhoto,
+  images.uploadCroppedDone
+)
 
 app.get('/api/user/checkin/:email', checkin.checkStatus)
 app.post('/api/user/checkin/:identification', checkin.checkIn)
@@ -129,15 +144,24 @@ app.post('/api/warehouse/product/edit', items.editItem)
 app.get('/api/warehouse/product/all', items.getAllItems)
 app.get('/api/warehouse/product/:id', items.getItemById)
 app.post('/api/warehouse/product/itemontags', items.getItemsOnTags)
-app.post('/api/warehouse/product/addtostoragecontent', items.addToStorageContent)
+app.post(
+  '/api/warehouse/product/addtostoragecontent',
+  items.addToStorageContent
+)
 app.post('/api/warehouse/product/addQuantity', items.addQuantity)
 app.post('/api/warehouse/product/setQuantity', items.setQuantity)
 app.get('/api/warehouse/product/getAllItems', items.getAllItems)
 
-app.get('/api/warehouse/location/inventory/:storageLocationId', storageLocations.getInventory)
+app.get(
+  '/api/warehouse/location/inventory/:storageLocationId',
+  storageLocations.getInventory
+)
 app.post('/api/warehouse/location/new', storageLocations.addStorageLocation)
 app.get('/api/warehouse/location/list', storageLocations.getStorageLocations)
-app.get('/api/warehouse/location/:storageLocationId', storageLocations.getStorageLocationById)
+app.get(
+  '/api/warehouse/location/:storageLocationId',
+  storageLocations.getStorageLocationById
+)
 
 app.post('/api/warehouse/order/new', orders.createOrder)
 app.post('/api/warehouse/order/edit', orders.editOrder)
@@ -146,27 +170,36 @@ app.get('/api/warehouse/order/:id', orders.getOrderById)
 app.delete('/api/warehouse/order/remove/:orderId', orders.removeOrder)
 app.post('/api/warehouse/order/checkout', orders.checkoutOrderLines)
 app.get('/api/warehouse/order/list/user', orders.getOrdersOnUser)
-app.get('/api/warehouse/order/location/list/:storageLocationId', orders.getOrdersOnSection)
+app.get(
+  '/api/warehouse/order/location/list/:storageLocationId',
+  orders.getOrdersOnSection
+)
 
 app.get('/api/warehouse/user/list', warehouseUser.getAllWarehouseUsers)
 app.get('/api/warehouse/user/', warehouseUser.getWarehouseUserById)
 app.get('/api/warehouse/user/costbearer/list', warehouseUser.getAllCostBearers)
-app.get('/api/warehouse/user/costbearer/:costBearerId', warehouseUser.getWarehouseUserByCostBearer)
+app.get(
+  '/api/warehouse/user/costbearer/:costBearerId',
+  warehouseUser.getWarehouseUserByCostBearer
+)
 
 app.post('/api/treasurehunt/start', treasureHunt.start)
 app.get('/api/treasurehunt/info', treasureHunt.info)
 app.post('/api/treasurehunt/win', treasureHunt.win)
 
-app.get("/api/event", events.list);
-app.get("/api/event/:id", events.show);
-app.post("/api/event/", events.create);
-app.put("/api/event/:id", events.update);
-app.delete("/api/event/:id", events.remove);
-app.post("/api/event/:id/booking", bookings.create);
-app.get("/api/booking/", bookings.list);
-app.get("/api/booking/:id", bookings.show);
-app.put("/api/booking/:id", bookings.update);
-app.delete("/api/booking/:id", bookings.remove);
+app.post('/api/event/', events.create)
+app.put('/api/event/:id', events.update)
+app.delete('/api/event/:id', events.remove)
+
+app.get('/api/timeslot/:id', eventTimeslots.show)
+app.put('/api/timeslot/:id', eventTimeslots.update)
+app.delete('/api/timeslot/:id', eventTimeslots.remove)
+
+app.get('/api/timeslot/:id/booking', bookings.list)
+app.post('/api/timeslot/:id/booking', bookings.create)
+app.get('/api/booking/:id', bookings.show)
+app.put('/api/booking/:id', bookings.update)
+app.delete('/api/booking/:id', bookings.remove)
 
 app.all('*', function (req, res) {
   res.status(404).json({

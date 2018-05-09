@@ -17,10 +17,6 @@ const Booking = dbc.define('Booking', {
   }
 })
 
-Booking.associate = (models) => {
-  Booking.belongsTo(models.Event)
-}
-
 module.exports = {
   Booking
 }

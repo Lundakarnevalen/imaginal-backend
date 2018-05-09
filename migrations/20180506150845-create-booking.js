@@ -16,11 +16,11 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      eventId: {
+      eventTimeslotId: {
         type: Sequelize.INTEGER,
         references: {
           model: {
-            tableName: 'Events',
+            tableName: 'EventTimeslots',
             key: 'id'
           }
         },
