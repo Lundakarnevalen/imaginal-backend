@@ -362,7 +362,7 @@ const getOrdersOnSection = async (req, res) => {
         where: { storageLocationId: req.params.storageLocationId },
         include: [{
           model: items.Item,
-          through: { attributes: ['quantityOrdered', 'quantityDelivered'] }
+          through: { attributes: ['quantityOrdered', 'quantityDelivered', 'id'] }
         }]
       })
       if (theOrders.length > 0) {
