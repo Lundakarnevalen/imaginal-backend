@@ -86,7 +86,8 @@ const createItem = async (req, res) => {
       supplier: req.body.supplier || '',
       note: req.body.note || '',
       warningAmount: req.body.warningAmount || 1,
-      vat: 1 + req.body.vat || 1
+      vat: 1 + req.body.vat || 1,
+      costNr: req.body.costNr || costNr
     }
   })
 
