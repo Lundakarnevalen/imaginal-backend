@@ -1,6 +1,7 @@
 const randomstring = require('randomstring')
 const database = require('./click-models')
 const Connection = database.Connection
+const Room = database.Room
 
 module.exports = (app, log, isAdmin) => {
   /**
@@ -24,6 +25,9 @@ module.exports = (app, log, isAdmin) => {
     *         description:
     *           Room that connection lead from.
     *         example: 2
+    *       eventid:
+    *         type: number
+    *         example: 3
     * /api/click/connections/:
     *   post:
     *     summary: Create a connection
@@ -57,9 +61,9 @@ module.exports = (app, log, isAdmin) => {
       })
     }
     const con = req.body
-    if (!con.name || !con.to_room || !con.from_room) {
+    if (!con.name || !con.to_room || !con.from_room || !con.eventid) {
       return res.status(400).json({
-        message: 'Missing parameter. Send name and max_guests'
+        message: 'Missing parameter. Send name and max_guests and eventid'
       })
     }
     Connection.create({
@@ -69,12 +73,37 @@ module.exports = (app, log, isAdmin) => {
     }).then(function (connection) {
       connection.setTo_room(con.to_room)
       connection.setFrom_room(con.from_room)
+      connection.setEvent(con.eventid)
       res.status(200).json({ message: 'Successfully created connection' })
     }).catch(function (err) {
       res.status(500).json({ err })
     })
   })
-
+  /**
+    * @swagger
+    * /api/click/connections/list/{eventid}:
+    *   get:
+    *     summary: Get list of all connections for a event
+    *     description:
+    *       Get a list of all connections for a specifik event
+    *     tags: [Connection]
+    *     parameters:
+    *       - name: eventid
+    *         description:
+    *         in: path
+    *         required: true
+    *         type: string
+    *     responses:
+    *       200:
+    *         description: Success
+    *       500:
+    *         description: Internal server error
+    */
+  app.get('/api/click/connections/list/:eventid', function (req, res) {
+    Connection.findAll({ where: { eventId: req.params.eventid } })
+      .then(function (cons) { res.status(200).json(cons) })
+      .catch(function (err) { res.status(500).json({ err }) })
+  })
   /**
     * @swagger
     * /api/click/connections/:
@@ -193,27 +222,6 @@ module.exports = (app, log, isAdmin) => {
       .findById(req.params.id)
       .then(con => res.status(200).json(con))
       .catch(err => res.status(404).json(err))
-  })
-  /**
-    * @swagger
-    * /api/click/connections/:
-    *   get:
-    *     summary: Get list of all connections
-    *     description:
-    *       Get a list of all connections
-    *     tags: [Connection]
-    *     responses:
-    *       200:
-    *         description: Success
-    *       500:
-    *         description: Internal server error
-    */
-  app.get('/api/click/connections', function (req, res) {
-    Connection.findAll().then(function (cons) {
-      res.status(200).json(cons)
-    }).catch(function (err) {
-      res.status(500).json({ err })
-    })
   })
   /**
     * @swagger

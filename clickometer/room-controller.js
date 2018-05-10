@@ -77,11 +77,11 @@ module.exports = (app, isAdmin, log) => {
     *   RoomList:
     *     type: array
     *     items: Room
-    * /api/click/rooms/{eventid}:
+    * /api/click/rooms/list/{eventid}:
     *   get:
     *     summary: Get list of all rooms for a event
     *     description:
-    *       Get list of all Room
+    *       Get list of all Room for a specifik event
     *     tags: [Room]
     *     parameters:
     *       - name: eventid
@@ -97,13 +97,10 @@ module.exports = (app, isAdmin, log) => {
     *       500:
     *         description: Internal server error
     */
-  app.get('/api/click/rooms/:eventid', function (req, res) {
+  app.get('/api/click/rooms/list/:eventid', function (req, res) {
     Room.findAll({ where: { eventId: req.params.eventid } })
-    .then(function (rooms) {
-      res.status(200).json(rooms)
-    }).catch(function (err) {
-      res.status(500).json({ err })
-    })
+      .then(function (rooms) { res.status(200).json(rooms) })
+      .catch(function (err) { res.status(500).json({ err }) })
   })
   /**
     * @swagger

@@ -63,6 +63,7 @@ const Log = dbc.define('click_log', {
 })
 
 Room.belongsTo(Event, {as: 'event'})
+Connection.belongsTo(Event, {as: 'event'})
 Log.belongsTo(Event, {as: 'event'})
 Connection.belongsTo(Room, {as: 'to_room'})
 Connection.belongsTo(Room, {as: 'from_room'})
