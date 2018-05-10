@@ -53,7 +53,15 @@ var swaggerDefinition = {
 
 var swaggerOptions = {
   swaggerDefinition: swaggerDefinition,
-  apis: ['./clickometer/click-controller.js']
+  apis: [
+    './clickometer/login-controller.js',
+    './clickometer/reporting-controller.js',
+    './clickometer/event-controller.js',
+    './clickometer/room-controller.js',
+    './clickometer/connection-controller.js',
+    './clickometer/log-controller.js',
+    './clickometer/click-controller.js'
+  ]
 }
 const swaggerSpec = swaggerJSDoc(swaggerOptions)
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
