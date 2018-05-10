@@ -460,6 +460,33 @@ module.exports = (app) => {
   })
   /**
     * @swagger
+    * definitions:
+    *   RoomList:
+    *     type: array
+    *     items: Room
+    * /api/click/rooms/:
+    *   get:
+    *     summary: Get list of all rooms
+    *     description:
+    *       Get list of all Room
+    *     tags: [Room]
+    *     responses:
+    *       200:
+    *         description: List of all rooms
+    *         schema:
+    *           $ref: '#/definitions/RoomList'
+    *       500:
+    *         description: Internal server error
+    */
+  app.get('/api/click/rooms/', function (req, res) {
+    Room.findAll().then(function (rooms) {
+      res.status(200).json(rooms)
+    }).catch(function (err) {
+      res.status(500).json({ err })
+    })
+  })
+  /**
+    * @swagger
     * /api/click/rooms/bulk:
     *   put:
     *     summary: Bulk move
@@ -569,33 +596,6 @@ module.exports = (app) => {
       where: { id: roomId }
     }).then(function (result) {
       res.status(200).json({ message: 'Successfully updated connection' })
-    }).catch(function (err) {
-      res.status(500).json({ err })
-    })
-  })
-  /**
-    * @swagger
-    * definitions:
-    *   RoomList:
-    *     type: array =============================
-    * /api/click/rooms:
-    *   get:
-    *     summary: Get list of all rooms
-    *     description:
-    *       Get list of all Room
-    *     tags: [Room]
-    *     parameters:
-    *     responses:
-    *       200:
-    *         description: List of all rooms
-    *         schema:
-    *           $ref: '#/definitions/RoomList'
-    *       500:
-    *         description: Internal server error
-    */
-  app.get('/api/click/rooms', function (req, res) {
-    Room.findAll().then(function (rooms) {
-      res.status(200).json(rooms)
     }).catch(function (err) {
       res.status(500).json({ err })
     })
@@ -842,7 +842,6 @@ module.exports = (app) => {
     *     description:
     *       Get a list of all connections
     *     tags: [Connection]
-    *     parameters:
     *     responses:
     *       200:
     *         description: Success
