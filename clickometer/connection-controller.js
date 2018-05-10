@@ -162,7 +162,7 @@ module.exports = (app, log, isAdmin) => {
     *       Get a connection
     *     tags: [Connection]
     *     parameters:
-    *       - name: Id
+    *       - name: id
     *         description:
     *         in: path
     *         required: true
@@ -211,6 +211,32 @@ module.exports = (app, log, isAdmin) => {
   app.get('/api/click/connections', function (req, res) {
     Connection.findAll().then(function (cons) {
       res.status(200).json(cons)
+    }).catch(function (err) {
+      res.status(500).json({ err })
+    })
+  })
+  /**
+    * @swagger
+    * /api/click/connections/{id}:
+    *   delete:
+    *     summary: Delete a connection
+    *     description:
+    *       Delete a Connection
+    *     tags: [Connection]
+    *     parameters:
+    *       - name: id
+    *         description:
+    *         in: path
+    *         required: true
+    *         type: string
+    *     responses:
+    *       200:
+    *       400:
+    *       401:
+    */
+  app.delete('/api/click/connections/:id', function (req, res) {
+    Connection.findById(req.params.id).then(function (connections) {
+      res.status(200).json(connections)
     }).catch(function (err) {
       res.status(500).json({ err })
     })

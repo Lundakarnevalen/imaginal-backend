@@ -130,7 +130,7 @@ module.exports = (app, log, isAdmin) => {
     *       Get a event
     *     tags: [Event]
     *     parameters:
-    *       - name: Id
+    *       - name: id
     *         description:
     *         in: path
     *         required: true
@@ -179,6 +179,32 @@ module.exports = (app, log, isAdmin) => {
   app.get('/api/click/events', function (req, res) {
     Event.findAll().then(function (cons) {
       res.status(200).json(cons)
+    }).catch(function (err) {
+      res.status(500).json({ err })
+    })
+  })
+  /**
+    * @swagger
+    * /api/click/events/{id}:
+    *   delete:
+    *     summary: Delete a event
+    *     description:
+    *       Delete a Event
+    *     tags: [Event]
+    *     parameters:
+    *       - name: id
+    *         description:
+    *         in: path
+    *         required: true
+    *         type: string
+    *     responses:
+    *       200:
+    *       400:
+    *       401:
+    */
+  app.delete('/api/click/events/:id', (req, res) => {
+    Event.destroy({ where: { id: req.params.id } }).then((events) => {
+      res.status(200).json(events)
     }).catch(function (err) {
       res.status(500).json({ err })
     })

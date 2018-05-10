@@ -1,6 +1,7 @@
 const database = require('./click-models')
 const sequelize = database.sequelize
 const Room = database.Room
+const Event = database.Event
 
 module.exports = (app, isAdmin, log) => {
   /**
@@ -17,6 +18,9 @@ module.exports = (app, isAdmin, log) => {
     *       max_guests:
     *         type: number
     *         example: 170
+    *       eventid:
+    *         type: number
+    *         example: 3
     * /api/click/rooms/:
     *   post:
     *     summary: Create a room
@@ -49,19 +53,22 @@ module.exports = (app, isAdmin, log) => {
       })
     }
     const room = req.body
-    if (!room.name || !room.max_guests) {
+    if (!room.name || !room.max_guests || !room.eventid) {
       return res.status(400).json({
-        message: 'Missing parameter. Send name and max_guests'
+        message: 'Missing parameter. Send name, max_guests, and event'
       })
     }
     Room.create({
       name: room.name,
       description: room.description,
       max_guests: room.max_guests
-    })
-    log(req, 'Room created', `Room: ${room.name}, ${room.description}, ${room.max_guests}`)
-    res.status(200).json({
-      message: 'Successfully created room'
+    }).then((r) => {
+      r.setEvent(room.eventid)
+      res.status(200).json({
+        message: 'Successfully created room'
+      })
+    }).catch((err) => {
+      res.status(500).json({ err })
     })
   })
   /**
@@ -70,12 +77,18 @@ module.exports = (app, isAdmin, log) => {
     *   RoomList:
     *     type: array
     *     items: Room
-    * /api/click/rooms/:
+    * /api/click/rooms/{eventid}:
     *   get:
-    *     summary: Get list of all rooms
+    *     summary: Get list of all rooms for a event
     *     description:
     *       Get list of all Room
     *     tags: [Room]
+    *     parameters:
+    *       - name: eventid
+    *         description:
+    *         in: path
+    *         required: true
+    *         type: string
     *     responses:
     *       200:
     *         description: List of all rooms
@@ -84,8 +97,9 @@ module.exports = (app, isAdmin, log) => {
     *       500:
     *         description: Internal server error
     */
-  app.get('/api/click/rooms/', function (req, res) {
-    Room.findAll().then(function (rooms) {
+  app.get('/api/click/rooms/:eventid', function (req, res) {
+    Room.findAll({ where: { eventId: req.params.eventid } })
+    .then(function (rooms) {
       res.status(200).json(rooms)
     }).catch(function (err) {
       res.status(500).json({ err })
@@ -93,6 +107,20 @@ module.exports = (app, isAdmin, log) => {
   })
   /**
     * @swagger
+    * definitions:
+    *   RoomBulk:
+    *     properties:
+    *       from:
+    *         type: number
+    *         description: From roomId
+    *         example: 2
+    *       to:
+    *         type: number
+    *         description: To roomId
+    *         example: 1
+    *       count:
+    *         type: number
+    *         example: 500
     * /api/click/rooms/bulk:
     *   put:
     *     summary: Bulk move
@@ -157,7 +185,7 @@ module.exports = (app, isAdmin, log) => {
     *       Update a Room
     *     tags: [Room]
     *     parameters:
-    *       - name: Id
+    *       - name: id
     *         description:
     *         in: path
     *         required: true
@@ -215,6 +243,11 @@ module.exports = (app, isAdmin, log) => {
     *       Get a Room
     *     tags: [Room]
     *     parameters:
+    *       - name: id
+    *         description:
+    *         in: path
+    *         required: true
+    *         type: string
     *     responses:
     *       200:
     *       400:
@@ -236,6 +269,11 @@ module.exports = (app, isAdmin, log) => {
     *       Delete a Room
     *     tags: [Room]
     *     parameters:
+    *       - name: id
+    *         description:
+    *         in: path
+    *         required: true
+    *         type: string
     *     responses:
     *       200:
     *       400:

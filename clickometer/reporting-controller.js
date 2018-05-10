@@ -109,7 +109,7 @@ module.exports = (app, log, isAdmin) => {
     *       current_clicker field.
     *     tags: [Reporting]
     *     parameters:
-    *       - name: Id
+    *       - name: id
     *         description:
     *         in: path
     *         required: true
@@ -162,7 +162,7 @@ module.exports = (app, log, isAdmin) => {
     *       Connect to a connection
     *     tags: [Reporting]
     *     parameters:
-    *       - name: Id
+    *       - name: id
     *         description:
     *         in: path
     *         required: true
