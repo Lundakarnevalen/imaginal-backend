@@ -58,8 +58,8 @@ app.post('/api/image/comment/:imagename', images.updateImageComment)
 // app.get('/api/sectioncard/:sectionname', images.createSectionPdfs)
 // app.get('/api/sectioncardall', images.createAllSectionPdfs)
 
-app.post('/api/treasurehunt/win', treasureHunt.win)
 // looks abuseable, but only used to keep track of winners left. Real winners are kept locally
+app.post('/api/treasurehunt/win', treasureHunt.win)
 
 /**
  * Authenticate tokens
