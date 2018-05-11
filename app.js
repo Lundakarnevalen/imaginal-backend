@@ -57,10 +57,12 @@ app.post('/api/image/comment/:imagename', images.updateImageComment)
 // app.get('/api/card/:imagename', images.createCard)
 // app.get('/api/sectioncard/:sectionname', images.createSectionPdfs)
 // app.get('/api/sectioncardall', images.createAllSectionPdfs)
+app.post('/api/treasurehunt/win', treasureHunt.win)
 
 /**
  * Authenticate tokens
  */
+
 app.all(/(\/)?api\/.*/, function (req, res, next) {
   passport.authenticate('bearer', {session: false}, function (err, user, info) {
     if (err) {
@@ -153,7 +155,6 @@ app.get('/api/warehouse/user/costbearer/:costBearerId', warehouseUser.getWarehou
 
 app.post('/api/treasurehunt/start', treasureHunt.start)
 app.get('/api/treasurehunt/info', treasureHunt.info)
-app.post('/api/treasurehunt/win', treasureHunt.win)
 
 app.all('*', function (req, res) {
   res.status(404).json({
