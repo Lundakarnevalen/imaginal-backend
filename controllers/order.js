@@ -8,7 +8,6 @@ const storageContents = require('../models/storageContents')
 const items = require('../models/item')
 const user = require('../users/users')
 const costBearers = require('../models/costBearer')
-const storageLocation = require('../models/storageLocation')
 
 const createOrder = async (req, res) => {
   try {
@@ -305,7 +304,7 @@ const getAllOrders = async (req, res) => {
       })
     }
   } catch (err) {
-    return res.status(500).json({
+    return res.status(500).jso n({
       success: false,
       message: 'Failed to get all orders'
     })
@@ -333,7 +332,7 @@ const getOrdersOnUser = async (req, res) => {
         }))
         return res.status(200).json({
           success: true,
-          data: storageLocation
+          data: theOrders
         })
       } else {
         return res.status(400).json({

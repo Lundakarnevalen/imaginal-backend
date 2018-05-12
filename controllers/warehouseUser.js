@@ -1,9 +1,9 @@
 'use strict'
 
 const userRoles = require('../models/userrole')
+const costBearer = require('../models/costBearer')
 const warehouseUser = require('../models/warehouseUser')
 const user = require('../users/users')
-const costBearer = require('../models/costBearer')
 
 const appendName = async (theUser) => {
   const finalUser = await user.User.findOne({
@@ -13,7 +13,6 @@ const appendName = async (theUser) => {
   theUser.dataValues.firstName = finalUser.firstName
   theUser.dataValues.lastName = finalUser.lastName
 }
-
 
 const getAllWarehouseUsers = async (req, res) => {
   try {
