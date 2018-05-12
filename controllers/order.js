@@ -304,7 +304,7 @@ const getAllOrders = async (req, res) => {
       })
     }
   } catch (err) {
-    return res.status(500).jso n({
+    return res.status(500).json({
       success: false,
       message: 'Failed to get all orders'
     })
