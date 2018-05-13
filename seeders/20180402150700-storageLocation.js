@@ -5,14 +5,14 @@ module.exports = {
     await queryInterface.bulkInsert('StorageLocations', [{
       storageName: 'Fabriken',
       description: 'Fabrikens varulager på tågområdet',
-      email: 'taget@lundakarnevalen.se',
+      email: 'taget.lager@lundakarnevalen.se',
       createdAt: new Date().toISOString().substr(0, 10),
       updatedAt: new Date().toISOString().substr(0, 10)
     }], {})
     await queryInterface.bulkInsert('StorageLocations', [{
       storageName: 'Tåget',
       description: 'Tågets varulager på tågområdet',
-      email: 'taget@lundakarnevalen.se',
+      email: 'taget.lager@lundakarnevalen.se',
       createdAt: new Date().toISOString().substr(0, 10),
       updatedAt: new Date().toISOString().substr(0, 10)
     }], {})

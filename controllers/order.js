@@ -93,19 +93,13 @@ const sendNotificationEmail = async (warehouseUser, storageLocationId, data = {}
   }
   AWS.config.update(awsConfig)
   const sender = "AIT.lager.notis@lundakarnevalen.se"
-  const costBearer = await costBearers.CostBearer.findOne({
-    where: { id: warehouseUser.costBearerId }
-  })
+
   const storageLocation = await storageLocations.StorageLocation.findOne({
     where: { id: storageLocationId }
   })
-  let name = costBearer.name
-  // Ugly stuff but still works
-  name = name.replace(/å/g, 'a').replace(/ä/g, 'a').replace(/ö/g, 'o');
-  const email = name + '.lager@lundakarnevalen.se'
+  const email = storageLocation.email 
   //const email = 'martin.johansson@lundakarnevalen.se'
   const msg = "A new order have been placed into storage location: " + storageLocation.storageName
-  console.log(msg)
   return new Promise((resolve, reject) => {
     const params = {
       Destination: {
