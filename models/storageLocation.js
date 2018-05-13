@@ -9,7 +9,8 @@ const StorageLocation = dbc.define('StorageLocation', {
     type: Sequelize.INTEGER
   },
   storageName: Sequelize.STRING,
-  description: Sequelize.TEXT
+  description: Sequelize.TEXT,
+  email: Sequelize.STRING
 })
 
 StorageLocation.hasOne(Order, { as: 'Order', foreignKey: 'storageLocationId' })
