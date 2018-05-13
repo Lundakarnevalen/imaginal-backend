@@ -14,6 +14,11 @@ const Booking = dbc.define('Booking', {
     validate: {
       min: 1
     }
+  },
+  uuid: {
+    type: Sequelize.UUID,
+    defaultValue: Sequelize.UUIDV4,
+    allowNull: false
   }
 })
 

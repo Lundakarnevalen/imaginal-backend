@@ -22,6 +22,12 @@ module.exports = {
       createdAt: new Date().toISOString().substr(0, 10),
       updatedAt: new Date().toISOString().substr(0, 10)
     }], {})
+    await queryInterface.bulkInsert('Roles', [{
+      id: 201,
+      description: 'event manager',
+      createdAt: new Date().toISOString().substr(0, 10),
+      updatedAt: new Date().toISOString().substr(0, 10)
+    }], {})
 
     /*
       Add altering commands here.

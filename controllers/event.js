@@ -1,16 +1,11 @@
-const { Event } = require('../models/event')
-// const { Booking } = require('../models/booking')
-const { EventTimeslot } = require('../models/eventTimeslot')
 const moment = require('moment')
+const { Event } = require('../models/event')
+const { EventTimeslot } = require('../models/eventTimeslot')
+const { hasEventAdminAccess } = require('../models/userrole')
 
 const list = async (req, res) => {
   try {
     let allEvents = await Event.all({ include: { model: EventTimeslot } })
-    // allEvents = await Promise.all(allEvents.map(async event => {
-    //   event.dataValues.nbrRemainingSeats = await event.getRemainingSeats()
-    //   delete event.dataValues.Bookings
-    //   return event
-    // }))
     res.json({
       success: true,
       events: allEvents
@@ -26,7 +21,12 @@ const show = async (req, res) => {
       include: { model: EventTimeslot }
     })
     if (event) {
-      // event.dataValues.nbrRemainingSeats = await event.getRemainingSeats()
+      event.EventTimeslots = await Promise.all(
+        event.EventTimeslots.map(
+          async timeslot =>
+            (timeslot.dataValues.nbrRemainingSeats = await timeslot.getRemainingSeats())
+        )
+      )
       res.json({ success: true, event })
     } else {
       res.json({ success: false, message: 'No such event' })
@@ -38,8 +38,11 @@ const show = async (req, res) => {
 
 const create = async (req, res) => {
   try {
+    if (!(await _hasEventAdminAccess(req, res))) return
     const nbrTimeslots = req.body.nbrTimeslots
-    if (!nbrTimeslots || nbrTimeslots === 0) { throw Error('Not allowed to create an event without any timeslots') }
+    if (!nbrTimeslots || nbrTimeslots === 0) {
+      throw Error('Not allowed to create an event without any timeslots')
+    }
     const event = await Event.create(req.body)
     let startDateTime = moment.utc(event.startDateTime)
     for (let i = 0; i < nbrTimeslots; i++) {
@@ -58,6 +61,7 @@ const create = async (req, res) => {
 
 const update = async (req, res) => {
   try {
+    if (!(await _hasEventAdminAccess(req, res))) return
     let event = await Event.findById(req.params.id)
     if (event) {
       event = await event.update(req.body)
@@ -72,6 +76,7 @@ const update = async (req, res) => {
 
 const remove = async (req, res) => {
   try {
+    if (!(await _hasEventAdminAccess(req, res))) return
     let event = await Event.findById(req.params.id)
     if (event) {
       event = await event.destroy()
@@ -82,6 +87,17 @@ const remove = async (req, res) => {
   } catch (e) {
     res.json({ success: false, message: e.message })
   }
+}
+
+const _hasEventAdminAccess = async (req, res) => {
+  const hasAccess = await hasEventAdminAccess(req)
+  if (!hasAccess) {
+    res.status(401).json({
+      success: false,
+      message: 'Unauthorized'
+    })
+  }
+  return hasAccess
 }
 
 module.exports = {

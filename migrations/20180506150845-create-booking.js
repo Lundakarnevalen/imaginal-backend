@@ -30,6 +30,7 @@ module.exports = {
       email: Sequelize.STRING,
       phoneNbr: Sequelize.STRING,
       nbrGuests: Sequelize.INTEGER,
+      uuid: { type: Sequelize.STRING, allowNull: false },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
