@@ -10,6 +10,9 @@ module.exports = (app, log, isAdmin) => {
     *       name:
     *         type: string
     *         example: "Dansen Friday"
+    *       password:
+    *         type: string
+    *         example: "I<3Nille"
     *       description:
     *         type: string
     *         example: "Event for dansen during saturday night fever"
@@ -46,13 +49,14 @@ module.exports = (app, log, isAdmin) => {
       })
     }
     const ev = req.body
-    if (!ev.name || !ev.description) {
+    if (!ev.name || !ev.description || !ev.password) {
       return res.status(400).json({
-        message: 'Missing parameter. Send name and max_guests'
+        message: 'Missing parameter. Send name, password and max_guests'
       })
     }
     Event.create({
       name: ev.name,
+      password: ev.password,
       description: ev.description
     }).then(function (ev) {
       res.status(200).json({ message: 'Successfully created event' })
@@ -125,6 +129,9 @@ module.exports = (app, log, isAdmin) => {
     *       name:
     *         type: string
     *         example: "Event A"
+    *       password:
+    *         type: string
+    *         example: "I<3Nille"
     *       description:
     *         type: string
     *         example: "Event between room a and room b"
