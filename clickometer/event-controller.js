@@ -106,13 +106,14 @@ module.exports = (app, log, isAdmin) => {
       })
     }
     const ev = req.body
-    if (!ev.name || !ev.description) {
+    if (!ev.name || !ev.description || !ev.password) {
       return res.status(400).json({
-        message: 'Missing parameter. Send name and max_guests'
+        message: 'Missing parameter. Send name, password and max_guests'
       })
     }
     Event.update({
       name: ev.name,
+      password: ev.password,
       description: ev.description
     }, { where: { id: eventId } }).then(function (event) {
       res.status(200).json({ message: 'Successfully created event' })
