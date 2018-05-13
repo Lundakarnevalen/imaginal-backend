@@ -63,13 +63,18 @@ module.exports = (app, log, isAdmin) => {
 
   /**
     * @swagger
-    * /api/click/events/:
+    * /api/click/events/{id}:
     *   put:
     *     summary: Update a event
     *     description:
     *       Update a Event
     *     tags: [Event]
     *     parameters:
+    *       - name: id
+    *         description:
+    *         in: path
+    *         required: true
+    *         type: string
     *       - name: Event data
     *         description:
     *         in: body
