@@ -128,15 +128,15 @@ const sendNotificationEmail = async (warehouseUser, storageLocationId, data = {}
     const ses = new AWS.SES({ apiVersion: '2010-12-01' })
     // THIS LINE UNDERNEATH MAKES AWS SEND AN EMAIL! Uncomment on production!
     //ses.sendEmail(params, (err, data) => {
-      if (err) {
-        console.log('Invalid:', email, err)
-        reject(err)
-      } else {
-        console.log('Valid:', email, data)
-        resolve()
-      }
-    })
+    if (err) {
+      console.log('Invalid:', email, err)
+      reject(err)
+    } else {
+      console.log('Valid:', email, data)
+      resolve()
+    }
   })
+  //})
 }
 
 const createReturn = async (req, res) => {
