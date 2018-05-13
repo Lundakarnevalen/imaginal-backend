@@ -10,6 +10,7 @@ const Event = dbc.define('click_events', {
     autoIncrement: true
   },
   name: { type: Sequelize.STRING },
+  pw: { type: Sequelize.STRING },
   description: { type: Sequelize.STRING, defaultValue: '' }
 })
 
