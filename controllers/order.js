@@ -11,7 +11,6 @@ const user = require('../users/users')
 const storageLocations = require('../models/storageLocation')
 const costBearers = require('../models/costBearer')
 var AWS = require('aws-sdk');
-const Regex = require('regex')
 
 
 
