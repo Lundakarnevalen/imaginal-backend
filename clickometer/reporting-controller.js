@@ -24,6 +24,12 @@ module.exports = (app, log, isAdmin) => {
     *       current_from_room:
     *         type: number
     *         example: 56
+    *       connection_passed:
+    *         type: number
+    *         example: 6
+    *       reported_delta:
+    *         type: number
+    *         example: 5
     * /api/click/report/{token}:
     *   post:
     *     description:
@@ -84,7 +90,8 @@ module.exports = (app, log, isAdmin) => {
       res.json({
         current_toRoom: toRoom.current_guests,
         current_fromRoom: fromRoom.current_guests,
-        connection_passed: connection.guests_passed
+        connection_passed: connection.guests_passed,
+        reported_delta: delta
       })
     } catch (err) {
       log(req, 'Report failure', `${name} tried to report, connection ${req.params.token}. ERROR.`)
