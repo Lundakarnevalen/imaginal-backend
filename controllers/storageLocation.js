@@ -4,7 +4,6 @@ const storageLocations = require('../models/storageLocation')
 const userRoles = require('../models/userrole')
 const items = require('../models/item')
 const tags = require('../models/tag')
-const orders = require('../models/order')
 
 const addStorageLocation = async (req, res) => {
   try {
@@ -105,72 +104,9 @@ const getStorageLocationById = async (req, res) => {
   }
 }
 
-const getInventory = async (req, res) => {
-  try {
-    const hasAccess = await userRoles.hasWarehouseWorkerAccess(req)
-    if (hasAccess) {
-      const storageLocationId = req.params.storageLocationId
-      const locationExists = await storageLocations.StorageLocation.findOne({
-        where: { id: storageLocationId }
-      })
-      if (!locationExists) {
-        return res.status(400).json({
-          success: false,
-          message: 'Location does not exist'
-        })
-      }
-      const storage = await items.Item.findAll({
-        include: [{
-          required: true,
-          model: storageLocations.StorageLocation,
-          attributes: ['id', 'storageName', 'description'],
-          through: {
-            where: { storageLocationId: storageLocationId },
-            attributes: ['id', 'quantity']
-          }
-        },
-        {
-          model: tags.Tag,
-          attributes: ['name', 'id'],
-          through: { attributes: [] }
-        },
-        {
-          model: orders.Order,
-          through: {
-            attributes: ['quantityOrdered', 'quantityDelivered']
-          }
-        }]
-      })
-
-      storage.map(function (item) {
-        const totQuantity = item.Orders.reduce(function (preVal, order) {
-          return preVal + order.OrderLines.quantityOrdered - order.OrderLines.quantityDelivered
-        }, 0)
-        item.dataValues.ordered = totQuantity
-      })
-
-      return res.json({
-        success: true,
-        data: storage
-      })
-    } else {
-      return res.status(401).json({
-        success: false,
-        message: 'Go away!'
-      })
-    }
-  } catch (err) {
-    console.log(err)
-    return res.status(500).json({
-      success: false,
-      message: 'Failed to retrive items'
-    })
-  }
-}
 
 module.exports = {
   addStorageLocation,
   getStorageLocations,
-  getStorageLocationById,
-  getInventory
+  getStorageLocationById
 }

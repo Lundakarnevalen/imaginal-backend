@@ -6,8 +6,14 @@ const warehouseUser = require('../models/warehouseUser')
 const orderLines = require('../models/orderLine')
 const storageContents = require('../models/storageContents')
 const items = require('../models/item')
+const tags = require('../models/tag')
 const user = require('../users/users')
+const storageLocations = require('../models/storageLocation')
 const costBearers = require('../models/costBearer')
+var AWS = require('aws-sdk');
+const Regex = require('regex')
+
+
 
 const createOrder = async (req, res) => {
   try {
@@ -49,7 +55,7 @@ const createOrder = async (req, res) => {
           message: 'No orderlines specified'
         })
       }
-
+      sendNotificationEmail(findWarehouseUser, req.body.storageLocationId)
       return res.status(200).json({
         success: true,
         message: 'Order created'
@@ -74,6 +80,62 @@ const createOrderLine = (order, body) => {
     quantityDelivered: 0,
     orderId: order.id,
     itemId: body.itemId
+  })
+}
+
+const sendNotificationEmail = async (warehouseUser, storageLocationId, data = {}) => {
+  // Need to get name on storage in some manner... 
+  //req.params.storageLocationId
+  const awsConfig = {
+    "accessKeyId": process.env.AWS_ACCESS_ID,
+    "secretAccessKey": process.env.AWS_ACCESS_KEY,
+    "region": "eu-west-1"
+  }
+  AWS.config.update(awsConfig)
+  const sender = "AIT.lager.notis@lundakarnevalen.se"
+  const costBearer = await costBearers.CostBearer.findOne({
+    where: { id: warehouseUser.costBearerId }
+  })
+  const storageLocation = await storageLocations.StorageLocation.findOne({
+    where: { id: storageLocationId }
+  })
+  let name = costBearer.name
+  // Ugly stuff but still works
+  name = name.replace(/å/g, 'a').replace(/ä/g, 'a').replace(/ö/g, 'o');
+  const email = name + '.lager@lundakarnevalen.se'
+  //const email = 'martin.johansson@lundakarnevalen.se'
+  const msg = "A new order have been placed into storage location: " + storageLocation.storageName
+  console.log(msg)
+  return new Promise((resolve, reject) => {
+    const params = {
+      Destination: {
+        ToAddresses: [email]
+      },
+      Message: {
+        Body: {
+          Html: {
+            Charset: "UTF-8",
+            Data: msg
+          }
+        },
+        Subject: {
+          Charset: 'UTF-8',
+          Data: "New order: " + storageLocation.storageName
+        }
+      },
+      Source: sender
+    }
+    const ses = new AWS.SES({ apiVersion: '2010-12-01' })
+    // THIS LINE UNDERNEATH MAKES AWS SEND AN EMAIL! Uncomment on production!
+    //ses.sendEmail(params, (err, data) => {
+      if (err) {
+        console.log('Invalid:', email, err)
+        reject(err)
+      } else {
+        console.log('Valid:', email, data)
+        resolve()
+      }
+    })
   })
 }
 
@@ -259,8 +321,9 @@ const getOrderById = async (req, res) => {
           through: { attributes: ['quantityOrdered', 'quantityDelivered'] }
         }]
       })
+
       await appendNameToOrder(theOrder)
-      addPrice(theOrder)
+      await addPrice(theOrder)
       return res.status(200).json({
         success: true,
         data: theOrder
@@ -544,6 +607,69 @@ const getOrdersOnCostBearer = async (req, res) => {
   }
 }
 
+const getInventory = async (req, res) => {
+  try {
+    const hasAccess = await userRoles.hasWarehouseWorkerAccess(req)
+    if (hasAccess) {
+      const storageLocationId = req.params.storageLocationId
+      const locationExists = await storageLocations.StorageLocation.findOne({
+        where: { id: storageLocationId }
+      })
+      if (!locationExists) {
+        return res.status(400).json({
+          success: false,
+          message: 'Location does not exist'
+        })
+      }
+      const storage = await items.Item.findAll({
+        include: [{
+          required: true,
+          model: storageLocations.StorageLocation,
+          attributes: ['id', 'storageName', 'description'],
+          through: {
+            where: { storageLocationId: storageLocationId },
+            attributes: ['id', 'quantity']
+          }
+        },
+        {
+          model: tags.Tag,
+          attributes: ['name', 'id'],
+          through: { attributes: [] }
+        },
+        {
+          model: orders.Order,
+          through: {
+            attributes: ['quantityOrdered', 'quantityDelivered']
+          }
+        }]
+      })
+
+      storage.map(function (item) {
+        const totQuantity = item.Orders.reduce(function (preVal, order) {
+          return preVal + order.OrderLines.quantityOrdered - order.OrderLines.quantityDelivered
+        }, 0)
+        item.dataValues.ordered = totQuantity
+      })
+
+      return res.json({
+        success: true,
+        data: storage
+      })
+    } else {
+      return res.status(401).json({
+        success: false,
+        message: 'Go away!'
+      })
+    }
+  } catch (err) {
+    console.log(err)
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to retrive items'
+    })
+  }
+}
+
 module.exports = {
   createOrder,
   removeOrder,
@@ -554,5 +680,6 @@ module.exports = {
   getOrdersOnUser,
   checkoutOrderLines,
   getOrderById,
-  getOrdersOnCostBearer
+  getOrdersOnCostBearer,
+  getInventory
 }
