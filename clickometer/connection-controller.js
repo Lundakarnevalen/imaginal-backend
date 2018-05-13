@@ -243,7 +243,7 @@ module.exports = (app, log, isAdmin) => {
     *       401:
     */
   app.delete('/api/click/connections/:id', function (req, res) {
-    Connection.findById(req.params.id).then(function (connections) {
+    Connection.destroy({ where: { id: req.params.id } }).then((connections) => {
       res.status(200).json(connections)
     }).catch(function (err) {
       res.status(500).json({ err })

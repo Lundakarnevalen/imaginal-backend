@@ -277,7 +277,7 @@ module.exports = (app, isAdmin, log) => {
     *       401:
     */
   app.delete('/api/click/rooms/:id', function (req, res) {
-    Room.findById(req.params.id).then(function (rooms) {
+    Room.destroy({ where: { id: req.params.id } }).then((rooms) => {
       res.status(200).json(rooms)
     }).catch(function (err) {
       res.status(500).json({ err })
