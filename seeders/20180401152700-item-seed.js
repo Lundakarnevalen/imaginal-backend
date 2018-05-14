@@ -14,7 +14,8 @@ module.exports = {
       note: 'hoppas på detta',
       createdAt: new Date().toISOString().substr(0, 10),
       updatedAt: new Date().toISOString().substr(0, 10),
-      vat: 0.0
+      vat: 0.0,
+      costNr: 'inköp'
     }], {})
     await queryInterface.bulkInsert('Items', [{
       name: 'karnevöl1',
@@ -28,7 +29,8 @@ module.exports = {
       note: 'hoppas på detta',
       createdAt: new Date().toISOString().substr(0, 10),
       updatedAt: new Date().toISOString().substr(0, 10),
-      vat: 0.0
+      vat: 0.0,
+      costNr: 'krök'
     }], {})
     await queryInterface.bulkInsert('Items', [{
       name: 'karnevöl2',
@@ -42,7 +44,8 @@ module.exports = {
       note: 'hoppas på detta',
       createdAt: new Date().toISOString().substr(0, 10),
       updatedAt: new Date().toISOString().substr(0, 10),
-      vat: 0.0
+      vat: 0.0,
+      costNr: 'försäljning'
     }], {})
 
     await queryInterface.bulkInsert('Items', [{
@@ -57,7 +60,8 @@ module.exports = {
       note: 'hoppas på detta',
       createdAt: new Date().toISOString().substr(0, 10),
       updatedAt: new Date().toISOString().substr(0, 10),
-      vat: 0.0
+      vat: 0.0,
+      costNr: 'svinn'
     }], {})
 
     /*

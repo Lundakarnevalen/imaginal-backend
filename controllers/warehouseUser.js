@@ -17,7 +17,6 @@ const appendName = async (theUser) => {
 const getAllWarehouseUsers = async (req, res) => {
   try {
     const hasAccess = await userRoles.hasWarehouseWorkerAccess(req)
-
     if (hasAccess) {
       const warehouseUsers = await warehouseUser.WarehouseUser.findAll()
       await Promise.all(warehouseUsers.map(async user => {

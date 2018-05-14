@@ -86,7 +86,8 @@ const createItem = async (req, res) => {
       supplier: req.body.supplier || '',
       note: req.body.note || '',
       warningAmount: req.body.warningAmount || 1,
-      vat: 1 + req.body.vat || 1
+      vat: 1 + req.body.vat || 1,
+      costNr: req.body.costNr || ''
     }
   })
 
@@ -274,6 +275,7 @@ const editItem = async (req, res) => {
         if (req.body.note) findItem.note = req.body.note
         if (req.body.warningAmount) findItem.warningAmount = req.body.warningAmount
         if (req.body.vat) findItem.vat = req.body.vat
+        if (req.body.costNr) findItem.costNr = req.body.costNr
         await findItem.save()
         return res.json({
           success: true,
