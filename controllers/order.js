@@ -1,5 +1,6 @@
 'use strict'
 
+const Sequelize = require('sequelize')
 const orders = require('../models/order')
 const userRoles = require('../models/userrole')
 const warehouseUser = require('../models/warehouseUser')
@@ -602,6 +603,7 @@ const getOrdersOnCostBearer = async (req, res) => {
 
 const getInventory = async (req, res) => {
   try {
+    const Op = Sequelize.Op;
     const hasAccess = await userRoles.hasWarehouseWorkerAccess(req)
     if (hasAccess) {
       const storageLocationId = req.params.storageLocationId
@@ -614,13 +616,18 @@ const getInventory = async (req, res) => {
           message: 'Location does not exist'
         })
       }
-      const storage = await items.Item.findAll({
+      let storage = await items.Item.findAll({
         include: [{
           required: true,
           model: storageLocations.StorageLocation,
           attributes: ['id', 'storageName', 'description'],
           through: {
-            where: { storageLocationId: storageLocationId },
+            where: { 
+              storageLocationId: storageLocationId,
+              quantity: {
+                [Op.not]: [0]
+              }
+            },
             attributes: ['id', 'quantity']
           }
         },
