@@ -31,8 +31,8 @@ const enroll = async user => {
   }
 }
 
-const win = async user => {
-  const player = await TreasureHunt.find({where: {contestant: user.email}})
+const win = async email => {
+  const player = await TreasureHunt.find({where: {contestant: email}})
   if (player) {
     player.finished = true
     player.save()

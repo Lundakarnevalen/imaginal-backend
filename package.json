@@ -41,11 +41,13 @@
     "passport-jwt": "^3.0.0",
     "passport-local": "^1.0.0",
     "postman": "^0.2.0",
-    "regex": "^0.1.1",
+    "randomstring": "^1.1.5",
     "sequelize": "^4.37.5",
     "sequelize-auto-migrations": "^1.0.2",
     "sequelize-cli": "^3.2.0",
-    "sequelizer": "^1.1.3"
+    "sequelizer": "^1.1.3",
+    "swagger-jsdoc": "^1.9.7",
+    "swagger-ui-express": "^3.0.8"
   },
   "devDependencies": {
     "chai": "^4.1.2",
