@@ -631,7 +631,7 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
       api.post('/api/warehouse/order/return/new')
         .set('Authorization', 'bearer ' + warehouseWorker.token)
         .send({
-          userId: 1,
+          warehouseUserId: 1,
           storageLocationId: 2,
           orderLines: [{
             quantity: 10,

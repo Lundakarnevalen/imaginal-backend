@@ -1,5 +1,6 @@
 'use strict'
 
+const Sequelize = require('sequelize')
 const orders = require('../models/order')
 const userRoles = require('../models/userrole')
 const warehouseUser = require('../models/warehouseUser')
@@ -142,59 +143,59 @@ const createReturn = async (req, res) => {
           success: false,
           message: 'Missing parameters'
         })
-      }
-
-      const order = await orders.Order.create({
-        storageLocationId: req.body.storageLocationId,
-        orderDeliveryDate: new Date(),
-        checkedOut: true,
-        checkedOutDate: new Date(),
-        return: true,
-        returnDate: null,
-        warehouseUserId: req.body.warehouseUserId
-      })
-
-      if (req.body.orderLines.length > 0) {
-        const allOrderLines = await Promise.all(req.body.orderLines.map(orderLine => {
-          return orderLines.OrderLine.create({
-            quantityOrdered: orderLine.quantity,
-            quantityDelivered: orderLine.quantity,
-            orderId: order.id,
-            itemId: orderLine.itemId
-          })
-        }))
-
-        const storageLocationId = order.dataValues.storageLocationId
-
-        Promise.all(allOrderLines.map(async (line) => {
-          let content = await storageContents.StorageContent.findOne({
-            where: {
-              storageLocationId: storageLocationId,
-              itemId: line.dataValues.itemId
-            }
-          })
-
-          if (!content) {
-            content = await storageContents.StorageContent.create({
-              storageLocationId: storageLocationId,
-              itemId: line.dataValues.itemId,
-              quantity: line.dataValues.quantityOrdered
-            })
-          } else {
-            content.quantity += line.dataValues.quantityOrdered
-            content.save()
-          }
-        }))
-
-        return res.status(200).json({
-          success: true,
-          message: 'Return created'
-        })
       } else {
-        return res.status(400).json({
-          success: false,
-          message: 'No orderlines specified'
+        const order = await orders.Order.create({
+          storageLocationId: req.body.storageLocationId,
+          orderDeliveryDate: new Date(),
+          checkedOut: true,
+          checkedOutDate: new Date(),
+          return: true,
+          returnDate: null,
+          warehouseUserId: req.body.warehouseUserId
         })
+
+        if (req.body.orderLines.length > 0) {
+          const allOrderLines = await Promise.all(req.body.orderLines.map(orderLine => {
+            return orderLines.OrderLine.create({
+              quantityOrdered: orderLine.quantity,
+              quantityDelivered: orderLine.quantity,
+              orderId: order.id,
+              itemId: orderLine.itemId
+            })
+          }))
+
+          const storageLocationId = await order.dataValues.storageLocationId
+
+          await Promise.all(allOrderLines.map(async (line) => {
+            let content = await storageContents.StorageContent.findOne({
+              where: {
+                storageLocationId: storageLocationId,
+                itemId: line.dataValues.itemId
+              }
+            })
+
+            if (!content) {
+              content = await storageContents.StorageContent.create({
+                storageLocationId: storageLocationId,
+                itemId: line.dataValues.itemId,
+                quantity: line.dataValues.quantityOrdered
+              })
+            } else {
+              content.quantity += line.dataValues.quantityOrdered
+              await content.save()
+            }
+          }))
+
+          return res.status(200).json({
+            success: true,
+            message: 'Return created'
+          })
+        } else {
+          return res.status(400).json({
+            success: false,
+            message: 'No orderlines specified'
+          })
+        }
       }
     } else {
       return res.status(401).json({
@@ -602,6 +603,7 @@ const getOrdersOnCostBearer = async (req, res) => {
 
 const getInventory = async (req, res) => {
   try {
+    const Op = Sequelize.Op;
     const hasAccess = await userRoles.hasWarehouseWorkerAccess(req)
     if (hasAccess) {
       const storageLocationId = req.params.storageLocationId
@@ -614,13 +616,18 @@ const getInventory = async (req, res) => {
           message: 'Location does not exist'
         })
       }
-      const storage = await items.Item.findAll({
+      let storage = await items.Item.findAll({
         include: [{
           required: true,
           model: storageLocations.StorageLocation,
           attributes: ['id', 'storageName', 'description'],
           through: {
-            where: { storageLocationId: storageLocationId },
+            where: { 
+              storageLocationId: storageLocationId,
+              quantity: {
+                [Op.not]: [0]
+              }
+            },
             attributes: ['id', 'quantity']
           }
         },
