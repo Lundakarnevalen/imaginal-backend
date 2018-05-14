@@ -72,5 +72,6 @@ module.exports = {
   Event,
   Room,
   Connection,
-  Log
+  Log,
+  sequelize: Sequelize
 }

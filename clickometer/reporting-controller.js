@@ -1,6 +1,7 @@
 const database = require('./click-models')
 const sequelize = database.sequelize
 const Op = database.Op
+const randomstring = require('randomstring')
 const Room = database.Room
 const Connection = database.Connection
 
@@ -70,7 +71,6 @@ module.exports = (app, log, isAdmin) => {
           current_clicker: name
         }
       })
-      console.log(connection)
       if (!connection) {
         log(req, 'Report failure', `${name} tried to report, connection ${req.params.token} not found`)
         return res.status(404).json({message: 'Not found'})
