@@ -14,7 +14,7 @@ const getAllItems = async (req, res) => {
       const itemList = await items.Item.findAll({
         include: [{
           model: tags.Tag,
-          through: { attributes: [] }
+          through: {attributes: []}
         }]
       })
       return res.json({
@@ -384,100 +384,6 @@ const getItemById = async (req, res) => {
   }
 }
 
-const moveItems = async (req, res) => {
-  try {
-    const hasAccess = await userRoles.hasWarehouseAdminAccess(req)
-    if (hasAccess) {
-      const fromLocation = await req.body.fromLocation
-      const toLocation = await req.body.toLocation
-
-      const findOldLocation = await storageLocations.StorageLocation.findOne({
-        where: { id: fromLocation }
-      })
-      const findNewLocation = await storageLocations.StorageLocation.findOne({
-        where: { id: toLocation }
-      })
-
-      if (!findOldLocation || !findNewLocation) {
-        return res.status(400).json({
-          success: false,
-          message: 'Storage location does not exist'
-        })
-      } else {
-        const allItems = await req.body.items
-
-        Promise.all(allItems.map(async item => {
-          const oldStorageContent = await storageContents.StorageContent.findOne({
-            where: {
-              storageLocationId: fromLocation,
-              itemId: item.itemId
-            }
-          })
-          return new Promise(
-            (resolve, reject) => {
-              if (!oldStorageContent) {
-                reject(Error('Item does not exist in storage location'))
-              } else if (oldStorageContent.quantity < item.quantity) {
-                reject(Error('Not enough quantity in storage location'))
-              } else {
-                resolve()
-              }
-            }
-          )
-        })).then(() => {
-          allItems.map(async item => {
-            const oldStorageContent = await storageContents.StorageContent.findOne({
-              where: {
-                storageLocationId: fromLocation,
-                itemId: item.itemId
-              }
-            })
-
-            oldStorageContent.quantity -= item.quantity
-            await oldStorageContent.save()
-
-            const newStorageContent = await storageContents.StorageContent.findOne({
-              where: {
-                storageLocationId: toLocation,
-                itemId: item.itemId
-              }
-            })
-            if (!newStorageContent) {
-              await storageContents.StorageContent.create({
-                storageLocationId: toLocation,
-                itemId: item.itemId,
-                quantity: item.quantity
-              })
-            } else {
-              newStorageContent.quantity += item.quantity
-              newStorageContent.save()
-            }
-          })
-          return res.status(200).json({
-            success: true,
-            message: 'Items moved'
-          })
-        })
-          .catch(err => res.status(400).json({
-            success: false,
-            message: err.message
-          }))
-      }
-    } else {
-      return res.status(401).json({
-        success: false,
-        message: 'Go away!'
-      })
-    }
-  } catch (err) {
-    console.log(err)
-    return res.status(500).json({
-      success: false,
-      message: 'Failed to move items'
-    })
-  }
-}
-
 module.exports = {
   addItem,
   getAllItems,
@@ -486,6 +392,5 @@ module.exports = {
   getItemById,
   addQuantity,
   setQuantity,
-  addToStorageContent,
-  moveItems
+  addToStorageContent
 }
