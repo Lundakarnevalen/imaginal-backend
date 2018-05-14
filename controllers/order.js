@@ -1,6 +1,6 @@
 'use strict'
 
-const Sequelize = require('sequelize')
+// const Sequelize = require('sequelize')
 const orders = require('../models/order')
 const userRoles = require('../models/userrole')
 const warehouseUser = require('../models/warehouseUser')
@@ -11,9 +11,7 @@ const tags = require('../models/tag')
 const user = require('../users/users')
 const storageLocations = require('../models/storageLocation')
 const costBearers = require('../models/costBearer')
-var AWS = require('aws-sdk');
-
-
+var AWS = require('aws-sdk')
 
 const createOrder = async (req, res) => {
   try {
@@ -84,22 +82,22 @@ const createOrderLine = (order, body) => {
 }
 
 const sendNotificationEmail = async (warehouseUser, storageLocationId, data = {}) => {
-  // Need to get name on storage in some manner... 
-  //req.params.storageLocationId
+  // Need to get name on storage in some manner...
+  // req.params.storageLocationId
   const awsConfig = {
-    "accessKeyId": process.env.AWS_ACCESS_ID,
-    "secretAccessKey": process.env.AWS_ACCESS_KEY,
-    "region": "eu-west-1"
+    'accessKeyId': process.env.AWS_ACCESS_ID,
+    'secretAccessKey': process.env.AWS_ACCESS_KEY,
+    'region': 'eu-west-1'
   }
   AWS.config.update(awsConfig)
-  const sender = "AIT.lager.notis@lundakarnevalen.se"
+  const sender = 'AIT.lager.notis@lundakarnevalen.se'
 
   const storageLocation = await storageLocations.StorageLocation.findOne({
     where: { id: storageLocationId }
   })
-  const email = storageLocation.email 
-  //const email = 'martin.johansson@lundakarnevalen.se'
-  const msg = "A new order have been placed into storage location: " + storageLocation.storageName
+  const email = storageLocation.email
+  // const email = 'martin.johansson@lundakarnevalen.se'
+  const msg = 'A new order have been placed into storage location: ' + storageLocation.storageName
   return new Promise((resolve, reject) => {
     const params = {
       Destination: {
@@ -108,29 +106,29 @@ const sendNotificationEmail = async (warehouseUser, storageLocationId, data = {}
       Message: {
         Body: {
           Html: {
-            Charset: "UTF-8",
+            Charset: 'UTF-8',
             Data: msg
           }
         },
         Subject: {
           Charset: 'UTF-8',
-          Data: "New order: " + storageLocation.storageName
+          Data: 'New order: ' + storageLocation.storageName
         }
       },
       Source: sender
     }
     const ses = new AWS.SES({ apiVersion: '2010-12-01' })
     // THIS LINE UNDERNEATH MAKES AWS SEND AN EMAIL! Uncomment on production!
-    //ses.sendEmail(params, (err, data) => {
-    if (err) {
-      console.log('Invalid:', email, err)
-      reject(err)
-    } else {
-      console.log('Valid:', email, data)
-      resolve()
-    }
+    ses.sendEmail(params, (err, data) => {
+      if (err) {
+        console.log('Invalid:', email, err)
+        reject(err)
+      } else {
+        console.log('Valid:', email, data)
+        resolve()
+      }
+    })
   })
-  //})
 }
 
 const createReturn = async (req, res) => {
@@ -603,7 +601,7 @@ const getOrdersOnCostBearer = async (req, res) => {
 
 const getInventory = async (req, res) => {
   try {
-    const Op = Sequelize.Op;
+    // const Op = Sequelize.Op
     const hasAccess = await userRoles.hasWarehouseWorkerAccess(req)
     if (hasAccess) {
       const storageLocationId = req.params.storageLocationId
@@ -622,11 +620,12 @@ const getInventory = async (req, res) => {
           model: storageLocations.StorageLocation,
           attributes: ['id', 'storageName', 'description'],
           through: {
-            where: { 
-              storageLocationId: storageLocationId,
-              quantity: {
-                [Op.not]: [0]
-              }
+            where: {
+              storageLocationId: storageLocationId
+             // If I have time I will fix this, but need fix on addInventory etc
+              // quantity: {
+              //   [Op.not]: [0]
+              // }
             },
             attributes: ['id', 'quantity']
           }

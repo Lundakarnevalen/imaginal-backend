@@ -2,8 +2,6 @@
 
 const storageLocations = require('../models/storageLocation')
 const userRoles = require('../models/userrole')
-const items = require('../models/item')
-const tags = require('../models/tag')
 
 const addStorageLocation = async (req, res) => {
   try {
@@ -103,7 +101,6 @@ const getStorageLocationById = async (req, res) => {
     })
   }
 }
-
 
 module.exports = {
   addStorageLocation,
