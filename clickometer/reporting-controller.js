@@ -1,7 +1,8 @@
+const sleep = require('sleep')
+const randomstring = require('randomstring')
 const database = require('./click-models')
 const sequelize = database.sequelize
 const Op = database.Op
-const randomstring = require('randomstring')
 const Room = database.Room
 const Connection = database.Connection
 
@@ -63,6 +64,9 @@ module.exports = (app, log, isAdmin) => {
   app.post('/api/click/report/:token', async (req, res) => {
     const delta = req.body.delta
     const name = req.body.name
+
+    // simulate bad internet...
+    // sleep.msleep(2000)
 
     try {
       const connection = await Connection.findOne({
