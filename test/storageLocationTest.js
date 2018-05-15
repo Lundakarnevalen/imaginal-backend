@@ -87,7 +87,7 @@ module.exports = (user, admin, warehouseCustomer, warehouseWorker,
       })
     })
 
-    it('Unauthorized getStorageLocations, role: warehouse customer', done => {
+    it('Authorized getStorageLocations, role: warehouse customer', done => {
       api.get('/api/warehouse/location/list')
       .set('Authorization', 'bearer ' + warehouseCustomer.token)
       .end(async (err, res) => {
