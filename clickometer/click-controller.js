@@ -1,7 +1,5 @@
-const randomstring = require('randomstring')
 const database = require('./click-models')
 const Log = database.Log
-const Connection = database.Connection
 
 const adminToken = process.env.ADMIN_TOKEN || 'metMDW8BSKEuwCXB'
 const viewerToken = process.env.VIEWER_TOKEN || 'yP4WUybzrFJEkDza'
