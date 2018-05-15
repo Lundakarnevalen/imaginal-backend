@@ -1,7 +1,6 @@
 const randomstring = require('randomstring')
 const database = require('./click-models')
 const Connection = database.Connection
-const Room = database.Room
 
 module.exports = (app, log, isAdmin) => {
   /**

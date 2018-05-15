@@ -1,3 +1,4 @@
+const randomstring = require('randomstring')
 const database = require('./click-models')
 const sequelize = database.sequelize
 const Op = database.Op
