@@ -29,7 +29,7 @@ module.exports = (app) => {
   require('./login-controller')(app, log, adminToken, viewerToken)
 
   // Load Reporting endpoints
-  require('./reporting-controller')(app, isAdmin, log)
+  require('./reporting-controller')(app, log, isAdmin)
 
   // Load event endpoints
   require('./event-controller')(app, log, isAdmin)
