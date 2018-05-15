@@ -10,10 +10,8 @@ const mustache = require('mustache')
 
 const awsConfig = {
   'accessKeyId': process.env.AWS_ACCESS_ID,
-  'secretAccessKey': process.env.AWS_ACCESS_KEY,
-  'region': 'eu-west-1'
+  'secretAccessKey': process.env.AWS_ACCESS_KEY
 }
-
 AWS.config.update(awsConfig)
 const sender = 'auto-mail@lundakarnevalen.se'
 
@@ -40,7 +38,7 @@ const sendEmail = (email, token) => {
       Source: sender
     }
 
-    const ses = new AWS.SES({apiVersion: '2010-12-01'})
+    const ses = new AWS.SES({apiVersion: '2010-12-01', region: 'eu-west-1'})
     ses.sendEmail(params, (err, data) => {
       if (err) {
         reject(err)
@@ -119,7 +117,7 @@ const resetPassword = function (res, user, password, passwordToken) {
     })
   }
   removeEntry(user.email, passwordToken).then(() => {
-    users.setNewPassword(user, password)
+    user.setNewPassword(password)
     user.save().then(() => {
       res.json({
         success: true,
