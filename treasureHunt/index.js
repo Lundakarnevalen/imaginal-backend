@@ -20,7 +20,7 @@ const start = async (req, res) => {
 }
 
 const win = async (req, res) => {
-  treasureModel.win(req.user)
+  treasureModel.win(req.body.user)
 
   return res.json({
     message: 'Congratulations!!'

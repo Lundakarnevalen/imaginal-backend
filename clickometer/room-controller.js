@@ -1,7 +1,6 @@
 const database = require('./click-models')
 const sequelize = database.sequelize
 const Room = database.Room
-const Event = database.Event
 
 module.exports = (app, isAdmin, log) => {
   /**

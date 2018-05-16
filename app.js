@@ -91,9 +91,13 @@ app.post('/api/image/comment/:imagename', images.updateImageComment)
 // app.get('/api/sectioncard/:sectionname', images.createSectionPdfs)
 // app.get('/api/sectioncardall', images.createAllSectionPdfs)
 
+// looks abuseable, but only used to keep track of winners left. Real winners are kept locally
+app.post('/api/treasurehunt/win', treasureHunt.win)
+
 /**
  * Authenticate tokens
  */
+
 app.all(/(\/)?api\/.*/, function (req, res, next) {
   passport.authenticate('bearer', {session: false}, function (err, user, info) {
     if (err) {
@@ -163,30 +167,34 @@ app.post('/api/warehouse/product/itemontags', items.getItemsOnTags)
 app.post('/api/warehouse/product/addtostoragecontent', items.addToStorageContent)
 app.post('/api/warehouse/product/addQuantity', items.addQuantity)
 app.post('/api/warehouse/product/setQuantity', items.setQuantity)
+app.post('/api/warehouse/product/moveItems', items.moveItems)
 app.get('/api/warehouse/product/getAllItems', items.getAllItems)
 
-app.get('/api/warehouse/location/inventory/:storageLocationId', storageLocations.getInventory)
+app.get('/api/warehouse/location/inventory/:storageLocationId', orders.getInventory)
 app.post('/api/warehouse/location/new', storageLocations.addStorageLocation)
 app.get('/api/warehouse/location/list', storageLocations.getStorageLocations)
+
+// app.get('/api/warehouse/product/inventory', items.getInventory)
 app.get('/api/warehouse/location/:storageLocationId', storageLocations.getStorageLocationById)
 
 app.post('/api/warehouse/order/new', orders.createOrder)
 app.post('/api/warehouse/order/edit', orders.editOrder)
+app.post('/api/warehouse/order/return/new', orders.createReturn)
 app.get('/api/warehouse/order/list', orders.getAllOrders)
 app.get('/api/warehouse/order/:id', orders.getOrderById)
 app.delete('/api/warehouse/order/remove/:orderId', orders.removeOrder)
 app.post('/api/warehouse/order/checkout', orders.checkoutOrderLines)
 app.get('/api/warehouse/order/list/user', orders.getOrdersOnUser)
 app.get('/api/warehouse/order/location/list/:storageLocationId', orders.getOrdersOnSection)
+app.get('/api/warehouse/order/costbearer/list/', orders.getOrdersOnCostBearer)
 
 app.get('/api/warehouse/user/list', warehouseUser.getAllWarehouseUsers)
-app.get('/api/warehouse/user/', warehouseUser.getWarehouseUserById)
+app.get('/api/warehouse/user', warehouseUser.getWarehouseUserById)
 app.get('/api/warehouse/user/costbearer/list', warehouseUser.getAllCostBearers)
 app.get('/api/warehouse/user/costbearer/:costBearerId', warehouseUser.getWarehouseUserByCostBearer)
 
 app.post('/api/treasurehunt/start', treasureHunt.start)
 app.get('/api/treasurehunt/info', treasureHunt.info)
-app.post('/api/treasurehunt/win', treasureHunt.win)
 
 app.all('*', function (req, res) {
   res.status(404).json({

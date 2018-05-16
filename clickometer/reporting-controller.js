@@ -67,7 +67,6 @@ module.exports = (app, log, isAdmin) => {
 
     // simulate bad internet...
     // sleep.msleep(2000)
-
     try {
       const connection = await Connection.findOne({
         where: {
