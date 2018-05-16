@@ -504,14 +504,10 @@ const checkoutOrderLines = async (req, res) => {
       // Get values before changing database object to validate that enough in storage and quantityOrdered
       const quantityStorage = dbStoragecontent.quantity - reqOrderLine.quantity
       const quantityOrderLine = parseInt(dbOrderLine.quantityDelivered) + parseInt(reqOrderLine.quantity)
-      console.log(quantityStorage)
-      console.log(quantityOrderLine)
       if ((quantityStorage > 0) && (quantityOrderLine <= dbOrderLine.quantityOrdered)) {
-        console.log("hej")
         dbInfo.storageContent[idx].quantity = quantityStorage
         dbInfo.orderLines[olIdx].quantityDelivered = quantityOrderLine
         if (parseInt(dbInfo.orderLines[olIdx].quantityDelivered) !== parseInt(dbInfo.orderLines[olIdx].quantityOrdered)) {
-          console.log("hejjj")
           compDelivery = false  
         }
       } else {
@@ -521,9 +517,7 @@ const checkoutOrderLines = async (req, res) => {
         })
       }
     }
-    console.log(compDelivery)
     if (compDelivery) {
-      console.log(order)
       order.checkedOut = 1
       order.checkedOutDate = new Date()
       order.save()
