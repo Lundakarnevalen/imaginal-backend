@@ -409,6 +409,7 @@ const getOrdersOnUser = async (req, res) => {
   }
 }
 
+
 const getOrdersOnSection = async (req, res) => {
   try {
     const hasAccess = await userRoles.hasWarehouseWorkerAccess(req)
@@ -458,6 +459,7 @@ const addPrice = (order) => {
   }, 0)
 }
 
+
 const checkoutOrderLines = async (req, res) => {
   try {
     const hasAccess = await userRoles.hasWarehouseWorkerAccess(req)
@@ -475,6 +477,7 @@ const checkoutOrderLines = async (req, res) => {
         message: 'No orderLines provided.'
       })
     }
+
     let dbInfo = {
       orderLines: null,
       storageContent: null
@@ -486,37 +489,50 @@ const checkoutOrderLines = async (req, res) => {
     const reqOrderLinesId = reqOrderLines.map(reqOrderLine => reqOrderLine.id)
 
     dbInfo.orderLines = await orderLines.OrderLine.findAll({
-      where: { id: reqOrderLinesId }
+      where: { orderId: order.id }
     })
 
-    await Promise.all(dbInfo.orderLines.map(async orderLine => {
-      dbInfo.storageContent = await storageContents.StorageContent.findOne({
-        where: {
-          itemId: orderLine.dataValues.itemId,
-          storageLocationId: reqStorageLocationId
+    dbInfo.storageContent = []
+    dbInfo.storageContent = await storageIterator(reqOrderLines, dbInfo.storageContent, reqStorageLocationId)
+    let compDelivery = true
+    for (let i = 0; i < reqOrderLines.length; i++) {
+      const reqOrderLine = reqOrderLines[i]
+      const dbOrderLine = dbInfo.orderLines.filter(o => o.id === reqOrderLine.id)[0]
+      const olIdx = dbInfo.orderLines.indexOf(dbOrderLine)
+      const dbStoragecontent = dbInfo.storageContent.filter(s => s.itemId === reqOrderLine.itemId)[0]
+      const idx = dbInfo.storageContent.indexOf(dbStoragecontent)
+      // Get values before changing database object to validate that enough in storage and quantityOrdered
+      const quantityStorage = dbStoragecontent.quantity - reqOrderLine.quantity
+      const quantityOrderLine = parseInt(dbOrderLine.quantityDelivered) + parseInt(reqOrderLine.quantity)
+      console.log(quantityStorage)
+      console.log(quantityOrderLine)
+      if ((quantityStorage > 0) && (quantityOrderLine <= dbOrderLine.quantityOrdered)) {
+        console.log("hej")
+        dbInfo.storageContent[idx].quantity = quantityStorage
+        dbInfo.orderLines[olIdx].quantityDelivered = quantityOrderLine
+        if (parseInt(dbInfo.orderLines[olIdx].quantityDelivered) !== parseInt(dbInfo.orderLines[olIdx].quantityOrdered)) {
+          console.log("hejjj")
+          compDelivery = false  
         }
-      })
-    }))
-
-    dbInfo.orderLines.forEach(async orderLine => {
-      reqOrderLines.forEach(async reqOrderLine => {
-        if (orderLine.id === reqOrderLine.id) {
-          // Get values before changing database object to validate that enough in storage and quantityOrdered
-          const quantityStorage = dbInfo.storageContent.quantity - reqOrderLine.quantity
-          const quantityOrderLine = orderLine.quantityDelivered + reqOrderLine.quantity
-
-          if ((quantityStorage > 0) && (quantityOrderLine <= orderLine.quantityOrdered)) {
-            dbInfo.storageContent.quantity = quantityStorage
-            orderLine.quantityDelivered = quantityOrderLine
-            await dbInfo.storageContent.save()
-          }
-        }
-      })
-      await orderLine.save()
-    })
+      } else {
+        return res.status(400).json({
+          success: false,
+          message: 'Not enough quantity in storage of some item'
+        })
+      }
+    }
+    console.log(compDelivery)
+    if (compDelivery) {
+      console.log(order)
+      order.checkedOut = 1
+      order.checkedOutDate = new Date()
+      order.save()
+    }
+    dbInfo.storageContent.map(s => s.save())
+    dbInfo.orderLines.map(o =>  o.save())
     return res.status(200).json({
       success: true,
-      message: 'Successfully checked order out'
+      message: 'Successfully checked out order!'
     })
   } catch (err) {
     return res.status(500).json({
@@ -524,6 +540,26 @@ const checkoutOrderLines = async (req, res) => {
       message: 'Failed to get all orders'
     })
   }
+}
+
+const storageIterator = async (orderLines, storageContent, reqStorageLocationId) => {
+  if (orderLines.length === 0) return storageContent
+  const orderLine = orderLines[0]
+  const s = await storageContents.StorageContent.findOne({
+    where: {
+      itemId: orderLine.itemId,
+      storageLocationId: reqStorageLocationId
+    }
+  })
+  if (s) {
+    storageContent.push(s)
+  } else {
+    return res.status(400).json({
+      success: false,
+      message: 'A product selected does not exist in storage location'
+    })
+  }
+  return storageIterator(orderLines.slice(1), storageContent, reqStorageLocationId)
 }
 
 const getOrdersOnCostBearer = async (req, res) => {
@@ -622,7 +658,7 @@ const getInventory = async (req, res) => {
           through: {
             where: {
               storageLocationId: storageLocationId
-             // If I have time I will fix this, but need fix on addInventory etc
+              // If I have time I will fix this, but need fix on addInventory etc
               // quantity: {
               //   [Op.not]: [0]
               // }
