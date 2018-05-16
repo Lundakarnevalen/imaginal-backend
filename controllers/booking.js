@@ -1,7 +1,18 @@
+const mustache = require('mustache')
+const fs = require('fs')
+const path = require('path')
+const AWS = require('aws-sdk')
 const { Event } = require('../models/event')
 const { Booking } = require('../models/booking')
 const { EventTimeslot } = require('../models/eventTimeslot')
 const { hasEventAdminAccess } = require('../models/userrole')
+
+const awsConfig = {
+  'accessKeyId': process.env.AWS_ACCESS_ID,
+  'secretAccessKey': process.env.AWS_ACCESS_KEY
+}
+AWS.config.update(awsConfig)
+const sender = 'auto-mail@lundakarnevalen.se'
 
 const create = async (req, res, opts) => {
   try {
@@ -28,11 +39,48 @@ const create = async (req, res, opts) => {
     let booking = Booking.build(req.body)
     booking.EventTimeslotId = eventTimeslot.id
     // booking.setEvent(eventTimeslot)
-    booking = await booking.save()
+    await booking.save()
+
+    sendConfirmationEmail(req.body.email, booking.uuid)
+
     res.json({ success: true, booking })
   } catch (e) {
-    res.json({ success: false, message: e.message })
+    res.json({ success: false, message: e.message, snth: 321 })
   }
+}
+
+const sendConfirmationEmail = async (email, token) => {
+  return new Promise((resolve, reject) => {
+    const template = fs.readFileSync(path.resolve(__dirname, '../templates/bookingConfirm.mustache'))
+    const msg = mustache.render(template.toString(), {bookingToken: token})
+    const params = {
+      Destination: {
+        ToAddresses: [ email ]
+      },
+      Message: {
+        Body: {
+          Html: {
+            Charset: 'UTF-8',
+            Data: msg
+          }
+        },
+        Subject: {
+          Charset: 'UTF-8',
+          Data: 'Sittningsbokning - Södersken'
+        }
+      },
+      Source: sender
+    }
+
+    const ses = new AWS.SES({apiVersion: '2010-12-01', region: 'eu-west-1'})
+    ses.sendEmail(params, (err, data) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve()
+      }
+    })
+  })
 }
 
 const list = async (req, res) => {

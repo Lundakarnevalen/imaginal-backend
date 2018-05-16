@@ -15,6 +15,8 @@ const Booking = dbc.define('Booking', {
       min: 1
     }
   },
+  foodPreference: Sequelize.TEXT,
+  specialRequest: Sequelize.TEXT,
   uuid: {
     type: Sequelize.UUID,
     defaultValue: Sequelize.UUIDV4,

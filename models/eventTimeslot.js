@@ -2,7 +2,7 @@ const Sequelize = require('sequelize')
 const dbc = require('../config/database')
 
 const EventTimeslot = dbc.define('EventTimeslot', {
-  startDateTime: Sequelize.TIME,
+  startDateTime: Sequelize.DATE,
   duration: {
     type: Sequelize.INTEGER,
     allowNull: false,
