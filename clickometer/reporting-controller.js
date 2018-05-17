@@ -107,11 +107,11 @@ module.exports = (app, log, isAdmin) => {
           New to: ${toRoom.current_guests}, New from: ${fromRoom.current_guests}`)
       }
       reporttokens.forEach(rt => reportTokens.push(rt))
-      if (reportTokens.length > 40) {
+      if (reportTokens.length > 100) {
         reportTokens.sort()
         reportTokens.reverse()
         console.log(reportTokens)
-        reportTokens = reportTokens.slice(0, 20)
+        reportTokens = reportTokens.slice(0, 50)
       }
       // console.log('RT len', reportTokens.length)
       // console.log('deltasum:', deltaSum)
