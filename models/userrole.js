@@ -36,7 +36,8 @@ Role.belongsToMany(User, {
   constraints: false
 })
 
-const hasRole = function (user, role) { // (user, role) returns a boolean-promise
+const hasRole = function (user, role) {
+  // (user, role) returns a boolean-promise
   return Role.findOne({
     where: { description: role }
   }).then(role => {
@@ -45,30 +46,37 @@ const hasRole = function (user, role) { // (user, role) returns a boolean-promis
 }
 
 /* Put the async stuff in a try/catch block */
-const hasWarehouseCustomerAccess = async (req) => {
+const hasWarehouseCustomerAccess = async req => {
   const isUser = await hasRole(req.user, CUSTOMER)
   const hasWarehouseAccess = await hasWarehouseWorkerAccess(req)
-  return (isUser || hasWarehouseAccess)
+  return isUser || hasWarehouseAccess
 }
 
 /* Put the async stuff in a try/catch block */
-const hasWarehouseWorkerAccess = async (req) => {
+const hasWarehouseWorkerAccess = async req => {
   const isWorker = await hasRole(req.user, WORKER)
   const isWarehouseAdmin = await hasWarehouseAdminAccess(req)
-  return (isWorker || isWarehouseAdmin)
+  return isWorker || isWarehouseAdmin
 }
 
 /* Put the async stuff in a try/catch block */
-const hasWarehouseAdminAccess = async (req) => {
+const hasWarehouseAdminAccess = async req => {
   const isAdmin = await hasRole(req.user, ADMIN)
   const isWarehouseManager = await hasRole(req.user, MANAGER)
-  return (isAdmin || isWarehouseManager)
+  return isAdmin || isWarehouseManager
+}
+const hasEventAdminAccess = async req => {
+  const isAdmin = await hasRole(req.user, ADMIN)
+  const isEventManager = hasRole(req.user, EVENT_MANAGER)
+  return isAdmin || isEventManager
 }
 
 const ADMIN = 'administrator'
 const CUSTOMER = 'warehouse customer'
 const WORKER = 'warehouse worker'
 const MANAGER = 'warehouse manager'
+
+const EVENT_MANAGER = 'event manager'
 
 module.exports = {
   UserRole,
@@ -79,5 +87,6 @@ module.exports = {
   MANAGER,
   hasWarehouseCustomerAccess,
   hasWarehouseWorkerAccess,
-  hasWarehouseAdminAccess
+  hasWarehouseAdminAccess,
+  hasEventAdminAccess
 }
