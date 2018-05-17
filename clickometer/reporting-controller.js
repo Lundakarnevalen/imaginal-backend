@@ -6,6 +6,8 @@ const Op = database.Op
 const Room = database.Room
 const Connection = database.Connection
 
+let reportTokens = []
+
 module.exports = (app, log, isAdmin) => {
   /**
     * @swagger
@@ -62,11 +64,23 @@ module.exports = (app, log, isAdmin) => {
     *         description: Connection not found with token and current_clicker
     */
   app.post('/api/click/report/:token', async (req, res) => {
-    const delta = req.body.delta
-    const name = req.body.name
-
     // simulate bad internet...
-    // sleep.msleep(2000)
+    // const getRandomInt = (max) => Math.floor(Math.random() * Math.floor(max))
+    // const sleepTime = getRandomInt(1000)
+    // console.log('Sleep:', sleepTime)
+    // sleep.msleep(sleepTime)
+
+    const fullList = req.body
+    if (!Array.isArray(fullList) || !fullList.length > 0) {
+      return res.status(400).json({message: 'bad request'})
+    }
+    const reportList = fullList.filter(x => reportTokens.indexOf(x.reporttoken) < 0)
+    // const reportList = fullList
+    const { name } = reportList[0]
+    const deltas = reportList.map(r => r.delta)
+    const deltaSum = deltas.reduce((acc, curr) => acc + curr, 0)
+    const reporttokens = reportList.map(r => r.reporttoken)
+
     try {
       const connection = await Connection.findOne({
         where: {
@@ -74,31 +88,43 @@ module.exports = (app, log, isAdmin) => {
           current_clicker: name
         }
       })
+
       if (!connection) {
         log(req, 'Report failure', `${name} tried to report, connection ${req.params.token} not found`)
         return res.status(404).json({message: 'Not found'})
       }
-      connection.guests_passed += delta
+
+      connection.guests_passed += deltaSum
 
       await Connection.update({ guests_passed: connection.guests_passed }, { where: { id: connection.id } })
-      await Room.update({ current_guests: sequelize.literal(`current_guests + ${delta}`) }, { where: { id: connection.toRoomId } })
-      await Room.update({ current_guests: sequelize.literal(`current_guests - ${delta}`) }, { where: { id: connection.fromRoomId } })
+      await Room.update({ current_guests: sequelize.literal(`current_guests + ${deltaSum}`) }, { where: { id: connection.toRoomId } })
+      await Room.update({ current_guests: sequelize.literal(`current_guests - ${deltaSum}`) }, { where: { id: connection.fromRoomId } })
 
       const toRoom = await Room.findById(connection.toRoomId)
       const fromRoom = await Room.findById(connection.fromRoomId)
-      if (delta !== 0) {
-        log(req, 'Report success', `${name} reported ${delta}, connection ${connection.name},
+      if (deltaSum !== 0) {
+        log(req, 'Report success', `${name} reported ${deltaSum}, connection ${connection.name},
           New to: ${toRoom.current_guests}, New from: ${fromRoom.current_guests}`)
       }
+      reporttokens.forEach(rt => reportTokens.push(rt))
+      if (reportTokens.length > 40) {
+        reportTokens.sort()
+        reportTokens.reverse()
+        console.log(reportTokens)
+        reportTokens = reportTokens.slice(0, 20)
+      }
+      // console.log('RT len', reportTokens.length)
+      // console.log('deltasum:', deltaSum)
       res.json({
         current_toRoom: toRoom.current_guests,
         current_fromRoom: fromRoom.current_guests,
         connection_passed: connection.guests_passed,
-        reported_delta: delta
+        deltas,
+        reporttokens
       })
     } catch (err) {
       log(req, 'Report failure', `${name} tried to report, connection ${req.params.token}. ERROR.`)
-      res.status(400).json(err)
+      return res.status(400).json(err)
     }
   })
 
