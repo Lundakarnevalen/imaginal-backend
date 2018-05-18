@@ -499,19 +499,13 @@ const checkoutOrderLines = async (req, res) => {
       // Get values before changing database object to validate that enough in storage and quantityOrdered
       const quantityStorage = dbStoragecontent.quantity - reqOrderLine.quantity
       const quantityOrderLine = parseInt(dbOrderLine.quantityDelivered) + parseInt(reqOrderLine.quantity)
-      if ((quantityStorage > 0) && (quantityOrderLine <= dbOrderLine.quantityOrdered)) {
-        dbInfo.storageContent[idx].quantity = quantityStorage
-        dbInfo.orderLines[olIdx].quantityDelivered = quantityOrderLine
-        if (parseInt(dbInfo.orderLines[olIdx].quantityDelivered) !== parseInt(dbInfo.orderLines[olIdx].quantityOrdered)) {
-          compDelivery = false
-        }
-      } else {
-        return res.status(400).json({
-          success: false,
-          message: 'Not enough quantity in storage of some item'
-        })
+      dbInfo.storageContent[idx].quantity = quantityStorage
+      dbInfo.orderLines[olIdx].quantityDelivered = quantityOrderLine
+      if (parseInt(dbInfo.orderLines[olIdx].quantityDelivered) !== parseInt(dbInfo.orderLines[olIdx].quantityOrdered)) {
+        compDelivery = false
       }
     }
+
     if (compDelivery) {
       order.checkedOut = 1
       order.checkedOutDate = new Date()
