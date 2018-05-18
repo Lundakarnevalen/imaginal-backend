@@ -475,7 +475,6 @@ const checkoutOrderLines = async (req, res) => {
 
     let dbInfo = {
       orderLines: null,
-      storageContent: null
     }
     const order = await orders.Order.findOne({
       where: { id: reqOrderLines[0].orderId }
@@ -487,32 +486,17 @@ const checkoutOrderLines = async (req, res) => {
       where: { orderId: order.id }
     })
 
-    dbInfo.storageContent = []
-    dbInfo.storageContent = await storageIterator(reqOrderLines, dbInfo.storageContent, reqStorageLocationId)
     let compDelivery = true
     for (let i = 0; i < reqOrderLines.length; i++) {
       const reqOrderLine = reqOrderLines[i]
       const dbOrderLine = dbInfo.orderLines.filter(o => o.id === reqOrderLine.id)[0]
       const olIdx = dbInfo.orderLines.indexOf(dbOrderLine)
-      const dbStoragecontent = dbInfo.storageContent.filter(s => s.itemId === reqOrderLine.itemId)[0]
-      const idx = dbInfo.storageContent.indexOf(dbStoragecontent)
       // Get values before changing database object to validate that enough in storage and quantityOrdered
-      const quantityStorage = dbStoragecontent.quantity - reqOrderLine.quantity
       const quantityOrderLine = parseInt(dbOrderLine.quantityDelivered) + parseInt(reqOrderLine.quantity)
-      dbInfo.storageContent[idx].quantity = quantityStorage
       dbInfo.orderLines[olIdx].quantityDelivered = quantityOrderLine
-      if (parseInt(dbInfo.orderLines[olIdx].quantityDelivered) !== parseInt(dbInfo.orderLines[olIdx].quantityOrdered)) {
-        compDelivery = false
-      }
-    }
 
-    if (compDelivery) {
-      order.checkedOut = 1
-      order.checkedOutDate = new Date()
-      order.save()
+      dbInfo.orderLines.map(o => o.save())
     }
-    dbInfo.storageContent.map(s => s.save())
-    dbInfo.orderLines.map(o => o.save())
     return res.status(200).json({
       success: true,
       message: 'Successfully checked out order!'
