@@ -84,12 +84,6 @@ const createOrderLine = (order, body) => {
 const sendNotificationEmail = async (warehouseUser, storageLocationId, data = {}) => {
   // Need to get name on storage in some manner...
   // req.params.storageLocationId
-  const awsConfig = {
-    'accessKeyId': process.env.AWS_ACCESS_ID,
-    'secretAccessKey': process.env.AWS_ACCESS_KEY,
-    'region': 'eu-west-1'
-  }
-  AWS.config.update(awsConfig)
   const sender = 'AIT.lager.notis@lundakarnevalen.se'
 
   const storageLocation = await storageLocations.StorageLocation.findOne({
@@ -117,19 +111,20 @@ const sendNotificationEmail = async (warehouseUser, storageLocationId, data = {}
       },
       Source: sender
     }
-    const ses = new AWS.SES({ apiVersion: '2010-12-01' })
+    const ses = new AWS.SES({ apiVersion: '2010-12-01', region: 'eu-west-1' })
     // THIS LINE UNDERNEATH MAKES AWS SEND AN EMAIL! Uncomment on production!
     ses.sendEmail(params, (err, data) => {
       if (err) {
-        console.log('Invalid:', email, err)
         reject(err)
       } else {
-        console.log('Valid:', email, data)
         resolve()
       }
     })
   })
 }
+
+
+
 
 const createReturn = async (req, res) => {
   try {
@@ -508,7 +503,7 @@ const checkoutOrderLines = async (req, res) => {
         dbInfo.storageContent[idx].quantity = quantityStorage
         dbInfo.orderLines[olIdx].quantityDelivered = quantityOrderLine
         if (parseInt(dbInfo.orderLines[olIdx].quantityDelivered) !== parseInt(dbInfo.orderLines[olIdx].quantityOrdered)) {
-          compDelivery = false  
+          compDelivery = false
         }
       } else {
         return res.status(400).json({
@@ -523,7 +518,7 @@ const checkoutOrderLines = async (req, res) => {
       order.save()
     }
     dbInfo.storageContent.map(s => s.save())
-    dbInfo.orderLines.map(o =>  o.save())
+    dbInfo.orderLines.map(o => o.save())
     return res.status(200).json({
       success: true,
       message: 'Successfully checked out order!'
