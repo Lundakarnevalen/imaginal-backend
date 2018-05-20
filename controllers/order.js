@@ -496,7 +496,9 @@ const checkoutOrderLines = async (req, res) => {
       dbInfo.orderLines[olIdx].quantityDelivered = quantityOrderLine
 
       dbInfo.orderLines.map(o => o.save())
+      order.checkedOut = true
     }
+    order.save()
     return res.status(200).json({
       success: true,
       message: 'Successfully checked out order!'
