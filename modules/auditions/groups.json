@@ -1,0 +1,50 @@
+{
+  "bigOrchestra": {
+    "name": "bigOrchestra",
+    "time": 4,
+    "parallell": 1,
+    "fri": ["08-14"],
+    "sun": ["14-22"],
+    "sat": ["08-14"]
+  },
+  "bigScene": {
+    "name": "bigScene",
+    "time": 4,
+    "parallell": 1,
+    "fri": ["14-22"],
+    "sun": ["08-14"],
+    "sat": ["14-22"]
+  },
+  "bigDance": {
+    "name": "bigDance",
+    "time": 25,
+    "parallell": 10,
+    "fri": ["17-22"],
+    "sun": [],
+    "sat": []
+  },
+  "smallOrchestra": {
+    "name": "smallOrchestra",
+    "time": 4,
+    "parallell": 1,
+    "fri": ["14-22"],
+    "sun": ["08-14"],
+    "sat": ["14-22"]
+  },
+  "smallScene": {
+    "name": "smallScene",
+    "time": 4,
+    "parallell": 1,
+    "fri": ["08-14"],
+    "sun": ["14-22"],
+    "sat": ["08-14"]
+  },
+  "smallDance": {
+    "name": "smallDance",
+    "time": 25,
+    "parallell": 10,
+    "fri": ["17-22"],
+    "sun": [],
+    "sat": []
+  }
+}
